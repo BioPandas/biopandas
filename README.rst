@@ -1,7 +1,7 @@
 .. image:: https://travis-ci.org/rasbt/biopandas.svg?branch=master
     :target: https://travis-ci.org/rasbt/biopandas
     :alt: Continuous Integration
-.. image:: https://coveralls.io/repos/rasbt/biopandas/badge.svg?branch=master&service=github 
+.. image:: https://coveralls.io/repos/rasbt/biopandas/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/rasbt/biopandas?branch=master
     :alt: Code Coverage
 .. image:: https://landscape.io/github/rasbt/biopandas/master/landscape.svg?style=flat
