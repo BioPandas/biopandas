@@ -37,7 +37,7 @@ class PandasPDB(object):
 
         """
         self.pdb_text = self._fetch_pdb(pdb_code)
-        self._df = self._construct_df(pdb_lines=self.pdb_text.split('\n'))
+        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines())
 
     def get(s, df=None):
         if not self._getdict:
@@ -64,7 +64,7 @@ class PandasPDB(object):
         openf = open
         if path.endswith('.gz'):
             r_mode = 'rb'
-            openf = ''
+            openf = gzip.open
         with openf(path, r_mode) as f:
             txt = f.read()
         if path.endswith('.gz'):
@@ -150,7 +150,7 @@ class PandasPDB(object):
             dfs[r[0]] = df
         return dfs
 
-    def to_pdb(self, path, to_write=None, gz=False):
+    def to_pdb(self, path, to_write=None, gz=False, append_newline=False):
         if gz:
             openf = gzip.open
             w_mode = 'wb'
@@ -172,6 +172,8 @@ class PandasPDB(object):
             df.sort(columns='line_idx', inplace=True)
             with openf(path, w_mode) as f:
                 f.write('\n'.join(df['OUT'].tolist()))
+                if append_newline:
+                    f.write('\n')
         """
         if isinstance(to_write, pd.core.frame.DataFrame):
             records = np.unique(to_write['record_name'])

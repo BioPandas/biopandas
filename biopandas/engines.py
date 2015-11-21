@@ -1,6 +1,8 @@
 # Authors: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
 
+import pandas as pd
+
 pdb_atomdict = [  {'id': 'record_name',
                    'line': [0, 6],
                    'type': str,
