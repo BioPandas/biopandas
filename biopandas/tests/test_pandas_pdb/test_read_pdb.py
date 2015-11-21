@@ -26,6 +26,7 @@ def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasPDB()
     txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
+    print(type(txt))
     assertMultiLineEqual(txt, three_eiy)
 
 def test__construct_df():

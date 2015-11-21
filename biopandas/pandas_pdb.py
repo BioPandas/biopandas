@@ -3,6 +3,7 @@
 
 import pandas as pd
 import numpy as np
+import sys
 import gzip
 import urllib
 from .engines import pdb_records
@@ -67,7 +68,10 @@ class PandasPDB(object):
         with openf(path, r_mode) as f:
             txt = f.read()
         if path.endswith('.gz'):
-            txt = txt.decode('utf-8')
+            if sys.version_info[0] >= 3:
+                txt = txt.decode('utf-8')
+            else:
+                txt = txt.encode('ascii')
         return txt
 
     @staticmethod
