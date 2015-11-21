@@ -1,3 +1,7 @@
+.. image:: https://travis-ci.org/rasbt/biopandas.svg?branch=master
+    :target: https://travis-ci.org/rasbt/biopandas
+.. image:: https://coveralls.io/repos/rasbt/biopandas/badge.svg?branch=master&service=github 
+    :target: https://coveralls.io/github/rasbt/biopandas?branch=master
 .. image:: https://img.shields.io/pypi/v/biopandas.svg
     :target: https://pypi.python.org/pypi/biopandas/
 .. image:: https://img.shields.io/badge/license-BSD-blue.svg
