@@ -1,23 +1,60 @@
 from biopandas import PandasPDB
 import os
 import numpy as np
+import pandas as pd
 from biopandas.testutils import assertMultiLineEqual
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), '3eiy.pdb')
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), '3eiy.pdb.gz')
+ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
+                 'atom_name', 'alt_loc', 'resi_name',
+                 'blank_2', 'chain_id', 'resi_number',
+                 'resi_insert_code', 'blank_3',
+                 'x_coord', 'y_coord', 'z_coord',
+                 'occupancy', 'b_factor', 'blank_4',
+                 'segment_id', 'element_symbol',
+                 'charge', 'line_idx']
 
 def test__read_pdb():
+    """Test private _read_pdb"""
     ppdb = PandasPDB()
     txt = ppdb._read_pdb(TESTDATA_FILENAME)
     assertMultiLineEqual(txt, three_eiy)
 
+def test__read_pdb_gz():
+    """Test public _read_pdb with gzip files"""
+    ppdb = PandasPDB()
+    txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
+    assertMultiLineEqual(txt, three_eiy)
+
+def test__construct_df():
+    """Test pandas dataframe construction"""
+    ppdb = PandasPDB()
+    dfs = ppdb._construct_df(three_eiy.splitlines())
+    assert set(dfs.keys()) == {'OTHERS', 'ATOM', 'ANISOU', 'HETATM'}
+    assert set(dfs['ATOM'].columns) == set(ATOM_DF_COLUMNS)
+    assert set(dfs['HETATM'].columns) == set(ATOM_DF_COLUMNS)
+    assert set(dfs['ANISOU'].columns) == set(ATOM_DF_COLUMNS)
+    exp = pd.Series(np.array(['ATOM', 1, '', 'N', '', 'SER', '', 'A', 2, '', '',
+              2.527, 54.656, -1.667, 1.0, 52.73, '', '', 'N', None, 609]),
+          index=['record_name', 'atom_number', 'blank_1',
+                 'atom_name', 'alt_loc', 'resi_name',
+                 'blank_2', 'chain_id', 'resi_number',
+                 'resi_insert_code', 'blank_3',
+                 'x_coord', 'y_coord', 'z_coord',
+                 'occupancy', 'b_factor', 'blank_4',
+                 'segment_id', 'element_symbol',
+                 'charge', 'line_idx'])
+    assert exp.equals(dfs['ATOM'].loc[0, :])
+
+def test_read_pdb():
+    """Test public read_pdb"""
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    assertMultiLineEqual(ppdb.pdb_text, three_eiy)
 
 
-#def test__read_pdb_gz():
-#    ppdb = PandasPDB()
-#    txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
-#    assert txt == three_eiy
 
 three_eiy = """HEADER    HYDROLASE                               17-SEP-08   3EIY
 TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA

@@ -19,7 +19,6 @@ class PandasPDB(object):
 
     @property
     def df_lean(self):
-
         self._df[np.isfinite(self._df)]
         return self._df
 
@@ -137,16 +136,14 @@ class PandasPDB(object):
 
         dfs = {}
         for r in line_lists.items():
-            df = pd.DataFrame(r[1])
-            if not df.empty:
-                df.columns = [c['id'] for c in pdb_records[r[0]]] + ['line_idx']
-                for c in pdb_records[r[0]]:
-                    try:
-                        df[c['id']] = df[c['id']].astype(c['type'])
-                    except ValueError:
-                        # Value Error expected if float/int columns are empty strings
-                        df[c['id']] = pd.Series(np.nan, index=df.index)
-                        pass
+            df = pd.DataFrame(r[1], columns=[c['id'] for c in pdb_records[r[0]]]+['line_idx'])
+            for c in pdb_records[r[0]]:
+                try:
+                    df[c['id']] = df[c['id']].astype(c['type'])
+                except ValueError:
+                    # Value Error expected if float/int columns are empty strings
+                    df[c['id']] = pd.Series(np.nan, index=df.index)
+                    pass
             dfs[r[0]] = df
         return dfs
 
