@@ -73,7 +73,7 @@ class PandasPDB(object):
 
         total = ((df1['x_coord'] - df2['x_coord'])**2 +
                 (df1['y_coord'] - df2['y_coord'])**2 +
-               + (df1['z_coord'] - df2['z_coord'])**2) +
+                (df1['z_coord'] - df2['z_coord'])**2) +
         rmsd = round(( total.sum() / df1.shape[0] )**0.5, 4)
         return rmsd
 

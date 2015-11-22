@@ -2,4 +2,7 @@
 branch = True
 source = biopandas
 include = */biopandas/*
-
+omit =
+    */biopandas/testutils.py
+    */biopandas/engine.py*
+    */setup.py
