@@ -1,11 +1,9 @@
 """
 BioPandas
-Sebastian Raschka <mail@sebastianraschka.com>
+Author: Sebastian Raschka <mail@sebastianraschka.com>
 License: BSD 3 clause
-Source: https://github.com/rasbt/biopandas
-
-    http://docs.python.org/X.Y/library/
-
+Project Website: http://rasbt.github.io/biopandas/
+Code Repository: https://github.com/rasbt/biopandas
 """
 
 

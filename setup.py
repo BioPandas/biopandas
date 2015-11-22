@@ -8,8 +8,10 @@ setup(name='biopandas',
       url='https://github.com/rasbt/biopandas',
       packages=['biopandas'],
       data_files = [('', ['LICENSE']),
-                    ('', ['README.rst']),
+                    ('', ['README.md']),
                    ],
+      install_requires=['pandas'],
+      extras_require={'testing': ['nose']}
       license='BSD3',
       platforms='any',
       classifiers=[

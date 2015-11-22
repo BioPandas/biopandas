@@ -26,9 +26,9 @@
 ![3eiy](./docs/sources/img/index/3eiy.png)
 
 ```python
-ppdb = PandasPDB()
-ppdb.fetch_pdb('3eiy')
-ppdb.df['ATOM'].head()
+>>> ppdb = PandasPDB()
+>>> ppdb.fetch_pdb('3eiy')
+>>> ppdb.df['ATOM'].head()
 ```
 
 ![3eiy head](./docs/sources/img/index/3eiy_head.png)
@@ -40,13 +40,13 @@ ppdb.df['ATOM'].head()
 ![3eiy head](./docs/sources/img/index/ligand_rmsd.png)
 
 ```python
-pl1 = PandasPDB()
-pl1.read_pdb('./docking_pose_1.pdb')
-pl2 = PandasPDB()
-pl2.read_pdb('./docking_pose_2.pdb')
+>>> pl1 = PandasPDB()
+>>> pl1.read_pdb('./docking_pose_1.pdb')
+>>> pl2 = PandasPDB()
+>>> pl2.read_pdb('./docking_pose_2.pdb')
 
-r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
-print('RMSD: %f' % r)
+>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
+>>> print('RMSD: %f' % r)
 RMSD: 2.6444
 ```
 
