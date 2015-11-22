@@ -1,5 +1,5 @@
 
-![Logo](./img/logos/logo.png)
+![Logo](./img/logos/logo_size_1.png)
 
 **Working with molecular structures in pandas DataFrames**
 
@@ -33,7 +33,7 @@
 >>> ppdb.df['ATOM'].head()
 ```
 
-![3eiy head](./img/index/3eiy_head.png)
+![3eiy head](./img/index/3eiy_head_size_1.png)
 
 <br><br>
 <br><br>
