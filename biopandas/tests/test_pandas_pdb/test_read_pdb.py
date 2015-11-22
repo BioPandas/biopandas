@@ -16,6 +16,7 @@ from nose.tools import raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb.gz')
+
 ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
                  'atom_name', 'alt_loc', 'resi_name',
                  'blank_2', 'chain_id', 'resi_number',
@@ -35,7 +36,6 @@ def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasPDB()
     txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
-    print(type(txt))
     assertMultiLineEqual(txt, three_eiy)
 
 def test__construct_df():
@@ -2036,8 +2036,8 @@ ATOM   1329  NZ  LYS A 175       8.861  36.709 -13.496  1.00 63.20           N
 ATOM   1330  OXT LYS A 175      10.451  35.432 -10.086  1.00 55.71           O
 TER    1331      LYS A 175
 HETATM 1332  K     K A 176      24.990  43.276   0.005  0.50 24.45           K
-HETATM 1333 NA    NA A 177       1.633  34.181  11.897  1.00 26.73          NA
-HETATM 1334 NA    NA A 178       6.489  35.143   8.444  1.00 30.89          NA
+HETATM 1333  NA   NA A 177       1.633  34.181  11.897  1.00 26.73          NA
+HETATM 1334  NA   NA A 178       6.489  35.143   8.444  1.00 30.89          NA
 HETATM 1335  P1  POP A 179       1.233  37.542  11.212  1.00 32.68           P
 HETATM 1336  O1  POP A 179       1.910  38.831  11.612  1.00 32.62           O
 HETATM 1337  O2  POP A 179       1.288  37.475   9.712  1.00 33.46           O

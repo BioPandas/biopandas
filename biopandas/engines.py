@@ -31,7 +31,7 @@ pdb_atomdict = [  {'id': 'record_name',
                   {'id': 'resi_name',
                    'line': [17, 20],
                    'type': str,
-                   'strf': lambda x: '%-3s' % x},
+                   'strf': lambda x: '%+3s' % x},
                   {'id': 'blank_2',
                    'line': [20, 21],
                    'type': str,
@@ -87,17 +87,17 @@ pdb_atomdict = [  {'id': 'record_name',
                   {'id': 'charge',
                    'line': [78, 80],
                    'type': float,
-                   'strf': lambda x: ('%+2.1f' % x).replace('+', ' ') if pd.notnull(x) else ' '}
+                   'strf': lambda x: ('%+2.1f' % x).replace('+', ' ') if pd.notnull(x) else ''}
                ]
 
 pdb_otherdict = [  {'id': 'record_name',
                     'line': [0, 6],
                     'type': str,
-                    'strf': lambda x: x},
+                    'strf': lambda x: '%s%s' % (x, ' ' * (6 -len(x)))},
                    {'id': 'entry',
                     'line': [6, -2],
                     'type': str,
-                    'strf': lambda x: x},
+                    'strf': lambda x: x.rstrip()},
                ]
 
 pdb_records = { 'ATOM': pdb_atomdict,

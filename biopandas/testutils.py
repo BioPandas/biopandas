@@ -10,11 +10,7 @@ import difflib
 
 
 def assertMultiLineEqual(first, second, preserve_newline=True, msg=None):
-    """Assert that two multi-line strings are equal.
-
-    If they aren't, show a nice diff.
-
-    """
+    """Assert that two multi-line strings are equal."""
     assert isinstance(first, str) == True, 'First argument is not a string'
     assert isinstance(second, str) == True, 'Second argument is not a string'
 

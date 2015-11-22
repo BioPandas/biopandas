@@ -159,15 +159,16 @@ class PandasPDB(object):
         line_lists = {r:[] for r in valids}
         line_lists['OTHERS'] = []
         for line_num, line in enumerate(pdb_lines):
-            if line.strip() and line.startswith(valids):
-                record = line[:6].rstrip()
-                line_ele = ['' for _ in range(len(pdb_records[record])+1)]
-                for idx, ele in enumerate(pdb_records[record]):
-                    line_ele[idx] = line[ele['line'][0]:ele['line'][1]].strip()
-                line_ele[-1] = line_num
-                line_lists[record].append(line_ele)
-            else:
-                line_lists['OTHERS'].append([line[:6], line[6:-1].strip(), line_num])
+            if line.strip():
+                if line.startswith(valids):
+                    record = line[:6].rstrip()
+                    line_ele = ['' for _ in range(len(pdb_records[record])+1)]
+                    for idx, ele in enumerate(pdb_records[record]):
+                        line_ele[idx] = line[ele['line'][0]:ele['line'][1]].strip()
+                    line_ele[-1] = line_num
+                    line_lists[record].append(line_ele)
+                else:
+                    line_lists['OTHERS'].append([line[:6].rstrip(), line[6:-1].rstrip(), line_num])
 
         dfs = {}
         for r in line_lists.items():
@@ -182,43 +183,47 @@ class PandasPDB(object):
             dfs[r[0]] = df
         return dfs
 
-    def to_pdb(self, path, to_write=None, gz=False, append_newline=False):
+    def to_pdb(self, path, records=None, gz=False, append_newline=True):
         if gz:
             openf = gzip.open
             w_mode = 'wb'
         else:
             openf=open
             w_mode = 'w'
-        if not to_write:
-            to_write = self._df
-            records = self._df.keys()
-            dfs = {r:to_write[r].copy() for r in records if not to_write[r].empty}
-            for r in dfs.keys():
-                for col in pdb_records[r]:
-                    dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
-                    dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
+        if not records:
+            records = self.df.keys()
 
-                for c in (c for c in dfs[r].columns if c not in {'line_idx', 'OUT'}):
-                    dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
-            df = pd.concat(dfs)
-            df.sort(columns='line_idx', inplace=True)
-            with openf(path, w_mode) as f:
-                f.write('\n'.join(df['OUT'].tolist()))
-                if append_newline:
-                    f.write('\n')
+        dfs = {r:self.df[r].copy() for r in records if not self.df[r].empty}
+
+        for r in dfs.keys():
+            for col in pdb_records[r]:
+                dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
+                dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
+
+            for c in (c for c in dfs[r].columns if c not in {'line_idx', 'OUT'}):
+                dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
+
+        df = pd.concat(dfs)
+        df.sort(columns='line_idx', inplace=True)
+        with openf(path, w_mode) as f:
+            s = '\n'.join(df['OUT'].tolist())
+            s = s.rstrip()
+            f.write(s)
+            if append_newline:
+                f.write('\n')
         """
-        if isinstance(to_write, pd.core.frame.DataFrame):
-            records = np.unique(to_write['record_name'])
-            dfs = [to_write[to_write['record_name'] == r ].copy() for r in records]
+        if isinstance(sections, pd.core.frame.DataFrame):
+            records = np.unique(sections['record_name'])
+            dfs = [sections[sections['record_name'] == r ].copy() for r in records]
         else:
-            records = to_write
+            records = sections
             dfs = [self._df[r].copy() for r in records]
         with open(path, 'w') as f:
             for df, r in zip(dfs, records):
-                col_to_write = []
+                col_sections = []
                 for col in pdb_records[r]:
                     df[col['id']] = df[col['id']].apply(col['strf'])
-                    col_to_write.append(col['id'])
-                for ele in df[col_to_write].values:
+                    col_sections.append(col['id'])
+                for ele in df[col_sections].values:
                     f.write(''.join(ele) + '\n')
         """
