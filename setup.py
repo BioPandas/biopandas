@@ -11,7 +11,7 @@ setup(name='biopandas',
                     ('', ['README.md']),
                    ],
       install_requires=['pandas'],
-      extras_require={'testing': ['nose']}
+      extras_require={'testing': ['nose']},
       license='BSD3',
       platforms='any',
       classifiers=[
