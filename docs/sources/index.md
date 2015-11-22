@@ -4,24 +4,28 @@
 **Working with molecular structures in pandas DataFrames**
 
 
-
-
 [![Continuous Integration](https://travis-ci.org/rasbt/biopandas.svg?branch=master)](https://travis-ci.org/rasbt/biopandas)
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)
 
+
 <hr>
 
+#### Links
 
 - Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
 
-<br><br>
+<hr>
 
-<br>
+#### About
+
+<hr>
+
+#### Examples
 
 ![3eiy](./img/index/3eiy.png)
 
@@ -33,7 +37,6 @@
 
 ![3eiy head](./img/index/3eiy_head_size_1.png)
 
-<br><br>
 <br><br>
 
 
@@ -49,5 +52,3 @@
 >>> print('RMSD: %f' % r)
 RMSD: 2.6444
 ```
-
-<br><br>
