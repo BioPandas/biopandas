@@ -1,4 +1,4 @@
-![Logo](./docs/source/img/logos/logo.png)
+![Logo](./docs/sources/img/logos/logo.png)
 
 **Working with molecular structures in pandas DataFrames**
 
@@ -22,7 +22,7 @@
 
 ## Examples
 
-![3eiy](./docs/source/img/index/3eiy.png)
+![3eiy](./docs/sources/img/index/3eiy.png)
 
 ```python
 ppdb = PandasPDB()
@@ -30,13 +30,13 @@ ppdb.fetch_pdb('3eiy')
 ppdb.df['ATOM'].head()
 ```
 
-![3eiy head](./docs/source/img/index/3eiy_head.png)
+![3eiy head](./docs/sources/img/index/3eiy_head.png)
 
 <br><br>
 <br><br>
 
 
-![3eiy head](./docs/source/img/index/ligand_rmsd.png)
+![3eiy head](./docs/sources/img/index/ligand_rmsd.png)
 
 ```python
 pl1 = PandasPDB()
