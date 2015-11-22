@@ -35,7 +35,7 @@ def test_defaults():
     assert f1 == f2
     os.remove(OUTFILE)
 
-def test_defaults():
+def test_records():
     """Test private _read_pdb"""
     ppdb = PandasPDB()
     ppdb.read_pdb(TESTDATA_FILENAME)
