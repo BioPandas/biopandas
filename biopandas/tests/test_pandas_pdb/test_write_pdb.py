@@ -25,7 +25,6 @@ with open(TESTDATA_FILENAME, 'r') as f:
             hetatm += line
 
 def test_defaults():
-    pass
     ppdb = PandasPDB()
     ppdb.read_pdb(TESTDATA_FILENAME)
     ppdb.to_pdb(path=OUTFILE, records=None)
