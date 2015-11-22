@@ -207,8 +207,11 @@ class PandasPDB(object):
         df = pd.concat(dfs)
         df.sort(columns='line_idx', inplace=True)
         with openf(path, w_mode) as f:
-            s = '\n'.join(df['OUT'].tolist())
-            s = s.rstrip()
-            f.write(s)
+
+            s = df['OUT'].tolist()
+            for idx in range(len(s)):
+                if len(s[idx]) < 80:
+                    s[idx] = '%s%s' % (s[idx], ' ' * (80 - len(s[idx])))
+            f.write('\n'.join(s))
             if append_newline:
                 f.write('\n')

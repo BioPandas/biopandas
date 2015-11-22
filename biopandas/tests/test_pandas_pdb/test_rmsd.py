@@ -33,6 +33,11 @@ def test_equal():
     assert r == 0.000, r
 
 @raises(AttributeError)
+def test_wrong_arg():
+    r = PandasPDB.rmsd(p1t48.df['ATOM'].loc[1:, :], p1t48.df['ATOM'], s='bla')
+
+
+@raises(AttributeError)
 def test_incompatible():
     r = PandasPDB.rmsd(p1t48.df['ATOM'].loc[1:, :], p1t48.df['ATOM'], s=None)
 
