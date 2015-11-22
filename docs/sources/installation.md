@@ -1,4 +1,6 @@
-# Installing biopandas
+# Installing biopandas ![](img/logos/1j1v_120.png)
+
+
 
 You can install `biopandas` directly via pip by executing the following code from your command line:  
 

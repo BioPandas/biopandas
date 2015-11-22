@@ -1,4 +1,4 @@
-# How to Contribute
+# How to Contribute ![](img/logos/1r8j_120.png)
 
 I would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.
 
