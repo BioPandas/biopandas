@@ -1,13 +1,13 @@
 # How to Contribute
 
-I would be very happy about any kind of contributions that help to improve and extend the functionality of mlxtend.
+I would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.
 
 <br>
 <br>
 
 ### Quick contributor checklist
 
-- [ ]  Open a new "issue" on GitHub to discuss the new feature / bugfix  
+- [ ]  Open a new "issue" on GitHub to discuss the new feature / bug fix  
 - [ ]  Create and checkout a new topic branch   
 - [ ]  Implement new feature or apply bugfix  
 - [ ]  Add appropriate unit test functions  
@@ -26,12 +26,12 @@ I would be very happy about any kind of contributions that help to improve and e
 
 ![](img/contributing/new_issue.png)
 
-- Fork the `mlxtend` repository from the GitHub web interface.
+- Fork the `biopandas` repository from the GitHub web interface.
 
 ![](img/contributing/fork.png)
 
-- Clone the `mlxtend` repository to your local machine
-	- `git clone https://github.com/your_username/mlxtend.git`
+- Clone the `biopandas` repository to your local machine
+	- `git clone https://github.com/<your_username>/biopandas.git`
 
 <br>
 <br>
@@ -39,18 +39,21 @@ I would be very happy about any kind of contributions that help to improve and e
 ## Making Changes
 
 - Please avoid working directly on the master branch but create a new feature branch:
-	- `git branch new_feature`
-	- `git checkout new_feature`
+	- `git branch <new_feature>`
+	- `git checkout <new_feature>`
 - When you make changes, please provide meaningful `commit` messages:
-	- `git add edited_file` 
-	- `git commit -m 'my note'` 
-- Make an entry in the `mlxtend/docs/source/changelog.md` file.
-- Add tests to the `mlxtend/tests` directory.
+	- `git add <edited_files>`
+	- `git commit -m '<some note>'`
+- Make an entry in the `biopandas/docs/sources/CHANGELOG.md` file.
+- Add tests to the `biopandas/biopandas/tests` directory.
 - Run all tests (e.g., via `nosetests`  or `pytest`).
 - If it is a new feature, it would be nice (but not necessary) if you could update the documentation.
 - Push your changes to a topic branch:
-	- `git push -u origin my_feature`
+	- `git push -u origin <new_feature>`
 - Submit a `pull request` from your forked repository via the GitHub web interface.
+
+<br>
+
 ![](img/contributing/pull_request.png)
 
 <br>
@@ -60,22 +63,25 @@ I would be very happy about any kind of contributions that help to improve and e
 
 ### Building the documentation
 
-Please note that documents containing code examples are generated from IPython Notebook files located in `mlxtend/docs/sources/ipynb` and converted to markdown via 
+Please note that documents containing code examples are generated from IPython Notebook files located in `mlxtend/docs/sources/ipynb` and converted to markdown via
 
-    $bash ~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
-    
-The markdown file should be placed into the documentation directory at `mlxtend/docs/sources` to build the documentation via  [mkdocs](http://www.mkdocs.org).
-If you are adding a new document, please also include it in the pages section in the `mlxtend/docs/mkdocs.yml` file.
+```bash
+~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
+```
 
-To ensure that the documentation is rendered correctly, you can view the documentation locally by executing `mkdocs serve` from the `mlxtend/docs` directory.
+The markdown file should be placed into the documentation directory at `biopandas/docs/sources` to build the documentation via  [mkdocs](http://www.mkdocs.org).
+If you are adding a new document, please also include it in the pages section in the `biopandas/docs/mkdocs.yml` file.
+
+To ensure that the documentation is rendered correctly, you can view the documentation locally by executing `mkdocs serve` from the `biopandas/docs` directory.
 
 For example,
-	
-	$bash ~/github/mlxtend/docs$ mkdocs serve
+
+```bash
+~/github/biopandas/docs$ mkdocs serve
+```
 
 The HTML files of the documentation are then build by executing
 
-	$bash ~/github/mlxtend/docs$ mkdocs build
-	
-<br>
-	
+```bash
+~/github/biopandas/docs$ mkdocs build
+```

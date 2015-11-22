@@ -7,10 +7,8 @@
 
 
 [![Continuous Integration](https://travis-ci.org/rasbt/biopandas.svg?branch=master)](https://travis-ci.org/rasbt/biopandas)
-[![Code Coverage](https://coveralls.io/repos/rasbt/biopandas/badge.svg?branch=master&service=github)](https://coveralls.io/github/rasbt/biopandas?branch=master)
-[![Code Health](https://landscape.io/github/rasbt/biopandas/master/landscape.svg?style=flat)](https://landscape.io/github/rasbt/biopandas/master)
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
-[![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)
 
