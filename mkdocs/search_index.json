@@ -1,0 +1,64 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Working with molecular structures in pandas DataFrames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLinks\n\n\n\n\nDocumentation: \nhttp://rasbt.github.io/biopandas/\n\n\nSource code repository: \nhttps://github.com/rasbt/biopandas\n\n\nPyPI: \nhttps://pypi.python.org/pypi/biopandas\n\n\n\n\n\n\nExamples\n\n\n\n\nppdb = PandasPDB()\nppdb.fetch_pdb('3eiy')\nppdb.df['ATOM'].head()\n\n\n\n\n\n\n\n\n\n\n\n\npl1 = PandasPDB()\npl1.read_pdb('./docking_pose_1.pdb')\npl2 = PandasPDB()\npl2.read_pdb('./docking_pose_2.pdb')\n\nr = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\nprint('RMSD: %f' % r)\nRMSD: 2.6444\n\n\n\n\n\n\n\n\nQuick Install\n\n\n\n\nlatest version (from GitHub): \npip install git+git://github.com/rasbt/biopandas.git#egg=biopandas\n\n\nlatest PyPI version: \npip install biopandas",
+            "title": "Home"
+        },
+        {
+            "location": "/#links",
+            "text": "Documentation:  http://rasbt.github.io/biopandas/  Source code repository:  https://github.com/rasbt/biopandas  PyPI:  https://pypi.python.org/pypi/biopandas",
+            "title": "Links"
+        },
+        {
+            "location": "/#examples",
+            "text": "ppdb = PandasPDB()\nppdb.fetch_pdb('3eiy')\nppdb.df['ATOM'].head()      pl1 = PandasPDB()\npl1.read_pdb('./docking_pose_1.pdb')\npl2 = PandasPDB()\npl2.read_pdb('./docking_pose_2.pdb')\n\nr = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\nprint('RMSD: %f' % r)\nRMSD: 2.6444",
+            "title": "Examples"
+        },
+        {
+            "location": "/#quick-install",
+            "text": "latest version (from GitHub):  pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas  latest PyPI version:  pip install biopandas",
+            "title": "Quick Install"
+        },
+        {
+            "location": "/changelog/",
+            "text": "0.1.0\n\n\n\n\nFirst Release",
+            "title": "Changelog"
+        },
+        {
+            "location": "/installation/",
+            "text": "Installing biopandas\n\n\nYou can install \nbiopandas\n directly via pip by executing the following code from your command line:  \n\n\npip install biopandas  \n\n\n\n\n\n\nYou want to try out the latest features before they go live on PyPI? Install the \nbiopandas\n dev-version latest development version from the GitHub repository by executing\n\n\npip install git+git://github.com/rasbt/biopandas.git#egg=biopandas\n\n\n\n\n\n\nAlternatively, you download the package manually from \nPYPI\n or \nGitHub\n, unzip it, navigate into the package, and execute the command:\n\n\npython setup.py install",
+            "title": "Installation"
+        },
+        {
+            "location": "/installation/#installing-biopandas",
+            "text": "You can install  biopandas  directly via pip by executing the following code from your command line:    pip install biopandas     You want to try out the latest features before they go live on PyPI? Install the  biopandas  dev-version latest development version from the GitHub repository by executing  pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas   Alternatively, you download the package manually from  PYPI  or  GitHub , unzip it, navigate into the package, and execute the command:  python setup.py install",
+            "title": "Installing biopandas"
+        },
+        {
+            "location": "/contributing/",
+            "text": "How to Contribute\n\n\nI would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.\n\n\n\n\n\n\nQuick contributor checklist\n\n\n\n\n[ ]  Open a new \"issue\" on GitHub to discuss the new feature / bug fix  \n\n\n[ ]  Create and checkout a new topic branch   \n\n\n[ ]  Implement new feature or apply bugfix  \n\n\n[ ]  Add appropriate unit test functions  \n\n\n[ ]  Run \nnosetests -sv\n and make sure that all unit tests pass  \n\n\n[ ]  Add a note about the change to the \n./docs/sources/CHANGELOG.md\n file  \n\n\n[ ]  Modify documentation in \n./docs/examples/\n and \n./docs/sources/\n  \n\n\n[ ]  Push the topic branch to the server and create a pull request\n\n\n\n\n\n\nGetting Started\n\n\n\n\nIf you don't have a \nGitHub\n account yet, please create one to contribute to this project.\n\n\nPlease submit a ticket for your issue to discuss the fix or new feature before too much time and effort is spent for the implementation.\n\n\n\n\n\n\n\n\nFork the \nbiopandas\n repository from the GitHub web interface.\n\n\n\n\n\n\n\n\nClone the \nbiopandas\n repository to your local machine\n\n\ngit clone https://github.com/<your_username>/biopandas.git\n\n\n\n\n\n\n\n\n\n\n\n\nMaking Changes\n\n\n\n\nPlease avoid working directly on the master branch but create a new feature branch:\n\n\ngit branch <new_feature>\n\n\ngit checkout <new_feature>\n\n\n\n\n\n\nWhen you make changes, please provide meaningful \ncommit\n messages:\n\n\ngit add <edited_files>\n\n\ngit commit -m '<some note>'\n\n\n\n\n\n\nMake an entry in the \nbiopandas/docs/sources/CHANGELOG.md\n file.\n\n\nAdd tests to the \nbiopandas/biopandas/tests\n directory.\n\n\nRun all tests (e.g., via \nnosetests\n  or \npytest\n).\n\n\nIf it is a new feature, it would be nice (but not necessary) if you could update the documentation.\n\n\nPush your changes to a topic branch:\n\n\ngit push -u origin <new_feature>\n\n\n\n\n\n\nSubmit a \npull request\n from your forked repository via the GitHub web interface.\n\n\n\n\n\n\n\n\n\n\n\n\nNotes for Developers\n\n\nBuilding the documentation\n\n\nPlease note that documents containing code examples are generated from IPython Notebook files located in \nmlxtend/docs/sources/ipynb\n and converted to markdown via\n\n\n~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>\n\n\n\n\nThe markdown file should be placed into the documentation directory at \nbiopandas/docs/sources\n to build the documentation via  \nmkdocs\n.\nIf you are adding a new document, please also include it in the pages section in the \nbiopandas/docs/mkdocs.yml\n file.\n\n\nTo ensure that the documentation is rendered correctly, you can view the documentation locally by executing \nmkdocs serve\n from the \nbiopandas/docs\n directory.\n\n\nFor example,\n\n\n~/github/biopandas/docs$ mkdocs serve\n\n\n\n\nThe HTML files of the documentation are then build by executing\n\n\n~/github/biopandas/docs$ mkdocs build",
+            "title": "Contributing"
+        },
+        {
+            "location": "/contributing/#how-to-contribute",
+            "text": "I would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.    Quick contributor checklist   [ ]  Open a new \"issue\" on GitHub to discuss the new feature / bug fix    [ ]  Create and checkout a new topic branch     [ ]  Implement new feature or apply bugfix    [ ]  Add appropriate unit test functions    [ ]  Run  nosetests -sv  and make sure that all unit tests pass    [ ]  Add a note about the change to the  ./docs/sources/CHANGELOG.md  file    [ ]  Modify documentation in  ./docs/examples/  and  ./docs/sources/     [ ]  Push the topic branch to the server and create a pull request",
+            "title": "How to Contribute"
+        },
+        {
+            "location": "/contributing/#getting-started",
+            "text": "If you don't have a  GitHub  account yet, please create one to contribute to this project.  Please submit a ticket for your issue to discuss the fix or new feature before too much time and effort is spent for the implementation.     Fork the  biopandas  repository from the GitHub web interface.     Clone the  biopandas  repository to your local machine  git clone https://github.com/<your_username>/biopandas.git",
+            "title": "Getting Started"
+        },
+        {
+            "location": "/contributing/#making-changes",
+            "text": "Please avoid working directly on the master branch but create a new feature branch:  git branch <new_feature>  git checkout <new_feature>    When you make changes, please provide meaningful  commit  messages:  git add <edited_files>  git commit -m '<some note>'    Make an entry in the  biopandas/docs/sources/CHANGELOG.md  file.  Add tests to the  biopandas/biopandas/tests  directory.  Run all tests (e.g., via  nosetests   or  pytest ).  If it is a new feature, it would be nice (but not necessary) if you could update the documentation.  Push your changes to a topic branch:  git push -u origin <new_feature>    Submit a  pull request  from your forked repository via the GitHub web interface.",
+            "title": "Making Changes"
+        },
+        {
+            "location": "/contributing/#notes-for-developers",
+            "text": "Building the documentation  Please note that documents containing code examples are generated from IPython Notebook files located in  mlxtend/docs/sources/ipynb  and converted to markdown via  ~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>  The markdown file should be placed into the documentation directory at  biopandas/docs/sources  to build the documentation via   mkdocs .\nIf you are adding a new document, please also include it in the pages section in the  biopandas/docs/mkdocs.yml  file.  To ensure that the documentation is rendered correctly, you can view the documentation locally by executing  mkdocs serve  from the  biopandas/docs  directory.  For example,  ~/github/biopandas/docs$ mkdocs serve  The HTML files of the documentation are then build by executing  ~/github/biopandas/docs$ mkdocs build",
+            "title": "Notes for Developers"
+        }
+    ]
+}

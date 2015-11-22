@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Biopandas is a python package for working with molecular structures in pandas DataFrames.">
+        <meta name="author" content="Sebastian Raschka">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/">
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>biopandas</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+        <link href="./extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-38457794-3', 'rasbt.github.io/biopandas/');
+            ga('send', 'pageview');
+        </script>
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">biopandas</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="changelog/">Changelog</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="installation/">Installation</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="contributing/">Contributing</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="changelog/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/rasbt/biopandas">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#links">Links</a></li>
+        
+    
+        <li class="main "><a href="#examples">Examples</a></li>
+        
+    
+        <li class="main "><a href="#quick-install">Quick Install</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<p><img alt="Logo" src="./img/logos/logo.png" /></p>
+<p><strong>Working with molecular structures in pandas DataFrames</strong></p>
+<p><a href="https://travis-ci.org/rasbt/biopandas"><img alt="Continuous Integration" src="https://travis-ci.org/rasbt/biopandas.svg?branch=master" /></a>
+<a href="https://pypi.python.org/pypi/biopandas/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/biopandas.svg" /></a>
+<a href="https://github.com/rasbt/biopandas/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-new%20BSD-blue.svg" /></a>
+<img alt="Python 2.7" src="https://img.shields.io/badge/python-2.7-blue.svg" />
+<img alt="Python 3.5" src="https://img.shields.io/badge/python-3.5-blue.svg" /></p>
+<hr>
+
+<h2 id="links">Links</h2>
+<ul>
+<li>Documentation: <a href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a></li>
+<li>Source code repository: <a href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></li>
+<li>PyPI: <a href="https://pypi.python.org/pypi/biopandas">https://pypi.python.org/pypi/biopandas</a></li>
+</ul>
+<p><br><br></p>
+<h2 id="examples">Examples</h2>
+<p><img alt="3eiy" src="./img/index/3eiy.png" /></p>
+<pre><code class="python">ppdb = PandasPDB()
+ppdb.fetch_pdb('3eiy')
+ppdb.df['ATOM'].head()
+</code></pre>
+
+<p><img alt="3eiy head" src="./img/index/3eiy_head.png" /></p>
+<p><br><br>
+<br><br></p>
+<p><img alt="3eiy head" src="./img/index/ligand_rmsd.png" /></p>
+<pre><code class="python">pl1 = PandasPDB()
+pl1.read_pdb('./docking_pose_1.pdb')
+pl2 = PandasPDB()
+pl2.read_pdb('./docking_pose_2.pdb')
+
+r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
+print('RMSD: %f' % r)
+RMSD: 2.6444
+</code></pre>
+
+<p><br><br>
+<br><br></p>
+<h2 id="quick-install">Quick Install</h2>
+<ul>
+<li>latest version (from GitHub): <code>pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas</code></li>
+<li>latest PyPI version: <code>pip install biopandas</code></li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+                <center>Copyright &copy; 2015 <a href="http://sebastianraschka.com">Sebastian Raschka</a></center>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+        <script src="./mathjaxhelper.js"></script>
+    </body>
+</html>
