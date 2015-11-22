@@ -49,6 +49,6 @@
 >>> pl2.read_pdb('./docking_pose_2.pdb')
 
 >>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
->>> print('RMSD: %f' % r)
-RMSD: 2.6444
+>>> print('RMSD: %f Angstrom' % r)
+RMSD: 2.6444 Angstrom
 ```
