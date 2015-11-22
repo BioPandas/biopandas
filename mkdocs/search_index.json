@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/",
-            "text": "Working with molecular structures in pandas DataFrames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDocumentation: \nhttp://rasbt.github.io/biopandas/\n\n\nSource code repository: \nhttps://github.com/rasbt/biopandas\n\n\nPyPI: \nhttps://pypi.python.org/pypi/biopandas\n\n\n\n\n\n\n\n\n\n\n>>> ppdb = PandasPDB()\n>>> ppdb.fetch_pdb('3eiy')\n>>> ppdb.df['ATOM'].head()\n\n\n\n\n\n\n\n\n\n\n\n\n>>> pl1 = PandasPDB()\n>>> pl1.read_pdb('./docking_pose_1.pdb')\n>>> pl2 = PandasPDB()\n>>> pl2.read_pdb('./docking_pose_2.pdb')\n\n>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\n>>> print('RMSD: %f' % r)\nRMSD: 2.6444",
+            "text": "Working with molecular structures in pandas DataFrames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLinks\n\n\n\n\nDocumentation: \nhttp://rasbt.github.io/biopandas/\n\n\nSource code repository: \nhttps://github.com/rasbt/biopandas\n\n\nPyPI: \nhttps://pypi.python.org/pypi/biopandas\n\n\n\n\n\n\n\nAbout\n\n\n\n\n\nExamples\n\n\n\n\n>>> ppdb = PandasPDB()\n>>> ppdb.fetch_pdb('3eiy')\n>>> ppdb.df['ATOM'].head()\n\n\n\n\n\n\n\n\n\n\n>>> pl1 = PandasPDB()\n>>> pl1.read_pdb('./docking_pose_1.pdb')\n>>> pl2 = PandasPDB()\n>>> pl2.read_pdb('./docking_pose_2.pdb')\n\n>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\n>>> print('RMSD: %f' % r)\nRMSD: 2.6444",
             "title": "Home"
         },
         {
