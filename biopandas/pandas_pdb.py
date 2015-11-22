@@ -1,5 +1,6 @@
 """
 BioPandas
+
 Author: Sebastian Raschka <mail@sebastianraschka.com>
 License: BSD 3 clause
 Project Website: http://rasbt.github.io/biopandas/
@@ -70,9 +71,9 @@ class PandasPDB(object):
             df1 = get_dict[s](df1)
             df2 = get_dict[s](df2)
 
-        total = ((df1['x_coord'] - df2['x_coord'])**2
-               + (df1['y_coord'] - df2['y_coord'])**2
-               + (df1['z_coord'] - df2['z_coord'])**2)
+        total = ((df1['x_coord'] - df2['x_coord'])**2 +
+                (df1['y_coord'] - df2['y_coord'])**2 +
+               + (df1['z_coord'] - df2['z_coord'])**2) +
         rmsd = round(( total.sum() / df1.shape[0] )**0.5, 4)
         return rmsd
 
@@ -179,7 +180,7 @@ class PandasPDB(object):
                 except ValueError:
                     # Value Error expected if float/int columns are empty strings
                     df[c['id']] = pd.Series(np.nan, index=df.index)
-                    pass
+
             dfs[r[0]] = df
         return dfs
 
@@ -211,19 +212,3 @@ class PandasPDB(object):
             f.write(s)
             if append_newline:
                 f.write('\n')
-        """
-        if isinstance(sections, pd.core.frame.DataFrame):
-            records = np.unique(sections['record_name'])
-            dfs = [sections[sections['record_name'] == r ].copy() for r in records]
-        else:
-            records = sections
-            dfs = [self._df[r].copy() for r in records]
-        with open(path, 'w') as f:
-            for df, r in zip(dfs, records):
-                col_sections = []
-                for col in pdb_records[r]:
-                    df[col['id']] = df[col['id']].apply(col['strf'])
-                    col_sections.append(col['id'])
-                for ele in df[col_sections].values:
-                    f.write(''.join(ele) + '\n')
-        """
