@@ -3,10 +3,11 @@ import os
 import numpy as np
 import pandas as pd
 from biopandas.testutils import assertMultiLineEqual
+from nose.tools import raises
 
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), '3eiy.pdb')
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), '3eiy.pdb.gz')
+TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb.gz')
 ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
                  'atom_name', 'alt_loc', 'resi_name',
                  'blank_2', 'chain_id', 'resi_number',
@@ -54,6 +55,35 @@ def test_read_pdb():
     ppdb = PandasPDB()
     ppdb.read_pdb(TESTDATA_FILENAME)
     assertMultiLineEqual(ppdb.pdb_text, three_eiy)
+    assert ppdb.code == '3eiy', ppdb.code
+
+@raises(AttributeError)
+def test_get_exceptions():
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    ppdb.get('main-chai')
+
+def test_get_all():
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    for i in ['c-alpha', 'no hydrogen', 'hydrogen', 'main chain']:
+        ppdb.get(i)
+
+def test_get_df():
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+
+    shape = ppdb.get('c-alpha').shape
+    assert shape == (174, 21), shape
+
+    shape = ppdb.get('no hydrogen').shape
+    assert shape == (1330, 21), shape
+
+    shape = ppdb.get('hydrogen').shape
+    assert shape == (0, 21), shape
+
+    shape = ppdb.get('main chain').shape
+    assert shape == (696, 21), shape
 
 
 

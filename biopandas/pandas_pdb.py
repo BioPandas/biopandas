@@ -5,27 +5,29 @@ import pandas as pd
 import numpy as np
 import sys
 import gzip
-import urllib
+try:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
+except ImportError:
+    from urllib2 import urlopen, Request, HTTPError, URLError
 from .engines import pdb_records
 
 class PandasPDB(object):
     def __init__(self):
         self._df = {}
         self.pdb_text = ''
+        self.title = ''
+        self.code = ''
         self._get_dict = {}
 
     @property
     def df(self):
         return self._df
 
-    @property
-    def df_lean(self):
-        self._df[np.isfinite(self._df)]
-        return self._df
-
     def read_pdb(self, path):
         self.pdb_text = self._read_pdb(path=path)
-        self._df = self._construct_df(pdb_lines=self.pdb_text.split('\n'))
+        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
+        self.title, self.code = self._parse_title_code()
 
     def fetch_pdb(self, pdb_code):
         """Fetches PDB file contents from rcsb.org.
@@ -37,26 +39,42 @@ class PandasPDB(object):
 
         """
         self.pdb_text = self._fetch_pdb(pdb_code)
-        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines())
+        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
 
-    def get(s, df=None):
-        if not self._getdict:
-            self._init_get_dict()
-        if s not in self._getdict.keys():
-            raise ValueError('s must be in %s' % self._getdict.keys())
+    def get(self, s, df=None):
+        if not self._get_dict:
+            self._get_dict = self._init_get_dict()
+        if s not in self._get_dict.keys():
+            raise AttributeError('s must be in %s' % self._get_dict.keys())
         if not df:
             df = self._df['ATOM']
-
-    def _init_get_dict(self):
-        get_dict = {'main-chain': self._get_mainchain,
-                    'hydrogens': self._get_hydrogens,
-                    'waters': self._get_waters,
-                    'c-alpha': self._get_calpha}
-        self._getdict = get_dict
+        return self._get_dict[s](df)
 
     @staticmethod
-    def rmsd(df1, df2):
-        pass
+    def rmsd(df1, df2, s='no hydrogen'):
+        if  df1.shape[0] != df2.shape[0]:
+            raise AttributeError('DataFrames have unequal lengths')
+        get_dict = PandasPDB._init_get_dict()
+        if s:
+            if s not in get_dict.keys():
+                raise AttributeError('s must be in %s or None' % get_dict.keys())
+            df1 = get_dict[s](df1)
+            df2 = get_dict[s](df2)
+
+        total = ((df1['x_coord'] - df2['x_coord'])**2
+               + (df1['y_coord'] - df2['y_coord'])**2
+               + (df1['z_coord'] - df2['z_coord'])**2)
+        rmsd = round(( total.sum() / df1.shape[0] )**0.5, 4)
+        return rmsd
+
+
+    @staticmethod
+    def _init_get_dict():
+        get_dict = {'main chain': PandasPDB._get_mainchain,
+                    'hydrogen': PandasPDB._get_hydrogen,
+                    'no hydrogen': PandasPDB._get_no_hydrogen,
+                    'c-alpha': PandasPDB._get_calpha}
+        return get_dict
 
     @staticmethod
     def _read_pdb(path):
@@ -78,45 +96,49 @@ class PandasPDB(object):
     def _fetch_pdb(pdb_code):
         txt = None
         try:
-            response = urllib.request.urlopen('http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower())
-            txt = response.read().decode('utf-8')
-        except urllib.request.HTTPError as e:
+            response = urlopen('http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower())
+            txt = response.read()
+            if sys.version_info[0] >= 3:
+                txt = txt.decode('utf-8')
+            else:
+                txt = txt.encode('ascii')
+        except HTTPError as e:
             print('HTTP Error %s' %e.code)
-        except urllib.request.URLError as e:
+        except URLError as e:
             print('URL Error %s' %e.args)
         return txt
 
+    def _parse_title_code(self):
+        code, title = '', ''
+        if 'OTHERS' in self.df:
+
+            header = self.df['OTHERS'][self.df['OTHERS']['record_name'] == 'HEADER']
+            if not header.empty:
+                title = header['entry'].values[0]
+                s = title.split()
+                if s:
+                    code = s[-1].lower()
+        return title, code
+
+
     @staticmethod
     def _get_mainchain(df):
-        mc =  df[(ppdb.df['ATOM']['atom_name'] == 'C') |
-                 (ppdb.df['ATOM']['atom_name'] == 'O') |
-                 (ppdb.df['ATOM']['atom_name'] == 'N') |
-                 (ppdb.df['ATOM']['atom_name'] == 'CA')]
+        mc =  df[(df['atom_name'] == 'C') |
+                 (df['atom_name'] == 'O') |
+                 (df['atom_name'] == 'N') |
+                 (df['atom_name'] == 'CA')]
         return mc
 
-    @staticmethod
-    def _get_pdbcode(df):
-        pass
 
     @staticmethod
-    def _get_header(df):
-        pass
+    def _get_hydrogen(df):
+        df_h = df[(df['atom_name'] == 'H')]
+        return df_h
 
     @staticmethod
-    def _get_title(df):
-        pass
-
-    @staticmethod
-    def _get_moleculename(df):
-        pass
-
-    @staticmethod
-    def _get_waters(df):
-        pass
-
-    @staticmethod
-    def _get_hydrogens(df):
-        pass
+    def _get_no_hydrogen(df):
+        df_noh = df[(df['atom_name'] != 'H')]
+        return df_noh
 
     @staticmethod
     def _get_calpha(df):
@@ -136,7 +158,7 @@ class PandasPDB(object):
                 line_ele[-1] = line_num
                 line_lists[record].append(line_ele)
             else:
-                line_lists['OTHERS'].append([line[:6], line[6:-2].strip(), line_num])
+                line_lists['OTHERS'].append([line[:6], line[6:-1].strip(), line_num])
 
         dfs = {}
         for r in line_lists.items():
