@@ -37,14 +37,17 @@ def test__read_pdb():
     assert txt == three_eiy
 
 def test_fetch_pdb():
-    """Test private fetch_pdb"""
+    """Test fetch_pdb"""
     ppdb = PandasPDB()
     txt = ppdb._fetch_pdb('3eiy')
     with open('./text.pdb', 'w') as f:
         f.write(txt)
     txt[:100] == three_eiy[:100]
     ppdb.fetch_pdb('3eiy')
-    ppdb.pdb_text == txt
+    assert ppdb.pdb_text == txt
+    txt = ppdb._fetch_pdb('3ey')
+    err = "We're sorry, but the requested file is not available"
+    assert err in txt 
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
