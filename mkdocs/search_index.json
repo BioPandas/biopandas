@@ -2,23 +2,8 @@
     "docs": [
         {
             "location": "/",
-            "text": "Working with molecular structures in pandas DataFrames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLinks\n\n\n\n\nDocumentation: \nhttp://rasbt.github.io/biopandas/\n\n\nSource code repository: \nhttps://github.com/rasbt/biopandas\n\n\nPyPI: \nhttps://pypi.python.org/pypi/biopandas\n\n\n\n\n\n\nExamples\n\n\n\n\n\n\n>>> ppdb = PandasPDB()\n>>> ppdb.fetch_pdb('3eiy')\n>>> ppdb.df['ATOM'].head()\n\n\n\n\n\n\n\n\n\n\n\n\n>>> pl1 = PandasPDB()\n>>> pl1.read_pdb('./docking_pose_1.pdb')\n>>> pl2 = PandasPDB()\n>>> pl2.read_pdb('./docking_pose_2.pdb')\n\n>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\n>>> print('RMSD: %f' % r)\nRMSD: 2.6444\n\n\n\n\n\n\nQuick Install\n\n\n\n\nlatest version (from GitHub): \npip install git+git://github.com/rasbt/biopandas.git#egg=biopandas\n\n\nlatest PyPI version: \npip install biopandas",
+            "text": "Working with molecular structures in pandas DataFrames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDocumentation: \nhttp://rasbt.github.io/biopandas/\n\n\nSource code repository: \nhttps://github.com/rasbt/biopandas\n\n\nPyPI: \nhttps://pypi.python.org/pypi/biopandas\n\n\n\n\n\n\n\n\n\n\n>>> ppdb = PandasPDB()\n>>> ppdb.fetch_pdb('3eiy')\n>>> ppdb.df['ATOM'].head()\n\n\n\n\n\n\n\n\n\n\n\n\n>>> pl1 = PandasPDB()\n>>> pl1.read_pdb('./docking_pose_1.pdb')\n>>> pl2 = PandasPDB()\n>>> pl2.read_pdb('./docking_pose_2.pdb')\n\n>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\n>>> print('RMSD: %f' % r)\nRMSD: 2.6444",
             "title": "Home"
-        },
-        {
-            "location": "/#links",
-            "text": "Documentation:  http://rasbt.github.io/biopandas/  Source code repository:  https://github.com/rasbt/biopandas  PyPI:  https://pypi.python.org/pypi/biopandas",
-            "title": "Links"
-        },
-        {
-            "location": "/#examples",
-            "text": ">>> ppdb = PandasPDB()\n>>> ppdb.fetch_pdb('3eiy')\n>>> ppdb.df['ATOM'].head()      >>> pl1 = PandasPDB()\n>>> pl1.read_pdb('./docking_pose_1.pdb')\n>>> pl2 = PandasPDB()\n>>> pl2.read_pdb('./docking_pose_2.pdb')\n\n>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')\n>>> print('RMSD: %f' % r)\nRMSD: 2.6444",
-            "title": "Examples"
-        },
-        {
-            "location": "/#quick-install",
-            "text": "latest version (from GitHub):  pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas  latest PyPI version:  pip install biopandas",
-            "title": "Quick Install"
         },
         {
             "location": "/changelog/",
