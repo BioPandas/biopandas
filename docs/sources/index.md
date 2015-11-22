@@ -14,14 +14,12 @@
 
 <hr>
 
-## Links
+
 - Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
 
 <br><br>
-
-## Examples
 
 <br>
 
@@ -53,14 +51,3 @@ RMSD: 2.6444
 ```
 
 <br><br>
-
-
-
-## Quick Install
-
-- latest version (from GitHub): `pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas`
-- latest PyPI version: `pip install biopandas`
-
-<br><br>
-
-</div>
