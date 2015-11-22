@@ -207,6 +207,14 @@ If you are adding a new document, please also include it in the pages section in
 
 <p>The HTML files of the documentation are then build by executing</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs build
+</code></pre>
+
+<p>Deploying the documentation:</p>
+<pre><code class="bash">~/github/biopandas/docs$ mkdocs gh-deploy --clean
+</code></pre>
+
+<pre><code class="bash">~/github/biopandas/docs$ mkdocs build --clean
+~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
 </code></pre></div>
         </div>
 

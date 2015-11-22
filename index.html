@@ -147,33 +147,58 @@
 </ul>
 <p><br><br></p>
 <h2 id="examples">Examples</h2>
+<p><br></p>
 <p><img alt="3eiy" src="./img/index/3eiy.png" /></p>
-<pre><code class="python">ppdb = PandasPDB()
-ppdb.fetch_pdb('3eiy')
-ppdb.df['ATOM'].head()
+<pre><code class="python">&gt;&gt;&gt; ppdb = PandasPDB()
+&gt;&gt;&gt; ppdb.fetch_pdb('3eiy')
+&gt;&gt;&gt; ppdb.df['ATOM'].head()
 </code></pre>
 
 <p><img alt="3eiy head" src="./img/index/3eiy_head.png" /></p>
 <p><br><br>
 <br><br></p>
 <p><img alt="3eiy head" src="./img/index/ligand_rmsd.png" /></p>
-<pre><code class="python">pl1 = PandasPDB()
-pl1.read_pdb('./docking_pose_1.pdb')
-pl2 = PandasPDB()
-pl2.read_pdb('./docking_pose_2.pdb')
+<pre><code class="python">&gt;&gt;&gt; pl1 = PandasPDB()
+&gt;&gt;&gt; pl1.read_pdb('./docking_pose_1.pdb')
+&gt;&gt;&gt; pl2 = PandasPDB()
+&gt;&gt;&gt; pl2.read_pdb('./docking_pose_2.pdb')
 
-r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
-print('RMSD: %f' % r)
+&gt;&gt;&gt; r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
+&gt;&gt;&gt; print('RMSD: %f' % r)
 RMSD: 2.6444
 </code></pre>
 
-<p><br><br>
-<br><br></p>
+<p><br><br></p>
 <h2 id="quick-install">Quick Install</h2>
 <ul>
 <li>latest version (from GitHub): <code>pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas</code></li>
 <li>latest PyPI version: <code>pip install biopandas</code></li>
-</ul></div>
+</ul>
+<p><br><br></p>
+<hr>
+
+<div style="float: left;">
+  <!-- Twitter Button -->
+
+  <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://rasbt.github.io/biopandas/"
+       data-via="rasbt"
+       data-count="right"
+       data-text="BioPandas - Working with molecular structures in pandas DataFrames" data-lang="en">Tweet</a>
+  <script>!function(d,s,id){var
+          js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}
+          (document,"script","twitter-wjs");</script>
+
+<!-- LinkedIn -->
+    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+    <script type="IN/Share" data-url="http://rasbt.github.io/biopandas/" data-counter="right"></script>
+
+<!-- Google+ -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <div class="g-plusone" data-size="medium" data-href="http://rasbt.github.io/biopandas/"></div>
+
+</div></div>
         </div>
 
         <footer class="col-md-12">
