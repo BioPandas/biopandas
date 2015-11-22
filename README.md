@@ -17,6 +17,7 @@
 - Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
+- How to contribute: [http://rasbt.github.io/biopandas/contributing/](http://rasbt.github.io/biopandas/contributing/)
 
 <br><br>
 
@@ -57,3 +58,5 @@ RMSD: 2.6444
 
 - latest version (from GitHub): `pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas`
 - latest PyPI version: `pip install biopandas`
+
+For more information, please see [http://rasbt.github.io/biopandas/installation/](http://rasbt.github.io/biopandas/installation/).
