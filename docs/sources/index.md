@@ -63,27 +63,4 @@ RMSD: 2.6444
 
 <br><br>
 
-<hr>
-
-<div style="float: left;">
-  <!-- Twitter Button -->
-
-  <a href="https://twitter.com/share"
-       class="twitter-share-button"
-       data-url="http://rasbt.github.io/biopandas/"
-       data-via="rasbt"
-       data-count="right"
-       data-text="BioPandas - Working with molecular structures in pandas DataFrames" data-lang="en">Tweet</a>
-  <script>!function(d,s,id){var
-          js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}
-          (document,"script","twitter-wjs");</script>
-
-<!-- LinkedIn -->
-    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-    <script type="IN/Share" data-url="http://rasbt.github.io/biopandas/" data-counter="right"></script>
-
-<!-- Google+ -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <div class="g-plusone" data-size="medium" data-href="http://rasbt.github.io/biopandas/"></div>
-
 </div>
