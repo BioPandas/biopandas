@@ -26,7 +26,7 @@ pages:
 - Home: index.md
 #- Documentation:
 - Changelog: changelog.md
-- Documentation:
-  - pandaspdb.md
+#- Documentation:
+#  - pandaspdb.md
 - Installation: installation.md
 - Contributing: contributing.md

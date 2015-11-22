@@ -85,3 +85,14 @@ The HTML files of the documentation are then build by executing
 ```bash
 ~/github/biopandas/docs$ mkdocs build
 ```
+
+Deploying the documentation:
+
+```bash
+~/github/biopandas/docs$ mkdocs gh-deploy --clean
+```
+
+```bash
+~/github/biopandas/docs$ mkdocs build --clean
+~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
+```
