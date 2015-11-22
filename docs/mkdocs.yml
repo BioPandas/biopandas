@@ -1,0 +1,30 @@
+site_name: biopandas
+site_url: http://rasbt.github.io/biopandas
+site_author: Sebastian Raschka
+site_description: Biopandas is a python package for working with molecular structures in pandas DataFrames.
+
+repo_url: https://github.com/rasbt/biopandas
+
+include_search: true
+docs_dir: sources
+theme: yeti
+
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+  - mathjaxhelper.js
+extra_css:
+  - extra.css
+
+copyright: Copyright &copy; 2015 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
+google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas/']
+
+pages:
+- Home: index.md
+#- Documentation:
+- Changelog: changelog.md
+- Installation: installation.md
+- Contributing: contributing.md

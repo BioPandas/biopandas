@@ -1,5 +1,14 @@
-# Authors: Sebastian Raschka <mail@sebastianraschka.com>
-# License: BSD 3 clause
+"""
+BioPandas
+Sebastian Raschka <mail@sebastianraschka.com>
+License: BSD 3 clause
+Source: https://github.com/rasbt/biopandas
+
+    http://docs.python.org/X.Y/library/
+
+"""
+
+
 
 import pandas as pd
 import numpy as np
@@ -13,6 +22,7 @@ except ImportError:
 from .engines import pdb_records
 
 class PandasPDB(object):
+
     def __init__(self):
         self._df = {}
         self.pdb_text = ''
@@ -34,6 +44,7 @@ class PandasPDB(object):
 
         Parameters
         ----------
+
         pdb_code : str
             A 4-letter PDB code, e.g., "3eiy"
 
