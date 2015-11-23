@@ -297,7 +297,7 @@ class PandasPDB(object):
         """
         if gz:
             openf = gzip.open
-            w_mode = 'wb'
+            w_mode = 'wt'
         else:
             openf=open
             w_mode = 'w'
@@ -315,13 +315,17 @@ class PandasPDB(object):
                 dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
 
         df = pd.concat(dfs)
-        df.sort(columns='line_idx', inplace=True)
+        df.sort_values(by='line_idx', inplace=True)
         with openf(path, w_mode) as f:
 
             s = df['OUT'].tolist()
             for idx in range(len(s)):
                 if len(s[idx]) < 80:
                     s[idx] = '%s%s' % (s[idx], ' ' * (80 - len(s[idx])))
-            f.write('\n'.join(s))
+            to_write = '\n'.join(s)
+            f.write(to_write)
             if append_newline:
-                f.write('\n')
+                if gz:
+                    f.write('\n')
+                else:
+                    f.write('\n')

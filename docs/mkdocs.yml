@@ -20,12 +20,12 @@ extra_css:
   - extra.css
 
 copyright: Copyright &copy; 2015 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
-google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas/']
+google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 
 pages:
 - Home: index.md
 - Tutorials:
-  - tutorials/PandasPDB.md
+  - tutorials/Working_with_PDB_Structures_in_DataFrames.md
 - API:
   - api/biopandas.pdb.md
 - Changelog: changelog.md

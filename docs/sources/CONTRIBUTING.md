@@ -75,7 +75,7 @@ For example,
 
 #### 1. Tutorials
 
-Please note that documents containing code examples are generated from IPython Notebook files located in `mlxtend/docs/sources/ipynb` and converted to markdown via
+Please note that documents containing code examples are generated from IPython Notebook files and converted to markdown via
 
 ```bash
 ~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
@@ -91,7 +91,7 @@ If you are adding a new document, please also include it in the pages section in
 To build the API documentation, navigate to `biopandas/docs` and execute the `make_api.py` file from this directory via
 
 ```python
-~/github/biopandas/docs$ python make_apy.py
+~/github/biopandas/docs$ python make_api.py
 ```
 
 This should place the API documentation into the correct directories in `biopandas/docs/sources/api`.

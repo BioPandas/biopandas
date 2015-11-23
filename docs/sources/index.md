@@ -48,7 +48,7 @@ So, why don't we take pandas to the structural biology world? Working with molec
 
 ![3eiy head](./img/index/3eiy_head.png)
 
-<br><br>
+<br>
 
 
 ![3eiy head](./img/index/ligand_rmsd.png)
@@ -62,6 +62,31 @@ So, why don't we take pandas to the structural biology world? Working with molec
 >>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
                        s='hydrogen', invert=True)
 >>> print('RMSD: %.4f Angstrom' % r)
-
 RMSD: 2.6444 Angstrom
 ```
+
+<br>
+
+```python
+# Producing quick summary plots
+>>> import matplotlib.pyplot as plt
+>>> ppdb.df['ATOM']['b_factor'].plot(kind='hist')
+>>> plt.title('Distribution of B-Factors')
+>>> plt.xlabel('B-factor')
+>>> plt.ylabel('count')
+>>> plt.show()
+```
+
+![](./img/index/bfactor_hist.png)
+
+<br>
+
+```python
+>>> ppdb.df['ATOM']['b_factor'].plot(kind='line')
+>>> plt.title('B-Factors Along the Amino Acid Chain')
+>>> plt.xlabel('Residue Number')
+>>> plt.ylabel('B-factor in $A^2$')
+>>> plt.show()
+```
+
+![](./img/index/bfactor_trace.png)

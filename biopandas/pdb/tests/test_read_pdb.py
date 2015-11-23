@@ -16,9 +16,9 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb.gz')
 
 ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
-                 'atom_name', 'alt_loc', 'resi_name',
-                 'blank_2', 'chain_id', 'resi_number',
-                 'resi_insert_code', 'blank_3',
+                 'atom_name', 'alt_loc', 'residue_name',
+                 'blank_2', 'chain_id', 'residue_number',
+                 'insertion', 'blank_3',
                  'x_coord', 'y_coord', 'z_coord',
                  'occupancy', 'b_factor', 'blank_4',
                  'segment_id', 'element_symbol',
