@@ -63,16 +63,7 @@ I would be very happy about any kind of contributions that help to improve and e
 
 ### Building the documentation
 
-Please note that documents containing code examples are generated from IPython Notebook files located in `mlxtend/docs/sources/ipynb` and converted to markdown via
-
-```bash
-~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
-```
-
-The markdown file should be placed into the documentation directory at `biopandas/docs/sources` to build the documentation via  [mkdocs](http://www.mkdocs.org).
-If you are adding a new document, please also include it in the pages section in the `biopandas/docs/mkdocs.yml` file.
-
-To ensure that the documentation is rendered correctly, you can view the documentation locally by executing `mkdocs serve` from the `biopandas/docs` directory.
+The documentation is built via [MkDocs](http://www.mkdocs.org); to ensure that the documentation is rendered correctly, you can view the documentation locally by executing `mkdocs serve` from the `biopandas/docs` directory.
 
 For example,
 
@@ -80,19 +71,49 @@ For example,
 ~/github/biopandas/docs$ mkdocs serve
 ```
 
-The HTML files of the documentation are then build by executing
+<br>
+
+#### 1. Tutorials
+
+Please note that documents containing code examples are generated from IPython Notebook files located in `mlxtend/docs/sources/ipynb` and converted to markdown via
 
 ```bash
-~/github/biopandas/docs$ mkdocs build
+~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
 ```
 
-Deploying the documentation:
+The markdown file should be placed into the documentation directory at `biopandas/docs/sources` to build the documentation via  MkDocs.
+If you are adding a new document, please also include it in the pages section in the `biopandas/docs/mkdocs.yml` file.
+
+<br>
+
+#### 2. API
+
+To build the API documentation, navigate to `biopandas/docs` and execute the `make_api.py` file from this directory via
+
+```python
+~/github/biopandas/docs$ python make_apy.py
+```
+
+This should place the API documentation into the correct directories in `biopandas/docs/sources/api`.
+
+<br>
+
+#### 3. Building static HTML files
+
+Build the static HTML files of the biopandas documentation via
+
+```bash
+~/github/biopandas/docs$ mkdocs build --clean
+```
+
+To deploy the documentation, execute
 
 ```bash
 ~/github/biopandas/docs$ mkdocs gh-deploy --clean
 ```
 
+and
+
 ```bash
-~/github/biopandas/docs$ mkdocs build --clean
 ~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
 ```

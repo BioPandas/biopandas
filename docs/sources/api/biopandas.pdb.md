@@ -66,25 +66,34 @@ Fetches PDB file contents from the Protein Databank at rcsb.org.
 
     A 4-letter PDB code, e.g., "3eiy"
 
+*Returns*
+self
+
 
 <br>
 ####PandasPDB.get
 
-`PandasPDB.get(s, df=None)`
+`PandasPDB.get(s, df=None, invert=False)`
 
 Filter PDB DataFrames by properties
 
 *Parameters*
 
-* `s` (str  in {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'})
+* `s` (str  in {'main chain', 'hydrogen', 'c-alpha'})
 
     String to specify which entries to return
 
 
-* `df` (pandas.DataFrame , default: None)
+* `df` (pandas.DataFrame, default: None)
 
     Optional DataFrame to perform the filter operation on.
     If df=None, filters on self.df['ATOM']
+
+
+* `invert` (bool, default: True)
+
+    Inverts the search query. For example if s='hydrogen' and
+    invert=True, all but hydrogen entries are returned
 
 *Returns*
 
@@ -106,11 +115,14 @@ Read PDB files (unzipped or gzipped) from local drive
 
     Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
 
+*Returns*
+self
+
 
 <br>
 ####PandasPDB.rmsd
 
-`PandasPDB.rmsd(df1, df2, s='no hydrogen')`
+`PandasPDB.rmsd(df1, df2, s='main chain', invert=False)`
 
 Compute the Root Mean Square Deviation between molecules.
 
@@ -127,9 +139,16 @@ Compute the Root Mean Square Deviation between molecules.
     same number of entries as df1
 
 
-* `s` (str {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'})
+* `s` (str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain')
 
-    String to specify which entries to consider
+    String to specify which entries to consider.
+
+
+* `invert` (bool, default: False)
+
+    Inverts the string query if true. For example, the setting
+    `s='hydrogen', invert=True` computes the RMSD based on all
+    but hydrogen atoms.
 
 *Returns*
 
