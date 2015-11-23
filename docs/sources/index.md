@@ -46,8 +46,6 @@ So, why don't we take pandas to the structural biology world? Working with molec
 >>> ppdb.df['ATOM'].head()
 ```
 
-![3eiy head](./img/index/3eiy_head_size_1.png)
-
 <br><br>
 
 
