@@ -19,15 +19,24 @@
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
 - How to contribute: [http://rasbt.github.io/biopandas/contributing/](http://rasbt.github.io/biopandas/contributing/)
 
-<br><br>
+<br>
+
+If you are a computational biologist, chances are that you cursed one too many times about protein structure files. Yes, I am talking about ye Goode Olde Protein Data Bank format, aka "PDB files." Nothing against PDB, it's a neatly structured format (if deployed correctly); yet, it is a bit cumbersome to work with PDB files in "modern" programming languages -- I am pretty sure we all agree on this.
+
+As machine learning and "data science" person, I fell in love with [pandas](http://pandas.pydata.org) DataFrames for handling just about everything that can be loaded into memory.  
+So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules in pandas DataFrames is what BioPandas is all about!
+
+<br>
 
 ## Examples
 
 ![3eiy](./docs/sources/img/index/3eiy.png)
 
 ```python
->>> ppdb = PandasPDB()
->>> ppdb.fetch_pdb('3eiy')
+# Initialize a new PandasPDB object
+# and fetch the PDB file from rcsb.org
+>>> from biopandas.pdb import PandasPDB
+>>> ppdb = PandasPDB().fetch_pdb('3eiy')
 >>> ppdb.df['ATOM'].head()
 ```
 
@@ -40,14 +49,16 @@
 ![3eiy head](./docs/sources/img/index/ligand_rmsd.png)
 
 ```python
->>> pl1 = PandasPDB()
->>> pl1.read_pdb('./docking_pose_1.pdb')
->>> pl2 = PandasPDB()
->>> pl2.read_pdb('./docking_pose_2.pdb')
+# Load structures from your drive and compute the
+# Root Mean Square Deviation
+>>> from biopandas.pdb import PandasPDB
+>>> pl1 = PandasPDB().read_pdb('./docking_pose_1.pdb')
+>>> pl2 = PandasPDB().read_pdb('./docking_pose_2.pdb')
+>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
+                       s='hydrogen', invert=True)
+>>> print('RMSD: %.4f Angstrom' % r)
 
->>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
->>> print('RMSD: %f' % r)
-RMSD: 2.6444
+RMSD: 2.6444 Angstrom
 ```
 
 <br><br>
