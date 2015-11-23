@@ -56,10 +56,15 @@ class PandasPDB(object):
         path : str
             Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
 
+        Returns
+        ---------
+        self
+
         """
         self.pdb_text = self._read_pdb(path=path)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         self.header, self.code = self._parse_header_code()
+        return self
 
     def fetch_pdb(self, pdb_code):
         """Fetches PDB file contents from the Protein Databank at rcsb.org.
@@ -69,9 +74,14 @@ class PandasPDB(object):
         pdb_code : str
             A 4-letter PDB code, e.g., "3eiy"
 
+        Returns
+        ---------
+        self
+
         """
         self.pdb_text = self._fetch_pdb(pdb_code)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
+        return self
 
     def get(self, s, df=None, invert=False):
         """Filter PDB DataFrames by properties
@@ -81,11 +91,11 @@ class PandasPDB(object):
         s : str  in {'main chain', 'hydrogen', 'c-alpha'}
             String to specify which entries to return
 
-        df : pandas.DataFrame , default: None
+        df : pandas.DataFrame, default: None
             Optional DataFrame to perform the filter operation on.
             If df=None, filters on self.df['ATOM']
 
-        invert : bool (True)
+        invert : bool, default: True
             Inverts the search query. For example if s='hydrogen' and
             invert=True, all but hydrogen entries are returned
 
