@@ -68,11 +68,24 @@
             
             
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="../documentation/PandasPDB/">PandasPDB</a>
+                            <a href="../tutorials/PandasPDB/">PandasPDB</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../api/biopandas.pdb/">Biopandas.pdb</a>
                         </li>
                     
                     </ul>
@@ -207,27 +220,38 @@
 <br></p>
 <h2 id="notes-for-developers">Notes for Developers</h2>
 <h3 id="building-the-documentation">Building the documentation</h3>
-<p>Please note that documents containing code examples are generated from IPython Notebook files located in <code>mlxtend/docs/sources/ipynb</code> and converted to markdown via</p>
-<pre><code class="bash">~/github/mlxtend/docs/examples$ nbconvert --to markdown &lt;file.ipynb&gt;
-</code></pre>
-
-<p>The markdown file should be placed into the documentation directory at <code>biopandas/docs/sources</code> to build the documentation via  <a href="http://www.mkdocs.org">mkdocs</a>.
-If you are adding a new document, please also include it in the pages section in the <code>biopandas/docs/mkdocs.yml</code> file.</p>
-<p>To ensure that the documentation is rendered correctly, you can view the documentation locally by executing <code>mkdocs serve</code> from the <code>biopandas/docs</code> directory.</p>
+<p>The documentation is built via <a href="http://www.mkdocs.org">MkDocs</a>; to ensure that the documentation is rendered correctly, you can view the documentation locally by executing <code>mkdocs serve</code> from the <code>biopandas/docs</code> directory.</p>
 <p>For example,</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs serve
 </code></pre>
 
-<p>The HTML files of the documentation are then build by executing</p>
-<pre><code class="bash">~/github/biopandas/docs$ mkdocs build
+<p><br></p>
+<h4 id="1-tutorials">1. Tutorials</h4>
+<p>Please note that documents containing code examples are generated from IPython Notebook files located in <code>mlxtend/docs/sources/ipynb</code> and converted to markdown via</p>
+<pre><code class="bash">~/github/mlxtend/docs/examples$ nbconvert --to markdown &lt;file.ipynb&gt;
 </code></pre>
 
-<p>Deploying the documentation:</p>
+<p>The markdown file should be placed into the documentation directory at <code>biopandas/docs/sources</code> to build the documentation via  MkDocs.
+If you are adding a new document, please also include it in the pages section in the <code>biopandas/docs/mkdocs.yml</code> file.</p>
+<p><br></p>
+<h4 id="2-api">2. API</h4>
+<p>To build the API documentation, navigate to <code>biopandas/docs</code> and execute the <code>make_api.py</code> file from this directory via</p>
+<pre><code class="python">~/github/biopandas/docs$ python make_apy.py
+</code></pre>
+
+<p>This should place the API documentation into the correct directories in <code>biopandas/docs/sources/api</code>.</p>
+<p><br></p>
+<h4 id="3-building-static-html-files">3. Building static HTML files</h4>
+<p>Build the static HTML files of the biopandas documentation via</p>
+<pre><code class="bash">~/github/biopandas/docs$ mkdocs build --clean
+</code></pre>
+
+<p>To deploy the documentation, execute</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs gh-deploy --clean
 </code></pre>
 
-<pre><code class="bash">~/github/biopandas/docs$ mkdocs build --clean
-~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
+<p>and</p>
+<pre><code class="bash">~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
 </code></pre></div>
         </div>
 

@@ -68,11 +68,24 @@
             
             
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="documentation/PandasPDB/">PandasPDB</a>
+                            <a href="tutorials/PandasPDB/">PandasPDB</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="api/biopandas.pdb/">Biopandas.pdb</a>
                         </li>
                     
                     </ul>
@@ -107,7 +120,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="documentation/PandasPDB/">
+                    <a rel="prev" href="tutorials/PandasPDB/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -165,22 +178,26 @@
 
 <h4 id="examples">Examples</h4>
 <p><img alt="3eiy" src="./img/index/3eiy.png" /></p>
-<pre><code class="python">&gt;&gt;&gt; ppdb = PandasPDB()
-&gt;&gt;&gt; ppdb.fetch_pdb('3eiy')
+<pre><code class="python"># Initialize a new PandasPDB object
+# and fetch the PDB file from rcsb.org
+&gt;&gt;&gt; from biopandas.pdb import PandasPDB
+&gt;&gt;&gt; ppdb = PandasPDB().fetch_pdb('3eiy')
 &gt;&gt;&gt; ppdb.df['ATOM'].head()
 </code></pre>
 
 <p><img alt="3eiy head" src="./img/index/3eiy_head_size_1.png" /></p>
 <p><br><br></p>
 <p><img alt="3eiy head" src="./img/index/ligand_rmsd.png" /></p>
-<pre><code class="python">&gt;&gt;&gt; pl1 = PandasPDB()
-&gt;&gt;&gt; pl1.read_pdb('./docking_pose_1.pdb')
-&gt;&gt;&gt; pl2 = PandasPDB()
-&gt;&gt;&gt; pl2.read_pdb('./docking_pose_2.pdb')
+<pre><code class="python"># Load structures from your drive and compute the
+# Root Mean Square Deviation
+&gt;&gt;&gt; from biopandas.pdb import PandasPDB
+&gt;&gt;&gt; pl1 = PandasPDB().read_pdb('./docking_pose_1.pdb')
+&gt;&gt;&gt; pl2 = PandasPDB().read_pdb('./docking_pose_2.pdb')
+&gt;&gt;&gt; r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
+                       s='hydrogen', invert=True)
+&gt;&gt;&gt; print('RMSD: %.4f Angstrom' % r)
 
-&gt;&gt;&gt; r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
-&gt;&gt;&gt; print('RMSD: %f' % r)
-RMSD: 2.6444
+RMSD: 2.6444 Angstrom
 </code></pre></div>
         </div>
 

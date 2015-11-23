@@ -4,7 +4,7 @@
     
     <url>
      <loc>http://rasbt.github.io/biopandas/</loc>
-     <lastmod>2015-11-22</lastmod>
+     <lastmod>2015-11-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,8 +12,18 @@
     
         
     <url>
-     <loc>http://rasbt.github.io/biopandas/documentation/PandasPDB/</loc>
-     <lastmod>2015-11-22</lastmod>
+     <loc>http://rasbt.github.io/biopandas/tutorials/PandasPDB/</loc>
+     <lastmod>2015-11-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>http://rasbt.github.io/biopandas/api/biopandas.pdb/</loc>
+     <lastmod>2015-11-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -22,7 +32,7 @@
     
     <url>
      <loc>http://rasbt.github.io/biopandas/changelog/</loc>
-     <lastmod>2015-11-22</lastmod>
+     <lastmod>2015-11-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -30,7 +40,7 @@
     
     <url>
      <loc>http://rasbt.github.io/biopandas/installation/</loc>
-     <lastmod>2015-11-22</lastmod>
+     <lastmod>2015-11-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -38,7 +48,7 @@
     
     <url>
      <loc>http://rasbt.github.io/biopandas/contributing/</loc>
-     <lastmod>2015-11-22</lastmod>
+     <lastmod>2015-11-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
