@@ -1,16 +1,14 @@
-"""
-BioPandas
-Author: Sebastian Raschka <mail@sebastianraschka.com>
-License: BSD 3 clause
-Project Website: http://rasbt.github.io/biopandas/
-Code Repository: https://github.com/rasbt/biopandas
-"""
+# BioPandas
+# Author: Sebastian Raschka <mail@sebastianraschka.com>
+# License: BSD 3 clause
+# Project Website: http://rasbt.github.io/biopandas/
+# Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas import PandasPDB
+
+from biopandas.pdb import PandasPDB
 import os
 import numpy as np
 import pandas as pd
-# from biopandas.testutils import assertMultiLineEqual
 from nose.tools import raises
 
 
@@ -47,7 +45,7 @@ def test_fetch_pdb():
     assert ppdb.pdb_text == txt
     txt = ppdb._fetch_pdb('3ey')
     err = "We're sorry, but the requested file is not available"
-    assert err in txt 
+    assert err in txt
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
@@ -91,7 +89,7 @@ def test_get_exceptions():
 def test_get_all():
     ppdb = PandasPDB()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    for i in ['c-alpha', 'no hydrogen', 'hydrogen', 'main chain']:
+    for i in ['c-alpha', 'hydrogen', 'main chain']:
         ppdb.get(i)
 
 def test_get_df():
@@ -101,7 +99,7 @@ def test_get_df():
     shape = ppdb.get('c-alpha').shape
     assert shape == (174, 21), shape
 
-    shape = ppdb.get('no hydrogen').shape
+    shape = ppdb.get('hydrogen', invert=True).shape
     assert shape == (1330, 21), shape
 
     shape = ppdb.get('hydrogen').shape

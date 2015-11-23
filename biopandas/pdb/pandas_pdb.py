@@ -1,11 +1,8 @@
-"""
-BioPandas
-
-Author: Sebastian Raschka <mail@sebastianraschka.com>
-License: BSD 3 clause
-Project Website: http://rasbt.github.io/biopandas/
-Code Repository: https://github.com/rasbt/biopandas
-"""
+# BioPandas
+# Author: Sebastian Raschka <mail@sebastianraschka.com>
+# License: BSD 3 clause
+# Project Website: http://rasbt.github.io/biopandas/
+# Code Repository: https://github.com/rasbt/biopandas
 
 import pandas as pd
 import numpy as np
@@ -32,23 +29,17 @@ class PandasPDB(object):
     pdb_text : str
         PDB file contents in raw text format
 
-    title : str
+    header : str
         PDB file description
 
     code : str
         PDB code
 
-    Examples
-    --------
-    >>> ppdb = PandasPDB()
-    >>> ppdb.fetch_pdb('3eiy')
-    >>> ppdb.df['ATOM'].head()
-
     """
     def __init__(self):
         self._df = {}
         self.pdb_text = ''
-        self.title = ''
+        self.header = ''
         self.code = ''
         self._get_dict = {}
 
@@ -68,7 +59,7 @@ class PandasPDB(object):
         """
         self.pdb_text = self._read_pdb(path=path)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
-        self.title, self.code = self._parse_title_code()
+        self.header, self.code = self._parse_header_code()
 
     def fetch_pdb(self, pdb_code):
         """Fetches PDB file contents from the Protein Databank at rcsb.org.
@@ -82,17 +73,21 @@ class PandasPDB(object):
         self.pdb_text = self._fetch_pdb(pdb_code)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
 
-    def get(self, s, df=None):
+    def get(self, s, df=None, invert=False):
         """Filter PDB DataFrames by properties
 
         Parameters
         ----------
-        s : str {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'}
+        s : str  in {'main chain', 'hydrogen', 'c-alpha'}
             String to specify which entries to return
 
-        df : pandas.DataFrame (default : None)
+        df : pandas.DataFrame , default: None
             Optional DataFrame to perform the filter operation on.
             If df=None, filters on self.df['ATOM']
+
+        invert : bool (True)
+            Inverts the search query. For example if s='hydrogen' and
+            invert=True, all but hydrogen entries are returned
 
         Returns
         --------
@@ -106,10 +101,10 @@ class PandasPDB(object):
             raise AttributeError('s must be in %s' % self._get_dict.keys())
         if not df:
             df = self._df['ATOM']
-        return self._get_dict[s](df)
+        return self._get_dict[s](df, invert=invert)
 
     @staticmethod
-    def rmsd(df1, df2, s='no hydrogen'):
+    def rmsd(df1, df2, s='main chain', invert=False):
         """Compute the Root Mean Square Deviation between molecules.
 
         Parameters
@@ -121,8 +116,13 @@ class PandasPDB(object):
             Second DataFrame for RMSD computation against df1. Must have the
             same number of entries as df1
 
-        s : str {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'}
-            String to specify which entries to consider
+        s : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'
+            String to specify which entries to consider.
+
+        invert : bool, default: False
+            Inverts the string query if true. For example, the setting
+            `s='hydrogen', invert=True` computes the RMSD based on all
+            but hydrogen atoms.
 
         Returns
         ---------
@@ -136,8 +136,8 @@ class PandasPDB(object):
         if s:
             if s not in get_dict.keys():
                 raise AttributeError('s must be in %s or None' % get_dict.keys())
-            df1 = get_dict[s](df1)
-            df2 = get_dict[s](df2)
+            df1 = get_dict[s](df1, invert=invert)
+            df2 = get_dict[s](df2, invert=invert)
 
         total = ((df1['x_coord'] - df2['x_coord'])**2 +
                 (df1['y_coord'] - df2['y_coord'])**2 +
@@ -147,17 +147,16 @@ class PandasPDB(object):
 
 
     @staticmethod
-    """Initialize dictionary for filter operations."""
     def _init_get_dict():
+        """Initialize dictionary for filter operations."""
         get_dict = {'main chain': PandasPDB._get_mainchain,
                     'hydrogen': PandasPDB._get_hydrogen,
-                    'no hydrogen': PandasPDB._get_no_hydrogen,
                     'c-alpha': PandasPDB._get_calpha}
         return get_dict
 
     @staticmethod
-    """Read PDB file from local drive."""
     def _read_pdb(path):
+        """Read PDB file from local drive."""
         r_mode = 'r'
         openf = open
         if path.endswith('.gz'):
@@ -173,8 +172,8 @@ class PandasPDB(object):
         return txt
 
     @staticmethod
-    """Load PDB file from rcsb.org."""
     def _fetch_pdb(pdb_code):
+        """Load PDB file from rcsb.org."""
         txt = None
         try:
             response = urlopen('http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower())
@@ -189,46 +188,51 @@ class PandasPDB(object):
             print('URL Error %s' %e.args)
         return txt
 
-    def _parse_title_code(self):
-        """Extract title information and PDB code."""
-        code, title = '', ''
+    def _parse_header_code(self):
+        """Extract header information and PDB code."""
+        code, header = '', ''
         if 'OTHERS' in self.df:
 
             header = self.df['OTHERS'][self.df['OTHERS']['record_name'] == 'HEADER']
             if not header.empty:
-                title = header['entry'].values[0]
-                s = title.split()
+                header = header['entry'].values[0]
+                s = header.split()
                 if s:
                     code = s[-1].lower()
-        return title, code
+        return header, code
 
 
     @staticmethod
-    def _get_mainchain(df):
+    def _get_mainchain(df, invert):
         """Return only main chain atom entries from a DataFrame"""
-        mc =  df[(df['atom_name'] == 'C') |
-                 (df['atom_name'] == 'O') |
-                 (df['atom_name'] == 'N') |
-                 (df['atom_name'] == 'CA')]
+        if invert:
+            mc = df[(df['atom_name'] != 'C') &
+                    (df['atom_name'] != 'O') &
+                    (df['atom_name'] != 'N') &
+                    (df['atom_name'] != 'CA')]
+        else:
+            mc = df[ (df['atom_name'] == 'C') |
+                     (df['atom_name'] == 'O') |
+                     (df['atom_name'] == 'N') |
+                     (df['atom_name'] == 'CA')]
         return mc
 
 
     @staticmethod
-    def _get_hydrogen(df):
+    def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
-        df_h = df[(df['atom_name'] == 'H')]
-        return df_h
+        if invert:
+            return df[(df['atom_name'] != 'H')]
+        else:
+            return df[(df['atom_name'] == 'H')]
 
     @staticmethod
-    def _get_no_hydrogen(df):
-        """Return all but hydrogen atom entries from a DataFrame"""
-        df_noh = df[(df['atom_name'] != 'H')]
-        return df_noh
-
-    @staticmethod
-    def _get_calpha(df):
+    def _get_calpha(df, invert):
         """Return c-alpha atom entries from a DataFrame"""
-        return df[df['atom_name'] == 'CA']
+        if invert:
+            return df[df['atom_name'] != 'CA']
+        else:
+            return df[df['atom_name'] == 'CA']
 
     @staticmethod
     def _construct_df(pdb_lines):
@@ -269,15 +273,15 @@ class PandasPDB(object):
         path : str
             A valid output path for the pdb file
 
-        records : iterable (default: None)
+        records : iterable, default: None
             A list of PDB record sections in
             {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
             Writes all lines to PDB if records=None
 
-        gz : bool (default: False)
+        gz : bool, default: False
             Writes a gzipped PDB file if True
 
-        append_newline : bool (default: True)
+        append_newline : bool, default: True
             Appends a new line at the end of the PDB file if True
 
         """

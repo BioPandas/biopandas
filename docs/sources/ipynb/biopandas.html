@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>biopandas package &mdash; biopandas --maxdepth=2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '--maxdepth=2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="biopandas --maxdepth=2 documentation" href="index.html" />
+    <link rel="next" title="setup module" href="setup.html" />
+    <link rel="prev" title="Welcome to biopandas’s documentation!" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="biopandas-package">
+<h1>biopandas package<a class="headerlink" href="#biopandas-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-biopandas.engines">
+<span id="biopandas-engines-module"></span><h2>biopandas.engines module<a class="headerlink" href="#module-biopandas.engines" title="Permalink to this headline">¶</a></h2>
+<p>BioPandas</p>
+<p>Author: Sebastian Raschka &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;sebastianraschka&#46;com">mail<span>&#64;</span>sebastianraschka<span>&#46;</span>com</a>&gt;
+License: BSD 3 clause
+Project Website: <a class="reference external" href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a>
+Code Repository: <a class="reference external" href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></p>
+</div>
+<div class="section" id="module-biopandas.pandas_pdb">
+<span id="biopandas-pandas-pdb-module"></span><h2>biopandas.pandas_pdb module<a class="headerlink" href="#module-biopandas.pandas_pdb" title="Permalink to this headline">¶</a></h2>
+<p>BioPandas</p>
+<p>Author: Sebastian Raschka &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;sebastianraschka&#46;com">mail<span>&#64;</span>sebastianraschka<span>&#46;</span>com</a>&gt;
+License: BSD 3 clause
+Project Website: <a class="reference external" href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a>
+Code Repository: <a class="reference external" href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></p>
+<dl class="class">
+<dt id="biopandas.pandas_pdb.PandasPDB">
+<em class="property">class </em><code class="descclassname">biopandas.pandas_pdb.</code><code class="descname">PandasPDB</code><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Object for working with Protein Databank structure files.</p>
+<dl class="docutils">
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
+<dd>Dictionary storing pandas DataFrames for PDB record sections.
+The dictionary keys are {&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, &#8216;ANISOU&#8217;, &#8216;OTHERS&#8217;}
+where &#8216;OTHERS&#8217; contains all entries that are not parsed as
+&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, or &#8216;ANISOU&#8217;</dd>
+<dt>pdb_text <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB file contents in raw text format</dd>
+<dt>header <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB file description</dd>
+<dt>code <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB code</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span> <span class="o">=</span> <span class="n">PandasPDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span><span class="o">.</span><span class="n">fetch_pdb</span><span class="p">(</span><span class="s">&#39;3eiy&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s">&#39;ATOM&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="biopandas.pandas_pdb.PandasPDB.df">
+<code class="descname">df</code><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acccess dictionary of pandas DataFrames for PDB record sections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.pandas_pdb.PandasPDB.fetch_pdb">
+<code class="descname">fetch_pdb</code><span class="sig-paren">(</span><em>pdb_code</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.fetch_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches PDB file contents from the Protein Databank at rcsb.org.</p>
+<dl class="docutils">
+<dt>pdb_code <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>A 4-letter PDB code, e.g., &#8220;3eiy&#8221;</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.pandas_pdb.PandasPDB.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>s</em>, <em>df=None</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter PDB DataFrames by properties</p>
+<dl class="docutils">
+<dt>s <span class="classifier-delimiter">:</span> <span class="classifier">str {&#8216;main chain&#8217;, &#8216;hydrogen&#8217;, &#8216;no hydrogen&#8217;, &#8216;c-alpha&#8217;}</span></dt>
+<dd>String to specify which entries to return</dd>
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame (default</span> <span class="classifier-delimiter">:</span> <span class="classifier">None)</span></dt>
+<dd>Optional DataFrame to perform the filter operation on.
+If df=None, filters on self.df[&#8216;ATOM&#8217;]</dd>
+</dl>
+<dl class="docutils">
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>Returns a DataFrame view on the filtered entries.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.pandas_pdb.PandasPDB.read_pdb">
+<code class="descname">read_pdb</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.read_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PDB files (unzipped or gzipped) from local drive</p>
+<dl class="docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Path to the PDB file in .pdb format or gzipped format (.pdb.gz)</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="biopandas.pandas_pdb.PandasPDB.rmsd">
+<em class="property">static </em><code class="descname">rmsd</code><span class="sig-paren">(</span><em>df1</em>, <em>df2</em>, <em>s='no hydrogen'</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.rmsd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the Root Mean Square Deviation between molecules.</p>
+<dl class="docutils">
+<dt>df1 <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>DataFrame with HETATM, ATOM, and/or ANISOU entries</dd>
+<dt>df2 <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>Second DataFrame for RMSD computation against df1. Must have the
+same number of entries as df1</dd>
+<dt>s <span class="classifier-delimiter">:</span> <span class="classifier">str {&#8216;main chain&#8217;, &#8216;hydrogen&#8217;, &#8216;no hydrogen&#8217;, &#8216;c-alpha&#8217;}</span></dt>
+<dd>String to specify which entries to consider</dd>
+</dl>
+<dl class="docutils">
+<dt>rmsd <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Root Mean Square Deviation between df1 and df2</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.pandas_pdb.PandasPDB.to_pdb">
+<code class="descname">to_pdb</code><span class="sig-paren">(</span><em>path</em>, <em>records=None</em>, <em>gz=False</em>, <em>append_newline=True</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.pandas_pdb.PandasPDB.to_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write record DataFrames to a PDB file or gzipped PDB file.</p>
+<dl class="docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>A valid output path for the pdb file</dd>
+<dt>records <span class="classifier-delimiter">:</span> <span class="classifier">iterable (default: None)</span></dt>
+<dd>A list of PDB record sections in
+{&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, &#8216;ANISOU&#8217;, &#8216;OTHERS&#8217;} that are to be written.
+Writes all lines to PDB if records=None</dd>
+<dt>gz <span class="classifier-delimiter">:</span> <span class="classifier">bool (default: False)</span></dt>
+<dd>Writes a gzipped PDB file if True</dd>
+<dt>append_newline <span class="classifier-delimiter">:</span> <span class="classifier">bool (default: True)</span></dt>
+<dd>Appends a new line at the end of the PDB file if True</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-biopandas.testutils">
+<span id="biopandas-testutils-module"></span><h2>biopandas.testutils module<a class="headerlink" href="#module-biopandas.testutils" title="Permalink to this headline">¶</a></h2>
+<p>BioPandas</p>
+<p>Author: Sebastian Raschka &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;sebastianraschka&#46;com">mail<span>&#64;</span>sebastianraschka<span>&#46;</span>com</a>&gt;
+License: BSD 3 clause
+Project Website: <a class="reference external" href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a>
+Code Repository: <a class="reference external" href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></p>
+<dl class="function">
+<dt id="biopandas.testutils.assertMultiLineEqual">
+<code class="descclassname">biopandas.testutils.</code><code class="descname">assertMultiLineEqual</code><span class="sig-paren">(</span><em>first</em>, <em>second</em>, <em>preserve_newline=True</em>, <em>msg=None</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.testutils.assertMultiLineEqual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assert that two multi-line strings are equal.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-biopandas">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-biopandas" title="Permalink to this headline">¶</a></h2>
+<p>BioPandas
+Author: Sebastian Raschka &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;sebastianraschka&#46;com">mail<span>&#64;</span>sebastianraschka<span>&#46;</span>com</a>&gt;
+License: BSD 3 clause
+Project Website: <a class="reference external" href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a>
+Code Repository: <a class="reference external" href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></p>
+<dl class="class">
+<dt id="biopandas.PandasPDB">
+<em class="property">class </em><code class="descclassname">biopandas.</code><code class="descname">PandasPDB</code><a class="headerlink" href="#biopandas.PandasPDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Object for working with Protein Databank structure files.</p>
+<dl class="docutils">
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
+<dd>Dictionary storing pandas DataFrames for PDB record sections.
+The dictionary keys are {&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, &#8216;ANISOU&#8217;, &#8216;OTHERS&#8217;}
+where &#8216;OTHERS&#8217; contains all entries that are not parsed as
+&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, or &#8216;ANISOU&#8217;</dd>
+<dt>pdb_text <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB file contents in raw text format</dd>
+<dt>header <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB file description</dd>
+<dt>code <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>PDB code</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span> <span class="o">=</span> <span class="n">PandasPDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span><span class="o">.</span><span class="n">fetch_pdb</span><span class="p">(</span><span class="s">&#39;3eiy&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ppdb</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s">&#39;ATOM&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="biopandas.PandasPDB.df">
+<code class="descname">df</code><a class="headerlink" href="#biopandas.PandasPDB.df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acccess dictionary of pandas DataFrames for PDB record sections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.PandasPDB.fetch_pdb">
+<code class="descname">fetch_pdb</code><span class="sig-paren">(</span><em>pdb_code</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.PandasPDB.fetch_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches PDB file contents from the Protein Databank at rcsb.org.</p>
+<dl class="docutils">
+<dt>pdb_code <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>A 4-letter PDB code, e.g., &#8220;3eiy&#8221;</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.PandasPDB.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>s</em>, <em>df=None</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.PandasPDB.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter PDB DataFrames by properties</p>
+<dl class="docutils">
+<dt>s <span class="classifier-delimiter">:</span> <span class="classifier">str {&#8216;main chain&#8217;, &#8216;hydrogen&#8217;, &#8216;no hydrogen&#8217;, &#8216;c-alpha&#8217;}</span></dt>
+<dd>String to specify which entries to return</dd>
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame (default</span> <span class="classifier-delimiter">:</span> <span class="classifier">None)</span></dt>
+<dd>Optional DataFrame to perform the filter operation on.
+If df=None, filters on self.df[&#8216;ATOM&#8217;]</dd>
+</dl>
+<dl class="docutils">
+<dt>df <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>Returns a DataFrame view on the filtered entries.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.PandasPDB.read_pdb">
+<code class="descname">read_pdb</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.PandasPDB.read_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PDB files (unzipped or gzipped) from local drive</p>
+<dl class="docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Path to the PDB file in .pdb format or gzipped format (.pdb.gz)</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="biopandas.PandasPDB.rmsd">
+<em class="property">static </em><code class="descname">rmsd</code><span class="sig-paren">(</span><em>df1</em>, <em>df2</em>, <em>s='no hydrogen'</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.PandasPDB.rmsd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the Root Mean Square Deviation between molecules.</p>
+<dl class="docutils">
+<dt>df1 <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>DataFrame with HETATM, ATOM, and/or ANISOU entries</dd>
+<dt>df2 <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>Second DataFrame for RMSD computation against df1. Must have the
+same number of entries as df1</dd>
+<dt>s <span class="classifier-delimiter">:</span> <span class="classifier">str {&#8216;main chain&#8217;, &#8216;hydrogen&#8217;, &#8216;no hydrogen&#8217;, &#8216;c-alpha&#8217;}</span></dt>
+<dd>String to specify which entries to consider</dd>
+</dl>
+<dl class="docutils">
+<dt>rmsd <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Root Mean Square Deviation between df1 and df2</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biopandas.PandasPDB.to_pdb">
+<code class="descname">to_pdb</code><span class="sig-paren">(</span><em>path</em>, <em>records=None</em>, <em>gz=False</em>, <em>append_newline=True</em><span class="sig-paren">)</span><a class="headerlink" href="#biopandas.PandasPDB.to_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write record DataFrames to a PDB file or gzipped PDB file.</p>
+<dl class="docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>A valid output path for the pdb file</dd>
+<dt>records <span class="classifier-delimiter">:</span> <span class="classifier">iterable (default: None)</span></dt>
+<dd>A list of PDB record sections in
+{&#8216;ATOM&#8217;, &#8216;HETATM&#8217;, &#8216;ANISOU&#8217;, &#8216;OTHERS&#8217;} that are to be written.
+Writes all lines to PDB if records=None</dd>
+<dt>gz <span class="classifier-delimiter">:</span> <span class="classifier">bool (default: False)</span></dt>
+<dd>Writes a gzipped PDB file if True</dd>
+<dt>append_newline <span class="classifier-delimiter">:</span> <span class="classifier">bool (default: True)</span></dt>
+<dd>Appends a new line at the end of the PDB file if True</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">biopandas package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-biopandas.engines">biopandas.engines module</a></li>
+<li><a class="reference internal" href="#module-biopandas.pandas_pdb">biopandas.pandas_pdb module</a></li>
+<li><a class="reference internal" href="#module-biopandas.testutils">biopandas.testutils module</a></li>
+<li><a class="reference internal" href="#module-biopandas">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to biopandas&#8217;s documentation!</a></li>
+      <li>Next: <a href="setup.html" title="next chapter">setup module</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/biopandas.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/biopandas.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

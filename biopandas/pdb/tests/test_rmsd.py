@@ -1,12 +1,10 @@
-"""
-BioPandas
-Author: Sebastian Raschka <mail@sebastianraschka.com>
-License: BSD 3 clause
-Project Website: http://rasbt.github.io/biopandas/
-Code Repository: https://github.com/rasbt/biopandas
-"""
+# BioPandas
+# Author: Sebastian Raschka <mail@sebastianraschka.com>
+# License: BSD 3 clause
+# Project Website: http://rasbt.github.io/biopandas/
+# Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas import PandasPDB
+from biopandas.pdb import PandasPDB
 import os
 import numpy as np
 import pandas as pd
@@ -46,9 +44,9 @@ def test_invalid_query():
     r = PandasPDB.rmsd(p1t48.df['ATOM'].loc[1:, :], p1t48.df['ATOM'], s='bla')
 
 def test_protein():
-    r = PandasPDB.rmsd(p1t48.df['ATOM'], p1t49.df['ATOM'], s='c-alpha')
+    r = PandasPDB.rmsd(p1t48.df['ATOM'], p1t49.df['ATOM'], s='c-alpha', invert=False)
     assert r == 0.4785, r
 
 def test_ligand():
-    r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
+    r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='hydrogen', invert=True)
     assert r == 2.6444, r

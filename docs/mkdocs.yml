@@ -24,8 +24,10 @@ google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas/']
 
 pages:
 - Home: index.md
-- Documentation:
-  - documentation/PandasPDB.md
+- Tutorials:
+  - tutorials/PandasPDB.md
+- API:
+  - api/biopandas.pdb.md
 - Changelog: changelog.md
 - Installation: installation.md
 - Contributing: contributing.md

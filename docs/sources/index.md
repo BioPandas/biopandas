@@ -30,6 +30,7 @@
 ![3eiy](./img/index/3eiy.png)
 
 ```python
+>>> from biopandas.pdb import PandasPDB
 >>> ppdb = PandasPDB()
 >>> ppdb.fetch_pdb('3eiy')
 >>> ppdb.df['ATOM'].head()
@@ -43,12 +44,13 @@
 ![3eiy head](./img/index/ligand_rmsd.png)
 
 ```python
+>>> from biopandas.pdb import PandasPDB
 >>> pl1 = PandasPDB()
 >>> pl1.read_pdb('./docking_pose_1.pdb')
 >>> pl2 = PandasPDB()
 >>> pl2.read_pdb('./docking_pose_2.pdb')
 
 >>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'], s='no hydrogen')
->>> print('RMSD: %f Angstrom' % r)
+>>> print('RMSD: %.4f Angstrom' % r)
 RMSD: 2.6444 Angstrom
 ```

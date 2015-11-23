@@ -1,0 +1,186 @@
+# `biopandas` API Documentation
+
+<br><br>
+#### Table of Contents
+
+
+<hr>
+**biopandas.pdb**
+
+BioPandas module for working with Protein Data Bank (PDB)
+files in pandas DataFrames.<hr>
+
+[biopandas.pdb.PandasPDB](#biopandaspdbpandaspdb)
+
+* [PandasPDB.fetch_pdb](#pandaspdbfetch_pdb)
+* [PandasPDB.get](#pandaspdbget)
+* [PandasPDB.read_pdb](#pandaspdbread_pdb)
+* [PandasPDB.rmsd](#pandaspdbrmsd)
+* [PandasPDB.to_pdb](#pandaspdbto_pdb)
+* [PandasPDB.df](#pandaspdbdf)
+
+
+<hr>
+**biopandas.testutils**
+
+<hr>
+
+
+
+<hr><br><br>
+
+## biopandas.pdb.PandasPDB
+
+Object for working with Protein Databank structure files.
+
+*Attributes*
+
+* `df` (dict)
+
+    Dictionary storing pandas DataFrames for PDB record sections.
+    The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
+    where 'OTHERS' contains all entries that are not parsed as
+    'ATOM', 'HETATM', or 'ANISOU'
+
+
+* `pdb_text` (str)
+
+    PDB file contents in raw text format
+
+
+* `header` (str)
+
+    PDB file description
+
+
+* `code` (str)
+
+    PDB code
+
+<br>
+### Methods
+
+<br>
+####PandasPDB.fetch_pdb
+
+`PandasPDB.fetch_pdb(pdb_code)`
+
+Fetches PDB file contents from the Protein Databank at rcsb.org.
+
+*Parameters*
+
+* `pdb_code` (str)
+
+    A 4-letter PDB code, e.g., "3eiy"
+
+
+<br>
+####PandasPDB.get
+
+`PandasPDB.get(s, df=None)`
+
+Filter PDB DataFrames by properties
+
+*Parameters*
+
+* `s` (str {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'})
+
+    String to specify which entries to return
+
+
+* `df` (pandas.DataFrame (default : None))
+
+    Optional DataFrame to perform the filter operation on.
+    If df=None, filters on self.df['ATOM']
+
+*Returns*
+
+* `df` (pandas.DataFrame)
+
+    Returns a DataFrame view on the filtered entries.
+
+
+<br>
+####PandasPDB.read_pdb
+
+`PandasPDB.read_pdb(path)`
+
+Read PDB files (unzipped or gzipped) from local drive
+
+*Attributes*
+
+* `path` (str)
+
+    Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
+
+
+<br>
+####PandasPDB.rmsd
+
+`PandasPDB.rmsd(df1, df2, s='no hydrogen')`
+
+Compute the Root Mean Square Deviation between molecules.
+
+*Parameters*
+
+* `df1` (pandas.DataFrame)
+
+    DataFrame with HETATM, ATOM, and/or ANISOU entries
+
+
+* `df2` (pandas.DataFrame)
+
+    Second DataFrame for RMSD computation against df1. Must have the
+    same number of entries as df1
+
+
+* `s` (str {'main chain', 'hydrogen', 'no hydrogen', 'c-alpha'})
+
+    String to specify which entries to consider
+
+*Returns*
+
+* `rmsd` (float)
+
+    Root Mean Square Deviation between df1 and df2
+
+
+<br>
+####PandasPDB.to_pdb
+
+`PandasPDB.to_pdb(path, records=None, gz=False, append_newline=True)`
+
+Write record DataFrames to a PDB file or gzipped PDB file.
+
+*Parameters*
+
+* `path` (str)
+
+    A valid output path for the pdb file
+
+
+* `records` (iterable (default: None))
+
+    A list of PDB record sections in
+    {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
+    Writes all lines to PDB if records=None
+
+
+* `gz` (bool (default: False))
+
+    Writes a gzipped PDB file if True
+
+
+* `append_newline` (bool (default: True))
+
+    Appends a new line at the end of the PDB file if True
+
+
+<br>
+### Properties
+
+<br>
+#### PandasPDB.df
+
+Acccess dictionary of pandas DataFrames for PDB record sections.
+

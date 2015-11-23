@@ -1,16 +1,13 @@
-"""
-BioPandas
-Author: Sebastian Raschka <mail@sebastianraschka.com>
-License: BSD 3 clause
-Project Website: http://rasbt.github.io/biopandas/
-Code Repository: https://github.com/rasbt/biopandas
-"""
+# BioPandas
+# Author: Sebastian Raschka <mail@sebastianraschka.com>
+# License: BSD 3 clause
+# Project Website: http://rasbt.github.io/biopandas/
+# Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas import PandasPDB
+from biopandas.pdb import PandasPDB
 import os
 import numpy as np
 import pandas as pd
-from biopandas.testutils import assertMultiLineEqual
 from nose.tools import raises
 
 

@@ -4,5 +4,11 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-__version__ = '0.1.0'
-__author__ = "Sebastian Raschka <mail@sebastianraschka.com>"
+"""
+BioPandas module for working with Protein Data Bank (PDB)
+files in pandas DataFrames.
+"""
+
+from .pandas_pdb import PandasPDB
+
+__all__ = ["PandasPDB"]
