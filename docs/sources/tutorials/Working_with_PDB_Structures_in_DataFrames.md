@@ -1,33 +1,3 @@
-
-BioPandas
-
-Author: Sebastian Raschka <mail@sebastianraschka.com>  
-License: BSD 3 clause  
-Project Website: http://rasbt.github.io/biopandas/  
-Code Repository: https://github.com/rasbt/biopandas  
-
-
-```python
-%load_ext watermark
-%watermark -d -u -v -p pandas,biopandas
-```
-
-    Last updated: 11/23/2015 
-    
-    CPython 3.5.0
-    IPython 4.0.0
-    
-    pandas 0.17.0
-    biopandas 0.1.0
-
-
-
-```python
-import pandas as pd
-pd.set_option('display.width', 600)
-pd.set_option('display.max_columns', 8)
-```
-
 # Working with PDB Structures in DataFrames
 
 ## Loading PDB Files

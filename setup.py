@@ -1,18 +1,14 @@
 from setuptools import setup
 
 setup(name='biopandas',
-      version='0.1.0',
+      version='0.1.2',
       description='Molecular Structures in Pandas DataFrames',
       author='Sebastian Raschka',
       author_email='mail@sebastianraschka.com',
       url='https://github.com/rasbt/biopandas',
       packages=['biopandas'],
-      data_files = [('', ['LICENSE']),
-                    ('', ['README.md']),
-                   ],
       install_requires=['pandas'],
-      extras_require={'testing': ['nose']},
-      license='BSD3',
+      license='new BSD',
       platforms='any',
       classifiers=[
              'License :: OSI Approved :: BSD License',
