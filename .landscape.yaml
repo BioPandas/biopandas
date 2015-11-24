@@ -1,5 +1,10 @@
 doc-warnings: yes
 
+ignore-paths:
+    - docs
+
 ignore-patterns:
-  - __init__.py
+    - ^example/doc_.*\.py$
+    - (^|/)docs(/|$)
+    - __init__.py
 
