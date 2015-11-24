@@ -1,0 +1,7 @@
+include biopandas/pdb/tests/*
+include biopandas/pdb/tests/data/*
+include README.md
+include LICENSE
+
+global-exclude *.pyo
+global-exclude *.pyc

@@ -3,6 +3,7 @@ docs/site/
 build/
 dist/
 MANIFEST
+.coverage
 
 .ipynb_checkpoints
 

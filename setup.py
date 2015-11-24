@@ -1,14 +1,26 @@
-from setuptools import setup
+from setuptools import setup, find_packages
+
+def calculate_version():
+    initpy = open('biopandas/__init__.py').read().split('\n')
+    version = list(filter(lambda x: '__version__' in x, initpy))[0].split('\'')[1]
+    return version
+
+package_version = calculate_version()
 
 setup(name='biopandas',
-      version='0.1.3',
+      version=package_version,
       description='Molecular Structures in Pandas DataFrames',
       author='Sebastian Raschka',
       author_email='mail@sebastianraschka.com',
       url='https://github.com/rasbt/biopandas',
-      packages=['biopandas'],
       license='new BSD',
+      zip_safe=True,
+      packages=find_packages(),
       platforms='any',
+      install_requires=['numpy', 'pandas'],
+      keywords=['bioinformatics', 'molecular structures', 
+                'protein databank', 'computational biology', 
+                'protein structures'],
       classifiers=[
              'License :: OSI Approved :: BSD License',
              'Development Status :: 5 - Production/Stable',
