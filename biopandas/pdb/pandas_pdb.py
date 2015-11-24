@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import sys
 import gzip
+from warnings import warn
 try:
     from urllib.request import urlopen
     from urllib.error import HTTPError, URLError
@@ -315,7 +316,15 @@ class PandasPDB(object):
                 dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
 
         df = pd.concat(dfs)
-        df.sort_values(by='line_idx', inplace=True)
+        if pd.__version__ < '0.17.0':
+            warn("You are using an old pandas version (< 0.17)"
+                          " that relies on the old sorting syntax."
+                          " Please consider updating your pandas"
+                          " installation to a more recent version.",
+                           DeprecationWarning)
+            df.sort(columns='line_idx', inplace=True)
+        else:
+            df.sort_values(by='line_idx', inplace=True)
         with openf(path, w_mode) as f:
 
             s = df['OUT'].tolist()

@@ -2,9 +2,10 @@ doc-warnings: yes
 
 ignore-paths:
     - docs
+    - biopandas/testutils
 
 ignore-patterns:
     - ^example/doc_.*\.py$
     - (^|/)docs(/|$)
     - __init__.py
-
+    - engines.py

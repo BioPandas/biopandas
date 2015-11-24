@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='biopandas',
-      version='0.1.3',
+      version='0.1.4dev',
       description='Molecular Structures in Pandas DataFrames',
       author='Sebastian Raschka',
       author_email='mail@sebastianraschka.com',
