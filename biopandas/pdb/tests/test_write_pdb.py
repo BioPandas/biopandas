@@ -12,6 +12,7 @@ from nose.tools import raises
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), 'data', '4eiy_anisouchunk.pdb')
 OUTFILE = os.path.join(os.path.dirname(__file__), 'data', 'tmp.pdb')
 OUTFILE_GZ = os.path.join(os.path.dirname(__file__), 'data', 'tmp.pdb.gz')
 
@@ -20,6 +21,9 @@ with open(TESTDATA_FILENAME, 'r') as f:
     for line in f:
         if line.startswith('HETATM'):
             hetatm += line
+
+with open(TESTDATA_FILENAME2, 'r') as f:
+    four_eiy = f.read()
 
 def test_defaults():
     ppdb = PandasPDB()
@@ -41,3 +45,14 @@ def test_records():
         f1 = f.read()
     os.remove(OUTFILE)
     assert f1 == hetatm
+
+
+def test_anisou():
+    """Test writing ANISOU entries"""
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME2)
+    ppdb.to_pdb(path=OUTFILE, records=None)
+    with open(OUTFILE, 'r') as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    assert f1 == four_eiy

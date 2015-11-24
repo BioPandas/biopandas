@@ -28,6 +28,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
+
 #### 2 b)
 
 Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):
@@ -36,6 +37,8 @@ Or, we can load them from gzip archives like so (note that the file must end wit
 ```python
 ppdb.read_pdb('./data/3eiy.pdb.gz')
 ```
+
+
 
 
 After the file was succesfully loaded, we have access to the following attributes:
@@ -47,27 +50,26 @@ print('PDB Header Line: %s' % ppdb.header)
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 ```
 
-```
-PDB Code: 3eiy
-PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
+    PDB Code: 3eiy
+    PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
     
-Raw PDB file contents:
+    Raw PDB file contents:
     
-HEADER    HYDROLASE                               17-SEP-08   3EIY              
-TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
-TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
-COMPND    MOL_ID: 1;                                                            
-COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
-COMPND   3 CHAIN: A;                                                            
-COMPND   4 EC: 3.6.1.1;                                                         
-COMPND   5 ENGINEERED: YES                                                      
-SOURCE    MOL_ID: 1;                                                            
-SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
-SOURCE   3 ORGANISM_TAXID: 320372;                                              
-SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
-SOURCE   5 EXPRESSION_SYSTEM
-...
-```
+    HEADER    HYDROLASE                               17-SEP-08   3EIY              
+    TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
+    TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
+    COMPND    MOL_ID: 1;                                                            
+    COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
+    COMPND   3 CHAIN: A;                                                            
+    COMPND   4 EC: 3.6.1.1;                                                         
+    COMPND   5 ENGINEERED: YES                                                      
+    SOURCE    MOL_ID: 1;                                                            
+    SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
+    SOURCE   3 ORGANISM_TAXID: 320372;                                              
+    SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
+    SOURCE   5 EXPRESSION_SYSTEM
+    ...
+
 
 The most interesting / useful attribute is the [`PandasPDB.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
@@ -143,7 +145,7 @@ But more on that in the next section.
 
 ## Looking at PDBs in DataFrames
 
-PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM). 
+PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM); note that the ANISOU section looks a bit different: [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU)
 
 | COLUMNS | DATA TYPE    | CONTENTS                                   | biopandas column name |
 |---------|--------------|--------------------------------------------|-----------------------|
@@ -195,7 +197,7 @@ ppdb.df.keys()
 
 
 
-    dict_keys(['OTHERS', 'HETATM', 'ATOM', 'ANISOU'])
+    dict_keys(['ATOM', 'OTHERS', 'HETATM', 'ANISOU'])
 
 
 
@@ -206,7 +208,7 @@ ppdb.df.keys()
 
 ![](./img/df_dict.jpg)
 
-The columns of the 'HETATM' and 'ANISOU' DataFrames are indentical to the 'ATOM' DataFrame that we've seen earlier:
+The columns of the 'HETATM' DataFrame are indentical to the 'ATOM' DataFrame that we've seen earlier:
 
 
 ```python
@@ -264,6 +266,8 @@ ppdb.df['HETATM'].head(2)
 
 
 
+And 'ANISOU' entries are handled a bit differently, ...
+
 
 ```python
 ppdb.df['ANISOU'].head(2)
@@ -282,7 +286,7 @@ ppdb.df['ANISOU'].head(2)
       <th>blank_1</th>
       <th>atom_name</th>
       <th>...</th>
-      <th>segment_id</th>
+      <th>blank_4</th>
       <th>element_symbol</th>
       <th>charge</th>
       <th>line_idx</th>
@@ -293,6 +297,20 @@ ppdb.df['ANISOU'].head(2)
 </table>
 <p>0 rows × 21 columns</p>
 </div>
+
+
+
+Since the DataFrame is pretty broad, it'd probably better so show the column names separately:
+
+
+```python
+ppdb.df['ANISOU'].columns
+```
+
+
+
+
+    Index(['record_name', 'atom_number', 'blank_1', 'atom_name', 'alt_loc', 'residue_name', 'blank_2', 'chain_id', 'residue_number', 'insertion', 'blank_3', 'U(1,1)', 'U(2,2)', 'U(3,3)', 'U(1,2)', 'U(1,3)', 'U(2,3)', 'blank_4', 'element_symbol', 'charge', 'line_idx'], dtype='object')
 
 
 
@@ -820,7 +838,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_50_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_53_0.png)
 
 
 
@@ -833,7 +851,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_51_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_54_0.png)
 
 
 
@@ -846,14 +864,14 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_52_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_55_0.png)
 
 
 ## Computing the Root Mean Square Deviation
 
 BioPandas also comes with certain convenience functions, for example, ...
 
-The [Root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
+The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
 
 $$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
 = \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$

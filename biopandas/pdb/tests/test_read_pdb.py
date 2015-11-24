@@ -10,9 +10,15 @@ import os
 import numpy as np
 import pandas as pd
 from nose.tools import raises
+try:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
+except ImportError:
+    from urllib2 import urlopen, HTTPError, URLError # Python 2.7 compatib
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), 'data', '4eiy_anisouchunk.pdb')
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb.gz')
 
 ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
@@ -24,8 +30,20 @@ ATOM_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
                  'segment_id', 'element_symbol',
                  'charge', 'line_idx']
 
+ANISOU_DF_COLUMNS = ['record_name', 'atom_number', 'blank_1',
+                 'atom_name', 'alt_loc', 'residue_name',
+                 'blank_2', 'chain_id', 'residue_number',
+                 'insertion', 'blank_3',
+                 'U(1,1)', 'U(2,2)', 'U(3,3)',
+                 'U(1,2)', 'U(1,3)', 'U(2,3)',
+                 'blank_4', 'element_symbol',
+                 'charge', 'line_idx']
+
 with open(TESTDATA_FILENAME, 'r') as f:
     three_eiy = f.read()
+
+with open(TESTDATA_FILENAME2, 'r') as f:
+    four_eiy = f.read()
 
 def test__read_pdb():
     """Test private _read_pdb"""
@@ -36,16 +54,20 @@ def test__read_pdb():
 
 def test_fetch_pdb():
     """Test fetch_pdb"""
-    ppdb = PandasPDB()
-    txt = ppdb._fetch_pdb('3eiy')
-    with open('./text.pdb', 'w') as f:
-        f.write(txt)
-    txt[:100] == three_eiy[:100]
-    ppdb.fetch_pdb('3eiy')
-    assert ppdb.pdb_text == txt
-    txt = ppdb._fetch_pdb('3ey')
-    err = "We're sorry, but the requested file is not available"
-    assert err in txt
+
+    try:
+        ppdb = PandasPDB()
+        txt = ppdb._fetch_pdb('3eiy')
+    except HTTPError:
+        pass
+
+    if txt: # skip if PDB down
+        txt[:100] == three_eiy[:100]
+        ppdb.fetch_pdb('3eiy')
+        assert ppdb.pdb_text == txt
+        txt = ppdb._fetch_pdb('3ey')
+        err = "We're sorry, but the requested file is not available"
+        assert err in txt
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
@@ -60,7 +82,7 @@ def test__construct_df():
     assert set(dfs.keys()) == {'OTHERS', 'ATOM', 'ANISOU', 'HETATM'}
     assert set(dfs['ATOM'].columns) == set(ATOM_DF_COLUMNS)
     assert set(dfs['HETATM'].columns) == set(ATOM_DF_COLUMNS)
-    assert set(dfs['ANISOU'].columns) == set(ATOM_DF_COLUMNS)
+    assert set(dfs['ANISOU'].columns) == set(ANISOU_DF_COLUMNS)
     exp = pd.Series(np.array(['ATOM', 1, '', 'N', '', 'SER', '', 'A', 2, '', '',
               2.527, 54.656, -1.667, 1.0, 52.73, '', '', 'N', None, 609]),
           index=['record_name', 'atom_number', 'blank_1',
@@ -79,6 +101,13 @@ def test_read_pdb():
     ppdb.read_pdb(TESTDATA_FILENAME)
     assert ppdb.pdb_text == three_eiy
     assert ppdb.code == '3eiy', ppdb.code
+
+def test_anisou_input_handling():
+    """Test public read_pdb"""
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME2)
+    assert ppdb.pdb_text == four_eiy
+    assert ppdb.code == '4eiy', ppdb.code
 
 @raises(AttributeError)
 def test_get_exceptions():
