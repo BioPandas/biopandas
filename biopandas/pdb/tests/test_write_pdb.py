@@ -54,5 +54,5 @@ def test_anisou():
     ppdb.to_pdb(path=OUTFILE, records=None)
     with open(OUTFILE, 'r') as f:
         f1 = f.read()
-    os.remove(OUTFILE)
+    #os.remove(OUTFILE)
     assert f1 == four_eiy
