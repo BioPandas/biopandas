@@ -251,9 +251,7 @@ def _generate_preamble(package, subpackages):
 
     yield "# `%s` API Documentation" % package
 
-    yield """<br><br>
-#### Table of Contents
-"""
+    yield """#### Table of Contents"""
     #yield _doc(_import_module(package))
 
     # Table of contents: list of modules.
@@ -289,7 +287,7 @@ def _generate_preamble(package, subpackages):
 
         yield ""
 
-    yield "<hr><br><br>"
+    yield "<hr>"
 
 
 def _generate_paragraphs(package, subpackages):
@@ -315,24 +313,20 @@ def _generate_paragraphs(package, subpackages):
             yield "## {}".format(_full_name(subpackage, klass))
             yield _doc(klass)
 
-            yield """<br>
-### Methods"""
+            yield """### Methods"""
             for method in _iter_methods(klass, package):
                 s = _doc_method(klass, method)
                 header = s.strip('`').split('(')[0]
-                yield """<br>
-####%s
+                yield """####%s
 
 %s
 """ % (header, s)
 #                yield """<br>
 ###### %s""" % _doc_method(klass, method)
 
-            yield """<br>
-### Properties"""
+            yield """### Properties"""
             for prop in _iter_properties(klass, package):
-                yield """<br>
-#### %s""" % _doc_property(klass, prop)
+                yield """#### %s""" % _doc_property(klass, prop)
 
 
 def _print_paragraph(paragraph):

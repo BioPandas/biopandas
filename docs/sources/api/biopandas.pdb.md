@@ -1,8 +1,6 @@
 # `biopandas` API Documentation
 
-<br><br>
 #### Table of Contents
-
 
 <hr>
 **biopandas.pdb**
@@ -20,7 +18,7 @@ files in pandas DataFrames.<hr>
 * [PandasPDB.df](#pandaspdbdf)
 
 
-<hr><br><br>
+<hr>
 
 ## biopandas.pdb.PandasPDB
 
@@ -50,10 +48,8 @@ Object for working with Protein Databank structure files.
 
     PDB code
 
-<br>
 ### Methods
 
-<br>
 ####PandasPDB.fetch_pdb
 
 `PandasPDB.fetch_pdb(pdb_code)`
@@ -70,7 +66,6 @@ Fetches PDB file contents from the Protein Databank at rcsb.org.
 self
 
 
-<br>
 ####PandasPDB.get
 
 `PandasPDB.get(s, df=None, invert=False)`
@@ -102,7 +97,6 @@ Filter PDB DataFrames by properties
     Returns a DataFrame view on the filtered entries.
 
 
-<br>
 ####PandasPDB.read_pdb
 
 `PandasPDB.read_pdb(path)`
@@ -119,7 +113,6 @@ Read PDB files (unzipped or gzipped) from local drive
 self
 
 
-<br>
 ####PandasPDB.rmsd
 
 `PandasPDB.rmsd(df1, df2, s='main chain', invert=False)`
@@ -157,7 +150,6 @@ Compute the Root Mean Square Deviation between molecules.
     Root Mean Square Deviation between df1 and df2
 
 
-<br>
 ####PandasPDB.to_pdb
 
 `PandasPDB.to_pdb(path, records=None, gz=False, append_newline=True)`
@@ -188,10 +180,8 @@ Write record DataFrames to a PDB file or gzipped PDB file.
     Appends a new line at the end of the PDB file if True
 
 
-<br>
 ### Properties
 
-<br>
 #### PandasPDB.df
 
 Acccess dictionary of pandas DataFrames for PDB record sections.

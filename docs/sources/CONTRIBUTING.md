@@ -111,9 +111,3 @@ To deploy the documentation, execute
 ```bash
 ~/github/biopandas/docs$ mkdocs gh-deploy --clean
 ```
-
-and
-
-```bash
-~/github/biopandas/docs$ python setup.py upload_docs --upload-dir=site
-```

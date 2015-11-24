@@ -21,6 +21,13 @@ Code Repository: https://github.com/rasbt/biopandas
     biopandas 0.1.0
 
 
+
+```python
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+```
+
 # Working with PDB Structures in DataFrames
 
 ## Loading PDB Files
@@ -52,7 +59,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x10416b9e8>
+    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8>
 
 
 
@@ -68,7 +75,7 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x10416b9e8>
+    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8>
 
 
 
@@ -77,24 +84,12 @@ After the file was succesfully loaded, we have access to the following attribute
 
 ```python
 print('PDB Code: %s' % ppdb.code)
-```
-
-    PDB Code: 3eiy
-
-
-
-```python
 print('PDB Header Line: %s' % ppdb.header)
-```
-
-    PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
-
-
-
-```python
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 ```
 
+    PDB Code: 3eiy
+    PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
     
     Raw PDB file contents:
     
@@ -133,19 +128,7 @@ ppdb.df['ATOM'].head(3)
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -159,19 +142,7 @@ ppdb.df['ATOM'].head(3)
       <td>1</td>
       <td></td>
       <td>N</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>2.527</td>
-      <td>54.656</td>
-      <td>-1.667</td>
-      <td>1</td>
-      <td>52.73</td>
-      <td></td>
       <td></td>
       <td>N</td>
       <td>NaN</td>
@@ -183,19 +154,7 @@ ppdb.df['ATOM'].head(3)
       <td>2</td>
       <td></td>
       <td>CA</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>3.259</td>
-      <td>54.783</td>
-      <td>-0.368</td>
-      <td>1</td>
-      <td>52.54</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -207,19 +166,7 @@ ppdb.df['ATOM'].head(3)
       <td>3</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>4.127</td>
-      <td>53.553</td>
-      <td>-0.105</td>
-      <td>1</td>
-      <td>52.03</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -236,7 +183,7 @@ But more on that in the next section.
 
 ## Looking at PDBs in DataFrames
 
-PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM. 
+PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM). 
 
 | COLUMNS | DATA TYPE    | CONTENTS                                   | biopandas column name |
 |---------|--------------|--------------------------------------------|-----------------------|
@@ -288,7 +235,7 @@ ppdb.df.keys()
 
 
 
-    dict_keys(['ATOM', 'OTHERS', 'HETATM', 'ANISOU'])
+    dict_keys(['OTHERS', 'HETATM', 'ATOM', 'ANISOU'])
 
 
 
@@ -318,19 +265,7 @@ ppdb.df['HETATM'].head(2)
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -344,19 +279,7 @@ ppdb.df['HETATM'].head(2)
       <td>1332</td>
       <td></td>
       <td>K</td>
-      <td></td>
-      <td>K</td>
-      <td></td>
-      <td>A</td>
-      <td>176</td>
-      <td></td>
       <td>...</td>
-      <td>24.990</td>
-      <td>43.276</td>
-      <td>0.005</td>
-      <td>0.5</td>
-      <td>24.45</td>
-      <td></td>
       <td></td>
       <td>K</td>
       <td>NaN</td>
@@ -368,19 +291,7 @@ ppdb.df['HETATM'].head(2)
       <td>1333</td>
       <td></td>
       <td>NA</td>
-      <td></td>
-      <td>NA</td>
-      <td></td>
-      <td>A</td>
-      <td>177</td>
-      <td></td>
       <td>...</td>
-      <td>1.633</td>
-      <td>34.181</td>
-      <td>11.897</td>
-      <td>1.0</td>
-      <td>26.73</td>
-      <td></td>
       <td></td>
       <td>NA</td>
       <td>NaN</td>
@@ -410,19 +321,7 @@ ppdb.df['ANISOU'].head(2)
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -557,19 +456,7 @@ ppdb.df['ATOM'].head()
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -583,19 +470,7 @@ ppdb.df['ATOM'].head()
       <td>1</td>
       <td></td>
       <td>N</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>2.527</td>
-      <td>54.656</td>
-      <td>-1.667</td>
-      <td>1</td>
-      <td>52.73</td>
-      <td></td>
       <td></td>
       <td>N</td>
       <td>NaN</td>
@@ -607,19 +482,7 @@ ppdb.df['ATOM'].head()
       <td>2</td>
       <td></td>
       <td>CA</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>3.259</td>
-      <td>54.783</td>
-      <td>-0.368</td>
-      <td>1</td>
-      <td>52.54</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -631,19 +494,7 @@ ppdb.df['ATOM'].head()
       <td>3</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>4.127</td>
-      <td>53.553</td>
-      <td>-0.105</td>
-      <td>1</td>
-      <td>52.03</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -655,19 +506,7 @@ ppdb.df['ATOM'].head()
       <td>4</td>
       <td></td>
       <td>O</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>5.274</td>
-      <td>53.451</td>
-      <td>-0.594</td>
-      <td>1</td>
-      <td>52.45</td>
-      <td></td>
       <td></td>
       <td>O</td>
       <td>NaN</td>
@@ -679,19 +518,7 @@ ppdb.df['ATOM'].head()
       <td>5</td>
       <td></td>
       <td>CB</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>2.273</td>
-      <td>54.944</td>
-      <td>0.792</td>
-      <td>1</td>
-      <td>52.69</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -726,19 +553,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -752,19 +567,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <td>39</td>
       <td></td>
       <td>N</td>
-      <td></td>
-      <td>PRO</td>
-      <td></td>
-      <td>A</td>
-      <td>7</td>
-      <td></td>
       <td>...</td>
-      <td>11.890</td>
-      <td>51.109</td>
-      <td>-1.064</td>
-      <td>1</td>
-      <td>28.73</td>
-      <td></td>
       <td></td>
       <td>N</td>
       <td>NaN</td>
@@ -776,19 +579,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <td>40</td>
       <td></td>
       <td>CA</td>
-      <td></td>
-      <td>PRO</td>
-      <td></td>
-      <td>A</td>
-      <td>7</td>
-      <td></td>
       <td>...</td>
-      <td>12.827</td>
-      <td>50.031</td>
-      <td>-1.447</td>
-      <td>1</td>
-      <td>27.85</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -800,19 +591,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <td>41</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>PRO</td>
-      <td></td>
-      <td>A</td>
-      <td>7</td>
-      <td></td>
       <td>...</td>
-      <td>12.952</td>
-      <td>49.030</td>
-      <td>-0.321</td>
-      <td>1</td>
-      <td>26.92</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -824,19 +603,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <td>42</td>
       <td></td>
       <td>O</td>
-      <td></td>
-      <td>PRO</td>
-      <td></td>
-      <td>A</td>
-      <td>7</td>
-      <td></td>
       <td>...</td>
-      <td>12.827</td>
-      <td>49.397</td>
-      <td>0.859</td>
-      <td>1</td>
-      <td>26.32</td>
-      <td></td>
       <td></td>
       <td>O</td>
       <td>NaN</td>
@@ -848,19 +615,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
       <td>43</td>
       <td></td>
       <td>CB</td>
-      <td></td>
-      <td>PRO</td>
-      <td></td>
-      <td>A</td>
-      <td>7</td>
-      <td></td>
       <td>...</td>
-      <td>14.159</td>
-      <td>50.763</td>
-      <td>-1.644</td>
-      <td>1</td>
-      <td>27.56</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -892,19 +647,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -918,19 +661,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <td>3</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>4.127</td>
-      <td>53.553</td>
-      <td>-0.105</td>
-      <td>1</td>
-      <td>52.03</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -942,19 +673,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <td>9</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>PHE</td>
-      <td></td>
-      <td>A</td>
-      <td>3</td>
-      <td></td>
       <td>...</td>
-      <td>4.881</td>
-      <td>50.670</td>
-      <td>-0.064</td>
-      <td>1</td>
-      <td>48.17</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -966,19 +685,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <td>20</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>4</td>
-      <td></td>
       <td>...</td>
-      <td>5.896</td>
-      <td>50.254</td>
-      <td>-2.977</td>
-      <td>1</td>
-      <td>45.29</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -990,19 +697,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <td>26</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>ASN</td>
-      <td></td>
-      <td>A</td>
-      <td>5</td>
-      <td></td>
       <td>...</td>
-      <td>8.584</td>
-      <td>52.307</td>
-      <td>-2.574</td>
-      <td>1</td>
-      <td>39.00</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -1014,19 +709,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
       <td>34</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>VAL</td>
-      <td></td>
-      <td>A</td>
-      <td>6</td>
-      <td></td>
       <td>...</td>
-      <td>10.595</td>
-      <td>50.807</td>
-      <td>-0.862</td>
-      <td>1</td>
-      <td>30.30</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -1058,19 +741,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <th>atom_number</th>
       <th>blank_1</th>
       <th>atom_name</th>
-      <th>alt_loc</th>
-      <th>residue_name</th>
-      <th>blank_2</th>
-      <th>chain_id</th>
-      <th>residue_number</th>
-      <th>insertion</th>
       <th>...</th>
-      <th>x_coord</th>
-      <th>y_coord</th>
-      <th>z_coord</th>
-      <th>occupancy</th>
-      <th>b_factor</th>
-      <th>blank_4</th>
       <th>segment_id</th>
       <th>element_symbol</th>
       <th>charge</th>
@@ -1084,19 +755,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <td>1</td>
       <td></td>
       <td>N</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>2.527</td>
-      <td>54.656</td>
-      <td>-1.667</td>
-      <td>1</td>
-      <td>52.73</td>
-      <td></td>
       <td></td>
       <td>N</td>
       <td>NaN</td>
@@ -1108,19 +767,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <td>2</td>
       <td></td>
       <td>CA</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>3.259</td>
-      <td>54.783</td>
-      <td>-0.368</td>
-      <td>1</td>
-      <td>52.54</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -1132,19 +779,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <td>3</td>
       <td></td>
       <td>C</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>4.127</td>
-      <td>53.553</td>
-      <td>-0.105</td>
-      <td>1</td>
-      <td>52.03</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -1156,19 +791,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <td>4</td>
       <td></td>
       <td>O</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>5.274</td>
-      <td>53.451</td>
-      <td>-0.594</td>
-      <td>1</td>
-      <td>52.45</td>
-      <td></td>
       <td></td>
       <td>O</td>
       <td>NaN</td>
@@ -1180,19 +803,7 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
       <td>5</td>
       <td></td>
       <td>CB</td>
-      <td></td>
-      <td>SER</td>
-      <td></td>
-      <td>A</td>
-      <td>2</td>
-      <td></td>
       <td>...</td>
-      <td>2.273</td>
-      <td>54.944</td>
-      <td>0.792</td>
-      <td>1</td>
-      <td>52.69</td>
-      <td></td>
       <td></td>
       <td>C</td>
       <td>NaN</td>
@@ -1249,7 +860,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_51_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_50_0.png)
 
 
 
@@ -1262,7 +873,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_52_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_51_0.png)
 
 
 
@@ -1275,19 +886,17 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_53_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_52_0.png)
 
 
-## In-built Functions
+## Computing the Root Mean Square Deviation
 
 BioPandas also comes with certain convenience functions, for example, ...
-
-### Computing the Root Mean Square Deviation
 
 The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
 
 $$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
-= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2} $$
+= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$
 
 So, assuming that the we have the following 2 conformation of a ligand molecule
 
