@@ -72,7 +72,7 @@
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="tutorials/PandasPDB/">PandasPDB</a>
+                            <a href="tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
                         </li>
                     
                     </ul>
@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="tutorials/PandasPDB/">
+                    <a rel="prev" href="tutorials/Working_with_PDB_Structures_in_DataFrames/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -190,7 +190,7 @@ So, why don't we take pandas to the structural biology world? Working with molec
 </code></pre>
 
 <p><img alt="3eiy head" src="./img/index/3eiy_head.png" /></p>
-<p><br><br></p>
+<p><br></p>
 <p><img alt="3eiy head" src="./img/index/ligand_rmsd.png" /></p>
 <pre><code class="python"># Load structures from your drive and compute the
 # Root Mean Square Deviation
@@ -200,9 +200,29 @@ So, why don't we take pandas to the structural biology world? Working with molec
 &gt;&gt;&gt; r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
                        s='hydrogen', invert=True)
 &gt;&gt;&gt; print('RMSD: %.4f Angstrom' % r)
-
 RMSD: 2.6444 Angstrom
-</code></pre></div>
+</code></pre>
+
+<p><br></p>
+<pre><code class="python"># Producing quick summary plots
+&gt;&gt;&gt; import matplotlib.pyplot as plt
+&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='hist')
+&gt;&gt;&gt; plt.title('Distribution of B-Factors')
+&gt;&gt;&gt; plt.xlabel('B-factor')
+&gt;&gt;&gt; plt.ylabel('count')
+&gt;&gt;&gt; plt.show()
+</code></pre>
+
+<p><img alt="" src="./img/index/bfactor_hist.png" /></p>
+<p><br></p>
+<pre><code class="python">&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='line')
+&gt;&gt;&gt; plt.title('B-Factors Along the Amino Acid Chain')
+&gt;&gt;&gt; plt.xlabel('Residue Number')
+&gt;&gt;&gt; plt.ylabel('B-factor in $A^2$')
+&gt;&gt;&gt; plt.show()
+</code></pre>
+
+<p><img alt="" src="./img/index/bfactor_trace.png" /></p></div>
         </div>
 
         <footer class="col-md-12">

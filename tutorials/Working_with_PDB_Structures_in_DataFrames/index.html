@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Sebastian Raschka">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>Working with PDB Structures in DataFrames - biopandas</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-38457794-3', 'rasbt.github.io/biopandas');
+            ga('send', 'pageview');
+        </script>
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">biopandas</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">Home</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li class="active">
+                            <a href="./">Working with PDB Structures in DataFrames</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../api/biopandas.pdb/">Biopandas.pdb</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../changelog/">Changelog</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../installation/">Installation</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../contributing/">Contributing</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../..">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../../api/biopandas.pdb/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/rasbt/biopandas">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#working-with-pdb-structures-in-dataframes">Working with PDB Structures in DataFrames</a></li>
+        
+            <li><a href="#loading-pdb-files">Loading PDB Files</a></li>
+        
+            <li><a href="#looking-at-pdbs-in-dataframes">Looking at PDBs in DataFrames</a></li>
+        
+            <li><a href="#working-with-pdb-dataframes">Working with PDB DataFrames</a></li>
+        
+            <li><a href="#plotting">Plotting</a></li>
+        
+            <li><a href="#computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</a></li>
+        
+            <li><a href="#wrapping-it-up-saving-pdb-structures">Wrapping it up - Saving PDB structures</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="working-with-pdb-structures-in-dataframes">Working with PDB Structures in DataFrames</h1>
+<h2 id="loading-pdb-files">Loading PDB Files</h2>
+<p>There are 2 1/2 ways to load a PDB structure into a <code>PandasPDB</code> object.</p>
+<h4 id="1">1</h4>
+<p>PDB files can be directly fetched from The Protein Data Bank at <a href="http://www.rcsb.org">http://www.rcsb.org</a> via its unique 4-letter after initializing a new <a href="../../api/biopandas.pdb#pandaspdb"><code>PandasPDB</code></a> object and calling the <a href="../../api/biopandas.pdb#pandaspdbfetch_pdb"><code>fetch_pdb</code></a> method:</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+
+# Initialize a new PandasPDB object
+# and fetch the PDB file from rcsb.org
+ppdb = PandasPDB().fetch_pdb('3eiy')
+</code></pre>
+
+<h4 id="2-a">2 a)</h4>
+<p>Alternatively, we can load PDB files from local directories as regular PDB files using <a href="../../api/biopandas.pdb#pandaspdbread_pdb"><code>read_pdb</code></a>:</p>
+<pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb')
+</code></pre>
+
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8&gt;
+</code></pre>
+<h4 id="2-b">2 b)</h4>
+<p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
+<pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
+</code></pre>
+
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8&gt;
+</code></pre>
+<p>After the file was succesfully loaded, we have access to the following attributes:</p>
+<pre><code class="python">print('PDB Code: %s' % ppdb.code)
+print('PDB Header Line: %s' % ppdb.header)
+print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
+</code></pre>
+
+<pre><code>PDB Code: 3eiy
+PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
+
+Raw PDB file contents:
+
+HEADER    HYDROLASE                               17-SEP-08   3EIY              
+TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
+TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
+COMPND    MOL_ID: 1;                                                            
+COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
+COMPND   3 CHAIN: A;                                                            
+COMPND   4 EC: 3.6.1.1;                                                         
+COMPND   5 ENGINEERED: YES                                                      
+SOURCE    MOL_ID: 1;                                                            
+SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
+SOURCE   3 ORGANISM_TAXID: 320372;                                              
+SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
+SOURCE   5 EXPRESSION_SYSTEM
+...
+</code></pre>
+<p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPDB.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
+<pre><code class="python">ppdb.df['ATOM'].head(3)
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>609</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td></td>
+      <td>CA</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>610</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>611</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 21 columns</p>
+</div>
+
+<p>But more on that in the next section.</p>
+<h2 id="looking-at-pdbs-in-dataframes">Looking at PDBs in DataFrames</h2>
+<p>PDB files are parsed according to the <a href="http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html">PDB file format description</a>. More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from <a href="http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM">http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM</a>. </p>
+<table>
+<thead>
+<tr>
+<th>COLUMNS</th>
+<th>DATA TYPE</th>
+<th>CONTENTS</th>
+<th>biopandas column name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 - 6</td>
+<td>Record name</td>
+<td>"ATOM"</td>
+<td>record_name</td>
+</tr>
+<tr>
+<td>7 - 11</td>
+<td>Integer</td>
+<td>Atom serial number.</td>
+<td>atom_number</td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td></td>
+<td>blank_1</td>
+</tr>
+<tr>
+<td>13 - 16</td>
+<td>Atom</td>
+<td>Atom name.</td>
+<td>atom_name</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Character</td>
+<td>Alternate location indicator.</td>
+<td>alt_loc</td>
+</tr>
+<tr>
+<td>18 - 20</td>
+<td>Residue name</td>
+<td>Residue name.</td>
+<td>residue_name</td>
+</tr>
+<tr>
+<td>21</td>
+<td></td>
+<td></td>
+<td>blank_2</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Character</td>
+<td>Chain identifier.</td>
+<td>chain_id</td>
+</tr>
+<tr>
+<td>23 - 26</td>
+<td>Integer</td>
+<td>Residue sequence number.</td>
+<td>residue_number</td>
+</tr>
+<tr>
+<td>27</td>
+<td>AChar</td>
+<td>Code for insertion of residues.</td>
+<td>insertion</td>
+</tr>
+<tr>
+<td>28 - 30</td>
+<td></td>
+<td></td>
+<td>blank_3</td>
+</tr>
+<tr>
+<td>31 - 38</td>
+<td>Real(8.3)</td>
+<td>Orthogonal coordinates for X in Angstroms.</td>
+<td>x_coord</td>
+</tr>
+<tr>
+<td>39 - 46</td>
+<td>Real(8.3)</td>
+<td>Orthogonal coordinates for Y in Angstroms.</td>
+<td>y_coord</td>
+</tr>
+<tr>
+<td>47 - 54</td>
+<td>Real(8.3)</td>
+<td>Orthogonal coordinates for Z in Angstroms.</td>
+<td>z_coord</td>
+</tr>
+<tr>
+<td>55 - 60</td>
+<td>Real(6.2)</td>
+<td>Occupancy.</td>
+<td>occupancy</td>
+</tr>
+<tr>
+<td>61 - 66</td>
+<td>Real(6.2)</td>
+<td>Temperature factor (Default = 0.0).</td>
+<td>bfactor</td>
+</tr>
+<tr>
+<td>67-72</td>
+<td></td>
+<td></td>
+<td>blank_4</td>
+</tr>
+<tr>
+<td>73 - 76</td>
+<td>LString(4)</td>
+<td>Segment identifier, left-justified.</td>
+<td>segment_id</td>
+</tr>
+<tr>
+<td>77 - 78</td>
+<td>LString(2)</td>
+<td>Element symbol, right-justified.</td>
+<td>element_symbol</td>
+</tr>
+<tr>
+<td>79 - 80</td>
+<td>LString(2)</td>
+<td>Charge on the atom.</td>
+<td>charge</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Example: 
+         1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+ATOM    145  N   VAL A  25      32.433  16.336  57.540  1.00 11.92      A1   N
+ATOM    146  CA  VAL A  25      31.132  16.439  58.160  1.00 11.85      A1   C
+ATOM    147  C   VAL A  25      30.447  15.105  58.363  1.00 12.34      A1   C
+ATOM    148  O   VAL A  25      29.520  15.059  59.174  1.00 15.65      A1   O
+ATOM    149  CB AVAL A  25      30.385  17.437  57.230  0.28 13.88      A1   C
+ATOM    150  CB BVAL A  25      30.166  17.399  57.373  0.72 15.41      A1   C
+ATOM    151  CG1AVAL A  25      28.870  17.401  57.336  0.28 12.64      A1   C
+ATOM    152  CG1BVAL A  25      30.805  18.788  57.449  0.72 15.11      A1   C
+ATOM    153  CG2AVAL A  25      30.835  18.826  57.661  0.28 13.58      A1   C
+ATOM    154  CG2BVAL A  25      29.909  16.996  55.922  0.72 13.25      A1   C
+</code></pre>
+<p>After loading a PDB file from rcsb.org or our local drive, the <a href="../../api/biopandas.pdb/#pandaspdbdf"><code>PandasPDB.df</code></a> attribute should contain the following 4 DataFrame objects:</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+ppdb = PandasPDB()
+ppdb.read_pdb('./data/3eiy.pdb')
+ppdb.df.keys()
+</code></pre>
+
+<pre><code>dict_keys(['OTHERS', 'HETATM', 'ATOM', 'ANISOU'])
+</code></pre>
+<ul>
+<li>'ATOM': contains the entries from the ATOM coordinate section</li>
+<li>'ATOM':  ... entries from the "HETATM" coordinate section    </li>
+<li>'ANISOU': ... entries from the "ANISOU" coordinate section </li>
+<li>'OTHERS': Everything else that is <em>not</em> a 'ATOM', 'HETATM', or 'ANISOU' entry</li>
+</ul>
+<p><img alt="" src="../img/df_dict.jpg" /></p>
+<p>The columns of the 'HETATM' and 'ANISOU' DataFrames are indentical to the 'ATOM' DataFrame that we've seen earlier:</p>
+<pre><code class="python">ppdb.df['HETATM'].head(2)
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>HETATM</td>
+      <td>1332</td>
+      <td></td>
+      <td>K</td>
+      <td>...</td>
+      <td></td>
+      <td>K</td>
+      <td>NaN</td>
+      <td>1940</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HETATM</td>
+      <td>1333</td>
+      <td></td>
+      <td>NA</td>
+      <td>...</td>
+      <td></td>
+      <td>NA</td>
+      <td>NaN</td>
+      <td>1941</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 21 columns</p>
+</div>
+
+<pre><code class="python">ppdb.df['ANISOU'].head(2)
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<p>0 rows × 21 columns</p>
+</div>
+
+<p>Ah, another interesting thing to mention is that the columns already come with the types you'd expect (where <code>object</code> essentially "means" <code>str</code> here):</p>
+<pre><code class="python">ppdb.df['ATOM'].dtypes
+</code></pre>
+
+<pre><code>record_name        object
+atom_number         int64
+blank_1            object
+atom_name          object
+alt_loc            object
+residue_name       object
+blank_2            object
+chain_id           object
+residue_number      int64
+insertion          object
+blank_3            object
+x_coord           float64
+y_coord           float64
+z_coord           float64
+occupancy         float64
+b_factor          float64
+blank_4            object
+segment_id         object
+element_symbol     object
+charge            float64
+line_idx            int64
+dtype: object
+</code></pre>
+<p>As it appears, our '3eiy' structure does not contain any 'ANISOU' entries, hence, the DataFrame above remains empty. </p>
+<p>Typically, all good things come in threes, however, there is a 4th DataFrame, an'OTHER' DataFrame, which contains everything that wasn't parsed as 'ATOM', 'HETATM', or 'ANISOU' coordinate section:</p>
+<pre><code class="python">ppdb.df['OTHERS'].head(5)
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>entry</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>HEADER</td>
+      <td>HYDROLASE                               17...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>TITLE</td>
+      <td>CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHA...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>TITLE</td>
+      <td>2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>COMPND</td>
+      <td>MOL_ID: 1;</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>COMPND</td>
+      <td>2 MOLECULE: INORGANIC PYROPHOSPHATASE;</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Although these 'OTHER' entries are typically less useful for structure-related computations, you may still want to take a look at them to get a short summary of the PDB structure and learn about it's potential quirks and gotchas (typically listed in the REMARKs section). Lastly, the 'OTHERS' DataFrame comes in handy if we want to reconstruct the structure as PDB file as we will see later (note the <code>line_idx</code> columns in all of the DataFrames).</p>
+<h2 id="working-with-pdb-dataframes">Working with PDB DataFrames</h2>
+<p>In the previous sections, we've seen how to load PDB structures into DataFrames, and how to access them. Now, let's talk about manipulating PDB files in DataFrames.</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+ppdb = PandasPDB()
+ppdb.read_pdb('./data/3eiy.pdb.gz')
+ppdb.df['ATOM'].head()
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>609</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td></td>
+      <td>CA</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>610</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>611</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ATOM</td>
+      <td>4</td>
+      <td></td>
+      <td>O</td>
+      <td>...</td>
+      <td></td>
+      <td>O</td>
+      <td>NaN</td>
+      <td>612</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ATOM</td>
+      <td>5</td>
+      <td></td>
+      <td>CB</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>613</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Okay, there's actually not <em>that</em> much to say ... <br />
+Once we have our PDB file in the DataFrame format, we have the whole convenience of <a href="http://pandas.pydata.org">pandas</a> right there at our fingertips.</p>
+<p>For example, let's get all Proline residues:</p>
+<pre><code class="python">ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>38</th>
+      <td>ATOM</td>
+      <td>39</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>647</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>ATOM</td>
+      <td>40</td>
+      <td></td>
+      <td>CA</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>648</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>ATOM</td>
+      <td>41</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>649</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>ATOM</td>
+      <td>42</td>
+      <td></td>
+      <td>O</td>
+      <td>...</td>
+      <td></td>
+      <td>O</td>
+      <td>NaN</td>
+      <td>650</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>ATOM</td>
+      <td>43</td>
+      <td></td>
+      <td>CB</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>651</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Or main chain atoms:</p>
+<pre><code class="python">ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>611</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>ATOM</td>
+      <td>9</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>617</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>ATOM</td>
+      <td>20</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>628</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>ATOM</td>
+      <td>26</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>634</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>ATOM</td>
+      <td>34</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>642</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>It's also easy to strip our coordinate section from hydrogen atoms if there are any ...</p>
+<pre><code class="python">ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>609</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td></td>
+      <td>CA</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>610</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td></td>
+      <td>C</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>611</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ATOM</td>
+      <td>4</td>
+      <td></td>
+      <td>O</td>
+      <td>...</td>
+      <td></td>
+      <td>O</td>
+      <td>NaN</td>
+      <td>612</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ATOM</td>
+      <td>5</td>
+      <td></td>
+      <td>CB</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>613</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Or, let's compute the average temperature factor of our protein main chain:</p>
+<pre><code class="python">mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'O') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'N') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'CA')]
+
+bfact_mc_avg = mainchain['b_factor'].mean()
+print('Average B-Factor [Main Chain]: %.2f' % bfact_mc_avg)
+</code></pre>
+
+<pre><code>Average B-Factor [Main Chain]: 28.83
+</code></pre>
+<h2 id="plotting">Plotting</h2>
+<p>Since we are using pandas under the hood, which in turns uses matplotlib under the hood, we can produce quick summary plots of our PDB structures relatively conveniently:</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+</code></pre>
+
+<pre><code class="python">%matplotlib inline
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
+</code></pre>
+
+<pre><code class="python">ppdb.df['ATOM']['b_factor'].plot(kind='hist')
+plt.title('Distribution of B-Factors')
+plt.xlabel('B-factor')
+plt.ylabel('count')
+plt.show()
+</code></pre>
+
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_50_0.png" /></p>
+<pre><code class="python">ppdb.df['ATOM']['b_factor'].plot(kind='line')
+plt.title('B-Factors Along the Amino Acid Chain')
+plt.xlabel('Residue Number')
+plt.ylabel('B-factor in $A^2$')
+plt.show()
+</code></pre>
+
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_51_0.png" /></p>
+<pre><code class="python">ppdb.df['ATOM']['element_symbol'].value_counts().plot(kind='bar')
+plt.title('Distribution of Atom Types')
+plt.xlabel('elements')
+plt.ylabel('count')
+plt.show()
+</code></pre>
+
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_52_0.png" /></p>
+<h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
+<p>BioPandas also comes with certain convenience functions, for example, ...</p>
+<p>The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
+<p><mathjax>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
+= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$</mathjax></p>
+<p>So, assuming that the we have the following 2 conformation of a ligand molecule</p>
+<p><img alt="" src="../img/ligand_rmsd.png" /></p>
+<p>we can compute the RMSD as follows:</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+
+l_1 = PandasPDB().read_pdb('./data/lig_conf_1.pdb')
+l_2 = PandasPDB().read_pdb('./data/lig_conf_2.pdb')
+r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], s='hydrogen', invert=True)
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+
+<pre><code>RMSD: 2.6444 Angstrom
+</code></pre>
+<p>Note that the <code>s</code> parameter in <a href="../../api/biopandas.pdb#pandaspdbrmsd"><code>PandasPDB.rmsd</code></a> specifies the search string "consider all hydrogen atoms" and via the <code>invert=True</code> option, we say "Compute the RMSD for everything BUT the hydrogen atoms" or "Compute the RSMD based on the heavy atoms only".</p>
+<p>Similarly, we can compute the RMSD between 2 related protein structures:</p>
+<p><img alt="" src="../img/1t48_rmsd.png" /></p>
+<p>The hydrogen-free RMSD:</p>
+<pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='hydrogen', invert=True)
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+
+<pre><code>RMSD: 0.7377 Angstrom
+</code></pre>
+<p>Or the RMSD between the main chains only:</p>
+<pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain', invert=False)
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+
+<pre><code>RMSD: 0.4781 Angstrom
+</code></pre>
+<p><br></p>
+<p>[more to come]</p>
+<h2 id="wrapping-it-up-saving-pdb-structures">Wrapping it up - Saving PDB structures</h2>
+<p>Finally, let's talk about how to get the PDB structures out of the DataFrame format back into the beloved .pdb format.</p>
+<p>Let's say we loaded a PDB structure, removed it from it's hydrogens:</p>
+<pre><code class="python">from biopandas.pdb import PandasPDB
+ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
+</code></pre>
+
+<p>We can save the file using the <a href="../../api/biopandas.pdb#pandaspdbto_pdb"><code>PandasPDB.to_pdb</code></a> method:</p>
+<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb', records=None, gz=False, append_newline=True)
+</code></pre>
+
+<p>By default, all records (that is, 'ATOM', 'HETATM', 'OTHERS', 'ANISOU') are written if we set <code>records=None</code>. Alternatively, let's say we want to get rid of the 'ANISOU' entries and produce a compressed gzip archive of our PDB structure:</p>
+<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz', records=['ATOM', 'HETATM', 'OTHERS'], gz=True, append_newline=True)
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+                <center>Copyright &copy; 2015 <a href="http://sebastianraschka.com">Sebastian Raschka</a></center>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+        <script src="../../mathjaxhelper.js"></script>
+    </body>
+</html>
