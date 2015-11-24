@@ -210,7 +210,6 @@ SOURCE   4 GENE: PPA, BURPS1710B_1237;
 SOURCE   5 EXPRESSION_SYSTEM
 ...
 </code></pre>
-
 <p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPDB.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
 <pre><code class="python">ppdb.df['ATOM'].head(3)
 </code></pre>
@@ -275,7 +274,7 @@ SOURCE   5 EXPRESSION_SYSTEM
 
 <p>But more on that in the next section.</p>
 <h2 id="looking-at-pdbs-in-dataframes">Looking at PDBs in DataFrames</h2>
-<p>PDB files are parsed according to the <a href="http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html">PDB file format description</a>. More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from <a href="http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM">http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM</a>. </p>
+<p>PDB files are parsed according to the <a href="http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html">PDB file format description</a>. More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from <a href="http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM">http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM</a>; note that the ANISOU section looks a bit different: <a href="http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU">http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU</a></p>
 <table>
 <thead>
 <tr>
@@ -429,7 +428,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 ppdb.df.keys()
 </code></pre>
 
-<pre><code>dict_keys(['OTHERS', 'HETATM', 'ATOM', 'ANISOU'])
+<pre><code>dict_keys(['ATOM', 'OTHERS', 'HETATM', 'ANISOU'])
 </code></pre>
 <ul>
 <li>'ATOM': contains the entries from the ATOM coordinate section</li>
@@ -438,7 +437,7 @@ ppdb.df.keys()
 <li>'OTHERS': Everything else that is <em>not</em> a 'ATOM', 'HETATM', or 'ANISOU' entry</li>
 </ul>
 <p><img alt="" src="../img/df_dict.jpg" /></p>
-<p>The columns of the 'HETATM' and 'ANISOU' DataFrames are indentical to the 'ATOM' DataFrame that we've seen earlier:</p>
+<p>The columns of the 'HETATM' DataFrame are indentical to the 'ATOM' DataFrame that we've seen earlier:</p>
 <pre><code class="python">ppdb.df['HETATM'].head(2)
 </code></pre>
 
@@ -488,6 +487,7 @@ ppdb.df.keys()
 <p>2 rows × 21 columns</p>
 </div>
 
+<p>And 'ANISOU' entries are handled a bit differently, ...</p>
 <pre><code class="python">ppdb.df['ANISOU'].head(2)
 </code></pre>
 
@@ -501,7 +501,7 @@ ppdb.df.keys()
       <th>blank_1</th>
       <th>atom_name</th>
       <th>...</th>
-      <th>segment_id</th>
+      <th>blank_4</th>
       <th>element_symbol</th>
       <th>charge</th>
       <th>line_idx</th>
@@ -513,6 +513,12 @@ ppdb.df.keys()
 <p>0 rows × 21 columns</p>
 </div>
 
+<p>Since the DataFrame is pretty broad, it'd probably better so show the column names separately:</p>
+<pre><code class="python">ppdb.df['ANISOU'].columns
+</code></pre>
+
+<pre><code>Index(['record_name', 'atom_number', 'blank_1', 'atom_name', 'alt_loc', 'residue_name', 'blank_2', 'chain_id', 'residue_number', 'insertion', 'blank_3', 'U(1,1)', 'U(2,2)', 'U(3,3)', 'U(1,2)', 'U(1,3)', 'U(2,3)', 'blank_4', 'element_symbol', 'charge', 'line_idx'], dtype='object')
+</code></pre>
 <p>Ah, another interesting thing to mention is that the columns already come with the types you'd expect (where <code>object</code> essentially "means" <code>str</code> here):</p>
 <pre><code class="python">ppdb.df['ATOM'].dtypes
 </code></pre>
@@ -972,7 +978,7 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_50_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_53_0.png" /></p>
 <pre><code class="python">ppdb.df['ATOM']['b_factor'].plot(kind='line')
 plt.title('B-Factors Along the Amino Acid Chain')
 plt.xlabel('Residue Number')
@@ -980,7 +986,7 @@ plt.ylabel('B-factor in $A^2$')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_51_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_54_0.png" /></p>
 <pre><code class="python">ppdb.df['ATOM']['element_symbol'].value_counts().plot(kind='bar')
 plt.title('Distribution of Atom Types')
 plt.xlabel('elements')
@@ -988,10 +994,10 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_52_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_55_0.png" /></p>
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>BioPandas also comes with certain convenience functions, for example, ...</p>
-<p>The <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">Root-mean-square deviation</a> is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
+<p>The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
 <p><mathjax>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
 = \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$</mathjax></p>
 <p>So, assuming that the we have the following 2 conformation of a ligand molecule</p>
