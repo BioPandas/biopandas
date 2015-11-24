@@ -7,7 +7,6 @@ setup(name='biopandas',
       author_email='mail@sebastianraschka.com',
       url='https://github.com/rasbt/biopandas',
       packages=['biopandas'],
-      install_requires=['pandas'],
       license='new BSD',
       platforms='any',
       classifiers=[
