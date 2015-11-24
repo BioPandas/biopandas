@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(name='biopandas',
-      version='0.1.4dev',
+      version='0.1.4',
       description='Molecular Structures in Pandas DataFrames',
       author='Sebastian Raschka',
       author_email='mail@sebastianraschka.com',
       url='https://github.com/rasbt/biopandas',
-      packages=['biopandas'],
+      packages=['biopandas', 'biopandas.pdb'],
       license='new BSD',
       platforms='any',
       classifiers=[
