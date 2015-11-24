@@ -28,7 +28,6 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-
 #### 2 b)
 
 Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):
@@ -37,8 +36,6 @@ Or, we can load them from gzip archives like so (note that the file must end wit
 ```python
 ppdb.read_pdb('./data/3eiy.pdb.gz')
 ```
-
-
 
 
 After the file was succesfully loaded, we have access to the following attributes:
@@ -50,11 +47,13 @@ print('PDB Header Line: %s' % ppdb.header)
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 ```
 
+```text
+
     PDB Code: 3eiy
     PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
-    
+
     Raw PDB file contents:
-    
+
     HEADER    HYDROLASE                               17-SEP-08   3EIY              
     TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
     TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
@@ -69,7 +68,7 @@ print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
     SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
     SOURCE   5 EXPRESSION_SYSTEM
     ...
-
+```
 
 The most interesting / useful attribute is the [`PandasPDB.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
@@ -145,7 +144,7 @@ But more on that in the next section.
 
 ## Looking at PDBs in DataFrames
 
-PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM, HETATM, and ANISOU section as shown in the following excerpt from [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM); note that the ANISOU section looks a bit different: [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ANISOU)
+PDB files are parsed according to the [PDB file format description](http://www.rcsb.org/pdb/static.do?p=file_formats/pdb/index.html). More specifically, BioPandas reads the columns of the ATOM and HETATM sections as shown in the following excerpt from [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM).
 
 | COLUMNS | DATA TYPE    | CONTENTS                                   | biopandas column name |
 |---------|--------------|--------------------------------------------|-----------------------|
@@ -170,7 +169,9 @@ PDB files are parsed according to the [PDB file format description](http://www.r
 | 77 - 78 | LString(2)   | Element symbol, right-justified.           | element_symbol        |
 | 79 - 80 | LString(2)   | Charge on the atom.                        | charge                |
 
-    Example: 
+Below is an example of how this would look like in an actual PDB file:
+
+    Example:
              1         2         3         4         5         6         7         8
     12345678901234567890123456789012345678901234567890123456789012345678901234567890
     ATOM    145  N   VAL A  25      32.433  16.336  57.540  1.00 11.92      A1   N
@@ -197,13 +198,13 @@ ppdb.df.keys()
 
 
 
-    dict_keys(['ATOM', 'OTHERS', 'HETATM', 'ANISOU'])
+    dict_keys(['ANISOU', 'ATOM', 'OTHERS', 'HETATM'])
 
 
 
 - 'ATOM': contains the entries from the ATOM coordinate section
 - 'ATOM':  ... entries from the "HETATM" coordinate section    
-- 'ANISOU': ... entries from the "ANISOU" coordinate section 
+- 'ANISOU': ... entries from the "ANISOU" coordinate section
 - 'OTHERS': Everything else that is *not* a 'ATOM', 'HETATM', or 'ANISOU' entry
 
 ![](./img/df_dict.jpg)
@@ -266,7 +267,9 @@ ppdb.df['HETATM'].head(2)
 
 
 
-And 'ANISOU' entries are handled a bit differently, ...
+<br>
+
+Note that "ANISOU" entries are handled a bit differently as specified at [http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM](http://deposit.rcsb.org/adit/docs/pdb_atom_format.html#ATOM).
 
 
 ```python
@@ -300,7 +303,21 @@ ppdb.df['ANISOU'].head(2)
 
 
 
-Since the DataFrame is pretty broad, it'd probably better so show the column names separately:
+Not every PDB file contains ANISOU entries (similarly, some PDB files may only contain HETATM or ATOM entries). If records are basent, the DataFrame will be empty as show above.
+
+
+```python
+ppdb.df['ANISOU'].empty
+```
+
+
+
+
+    True
+
+
+
+Since the DataFrames are fairly wide, let's us take a look at the columns by accessing the DataFrame's `column` attribute:
 
 
 ```python
@@ -313,6 +330,37 @@ ppdb.df['ANISOU'].columns
     Index(['record_name', 'atom_number', 'blank_1', 'atom_name', 'alt_loc', 'residue_name', 'blank_2', 'chain_id', 'residue_number', 'insertion', 'blank_3', 'U(1,1)', 'U(2,2)', 'U(3,3)', 'U(1,2)', 'U(1,3)', 'U(2,3)', 'blank_4', 'element_symbol', 'charge', 'line_idx'], dtype='object')
 
 
+
+ANISOU records are very similar to ATOM/HETATM records. In fact, the columns 7 - 27 and 73 - 80 are identical to their corresponding ATOM/HETATM records, which means that the 'ANISOU' DataFrame doesn't have the following entries:
+
+
+```python
+set(ppdb.df['ATOM'].columns).difference(set(ppdb.df['ANISOU'].columns))
+```
+
+
+
+
+    {'b_factor', 'occupancy', 'segment_id', 'x_coord', 'y_coord', 'z_coord'}
+
+
+
+Instead, the "ANISOU" DataFrame contains the anisotropic temperature factors "U(-,-)" -- note that these are scaled by a factor of $10^4$ ($\text{Angstroms}^2$) by convention.
+
+
+```python
+set(ppdb.df['ANISOU'].columns).difference(set(ppdb.df['ATOM'].columns))
+```
+
+
+
+
+    {'U(1,1)', 'U(1,2)', 'U(1,3)', 'U(2,2)', 'U(2,3)', 'U(3,3)'}
+
+
+
+<br>
+<br>
 
 Ah, another interesting thing to mention is that the columns already come with the types you'd expect (where `object` essentially "means" `str` here):
 
@@ -349,7 +397,7 @@ ppdb.df['ATOM'].dtypes
 
 
 
-As it appears, our '3eiy' structure does not contain any 'ANISOU' entries, hence, the DataFrame above remains empty. 
+<br>
 
 Typically, all good things come in threes, however, there is a 4th DataFrame, an'OTHER' DataFrame, which contains everything that wasn't parsed as 'ATOM', 'HETATM', or 'ANISOU' coordinate section:
 
@@ -408,7 +456,7 @@ ppdb.df['OTHERS'].head(5)
 
 
 
-Although these 'OTHER' entries are typically less useful for structure-related computations, you may still want to take a look at them to get a short summary of the PDB structure and learn about it's potential quirks and gotchas (typically listed in the REMARKs section). Lastly, the 'OTHERS' DataFrame comes in handy if we want to reconstruct the structure as PDB file as we will see later (note the `line_idx` columns in all of the DataFrames).
+Although these 'OTHER' entries are typically less useful for structure-related computations, you may still want to take a look at them to get a short summary of the PDB structure and learn about it's potential quirks and gotchas (typically listed in the REMARKs section). Lastly, the "OTHERS" DataFrame comes in handy if we want to reconstruct the structure as PDB file as we will see later (note the `line_idx` columns in all of the DataFrames).
 
 ## Working with PDB DataFrames
 
@@ -798,9 +846,9 @@ Or, let's compute the average temperature factor of our protein main chain:
 
 
 ```python
-mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') | 
-                            (ppdb.df['ATOM']['atom_name'] == 'O') | 
-                            (ppdb.df['ATOM']['atom_name'] == 'N') | 
+mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') |
+                            (ppdb.df['ATOM']['atom_name'] == 'O') |
+                            (ppdb.df['ATOM']['atom_name'] == 'N') |
                             (ppdb.df['ATOM']['atom_name'] == 'CA')]
 
 bfact_mc_avg = mainchain['b_factor'].mean()
@@ -838,7 +886,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_53_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_62_0.png)
 
 
 
@@ -851,7 +899,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_54_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_63_0.png)
 
 
 
@@ -864,7 +912,7 @@ plt.show()
 ```
 
 
-![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_55_0.png)
+![png](Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_64_0.png)
 
 
 ## Computing the Root Mean Square Deviation
@@ -948,12 +996,18 @@ We can save the file using the [`PandasPDB.to_pdb`](../api/biopandas.pdb#pandasp
 
 
 ```python
-ppdb.to_pdb(path='./data/3eiy_stripped.pdb', records=None, gz=False, append_newline=True)
+ppdb.to_pdb(path='./data/3eiy_stripped.pdb',
+            records=None,
+            gz=False,
+            append_newline=True)
 ```
 
 By default, all records (that is, 'ATOM', 'HETATM', 'OTHERS', 'ANISOU') are written if we set `records=None`. Alternatively, let's say we want to get rid of the 'ANISOU' entries and produce a compressed gzip archive of our PDB structure:
 
 
 ```python
-ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz', records=['ATOM', 'HETATM', 'OTHERS'], gz=True, append_newline=True)
+ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz',
+            records=['ATOM', 'HETATM', 'OTHERS'],
+            gz=True,
+            append_newline=True)
 ```
