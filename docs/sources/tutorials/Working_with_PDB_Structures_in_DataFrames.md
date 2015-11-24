@@ -28,11 +28,6 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8>
-
-
-
 #### 2 b)
 
 Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):
@@ -41,12 +36,6 @@ Or, we can load them from gzip archives like so (note that the file must end wit
 ```python
 ppdb.read_pdb('./data/3eiy.pdb.gz')
 ```
-
-
-
-
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8>
-
 
 
 After the file was succesfully loaded, we have access to the following attributes:
@@ -58,26 +47,27 @@ print('PDB Header Line: %s' % ppdb.header)
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 ```
 
-    PDB Code: 3eiy
-    PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
+```
+PDB Code: 3eiy
+PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
     
-    Raw PDB file contents:
+Raw PDB file contents:
     
-    HEADER    HYDROLASE                               17-SEP-08   3EIY              
-    TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
-    TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
-    COMPND    MOL_ID: 1;                                                            
-    COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
-    COMPND   3 CHAIN: A;                                                            
-    COMPND   4 EC: 3.6.1.1;                                                         
-    COMPND   5 ENGINEERED: YES                                                      
-    SOURCE    MOL_ID: 1;                                                            
-    SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
-    SOURCE   3 ORGANISM_TAXID: 320372;                                              
-    SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
-    SOURCE   5 EXPRESSION_SYSTEM
-    ...
-
+HEADER    HYDROLASE                               17-SEP-08   3EIY              
+TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
+TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
+COMPND    MOL_ID: 1;                                                            
+COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
+COMPND   3 CHAIN: A;                                                            
+COMPND   4 EC: 3.6.1.1;                                                         
+COMPND   5 ENGINEERED: YES                                                      
+SOURCE    MOL_ID: 1;                                                            
+SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
+SOURCE   3 ORGANISM_TAXID: 320372;                                              
+SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
+SOURCE   5 EXPRESSION_SYSTEM
+...
+```
 
 The most interesting / useful attribute is the [`PandasPDB.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
@@ -863,7 +853,7 @@ plt.show()
 
 BioPandas also comes with certain convenience functions, for example, ...
 
-The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
+The [Root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
 
 $$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
 = \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$
