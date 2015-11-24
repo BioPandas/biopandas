@@ -179,15 +179,11 @@ ppdb = PandasPDB().fetch_pdb('3eiy')
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8&gt;
-</code></pre>
 <h4 id="2-b">2 b)</h4>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104085ba8&gt;
-</code></pre>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
 <pre><code class="python">print('PDB Code: %s' % ppdb.code)
 print('PDB Header Line: %s' % ppdb.header)
@@ -214,6 +210,7 @@ SOURCE   4 GENE: PPA, BURPS1710B_1237;
 SOURCE   5 EXPRESSION_SYSTEM
 ...
 </code></pre>
+
 <p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPDB.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
 <pre><code class="python">ppdb.df['ATOM'].head(3)
 </code></pre>
