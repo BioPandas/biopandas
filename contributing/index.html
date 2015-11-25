@@ -273,10 +273,10 @@ SOME FILE2                    |    10 +++++++
 <h4 id="2-developing-the-new-feature-bug-fix">2. Developing the new feature / bug fix</h4>
 <h4 id="3-testing-your-code">3. Testing your code</h4>
 <p>Adding/modifying the unit tests and check if they pass:</p>
-<pre><code class="bash">nosetests -sv
+<pre><code class="bash">$ nosetests -sv
 </code></pre>
 
-<pre><code class="bash">nosetests --with-coverage
+<pre><code class="bash">$ nosetests --with-coverage
 </code></pre>
 
 <h4 id="4-documenting-the-changes">4. Documenting the changes</h4>
@@ -332,7 +332,7 @@ squash 046e3af fixed setup.py
 <p>Now, save the changes in your editor. Now, quitting the editor will apply the <code>rebase</code> changes, and the editor will open a second time, prompting you to enter a new commit message. In this case, we could enter <code>support for feature x</code> to summarize the contributions.</p>
 <h4 id="7-uploading-the-changes">7. Uploading the changes</h4>
 <p>Push your changes to a topic branch to the git server by executing:</p>
-<pre><code class="bash">git push origin &lt;feature_branch&gt;
+<pre><code class="bash">$ git push origin &lt;feature_branch&gt;
 </code></pre>
 
 <h4 id="8-submitting-a-pull-request">8. Submitting a <code>pull request</code></h4>
