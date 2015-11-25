@@ -1,4 +1,4 @@
-# Installing biopandas ![](img/logos/1j1v_120.png)
+# Installing BioPandas ![](img/logos/1j1v_120.png)
 
 
 

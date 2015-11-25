@@ -1,4 +1,4 @@
-site_name: biopandas
+site_name: BioPandas
 site_url: http://rasbt.github.io/biopandas
 site_author: Sebastian Raschka
 site_description: Biopandas is a python package for working with molecular structures in pandas DataFrames.
