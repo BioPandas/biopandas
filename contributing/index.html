@@ -145,13 +145,15 @@
     
         <li class="main active"><a href="#how-to-contribute">How to Contribute</a></li>
         
-            <li><a href="#quick-contributor-checklist">Quick contributor checklist</a></li>
+            <li><a href="#quick-contributor-checklist">Quick Contributor Checklist</a></li>
         
-            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#getting-started-creating-a-new-issue-and-forking-the-repository">Getting Started - Creating a New Issue and Forking the Repository</a></li>
         
-            <li><a href="#making-changes">Making Changes</a></li>
+            <li><a href="#syncing-an-existing-fork">Syncing an Existing Fork</a></li>
         
-            <li><a href="#notes-for-developers">Notes for Developers</a></li>
+            <li><a href="#making-changes-in-a-new-topic-branch">Making Changes in a New Topic Branch</a></li>
+        
+            <li><a href="#notes-for-the-developers">Notes for the Developers</a></li>
         
     
     </ul>
@@ -160,21 +162,28 @@
 
 <h1 id="how-to-contribute">How to Contribute <img alt="" src="../img/logos/1r8j_120.png" /></h1>
 <p>I would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.</p>
-<p><br>
-<br></p>
-<h3 id="quick-contributor-checklist">Quick contributor checklist</h3>
-<ul>
+<h3 id="quick-contributor-checklist">Quick Contributor Checklist</h3>
+<p>This is a quick checklist about the different steps of a typical contribution to biopandas and
+other open source projects. Consider copying this list to a local text file (or the issue tracker)
+and checking off items as you go.</p>
+<ol>
 <li>[ ]  Open a new "issue" on GitHub to discuss the new feature / bug fix  </li>
+<li>[ ]  Fork the biopandas repository from GitHub (if not already done earlier)</li>
 <li>[ ]  Create and checkout a new topic branch   </li>
-<li>[ ]  Implement new feature or apply bugfix  </li>
+<li>[ ]  Implement new feature or apply the bug-fix  </li>
 <li>[ ]  Add appropriate unit test functions  </li>
 <li>[ ]  Run <code>nosetests -sv</code> and make sure that all unit tests pass  </li>
+<li>[ ]  Check/improve the test coverage by running <code>nosetests --with-coverage</code></li>
 <li>[ ]  Add a note about the change to the <code>./docs/sources/CHANGELOG.md</code> file  </li>
-<li>[ ]  Modify documentation in <code>./docs/examples/</code> and <code>./docs/sources/</code>  </li>
+<li>[ ]  Modify documentation in the appropriate location under <code>biopandas/docs/sources/</code>  </li>
 <li>[ ]  Push the topic branch to the server and create a pull request</li>
-</ul>
+<li>[ ]  Check the Travis-CI build passed at <a href="https://travis-ci.org/rasbt/biopandas">https://travis-ci.org/rasbt/biopandas</a></li>
+<li>[ ]  Check/improve the unit test coverage at <a href="https://coveralls.io/github/rasbt/biopandas">https://coveralls.io/github/rasbt/biopandas</a></li>
+<li>[ ]  Check/improve the code health at <a href="https://landscape.io/github/rasbt/biopandas">https://landscape.io/github/rasbt/biopandas</a></li>
+<li>[ ]  Squash many small commits to a larger commit</li>
+</ol>
 <p><br></p>
-<h2 id="getting-started">Getting Started</h2>
+<h2 id="getting-started-creating-a-new-issue-and-forking-the-repository">Getting Started - Creating a New Issue and Forking the Repository</h2>
 <ul>
 <li>If you don't have a <a href="https://github.com">GitHub</a> account yet, please create one to contribute to this project.</li>
 <li>Please submit a ticket for your issue to discuss the fix or new feature before too much time and effort is spent for the implementation.</li>
@@ -190,64 +199,226 @@
 </ul>
 </li>
 </ul>
-<p><br>
-<br></p>
-<h2 id="making-changes">Making Changes</h2>
-<ul>
-<li>Please avoid working directly on the master branch but create a new feature branch:<ul>
-<li><code>git branch &lt;new_feature&gt;</code></li>
-<li><code>git checkout &lt;new_feature&gt;</code></li>
-</ul>
-</li>
-<li>When you make changes, please provide meaningful <code>commit</code> messages:<ul>
-<li><code>git add &lt;edited_files&gt;</code></li>
-<li><code>git commit -m '&lt;some note&gt;'</code></li>
-</ul>
-</li>
-<li>Make an entry in the <code>biopandas/docs/sources/CHANGELOG.md</code> file.</li>
-<li>Add tests to the <code>biopandas/biopandas/tests</code> directory.</li>
-<li>Run all tests (e.g., via <code>nosetests</code>  or <code>pytest</code>).</li>
-<li>If it is a new feature, it would be nice (but not necessary) if you could update the documentation.</li>
-<li>Push your changes to a topic branch:<ul>
-<li><code>git push -u origin &lt;new_feature&gt;</code></li>
-</ul>
-</li>
-<li>Submit a <code>pull request</code> from your forked repository via the GitHub web interface.</li>
-</ul>
-<p><br></p>
+<h2 id="syncing-an-existing-fork">Syncing an Existing Fork</h2>
+<p>If you already forked biopandas earlier, you can bring you "Fork" up to date
+with the master branch as follows:</p>
+<h4 id="1-configuring-a-remote-that-points-to-the-upstream-repository-on-github">1. Configuring a remote that points to the upstream repository on GitHub</h4>
+<p>List the current configured remote repository for your fork by executing</p>
+<pre><code class="bash">$ git remote -v
+</code></pre>
+
+<p>If you see something like</p>
+<pre><code class="bash">origin  https://github.com/&lt;your username&gt;/biopandas.git (fetch)
+origin  https://github.com/&lt;your username&gt;/biopandas.git (push)
+</code></pre>
+
+<p>you need to specify a new remote <em>upstream</em> repository via</p>
+<pre><code class="bash">$ git remote add upstream https://github.com/rasbt/biopandas.git
+</code></pre>
+
+<p>Now, verify the new upstream repository you've specified for your fork by executing</p>
+<pre><code class="bash">$ git remote -v
+</code></pre>
+
+<p>You should see following output if everything is configured correctly:</p>
+<pre><code class="bash">origin  https://github.com/&lt;your username&gt;/biopandas.git (fetch)
+origin  https://github.com/&lt;your username&gt;/biopandas.git (push)
+upstream    https://github.com/rasbt/biopandas.git (fetch)
+upstream    https://github.com/rasbt/biopandas.git (push)
+</code></pre>
+
+<h4 id="2-syncing-your-fork">2. Syncing your Fork</h4>
+<p>First, fetch the updates of the original project's master branch by executing:</p>
+<pre><code class="bash">$ git fetch upstream
+</code></pre>
+
+<p>You should see the following output</p>
+<pre><code class="bash">remote: Counting objects: xx, done.
+remote: Compressing objects: 100% (xx/xx), done.
+remote: Total xx (delta xx), reused xx (delta x)
+Unpacking objects: 100% (xx/xx), done.
+From https://github.com/rasbt/biopandas
+ * [new branch]      master     -&gt; upstream/master
+</code></pre>
+
+<p>This means that the commits to the <code>rasbt/biopandas</code> master branch are now
+stored in the local branch <code>upstream/master</code>.</p>
+<p>If you are not already on your local project's master branch, execute</p>
+<pre><code class="bash">$ git checkout master
+</code></pre>
+
+<p>Finally, merge the changes in upstream/master to your local master branch by
+executing</p>
+<pre><code class="bash">$ git merge upstream/master
+</code></pre>
+
+<p>which will give you an output that looks similar to</p>
+<pre><code class="bash">Updating xxx...xxx
+Fast-forward
+SOME FILE1                    |    12 +++++++
+SOME FILE2                    |    10 +++++++
+2 files changed, 22 insertions(+),
+</code></pre>
+
+<h2 id="making-changes-in-a-new-topic-branch">Making Changes in a New Topic Branch</h2>
+<h4 id="1-creating-a-new-feature-branch">1. Creating a new feature branch</h4>
+<p>Please avoid working directly on the master branch but create a new feature branch:</p>
+<pre><code class="bash">$ git branch &lt;new_feature&gt;
+</code></pre>
+
+<p>Switch to the new feature branch by executing</p>
+<pre><code class="bash">$ git checkout &lt;new_feature&gt;
+</code></pre>
+
+<h4 id="2-developing-the-new-feature-bug-fix">2. Developing the new feature / bug fix</h4>
+<h4 id="3-testing-your-code">3. Testing your code</h4>
+<p>Adding/modifying the unit tests and check if they pass:</p>
+<pre><code class="bash">nosetests -sv
+</code></pre>
+
+<pre><code class="bash">nosetests --with-coverage
+</code></pre>
+
+<h4 id="4-documenting-the-changes">4. Documenting the changes</h4>
+<p>Please add an entry to the <code>biopandas/docs/sources/CHANGELOG.md</code> file.
+If it is a new feature, it would also be nice if you could update the documentation in appropriate location in <code>biopandas/sources</code>.</p>
+<h4 id="5-committing-the-changes">5. Committing the changes</h4>
+<p>When you are ready to commit the changes, please provide a meaningful <code>commit</code> message:</p>
+<pre><code class="bash">$ git add &lt;modifies_files&gt; # or `git add .`
+$ git commit -m '&lt;meaningful commit message&gt;'
+</code></pre>
+
+<h4 id="6-optional-squashing-commits">6. Optional: squashing commits</h4>
+<p>If you made multiple smaller commits, it would be nice if you could group them into a larger, summarizing commit. First, list your recent commit via</p>
+<pre><code class="bash">$ git log
+</code></pre>
+
+<p>which will list the commits from newest to oldest in the following format by default:</p>
+<pre><code class="bash">commit 046e3af8a9127df8eac879454f029937c8a31c41
+Author: rasbt &lt;mail@sebastianraschka.com&gt;
+Date:   Tue Nov 24 03:46:37 2015 -0500
+
+    fixed setup.py
+
+commit c3c00f6ba0e8f48bbe1c9081b8ae3817e57ecc5c
+Author: rasbt &lt;mail@sebastianraschka.com&gt;
+Date:   Tue Nov 24 03:04:39 2015 -0500
+
+        documented feature x
+
+commit d87934fe8726c46f0b166d6290a3bf38915d6e75
+Author: rasbt &lt;mail@sebastianraschka.com&gt;
+Date:   Tue Nov 24 02:44:45 2015 -0500
+
+        added support for feature x
+</code></pre>
+
+<p>Assuming that it would make sense to group these 3 commits into one, we can execute</p>
+<pre><code class="bash">$ git rebase -i HEAD~3
+</code></pre>
+
+<p>which will bring our default git editor with the following contents:</p>
+<pre><code class="bash">pick d87934f added support for feature x
+pick c3c00f6 documented feature x
+pick 046e3af fixed setup.py
+</code></pre>
+
+<p>Since <code>c3c00f6</code> and <code>046e3af</code> are related to the original commit of <code>feature x</code>, let's keep the <code>d87934f</code> and squash the 2 following commits into this initial one by changes the lines to</p>
+<pre><code>pick d87934f added support for feature x
+squash c3c00f6 documented feature x
+squash 046e3af fixed setup.py
+</code></pre>
+
+<p>Now, save the changes in your editor. Now, quitting the editor will apply the <code>rebase</code> changes, and the editor will open a second time, prompting you to enter a new commit message. In this case, we could enter <code>support for feature x</code> to summarize the contributions.</p>
+<h4 id="7-uploading-the-changes">7. Uploading the changes</h4>
+<p>Push your changes to a topic branch to the git server by executing:</p>
+<pre><code class="bash">git push origin &lt;feature_branch&gt;
+</code></pre>
+
+<h4 id="8-submitting-a-pull-request">8. Submitting a <code>pull request</code></h4>
+<p>Go to your GitHub repository online, select the new feature branch, and submit a new pull request:</p>
 <p><img alt="" src="../img/contributing/pull_request.png" /></p>
-<p><br>
-<br></p>
-<h2 id="notes-for-developers">Notes for Developers</h2>
+<h2 id="notes-for-the-developers">Notes for the Developers</h2>
 <h3 id="building-the-documentation">Building the documentation</h3>
 <p>The documentation is built via <a href="http://www.mkdocs.org">MkDocs</a>; to ensure that the documentation is rendered correctly, you can view the documentation locally by executing <code>mkdocs serve</code> from the <code>biopandas/docs</code> directory.</p>
 <p>For example,</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs serve
 </code></pre>
 
-<p><br></p>
-<h4 id="1-tutorials">1. Tutorials</h4>
+<h4 id="1-editing-the-tutorials">1.  Editing the Tutorials</h4>
 <p>Please note that documents containing code examples are generated from IPython Notebook files and converted to markdown via</p>
 <pre><code class="bash">~/github/mlxtend/docs/examples$ nbconvert --to markdown &lt;file.ipynb&gt;
 </code></pre>
 
 <p>The markdown file should be placed into the documentation directory at <code>biopandas/docs/sources</code> to build the documentation via  MkDocs.
 If you are adding a new document, please also include it in the pages section in the <code>biopandas/docs/mkdocs.yml</code> file.</p>
-<p><br></p>
-<h4 id="2-api">2. API</h4>
+<h4 id="2-building-the-api-documentation">2. Building the API documentation</h4>
 <p>To build the API documentation, navigate to <code>biopandas/docs</code> and execute the <code>make_api.py</code> file from this directory via</p>
 <pre><code class="python">~/github/biopandas/docs$ python make_api.py
 </code></pre>
 
 <p>This should place the API documentation into the correct directories in <code>biopandas/docs/sources/api</code>.</p>
-<p><br></p>
-<h4 id="3-building-static-html-files">3. Building static HTML files</h4>
+<h4 id="3-building-static-html-files-of-the-documentation">3. Building static HTML files of the documentation</h4>
 <p>Build the static HTML files of the biopandas documentation via</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs build --clean
 </code></pre>
 
 <p>To deploy the documentation, execute</p>
 <pre><code class="bash">~/github/biopandas/docs$ mkdocs gh-deploy --clean
+</code></pre>
+
+<h3 id="uploading-a-new-version-to-pypi">Uploading a new version to PyPI</h3>
+<h4 id="1-creating-a-new-testing-environment">1. Creating a new testing environment</h4>
+<p>Assuming we are using <code>conda</code>, create a new python environment via</p>
+<pre><code class="bash">$ conda create -n 'biopandas-testing' python=3 pandas
+</code></pre>
+
+<p>Next, activate the environment by executing</p>
+<pre><code class="bash">$ source activate biopandas-testing
+</code></pre>
+
+<h4 id="2-installing-the-package-from-local-files">2. Installing the package from local files</h4>
+<p>Test the installation by executing</p>
+<pre><code class="bash">$ python setup.py install --record files.txt
+</code></pre>
+
+<p>the <code>--record files.txt</code> flag will create a <code>files.txt</code> file listing the locations where these files will be installed.</p>
+<p>Try to import the package to see if it works, for example, by executing</p>
+<pre><code class="bash">$ python -c 'import biopandas; print(biopandas.__file__)'
+</code></pre>
+
+<p>If everything seems to be fine, remove the installation via</p>
+<pre><code class="bash">$ cat files.txt | xargs rm -rf ; rm files.txt
+</code></pre>
+
+<p>Next, test if <code>pip</code> is able to install the packages. First, navigate to a different directory, and from there, install the package:</p>
+<pre><code class="bash">$ pip install code/biopandas/
+</code></pre>
+
+<p>and uninstall it again</p>
+<pre><code class="bash">$ pip uninstall biopandas
+</code></pre>
+
+<h4 id="3-deploying-the-package">3. Deploying the package</h4>
+<p>Consider deploying the package to the PyPI test server first. The setup instructions can be found <a href="https://wiki.python.org/moin/TestPyPI">here</a>.</p>
+<pre><code class="bash">$ python setup.py sdist upload -r https://testpypi.python.org/pypi
+</code></pre>
+
+<p>Test if it can be installed from there by executing</p>
+<pre><code class="bash">$ pip install -i https://testpypi.python.org/pypi biopandas
+</code></pre>
+
+<p>and uninstall it</p>
+<pre><code class="bash">$ pip uninstall biopandas
+</code></pre>
+
+<p>After this dry-run succeeded, repeat this process using the "real" PyPI:</p>
+<pre><code class="bash">$ python setup.py sdist upload
+</code></pre>
+
+<h4 id="4-removing-the-virtual-environment">4. Removing the virtual environment</h4>
+<p>Finally, to cleanup our local drive, remove the virtual testing environment via</p>
+<pre><code class="bash">$ conda remove --name 'biopandas-testing' --all
 </code></pre></div>
         </div>
 
