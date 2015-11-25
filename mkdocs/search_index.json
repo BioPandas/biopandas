@@ -72,13 +72,13 @@
         },
         {
             "location": "/installation/",
-            "text": "Installing biopandas \n\n\nYou can install \nbiopandas\n directly via pip by executing the following code from your command line:  \n\n\npip install biopandas  \n\n\n\n\n\n\nYou want to try out the latest features before they go live on PyPI? Install the \nbiopandas\n dev-version latest development version from the GitHub repository by executing\n\n\npip install git+git://github.com/rasbt/biopandas.git#egg=biopandas\n\n\n\n\n\n\nAlternatively, you download the package manually from \nPYPI\n or \nGitHub\n, unzip it, navigate into the package, and execute the command:\n\n\npython setup.py install",
+            "text": "Installing BioPandas \n\n\nYou can install \nbiopandas\n directly via pip by executing the following code from your command line:  \n\n\npip install biopandas  \n\n\n\n\n\n\nYou want to try out the latest features before they go live on PyPI? Install the \nbiopandas\n dev-version latest development version from the GitHub repository by executing\n\n\npip install git+git://github.com/rasbt/biopandas.git#egg=biopandas\n\n\n\n\n\n\nAlternatively, you download the package manually from \nPYPI\n or \nGitHub\n, unzip it, navigate into the package, and execute the command:\n\n\npython setup.py install",
             "title": "Installation"
         },
         {
             "location": "/installation/#installing-biopandas",
             "text": "You can install  biopandas  directly via pip by executing the following code from your command line:    pip install biopandas     You want to try out the latest features before they go live on PyPI? Install the  biopandas  dev-version latest development version from the GitHub repository by executing  pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas   Alternatively, you download the package manually from  PYPI  or  GitHub , unzip it, navigate into the package, and execute the command:  python setup.py install",
-            "title": "Installing biopandas"
+            "title": "Installing BioPandas"
         },
         {
             "location": "/contributing/",
