@@ -9,6 +9,10 @@ include_search: true
 docs_dir: sources
 theme: yeti
 
+site_favicon: favicon.ico
+
+theme_dir: cinder
+
 markdown_extensions:
   - extra
   - tables
