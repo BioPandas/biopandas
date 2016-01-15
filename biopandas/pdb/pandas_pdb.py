@@ -13,8 +13,9 @@ try:
     from urllib.request import urlopen
     from urllib.error import HTTPError, URLError
 except ImportError:
-    from urllib2 import urlopen, HTTPError, URLError # Python 2.7 compatible
+    from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
 from .engines import pdb_records
+
 
 class PandasPDB(object):
     """ Object for working with Protein Databank structure files.
@@ -141,21 +142,21 @@ class PandasPDB(object):
             Root Mean Square Deviation between df1 and df2
 
         """
-        if  df1.shape[0] != df2.shape[0]:
+        if df1.shape[0] != df2.shape[0]:
             raise AttributeError('DataFrames have unequal lengths')
         get_dict = PandasPDB._init_get_dict()
         if s:
             if s not in get_dict.keys():
-                raise AttributeError('s must be in %s or None' % get_dict.keys())
+                raise AttributeError('s must be in '
+                                     '%s or None' % get_dict.keys())
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
         total = ((df1['x_coord'] - df2['x_coord'])**2 +
-                (df1['y_coord'] - df2['y_coord'])**2 +
-                (df1['z_coord'] - df2['z_coord'])**2)
-        rmsd = round(( total.sum() / df1.shape[0] )**0.5, 4)
+                 (df1['y_coord'] - df2['y_coord'])**2 +
+                 (df1['z_coord'] - df2['z_coord'])**2)
+        rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
-
 
     @staticmethod
     def _init_get_dict():
@@ -187,16 +188,17 @@ class PandasPDB(object):
         """Load PDB file from rcsb.org."""
         txt = None
         try:
-            response = urlopen('http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower())
+            response = urlopen('http://www.rcsb.org/pdb/files/%s.pdb'
+                               % pdb_code.lower())
             txt = response.read()
             if sys.version_info[0] >= 3:
                 txt = txt.decode('utf-8')
             else:
                 txt = txt.encode('ascii')
         except HTTPError as e:
-            print('HTTP Error %s' %e.code)
+            print('HTTP Error %s' % e.code)
         except URLError as e:
-            print('URL Error %s' %e.args)
+            print('URL Error %s' % e.args)
         return txt
 
     def _parse_header_code(self):
@@ -204,14 +206,14 @@ class PandasPDB(object):
         code, header = '', ''
         if 'OTHERS' in self.df:
 
-            header = self.df['OTHERS'][self.df['OTHERS']['record_name'] == 'HEADER']
+            header = (self.df['OTHERS'][self.df['OTHERS']['record_name'] ==
+                      'HEADER'])
             if not header.empty:
                 header = header['entry'].values[0]
                 s = header.split()
                 if s:
                     code = s[-1].lower()
         return header, code
-
 
     @staticmethod
     def _get_mainchain(df, invert):
@@ -222,12 +224,11 @@ class PandasPDB(object):
                     (df['atom_name'] != 'N') &
                     (df['atom_name'] != 'CA')]
         else:
-            mc = df[ (df['atom_name'] == 'C') |
-                     (df['atom_name'] == 'O') |
-                     (df['atom_name'] == 'N') |
-                     (df['atom_name'] == 'CA')]
+            mc = df[(df['atom_name'] == 'C') |
+                    (df['atom_name'] == 'O') |
+                    (df['atom_name'] == 'N') |
+                    (df['atom_name'] == 'CA')]
         return mc
-
 
     @staticmethod
     def _get_hydrogen(df, invert):
@@ -249,7 +250,7 @@ class PandasPDB(object):
     def _construct_df(pdb_lines):
         """Construct DataFrames from list of PDB lines."""
         valids = tuple(pdb_records.keys())
-        line_lists = {r:[] for r in valids}
+        line_lists = {r: [] for r in valids}
         line_lists['OTHERS'] = []
         for line_num, line in enumerate(pdb_lines):
             if line.strip():
@@ -257,20 +258,23 @@ class PandasPDB(object):
                     record = line[:6].rstrip()
                     line_ele = ['' for _ in range(len(pdb_records[record])+1)]
                     for idx, ele in enumerate(pdb_records[record]):
-                        line_ele[idx] = line[ele['line'][0]:ele['line'][1]].strip()
+                        line_ele[idx] = (line[ele['line'][0]:ele['line'][1]]
+                                         .strip())
                     line_ele[-1] = line_num
                     line_lists[record].append(line_ele)
                 else:
-                    line_lists['OTHERS'].append([line[:6].rstrip(), line[6:-1].rstrip(), line_num])
+                    line_lists['OTHERS'].append([line[:6].rstrip(),
+                                                line[6:-1].rstrip(), line_num])
 
         dfs = {}
         for r in line_lists.items():
-            df = pd.DataFrame(r[1], columns=[c['id'] for c in pdb_records[r[0]]]+['line_idx'])
+            df = pd.DataFrame(r[1], columns=[c['id'] for c in
+                                             pdb_records[r[0]]]+['line_idx'])
             for c in pdb_records[r[0]]:
                 try:
                     df[c['id']] = df[c['id']].astype(c['type'])
                 except ValueError:
-                    # Value Error expected if float/int columns are empty strings
+                    # expect ValueError if float/int columns are empty strings
                     df[c['id']] = pd.Series(np.nan, index=df.index)
 
             dfs[r[0]] = df
@@ -300,28 +304,29 @@ class PandasPDB(object):
             openf = gzip.open
             w_mode = 'wt'
         else:
-            openf=open
+            openf = open
             w_mode = 'w'
         if not records:
             records = self.df.keys()
 
-        dfs = {r:self.df[r].copy() for r in records if not self.df[r].empty}
+        dfs = {r: self.df[r].copy() for r in records if not self.df[r].empty}
 
         for r in dfs.keys():
             for col in pdb_records[r]:
                 dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
                 dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
 
-            for c in (c for c in dfs[r].columns if c not in {'line_idx', 'OUT'}):
+            for c in (c for c in dfs[r].columns
+                      if c not in {'line_idx', 'OUT'}):
                 dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
 
         df = pd.concat(dfs)
         if pd.__version__ < '0.17.0':
             warn("You are using an old pandas version (< 0.17)"
-                          " that relies on the old sorting syntax."
-                          " Please consider updating your pandas"
-                          " installation to a more recent version.",
-                           DeprecationWarning)
+                 " that relies on the old sorting syntax."
+                 " Please consider updating your pandas"
+                 " installation to a more recent version.",
+                 DeprecationWarning)
             df.sort(columns='line_idx', inplace=True)
         else:
             df.sort_values(by='line_idx', inplace=True)
