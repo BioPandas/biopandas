@@ -1,5 +1,6 @@
 docs/py-docstring-parser/
 docs/site/
+docs/sources/api_modules/
 build/
 dist/
 MANIFEST

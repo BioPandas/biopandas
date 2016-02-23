@@ -1,32 +1,13 @@
-# `biopandas` API Documentation
+biopandas version: 0.1.5.dev0
+## PandasPDB
 
-#### Table of Contents
-
-<hr>
-**biopandas.pdb**
-
-BioPandas module for working with Protein Data Bank (PDB)
-files in pandas DataFrames.<hr>
-
-[biopandas.pdb.PandasPDB](#biopandaspdbpandaspdb)
-
-* [PandasPDB.fetch_pdb](#pandaspdbfetch_pdb)
-* [PandasPDB.get](#pandaspdbget)
-* [PandasPDB.read_pdb](#pandaspdbread_pdb)
-* [PandasPDB.rmsd](#pandaspdbrmsd)
-* [PandasPDB.to_pdb](#pandaspdbto_pdb)
-* [PandasPDB.df](#pandaspdbdf)
-
-
-<hr>
-
-## biopandas.pdb.PandasPDB
+*PandasPDB()*
 
 Object for working with Protein Databank structure files.
 
-*Attributes*
+**Attributes**
 
-* `df` (dict)
+- `df` : dict
 
     Dictionary storing pandas DataFrames for PDB record sections.
     The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
@@ -34,155 +15,154 @@ Object for working with Protein Databank structure files.
     'ATOM', 'HETATM', or 'ANISOU'
 
 
-* `pdb_text` (str)
+- `pdb_text` : str
 
     PDB file contents in raw text format
 
 
-* `header` (str)
+- `header` : str
 
     PDB file description
 
 
-* `code` (str)
+- `code` : str
 
     PDB code
 
 ### Methods
 
-####PandasPDB.fetch_pdb
+<hr>
 
-`PandasPDB.fetch_pdb(pdb_code)`
+*fetch_pdb(pdb_code)*
 
 Fetches PDB file contents from the Protein Databank at rcsb.org.
 
-*Parameters*
+**Parameters**
 
-* `pdb_code` (str)
+- `pdb_code` : str
 
     A 4-letter PDB code, e.g., "3eiy"
 
-*Returns*
+**Returns**
+
 self
 
+<hr>
 
-####PandasPDB.get
-
-`PandasPDB.get(s, df=None, invert=False)`
+*get(s, df=None, invert=False)*
 
 Filter PDB DataFrames by properties
 
-*Parameters*
+**Parameters**
 
-* `s` (str  in {'main chain', 'hydrogen', 'c-alpha'})
+- `s` : str  in {'main chain', 'hydrogen', 'c-alpha'}
 
     String to specify which entries to return
 
 
-* `df` (pandas.DataFrame, default: None)
+- `df` : pandas.DataFrame, default: None
 
     Optional DataFrame to perform the filter operation on.
     If df=None, filters on self.df['ATOM']
 
 
-* `invert` (bool, default: True)
+- `invert` : bool, default: True
 
     Inverts the search query. For example if s='hydrogen' and
     invert=True, all but hydrogen entries are returned
 
-*Returns*
+**Returns**
 
-* `df` (pandas.DataFrame)
+- `df` : pandas.DataFrame
 
     Returns a DataFrame view on the filtered entries.
 
+<hr>
 
-####PandasPDB.read_pdb
-
-`PandasPDB.read_pdb(path)`
+*read_pdb(path)*
 
 Read PDB files (unzipped or gzipped) from local drive
 
-*Attributes*
+**Attributes**
 
-* `path` (str)
+- `path` : str
 
     Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
 
-*Returns*
+**Returns**
+
 self
 
+<hr>
 
-####PandasPDB.rmsd
-
-`PandasPDB.rmsd(df1, df2, s='main chain', invert=False)`
+*rmsd(df1, df2, s='main chain', invert=False)*
 
 Compute the Root Mean Square Deviation between molecules.
 
-*Parameters*
+**Parameters**
 
-* `df1` (pandas.DataFrame)
+- `df1` : pandas.DataFrame
 
     DataFrame with HETATM, ATOM, and/or ANISOU entries
 
 
-* `df2` (pandas.DataFrame)
+- `df2` : pandas.DataFrame
 
     Second DataFrame for RMSD computation against df1. Must have the
     same number of entries as df1
 
 
-* `s` (str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain')
+- `s` : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'
 
     String to specify which entries to consider.
 
 
-* `invert` (bool, default: False)
+- `invert` : bool, default: False
 
     Inverts the string query if true. For example, the setting
     `s='hydrogen', invert=True` computes the RMSD based on all
     but hydrogen atoms.
 
-*Returns*
+**Returns**
 
-* `rmsd` (float)
+- `rmsd` : float
 
     Root Mean Square Deviation between df1 and df2
 
+<hr>
 
-####PandasPDB.to_pdb
-
-`PandasPDB.to_pdb(path, records=None, gz=False, append_newline=True)`
+*to_pdb(path, records=None, gz=False, append_newline=True)*
 
 Write record DataFrames to a PDB file or gzipped PDB file.
 
-*Parameters*
+**Parameters**
 
-* `path` (str)
+- `path` : str
 
     A valid output path for the pdb file
 
 
-* `records` (iterable, default: None)
+- `records` : iterable, default: None
 
     A list of PDB record sections in
     {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
     Writes all lines to PDB if records=None
 
 
-* `gz` (bool, default: False)
+- `gz` : bool, default: False
 
     Writes a gzipped PDB file if True
 
 
-* `append_newline` (bool, default: True)
+- `append_newline` : bool, default: True
 
     Appends a new line at the end of the PDB file if True
 
-
 ### Properties
 
-#### PandasPDB.df
+<hr>
+
+*df*
 
 Acccess dictionary of pandas DataFrames for PDB record sections.
 

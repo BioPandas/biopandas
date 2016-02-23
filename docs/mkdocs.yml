@@ -5,9 +5,9 @@ site_description: Biopandas is a python package for working with molecular struc
 
 repo_url: https://github.com/rasbt/biopandas
 
-include_search: true
+#include_search: true
 docs_dir: sources
-theme: yeti
+#theme: yeti
 
 site_favicon: favicon.ico
 
@@ -32,7 +32,7 @@ pages:
 - Tutorials:
   - tutorials/Working_with_PDB_Structures_in_DataFrames.md
 - API:
-  - api/biopandas.pdb.md
+  - api_subpackages/biopandas.pdb.md
 - Changelog: changelog.md
 - Installation: installation.md
 - Contributing: contributing.md

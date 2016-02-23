@@ -1,367 +1,406 @@
-# -*- coding: utf-8 -*-
-
-# Customized version of the
-# API Markdown Generator from https://github.com/kwikteam/phy/blob/master/tools/api.py
-# by Cyrille Rossant (https://github.com/rossant)
-
-"""
-Original copyright notice:
-
-Copyright (c) 2014, Kwik Team All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-Neither the name of phy nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."""
+# API generator script
+#
+# Sebastian Raschka 2014-2016
+# biopandas Machine Learning Library Extensions
+#
+# Author: Sebastian Raschka <sebastianraschka.com>
+#
+# License: BSD 3 clause
 
 
-from __future__ import print_function
-
-"""Minimal API documentation generation."""
-
-#------------------------------------------------------------------------------
-# Imports
-#------------------------------------------------------------------------------
-
+import string
 import inspect
-import os.path as op
-import re
+import os
 import sys
+import pkgutil
+import shutil
 
-from six import string_types
 
-
-#------------------------------------------------------------------------------
-# Utility functions
-#------------------------------------------------------------------------------
-
-def _name(obj):
+def _obj_name(obj):
     if hasattr(obj, '__name__'):
         return obj.__name__
-    elif inspect.isdatadescriptor(obj):
-        return obj.fget.__name__
 
 
-def _full_name(subpackage, obj):
-    return '{}.{}'.format(subpackage.__name__, _name(obj))
+def docstring_to_markdown(docstring):
+    """Convert a Python object's docstring to markdown
 
+    Parameters
+    ----------
+    docstring : str
+        The docstring body.
 
-def _anchor(name):
-    anchor = name.lower().replace(' ', '-')
-    anchor = re.sub(r'[^\w\- ]', '', anchor)
-    return anchor
+    Returns
+    ----------
+    clean_lst : list
+        The markdown formatted docstring as lines (str) in a Python list.
 
-
-_docstring_header_pattern = re.compile(r'^([^\n]+)\n[\-\=]{3,}$',
-                                       flags=re.MULTILINE,
-                                       )
-_docstring_parameters_pattern = re.compile(r'^([^ \n]+) \: ([^\n]+)$',
-                                           flags=re.MULTILINE,
-                                           )
-
-
-def _replace_docstring_header(paragraph):
-    """Process NumPy-like function docstrings."""
-
-    # Replace Markdown headers in docstrings with light headers in bold.
-    paragraph = re.sub(_docstring_header_pattern,
-                       r'*\1*',
-                       paragraph,
-                       )
-
-    paragraph = re.sub(_docstring_parameters_pattern,
-                       r'\n* `\1` (\2)\n',
-                       paragraph,
-                       )
-
-    return paragraph
-
-
-def _doc(obj):
-    doc = inspect.getdoc(obj) or ''
-    doc = doc.strip()
-    if doc and '---' in doc:
-        return _replace_docstring_header(doc)
-    else:
-        return doc
-
-
-def _import_module(module_name):
     """
-    Imports a module. A single point of truth for importing modules to
-    be documented by `pdoc`. In particular, it makes sure that the top
-    module in `module_name` can be imported by using only the paths in
-    `pdoc.import_path`.
+    new_docstring_lst = []
 
-    If a module has already been imported, then its corresponding entry
-    in `sys.modules` is returned. This means that modules that have
-    changed on disk cannot be re-imported in the same process and have
-    its documentation updated.
+    for idx, line in enumerate(docstring.split('\n')):
+        line = line.strip()
+        if set(line) in ({'-'}, {'='}):
+            new_docstring_lst[idx-1] = '**%s**' % new_docstring_lst[idx-1]
+        elif line.startswith('>>>'):
+            line = '    %s' % line
+        new_docstring_lst.append(line)
+
+    for idx, line in enumerate(new_docstring_lst[1:]):
+        if line:
+            if line.startswith('Description : '):
+                new_docstring_lst[idx+1] = (new_docstring_lst[idx+1]
+                                            .replace('Description : ', ''))
+            elif ' : ' in line:
+                line = line.replace(' : ', '` : ')
+                new_docstring_lst[idx+1] = '\n- `%s\n' % line
+            elif '**' in new_docstring_lst[idx-1] and '**' not in line:
+                new_docstring_lst[idx+1] = '\n%s' % line.lstrip()
+            elif '**' not in line:
+                new_docstring_lst[idx+1] = '    %s' % line.lstrip()
+
+    clean_lst = []
+    for line in new_docstring_lst:
+        if set(line.strip()) not in ({'-'}, {'='}):
+            clean_lst.append(line)
+    return clean_lst
+
+
+def object_to_markdownpage(obj_name, obj, s=''):
+    """Generate the markdown documentation of a Python object.
+
+    Parameters
+    ----------
+    obj_name : str
+        Name of the Python object.
+    obj : object
+        Python object (class, method, function, ...)
+    s : str (default: '')
+        A string to which the documentation will be appended to.
+
+    Returns
+    ---------
+    s : str
+        The markdown page.
+
     """
-    import_path = sys.path[:]
-    if import_path != sys.path:
-        # Such a kludge. Only restrict imports if the `import_path` has
-        # been changed. We don't want to always restrict imports, since
-        # providing a path to `imp.find_module` stops it from searching
-        # in special locations for built ins or frozen modules.
-        #
-        # The problem here is that this relies on the `sys.path` not being
-        # independently changed since the initialization of this module.
-        # If it is changed, then some packages may fail.
-        #
-        # Any other options available?
-
-        # Raises an exception if the parent module cannot be imported.
-        # This hopefully ensures that we only explicitly import modules
-        # contained in `pdoc.import_path`.
-        imp.find_module(module_name.split('.')[0], import_path)
-
-    if module_name in sys.modules:
-        return sys.modules[module_name]
-    else:
-        __import__(module_name)
-        return sys.modules[module_name]
-
-
-#------------------------------------------------------------------------------
-# Introspection methods
-#------------------------------------------------------------------------------
-
-def _is_public(obj):
-    name = _name(obj) if not isinstance(obj, string_types) else obj
-    if name:
-        return not name.startswith('_')
-    else:
-        return True
-
-
-def _is_defined_in_package(obj, package):
-    if isinstance(obj, property):
-        obj = obj.fget
-    mod = inspect.getmodule(obj)
-    if mod and hasattr(mod, '__name__'):
-        name = mod.__name__
-        return name.split('.')[0] == package
-    return True
-
-
-def _iter_doc_members(obj, package=None):
-    for _, member in inspect.getmembers(obj):
-        if _is_public(member):
-            if package is None or _is_defined_in_package(member, package):
-                yield member
-
-
-def _iter_subpackages(package, subpackages):
-    """Iterate through a list of subpackages."""
-    for subpackage in subpackages:
-        yield _import_module('{}.{}'.format(package, subpackage))
-
-
-def _iter_vars(mod):
-    """Iterate through a list of variables define in a module's
-    public namespace."""
-    vars = sorted(var for var in dir(mod) if _is_public(var))
-    for var in vars:
-        yield getattr(mod, var)
-
-
-def _iter_functions(subpackage):
-    return filter(inspect.isfunction, _iter_vars(subpackage))
-
-
-def _iter_classes(subpackage):
-    return filter(inspect.isclass, _iter_vars(subpackage))
-
-
-def _iter_methods(klass, package=None):
-    for member in _iter_doc_members(klass, package):
-        if inspect.isfunction(member) or inspect.ismethod(member):
-            if inspect.isdatadescriptor(member):
-                continue
-            yield member
-
-
-def _iter_properties(klass, package=None):
-    for member in _iter_doc_members(klass, package):
-        if isinstance(member, property):
-            yield member.fget
-
-
-#------------------------------------------------------------------------------
-# API doc generation
-#------------------------------------------------------------------------------
-
-def _concat(header, docstring):
-    return '{header}\n\n{docstring}'.format(header=header,
-                                            docstring=docstring,
-                                            )
-
-
-def _function_header(subpackage, func):
-    """Generate the docstring of a function."""
-    args = inspect.formatargspec(*inspect.getfullargspec(func))
-    return "{name}{args}".format(name=_full_name(subpackage, func),
-                                   args=args,
-                                   )
-
-
-def _doc_function(subpackage, func):
-    return _concat(_function_header(subpackage, func),
-                   _doc(func),
-                   )
-
-
-def _doc_method(klass, func):
-    """Generate the docstring of a method."""
-    argspec = inspect.getfullargspec(func)
-    # Remove first 'self' argument.
-    if argspec.args and argspec.args[0] == 'self':
-        del argspec.args[0]
-    args = inspect.formatargspec(*argspec)
-    header = "`{klass}.{name}{args}`".format(klass=klass.__name__,
-                                             name=_name(func),
-                                             args=args,
-                                             )
-    docstring = _doc(func)
-    return _concat(header, docstring)
-
-
-def _doc_property(klass, prop):
-    """Generate the docstring of a property."""
-    header = "{klass}.{name}".format(klass=klass.__name__,
-                                       name=_name(prop),
-                                       )
-    docstring = _doc(prop)
-    return _concat(header, docstring)
-
-
-def _link(name, anchor=None):
-    return "[{name}](#{anchor})".format(name=name,
-                                        anchor=anchor or _anchor(name),
-                                        )
-
-
-def _generate_preamble(package, subpackages):
-
-    yield "# `%s` API Documentation" % package
-
-    yield """#### Table of Contents"""
-    #yield _doc(_import_module(package))
-
-    # Table of contents: list of modules.
-    for subpackage in _iter_subpackages(package, subpackages):
-        subpackage_name = subpackage.__name__
-
-        yield """<hr>
-**%s**
-
-%s<hr>""" % (subpackage_name, _doc(_import_module(subpackage_name)))
-
-
-        #yield "##### %s" % _link(subpackage_name)
-
-        # List of top-level functions in the subpackage.
-        for func in _iter_functions(subpackage):
-            yield '* ' + _link(_full_name(subpackage, func),
-                               _anchor(_function_header(subpackage, func))
-                               )
-
-
-        # All public classes.
-        for klass in _iter_classes(subpackage):
-
-            # Class documentation.
-            yield _link(_full_name(subpackage, klass))
-
-            for method in _iter_methods(klass, package):
-                yield "* %s" % _link(_full_name(klass, method))
-
-            for prop in _iter_properties(klass, package):
-                yield "* %s" % _link(_full_name(klass, prop))
-
-        yield ""
-
-    yield "<hr>"
-
-
-def _generate_paragraphs(package, subpackages):
-    """Generate the paragraphs of the API documentation."""
-
-    # API doc of each module.
-    for subpackage in _iter_subpackages(package, subpackages):
-        subpackage_name = subpackage.__name__
-
-        #yield "# %s" % subpackage_name
-
-        # Subpackage documentation.
-        #yield _doc(_import_module(subpackage_name))
-
-        # List of top-level functions in the subpackage.
-        for func in _iter_functions(subpackage):
-            yield """#### %s""" % _doc_function(subpackage, func)
-
-        # All public classes.
-        for klass in _iter_classes(subpackage):
-
-            # Class documentation.
-            yield "## {}".format(_full_name(subpackage, klass))
-            yield _doc(klass)
-
-            yield """### Methods"""
-            for method in _iter_methods(klass, package):
-                s = _doc_method(klass, method)
-                header = s.strip('`').split('(')[0]
-                yield """####%s
-
-%s
-""" % (header, s)
-#                yield """<br>
-###### %s""" % _doc_method(klass, method)
-
-            yield """### Properties"""
-            for prop in _iter_properties(klass, package):
-                yield """#### %s""" % _doc_property(klass, prop)
-
-
-def _print_paragraph(paragraph):
-    out = ''
-    out += paragraph + '\n'
-    if not paragraph.startswith('* '):
-        out += '\n'
-    return out
-
-
-def generate_api_doc(package, subpackages, path=None):
-    out = ''
-    for paragraph in _generate_preamble(package, subpackages):
-        out += _print_paragraph(paragraph)
-    for paragraph in _generate_paragraphs(package, subpackages):
-        out += _print_paragraph(paragraph)
-    if path is None:
-        return out
-    else:
-        with open(path, 'w') as f:
-            f.write(out)
-
-
-if __name__ == '__main__':
-
-    build = {'biopandas': {'subpackages':
-                                   ['pdb'],
-                           'output files':
-                                   ['./sources/api/biopandas.pdb.md']}}
-
-
-    for package in build:
-        package = 'biopandas'
-        subpackages = ['pdb']
-
-        curdir = op.dirname(op.realpath(__file__))
-        path = op.join(curdir, './sources/api/biopandas.pdb.md')
-        generate_api_doc(package, subpackages, path=path)
+    # header
+    s += '## %s\n' % obj_name
+
+    # function/class/method signature
+    sig = str(inspect.signature(obj)).replace('(self, ', '(')
+    s += '\n*%s%s*\n\n' % (obj_name, sig)
+
+    # docstring body
+    doc = str(inspect.getdoc(obj))
+    ds = docstring_to_markdown(doc)
+    s += '\n'.join(ds)
+
+    # document methods
+    if inspect.isclass(obj):
+        methods, properties = '\n\n### Methods', '\n\n### Properties'
+        members = inspect.getmembers(obj)
+        for m in members:
+            if not m[0].startswith('_') and len(m) >= 2:
+                if isinstance(m[1], property):
+                    properties += '\n\n<hr>\n\n*%s*\n\n' % m[0]
+                    m_doc = docstring_to_markdown(str(inspect.getdoc(m[1])))
+                    properties += '\n'.join(m_doc)
+                else:
+                    sig = str(inspect.signature(m[1]))
+                    sig = sig.replace('(self, ', '(').replace('(self)', '()')
+                    sig = sig.replace('(self)', '()')
+                    methods += '\n\n<hr>\n\n*%s%s*\n\n' % (m[0], sig)
+                    m_doc = docstring_to_markdown(str(inspect.getdoc(m[1])))
+                    methods += '\n'.join(m_doc)
+        s += methods
+        s += properties
+    return s + '\n\n'
+
+
+def import_package(rel_path_to_package, package_name):
+    """Imports a python package into the current namespace.
+
+    Parameters
+    ----------
+    rel_path_to_package : str
+        Path to the package containing director relative from this script's
+        directory.
+    package_name : str
+        The name of the package to be imported.
+
+    Returns
+    ---------
+    package : The imported package object.
+
+    """
+    try:
+        curr_dir = os.path.dirname(os.path.realpath(__file__))
+    except NameError:
+        curr_dir = os.path.dirname(os.path.realpath(os.getcwd()))
+    package_path = os.path.join(curr_dir, rel_path_to_package)
+    if package_path not in sys.path:
+        sys.path = [package_path] + sys.path
+    package = __import__(package_name)
+    return package
+
+
+def get_subpackages(package):
+    """Return subpackages of a package.
+
+    Parameters
+    ----------
+    package : python package object
+
+    Returns
+    --------
+    list : list containing (importer, subpackage_name) tuples
+
+    """
+    return [i for i in pkgutil.iter_modules(package.__path__) if i[2]]
+
+
+def get_modules(package):
+    """Return modules of a package.
+
+    Parameters
+    ----------
+    package : python package object
+
+    Returns
+    --------
+    list : list containing (importer, subpackage_name) tuples
+
+    """
+    return [i for i in pkgutil.iter_modules(package.__path__)]
+
+
+def get_functions_and_classes(package):
+    """Retun lists of functions and classes from a package.
+
+    Parameters
+    ----------
+    package : python package object
+
+    Returns
+    --------
+    list, list : list of classes and functions
+        Each sublist consists of [name, member] sublists.
+
+    """
+    classes, functions = [], []
+    for name, member in inspect.getmembers(package):
+        if not name.startswith('_'):
+            if inspect.isclass(member):
+                classes.append([name, member])
+            elif inspect.isfunction(member):
+                functions.append([name, member])
+    return classes, functions
+
+
+def generate_api_docs(package, api_dir, clean=False, printlog=True):
+    """Generate a module level API documentation of a python package.
+
+    Description
+    -----------
+    Generates markdown API files for each module in a Python package whereas
+    the structure is as follows:
+    `package/package.subpackage/package.subpackage.module.md`
+
+    Parameters
+    -----------
+    package : Python package object
+    api_dir : str
+        Output directory path for the top-level package directory
+    clean : bool (default: False)
+        Removes previously existing API directory if True.
+    printlog : bool (default: True)
+        Prints a progress log to the standard output screen if True.
+
+    """
+    if printlog:
+        print('\n\nGenerating Module Files\n%s\n' % (50 * '='))
+
+    prefix = package.__name__ + "."
+
+    # clear the previous version
+    if clean:
+        if os.path.isdir(api_dir):
+            shutil.rmtree(api_dir)
+
+    # get subpackages
+    api_docs = {}
+    for importer, pkg_name, is_pkg in pkgutil.iter_modules(
+                                                           package.__path__,
+                                                           prefix):
+        if is_pkg:
+            subpackage = __import__(pkg_name, fromlist="dummy")
+            prefix = subpackage.__name__ + "."
+
+            # get functions and classes
+            classes, functions = get_functions_and_classes(subpackage)
+
+            target_dir = os.path.join(api_dir, subpackage.__name__)
+
+            # create the subdirs
+            if not os.path.isdir(target_dir):
+                os.makedirs(target_dir)
+                if printlog:
+                    print('created %s' % target_dir)
+
+            # create markdown documents in memory
+            for obj in classes + functions:
+                md_path = os.path.join(target_dir, obj[0]) + '.md'
+                if md_path not in api_docs:
+                    api_docs[md_path] = object_to_markdownpage(obj_name=obj[0],
+                                                               obj=obj[1],
+                                                               s='')
+                else:
+                    api_docs[md_path] += object_to_markdownpage(obj_name=(
+                                                                obj[0]),
+                                                                obj=obj[1],
+                                                                s='')
+
+    # write to files
+    for d in sorted(api_docs):
+        prev = ''
+        if os.path.isfile(d):
+            with open(d, 'r') as f:
+                prev = f.read()
+            if prev == api_docs[d]:
+                msg = 'skipped'
+            else:
+                msg = 'updated'
+        else:
+            msg = 'created'
+
+        if msg != 'skipped':
+            with open(d, 'w') as f:
+                f.write(api_docs[d])
+
+        if printlog:
+            print('%s %s' % (msg, d))
+
+
+def summarize_methdods_and_functions(api_modules, out_dir,
+                                     printlog=False, clean=True,
+                                     str_above_header=''):
+    """Generates subpacke-level summary files.
+
+    Description
+    -----------
+    A function to generate subpacke-level summary markdown API files from
+    a module-level API documentation previously created via the
+    `generate_api_docs` function.
+    The output structure is:
+        package/package.subpackage.md
+
+    Parameters
+    ----------
+    api_modules : str
+        Path to the API documentation crated via `generate_api_docs`
+    out_dir : str
+        Path to the desired output directory for the new markdown files.
+    clean : bool (default: False)
+        Removes previously existing API directory if True.
+    printlog : bool (default: True)
+        Prints a progress log to the standard output screen if True.
+    str_above_header : str (default: '')
+        Places a string just above the header.
+
+    """
+    if printlog:
+        print('\n\nGenerating Subpackage Files\n%s\n' % (50 * '='))
+
+    if clean:
+        if os.path.isdir(out_dir):
+            shutil.rmtree(out_dir)
+
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+        if printlog:
+            print('created %s' % out_dir)
+
+    subdir_paths = [os.path.join(api_modules, d)
+                    for d in os.listdir(api_modules)
+                    if not d.startswith('.')]
+
+    out_files = [os.path.join(out_dir, os.path.basename(d)) + '.md'
+                 for d in subdir_paths]
+
+    for sub_p, out_f in zip(subdir_paths, out_files):
+        module_paths = (os.path.join(sub_p, m)
+                        for m in os.listdir(sub_p)
+                        if not m.startswith('.'))
+
+        new_output = []
+        if str_above_header:
+            new_output.append(str_above_header)
+        for p in module_paths:
+            with open(p, 'r') as r:
+                new_output.extend(r.readlines())
+
+        msg = ''
+        if not os.path.isfile(out_f):
+            msg = 'created'
+
+        if msg != 'created':
+            with open(out_f, 'r') as f:
+                prev = f.readlines()
+            if prev != new_output:
+                msg = 'updated'
+            else:
+                msg = 'skipped'
+
+        if msg != 'skipped':
+            with open(out_f, 'w') as f:
+                f.write(''.join(new_output))
+
+        if printlog:
+            print('%s %s' % (msg, out_f))
+
+
+if __name__ == "__main__":
+
+    import argparse
+    parser = argparse.ArgumentParser(
+            description='Convert docstring into a markdown API documentation.',
+            formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('-n', '--package_name',
+                        default='biopandas',
+                        help='Name of the package')
+    parser.add_argument('-d', '--package_dir',
+                        default='../../biopandas/',
+                        help="Path to the package's enclosing directory")
+    parser.add_argument('-o1', '--output_module_api',
+                        default='../docs/sources/api_modules',
+                        help=('Target directory for the module-level'
+                              ' API Markdown files'))
+    parser.add_argument('-o2', '--output_subpackage_api',
+                        default='../docs/sources/api_subpackages',
+                        help=('Target directory for the'
+                              'subpackage-level API Markdown files'))
+    parser.add_argument('-c', '--clean',
+                        action='store_true',
+                        help='Remove previous API files')
+    parser.add_argument('-s', '--silent',
+                        action='store_true',
+                        help='Suppress log printed to the screen')
+    parser.add_argument('-v', '--version',
+                        action='version',
+                        version='v. 0.1')
+
+    args = parser.parse_args()
+
+    package = import_package(args.package_dir, args.package_name)
+    generate_api_docs(package=package,
+                      api_dir=args.output_module_api,
+                      clean=args.clean,
+                      printlog=not(args.silent))
+    summarize_methdods_and_functions(api_modules=args.output_module_api,
+                                     out_dir=args.output_subpackage_api,
+                                     printlog=not(args.silent),
+                                     clean=args.clean,
+                                     str_above_header=('biopandas'
+                                                       ' version: %s\n' % (
+                                                        package.__version__)))
