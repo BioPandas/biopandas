@@ -6,22 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta name="author" content="Sebastian Raschka"> 
-    <link rel="canonical" href="http://rasbt.github.io/biopandas/changelog/"> 
-    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="canonical" href="http://rasbt.github.io/biopandas/api_subpackages/biopandas.pdb/"> 
+    <link rel="shortcut icon" href="../../../../favicon.ico">
 
-    <title>Changelog - BioPandas</title>
+    <title>Biopandas.pdb - BioPandas</title>
 
-    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="../css/base.css" rel="stylesheet">
-    <link href="../css/cinder.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
 
 
-    <link href="../extra.css" rel="stylesheet">
+    <link href="../../extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -76,7 +76,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">BioPandas</a>
+            <a class="navbar-brand" href="../..">BioPandas</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -87,7 +87,7 @@
                 
                 
                     <li >
-                        <a href="..">Home</a>
+                        <a href="../..">Home</a>
                     </li>
                 
                 
@@ -98,7 +98,7 @@
                         
                             
 <li >
-    <a href="../tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
+    <a href="../../tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
 </li>
 
                         
@@ -107,13 +107,13 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="../api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+<li class="active">
+    <a href="./">Biopandas.pdb</a>
 </li>
 
                         
@@ -122,20 +122,20 @@
                 
                 
                 
-                    <li class="active">
-                        <a href="./">Changelog</a>
+                    <li >
+                        <a href="../../changelog/">Changelog</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../installation/">Installation</a>
+                        <a href="../../installation/">Installation</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../contributing/">Contributing</a>
+                        <a href="../../contributing/">Contributing</a>
                     </li>
                 
                 
@@ -150,12 +150,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../api_subpackages/biopandas.pdb/">
+                        <a rel="next" href="../../tutorials/Working_with_PDB_Structures_in_DataFrames/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../installation/">
+                        <a rel="prev" href="../../changelog/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -180,40 +180,161 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#changelog">Changelog</a></li>
+        <li class="main active"><a href="#pandaspdb">PandasPDB</a></li>
         
-            <li><a href="#015dev">0.1.5.dev</a></li>
+            <li><a href="#methods">Methods</a></li>
         
-            <li><a href="#014-2015-11-24">0.1.4 (2015-11-24)</a></li>
-        
-            <li><a href="#013-2015-11-23">0.1.3 (2015-11-23)</a></li>
-        
-            <li><a href="#012-2015-11-23">0.1.2 (2015-11-23)</a></li>
+            <li><a href="#properties">Properties</a></li>
         
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="changelog">Changelog <img alt="" src="../img/logos/3eiy_120.png" /></h1>
-<h4 id="015dev">0.1.5.dev</h4>
+<p>biopandas version: 0.1.5.dev0</p>
+<h2 id="pandaspdb">PandasPDB</h2>
+<p><em>PandasPDB()</em></p>
+<p>Object for working with Protein Databank structure files.</p>
+<p><strong>Attributes</strong></p>
 <ul>
-<li>Include test data in the PyPI package; add install_requires for pandas</li>
+<li>
+<p><code>df</code> : dict</p>
+<p>Dictionary storing pandas DataFrames for PDB record sections.
+The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
+where 'OTHERS' contains all entries that are not parsed as
+'ATOM', 'HETATM', or 'ANISOU'</p>
+</li>
+<li>
+<p><code>pdb_text</code> : str</p>
+<p>PDB file contents in raw text format</p>
+</li>
+<li>
+<p><code>header</code> : str</p>
+<p>PDB file description</p>
+</li>
+<li>
+<p><code>code</code> : str</p>
+<p>PDB code</p>
+</li>
 </ul>
-<h4 id="014-2015-11-24">0.1.4 (2015-11-24)</h4>
+<h3 id="methods">Methods</h3>
+<hr>
+
+<p><em>fetch_pdb(pdb_code)</em></p>
+<p>Fetches PDB file contents from the Protein Databank at rcsb.org.</p>
+<p><strong>Parameters</strong></p>
 <ul>
-<li>Needed to bump the version number due to a bug in the PyPI setup.py script</li>
-<li>Support for the old pandas sorting syntax (<code>DataFrame.sort</code> vs <code>DataFrame.sort_values</code>) incl. DeprecationWarning</li>
+<li>
+<p><code>pdb_code</code> : str</p>
+<p>A 4-letter PDB code, e.g., "3eiy"</p>
+</li>
 </ul>
-<h4 id="013-2015-11-23">0.1.3 (2015-11-23)</h4>
+<p><strong>Returns</strong></p>
+<p>self</p>
+<hr>
+
+<p><em>get(s, df=None, invert=False)</em></p>
+<p>Filter PDB DataFrames by properties</p>
+<p><strong>Parameters</strong></p>
 <ul>
-<li>Exception handling in tests if PDB goes down (which just happened)</li>
-<li>Added a separate ANISOU engine to handle those records correctly</li>
+<li>
+<p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha'}</p>
+<p>String to specify which entries to return</p>
+</li>
+<li>
+<p><code>df</code> : pandas.DataFrame, default: None</p>
+<p>Optional DataFrame to perform the filter operation on.
+If df=None, filters on self.df['ATOM']</p>
+</li>
+<li>
+<p><code>invert</code> : bool, default: True</p>
+<p>Inverts the search query. For example if s='hydrogen' and
+invert=True, all but hydrogen entries are returned</p>
+</li>
 </ul>
-<h4 id="012-2015-11-23">0.1.2 (2015-11-23)</h4>
+<p><strong>Returns</strong></p>
 <ul>
-<li>First Release</li>
-</ul></div>
+<li>
+<p><code>df</code> : pandas.DataFrame</p>
+<p>Returns a DataFrame view on the filtered entries.</p>
+</li>
+</ul>
+<hr>
+
+<p><em>read_pdb(path)</em></p>
+<p>Read PDB files (unzipped or gzipped) from local drive</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li>
+<p><code>path</code> : str</p>
+<p>Path to the PDB file in .pdb format or gzipped format (.pdb.gz)</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>self</p>
+<hr>
+
+<p><em>rmsd(df1, df2, s='main chain', invert=False)</em></p>
+<p>Compute the Root Mean Square Deviation between molecules.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>df1</code> : pandas.DataFrame</p>
+<p>DataFrame with HETATM, ATOM, and/or ANISOU entries</p>
+</li>
+<li>
+<p><code>df2</code> : pandas.DataFrame</p>
+<p>Second DataFrame for RMSD computation against df1. Must have the
+same number of entries as df1</p>
+</li>
+<li>
+<p><code>s</code> : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'</p>
+<p>String to specify which entries to consider.</p>
+</li>
+<li>
+<p><code>invert</code> : bool, default: False</p>
+<p>Inverts the string query if true. For example, the setting
+<code>s='hydrogen', invert=True</code> computes the RMSD based on all
+but hydrogen atoms.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>rmsd</code> : float</p>
+<p>Root Mean Square Deviation between df1 and df2</p>
+</li>
+</ul>
+<hr>
+
+<p><em>to_pdb(path, records=None, gz=False, append_newline=True)</em></p>
+<p>Write record DataFrames to a PDB file or gzipped PDB file.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>path</code> : str</p>
+<p>A valid output path for the pdb file</p>
+</li>
+<li>
+<p><code>records</code> : iterable, default: None</p>
+<p>A list of PDB record sections in
+{'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
+Writes all lines to PDB if records=None</p>
+</li>
+<li>
+<p><code>gz</code> : bool, default: False</p>
+<p>Writes a gzipped PDB file if True</p>
+</li>
+<li>
+<p><code>append_newline</code> : bool, default: True</p>
+<p>Appends a new line at the end of the PDB file if True</p>
+</li>
+</ul>
+<h3 id="properties">Properties</h3>
+<hr>
+
+<p><em>df</em></p>
+<p>Acccess dictionary of pandas DataFrames for PDB record sections.</p></div>
         
     </div>
 
@@ -225,17 +346,17 @@
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>
 
-    <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="../js/bootstrap-3.0.3.min.js"></script>
-    <script src="../js/highlight.pack.js"></script>
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
-    var base_url = '..';
+    var base_url = '../..';
     </script>
-    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
-    <script src="../js/base.js"></script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+    <script src="../../js/base.js"></script>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-    <script src="../mathjaxhelper.js"></script>
+    <script src="../../mathjaxhelper.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">
