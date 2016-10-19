@@ -90,7 +90,7 @@ class PandasPDB(object):
 
         Parameters
         ----------
-        s : str  in {'main chain', 'hydrogen', 'c-alpha'}
+        s : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}
             String to specify which entries to return
 
         df : pandas.DataFrame, default: None
@@ -115,8 +115,41 @@ class PandasPDB(object):
             df = self._df['ATOM']
         return self._get_dict[s](df, invert=invert)
 
+    def impute_element(self, sections=['ATOM', 'HETATM'], inplace=False):
+        """Impute element_symbol from atom_name section.
+
+        Parameters
+        ----------
+        sections : iterable (default: ['ATOM', 'HETATM'])
+            Coordinate sections for which the element symbols should be
+            imputed.
+
+        inplace : bool (default: False)
+            Performs the operation in-place if True and returns a copy of the
+            PDB DataFrame otherwise.
+
+        Returns
+        ---------
+        DataFrame
+
+        """
+        if inplace:
+            t = self.df
+        else:
+            t = self.df.copy()
+            for d in self.df:
+                t[d] = self.df[d].copy()
+
+        for sec in sections:
+            t[sec]['element_symbol'] = \
+                t[sec][['atom_name', 'element_symbol']].\
+                apply(lambda x: x[0][1]
+                      if len(x[1]) == 3
+                      else x[0][0], axis=1)
+        return t
+
     @staticmethod
-    def rmsd(df1, df2, s='main chain', invert=False):
+    def rmsd(df1, df2, s=None, invert=False):
         """Compute the Root Mean Square Deviation between molecules.
 
         Parameters
@@ -128,8 +161,10 @@ class PandasPDB(object):
             Second DataFrame for RMSD computation against df1. Must have the
             same number of entries as df1
 
-        s : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'
-            String to specify which entries to consider.
+        s : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,
+            default: None
+            String to specify which entries to consider. If None, considers
+            all atoms for comparison.
 
         invert : bool, default: False
             Inverts the string query if true. For example, the setting
@@ -163,7 +198,9 @@ class PandasPDB(object):
         """Initialize dictionary for filter operations."""
         get_dict = {'main chain': PandasPDB._get_mainchain,
                     'hydrogen': PandasPDB._get_hydrogen,
-                    'c-alpha': PandasPDB._get_calpha}
+                    'c-alpha': PandasPDB._get_calpha,
+                    'carbon': PandasPDB._get_carbon,
+                    'heavy': PandasPDB._get_heavy}
         return get_dict
 
     @staticmethod
@@ -234,9 +271,17 @@ class PandasPDB(object):
     def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
         if invert:
-            return df[(df['atom_name'] != 'H')]
+            return df[(df['element_symbol'] != 'H')]
         else:
-            return df[(df['atom_name'] == 'H')]
+            return df[(df['element_symbol'] == 'H')]
+
+    @staticmethod
+    def _get_heavy(df, invert):
+        """Return only heavy atom entries from a DataFrame"""
+        if invert:
+            return df[df['element_symbol'] == 'H']
+        else:
+            return df[df['element_symbol'] != 'H']
 
     @staticmethod
     def _get_calpha(df, invert):
@@ -245,6 +290,14 @@ class PandasPDB(object):
             return df[df['atom_name'] != 'CA']
         else:
             return df[df['atom_name'] == 'CA']
+
+    @staticmethod
+    def _get_carbon(df, invert):
+        """Return c-alpha atom entries from a DataFrame"""
+        if invert:
+            return df[df['element_symbol'] == 'C']
+        else:
+            return df[df['element_symbol'] != 'C']
 
     @staticmethod
     def _construct_df(pdb_lines):
@@ -256,7 +309,8 @@ class PandasPDB(object):
             if line.strip():
                 if line.startswith(valids):
                     record = line[:6].rstrip()
-                    line_ele = ['' for _ in range(len(pdb_records[record])+1)]
+                    line_ele = ['' for _ in range(len(
+                        pdb_records[record]) + 1)]
                     for idx, ele in enumerate(pdb_records[record]):
                         line_ele[idx] = (line[ele['line'][0]:ele['line'][1]]
                                          .strip())
@@ -269,7 +323,7 @@ class PandasPDB(object):
         dfs = {}
         for r in line_lists.items():
             df = pd.DataFrame(r[1], columns=[c['id'] for c in
-                                             pdb_records[r[0]]]+['line_idx'])
+                                             pdb_records[r[0]]] + ['line_idx'])
             for c in pdb_records[r[0]]:
                 try:
                     df[c['id']] = df[c['id']].astype(c['type'])

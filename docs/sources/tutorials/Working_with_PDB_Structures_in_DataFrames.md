@@ -1,3 +1,4 @@
+
 # Working with PDB Structures in DataFrames
 
 ## Loading PDB Files
@@ -28,6 +29,11 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
+
+    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8>
+
+
+
 #### 2 b)
 
 Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):
@@ -38,6 +44,12 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 ```
 
 
+
+
+    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8>
+
+
+
 After the file was succesfully loaded, we have access to the following attributes:
 
 
@@ -46,8 +58,6 @@ print('PDB Code: %s' % ppdb.code)
 print('PDB Header Line: %s' % ppdb.header)
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 ```
-
-```text
 
     PDB Code: 3eiy
     PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
@@ -68,7 +78,7 @@ print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
     SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
     SOURCE   5 EXPRESSION_SYSTEM
     ...
-```
+
 
 The most interesting / useful attribute is the [`PandasPDB.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
@@ -198,7 +208,7 @@ ppdb.df.keys()
 
 
 
-    dict_keys(['ANISOU', 'ATOM', 'OTHERS', 'HETATM'])
+    dict_keys(['HETATM', 'ANISOU', 'ATOM', 'OTHERS'])
 
 
 
@@ -936,14 +946,33 @@ from biopandas.pdb import PandasPDB
 
 l_1 = PandasPDB().read_pdb('./data/lig_conf_1.pdb')
 l_2 = PandasPDB().read_pdb('./data/lig_conf_2.pdb')
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], s='hydrogen', invert=True)
+r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s=None) # all atoms, including hydrogens
 print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 2.6444 Angstrom
 
 
-Note that the `s` parameter in [`PandasPDB.rmsd`](../api/biopandas.pdb#pandaspdbrmsd) specifies the search string "consider all hydrogen atoms" and via the `invert=True` option, we say "Compute the RMSD for everything BUT the hydrogen atoms" or "Compute the RSMD based on the heavy atoms only".
+
+```python
+r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s='carbon') # carbon atoms only
+print('RMSD: %.4f Angstrom' % r)
+```
+
+    RMSD: 3.1405 Angstrom
+
+
+
+```python
+r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s='heavy') # heavy atoms only
+print('RMSD: %.4f Angstrom' % r)
+```
+
+    RMSD: 1.9959 Angstrom
+
 
 Similarly, we can compute the RMSD between 2 related protein structures:
 
@@ -955,7 +984,7 @@ The hydrogen-free RMSD:
 ```python
 p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
 p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='hydrogen', invert=True)
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
 print('RMSD: %.4f Angstrom' % r)
 ```
 
@@ -968,7 +997,7 @@ Or the RMSD between the main chains only:
 ```python
 p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
 p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain', invert=False)
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
 print('RMSD: %.4f Angstrom' % r)
 ```
 
