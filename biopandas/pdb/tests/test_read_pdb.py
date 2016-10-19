@@ -69,9 +69,6 @@ def test_fetch_pdb():
         txt[:100] == three_eiy[:100]
         ppdb.fetch_pdb('3eiy')
         assert ppdb.pdb_text == txt
-        txt = ppdb._fetch_pdb('3ey')
-        err = "We're sorry, but the requested file is not available"
-        assert err in txt
 
 
 def test__read_pdb_gz():
@@ -148,3 +145,9 @@ def test_get_df():
 
     shape = ppdb.get('main chain').shape
     assert shape == (696, 21), shape
+
+    shape = ppdb.get('heavy').shape
+    assert shape == (1330, 21), shape
+
+    shape = ppdb.get('carbon').shape
+    assert shape == (473, 21), shape

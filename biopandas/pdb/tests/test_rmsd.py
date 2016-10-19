@@ -58,4 +58,10 @@ def test_protein():
 def test_ligand():
     r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
                        s='hydrogen', invert=True)
+    assert r == 1.9959, r
+
+
+def test_ligand_default():
+    r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
+                       s=None)
     assert r == 2.6444, r

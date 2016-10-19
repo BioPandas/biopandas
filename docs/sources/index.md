@@ -59,8 +59,7 @@ So, why don't we take pandas to the structural biology world? Working with molec
 >>> from biopandas.pdb import PandasPDB
 >>> pl1 = PandasPDB().read_pdb('./docking_pose_1.pdb')
 >>> pl2 = PandasPDB().read_pdb('./docking_pose_2.pdb')
->>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
-                       s='hydrogen', invert=True)
+>>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'])
 >>> print('RMSD: %.4f Angstrom' % r)
 RMSD: 2.6444 Angstrom
 ```

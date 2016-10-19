@@ -4,6 +4,7 @@
 
 
 [![Continuous Integration](https://travis-ci.org/rasbt/biopandas.svg?branch=master)](https://travis-ci.org/rasbt/biopandas)
+[![Build status](https://ci.appveyor.com/api/projects/status/jcp91fvbgmqws30p/branch/master?svg=true)](https://ci.appveyor.com/project/rasbt/biopandas/branch/master)
 [![Code Coverage](https://coveralls.io/repos/rasbt/biopandas/badge.svg?branch=master&service=github)](https://coveralls.io/github/rasbt/biopandas?branch=master)
 [![Code Health](https://landscape.io/github/rasbt/biopandas/master/landscape.svg?style=flat)](https://landscape.io/github/rasbt/biopandas/master)
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)

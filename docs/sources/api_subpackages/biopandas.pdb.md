@@ -55,7 +55,7 @@ Filter PDB DataFrames by properties
 
 **Parameters**
 
-- `s` : str  in {'main chain', 'hydrogen', 'c-alpha'}
+- `s` : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}
 
     String to specify which entries to return
 
@@ -79,6 +79,29 @@ Filter PDB DataFrames by properties
 
 <hr>
 
+*impute_element(sections=['ATOM', 'HETATM'], inplace=False)*
+
+Impute element_symbol from atom_name section.
+
+**Parameters**
+
+- `sections` : iterable (default: ['ATOM', 'HETATM'])
+
+    Coordinate sections for which the element symbols should be
+    imputed.
+
+
+- `inplace` : bool (default: False)
+
+    Performs the operation in-place if True and returns a copy of the
+    PDB DataFrame otherwise.
+
+**Returns**
+
+DataFrame
+
+<hr>
+
 *read_pdb(path)*
 
 Read PDB files (unzipped or gzipped) from local drive
@@ -95,7 +118,7 @@ self
 
 <hr>
 
-*rmsd(df1, df2, s='main chain', invert=False)*
+*rmsd(df1, df2, s=None, invert=False)*
 
 Compute the Root Mean Square Deviation between molecules.
 
@@ -112,9 +135,11 @@ Compute the Root Mean Square Deviation between molecules.
     same number of entries as df1
 
 
-- `s` : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'
+- `s` : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,
 
-    String to specify which entries to consider.
+    default: None
+    String to specify which entries to consider. If None, considers
+    all atoms for comparison.
 
 
 - `invert` : bool, default: False
