@@ -69,7 +69,9 @@ RMSD: 2.6444 Angstrom
 
 ## Quick Install
 
-- latest version (from GitHub): `pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas`
-- latest PyPI version: `pip install biopandas`
+- install the latest version (from GitHub): `pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas`
+- install the latest PyPI version: `pip install biopandas`
+- install biopandas via conda-forge: `conda install biopandas -c conda-forge`
+
 
 For more information, please see [http://rasbt.github.io/biopandas/installation/](http://rasbt.github.io/biopandas/installation/).
