@@ -5,6 +5,8 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 from biopandas.pdb import PandasPDB
+import warnings
+import pandas as pd
 import os
 
 
@@ -36,6 +38,19 @@ def test_defaults():
     os.remove(OUTFILE)
 
 
+def test_nonexpected_column():
+    ppdb = PandasPDB()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    ppdb.df['HETATM']['test'] = pd.Series('test',
+                                          index=ppdb.df['HETATM'].index)
+    with warnings.catch_warnings(record=True) as w:
+        ppdb.to_pdb(path=OUTFILE, records=['HETATM'])
+    with open(OUTFILE, 'r') as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    assert f1 == hetatm
+
+
 def test_records():
     """Test private _read_pdb."""
     ppdb = PandasPDB()
@@ -54,5 +69,5 @@ def test_anisou():
     ppdb.to_pdb(path=OUTFILE, records=None)
     with open(OUTFILE, 'r') as f:
         f1 = f.read()
-    # os.remove(OUTFILE)
-    assert f1 == four_eiy
+    os.remove(OUTFILE)
+    assert f1 == four_eiy, print(f1)
