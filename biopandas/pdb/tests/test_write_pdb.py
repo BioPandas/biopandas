@@ -70,4 +70,4 @@ def test_anisou():
     with open(OUTFILE, 'r') as f:
         f1 = f.read()
     os.remove(OUTFILE)
-    assert f1 == four_eiy, print(f1)
+    assert f1 == four_eiy
