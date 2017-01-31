@@ -6,6 +6,13 @@
 
 import pandas as pd
 
+pdb_df_columns = {'record_name', 'atom_number', 'blank_1',
+                  'atom_name', 'alt_loc', 'residue_name',
+                  'blank_2', 'chain_id', 'residue_number',
+                  'insertion', 'blank_3', 'x_coord', 'y_coord',
+                  'z_coord', 'occupancy', 'b_factor',
+                  'blank_4', 'segment_id', 'element_symbol', 'charge'}
+
 pdb_atomdict = [{'id': 'record_name',
                  'line': [0, 6],
                  'type': str,

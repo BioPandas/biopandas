@@ -15,6 +15,7 @@ try:
 except ImportError:
     from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
 from .engines import pdb_records
+from .engines import pdb_df_columns
 
 
 class PandasPDB(object):
@@ -370,9 +371,14 @@ class PandasPDB(object):
                 dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
                 dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
 
-            for c in (c for c in dfs[r].columns
-                      if c not in {'line_idx', 'OUT'}):
-                dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
+            for c in dfs[r].columns:
+                if c in {'line_idx', 'OUT'}:
+                    pass
+                elif r in {'ATOM', 'HETATM'} and c not in pdb_df_columns:
+                    warn('Column %s is not an expected column and'
+                         ' will be skipped.' % c)
+                else:
+                    dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
 
         df = pd.concat(dfs)
         if pd.__version__ < '0.17.0':
