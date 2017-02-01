@@ -8,6 +8,8 @@
 
 ##### New Features
 
+- Added an `amino3to1` method to BiopandasPDB data frames to convert 3-amino acid letter codes to 1-letter codes.
+
 ##### Changes
 
 - Raises a warning if `PandasPDB` is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.
