@@ -16,6 +16,7 @@ except ImportError:
     from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
 from .engines import pdb_records
 from .engines import pdb_df_columns
+from .engines import amino3to1dict
 
 
 class PandasPDB(object):
@@ -334,6 +335,37 @@ class PandasPDB(object):
 
             dfs[r[0]] = df
         return dfs
+
+    def amino3to1(self, record='ATOM',
+                  residue_col='residue_name', fillna='?'):
+        """Creates 1-letter amino acid codes from DataFrame
+
+        Non-canonical amino-acids are converted as follows:
+        ASH (protonated ASP) => D
+        CYX (disulfide-bonded CYS) => C
+        GLH (protonated GLU) => E
+        HID/HIE/HIP (different protonation states of HIS) = H
+        HYP (hydroxyproline) => P
+        MSE (selenomethionine) => M
+
+        Parameters
+        ----------
+        record : str (default: 'ATOM')
+            Specfies the record DataFrame
+        residue_col : str (default: 'residue_name')
+            Column in `record` DataFrame to look for 3-letter amino acid
+            codes for the conversion
+        fillna : str (default: '?')
+            Placeholder string to use for unknown amino acids
+
+        Returns
+        ---------
+        pandas.Series : Pandas Series object containing the 1-letter amino
+            acid codes after conversion
+
+        """
+        tmp = self.df[record].drop_duplicates(subset='residue_number')
+        return tmp[residue_col].map(amino3to1dict).fillna(fillna)
 
     def to_pdb(self, path, records=None, gz=False, append_newline=True):
         """Write record DataFrames to a PDB file or gzipped PDB file.
