@@ -8,7 +8,9 @@
 
 ##### New Features
 
-- Added an `amino3to1` method to BiopandasPDB data frames to convert 3-amino acid letter codes to 1-letter codes.
+- Added an `amino3to1` method to `BiopandasPDB` data frames to convert 3-amino acid letter codes to 1-letter codes.
+- Added an `distance` method to `BiopandasPDB` data frames to compute the Euclidean distance between atoms and a reference point.
+
 
 ##### Changes
 

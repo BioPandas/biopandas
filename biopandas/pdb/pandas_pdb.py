@@ -367,6 +367,28 @@ class PandasPDB(object):
         tmp = self.df[record].drop_duplicates(subset='residue_number')
         return tmp[residue_col].map(amino3to1dict).fillna(fillna)
 
+    def distance(self, xyz=(0.00, 0.00, 0.00), record='ATOM'):
+        """Computes Euclidean distance between atoms and a 3D point.
+
+        Parameters
+        ----------
+        xyz : tuple (0.00, 0.00, 0.00)
+            X, Y, and Z coordinate of the reference center for the distance
+            computation
+        record : str (default: 'ATOM')
+            Specfies the record DataFrame
+
+        Returns
+        ---------
+        pandas.Series : Pandas Series object containing the Euclidean
+            distance between the atoms in the record section and `xyz`.
+
+        """
+        return self.df[record].apply(lambda x: np.sqrt(np.sum(
+            ((x['x_coord'] - xyz[0])**2,
+             (x['y_coord'] - xyz[1])**2,
+             (x['z_coord'] - xyz[2])**2))), axis=1)
+
     def to_pdb(self, path, records=None, gz=False, append_newline=True):
         """Write record DataFrames to a PDB file or gzipped PDB file.
 
