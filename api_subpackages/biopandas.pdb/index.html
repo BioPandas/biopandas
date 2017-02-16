@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta name="author" content="Sebastian Raschka"> 
     <link rel="canonical" href="http://rasbt.github.io/biopandas/api_subpackages/biopandas.pdb/"> 
-    <link rel="shortcut icon" href="../../../../favicon.ico">
+    <link rel="shortcut icon" href="../../favicon.ico">
 
     <title>Biopandas.pdb - BioPandas</title>
 
@@ -238,7 +238,7 @@ where 'OTHERS' contains all entries that are not parsed as
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha'}</p>
+<p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}</p>
 <p>String to specify which entries to return</p>
 </li>
 <li>
@@ -261,6 +261,25 @@ invert=True, all but hydrogen entries are returned</p>
 </ul>
 <hr>
 
+<p><em>impute_element(sections=['ATOM', 'HETATM'], inplace=False)</em></p>
+<p>Impute element_symbol from atom_name section.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>sections</code> : iterable (default: ['ATOM', 'HETATM'])</p>
+<p>Coordinate sections for which the element symbols should be
+imputed.</p>
+</li>
+<li>
+<p><code>inplace</code> : bool (default: False)</p>
+<p>Performs the operation in-place if True and returns a copy of the
+PDB DataFrame otherwise.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>DataFrame</p>
+<hr>
+
 <p><em>read_pdb(path)</em></p>
 <p>Read PDB files (unzipped or gzipped) from local drive</p>
 <p><strong>Attributes</strong></p>
@@ -274,7 +293,7 @@ invert=True, all but hydrogen entries are returned</p>
 <p>self</p>
 <hr>
 
-<p><em>rmsd(df1, df2, s='main chain', invert=False)</em></p>
+<p><em>rmsd(df1, df2, s=None, invert=False)</em></p>
 <p>Compute the Root Mean Square Deviation between molecules.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -288,8 +307,10 @@ invert=True, all but hydrogen entries are returned</p>
 same number of entries as df1</p>
 </li>
 <li>
-<p><code>s</code> : str in {'main chain', 'hydrogen', 'c-alpha'}, default: 'main chain'</p>
-<p>String to specify which entries to consider.</p>
+<p><code>s</code> : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,</p>
+<p>default: None
+String to specify which entries to consider. If None, considers
+all atoms for comparison.</p>
 </li>
 <li>
 <p><code>invert</code> : bool, default: False</p>

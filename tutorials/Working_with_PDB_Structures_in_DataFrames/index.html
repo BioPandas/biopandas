@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta name="author" content="Sebastian Raschka"> 
     <link rel="canonical" href="http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/"> 
-    <link rel="shortcut icon" href="../../../../favicon.ico">
+    <link rel="shortcut icon" href="../../favicon.ico">
 
     <title>Working with PDB Structures in DataFrames - BioPandas</title>
 
@@ -216,39 +216,41 @@ ppdb = PandasPDB().fetch_pdb('3eiy')
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb')
 </code></pre>
 
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8&gt;
+</code></pre>
 <h4 id="2-b">2 b)</h4>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8&gt;
+</code></pre>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
 <pre><code class="python">print('PDB Code: %s' % ppdb.code)
 print('PDB Header Line: %s' % ppdb.header)
 print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 </code></pre>
 
-<pre><code class="text">
-    PDB Code: 3eiy
-    PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
+<pre><code>PDB Code: 3eiy
+PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
 
-    Raw PDB file contents:
+Raw PDB file contents:
 
-    HEADER    HYDROLASE                               17-SEP-08   3EIY              
-    TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
-    TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
-    COMPND    MOL_ID: 1;                                                            
-    COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
-    COMPND   3 CHAIN: A;                                                            
-    COMPND   4 EC: 3.6.1.1;                                                         
-    COMPND   5 ENGINEERED: YES                                                      
-    SOURCE    MOL_ID: 1;                                                            
-    SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
-    SOURCE   3 ORGANISM_TAXID: 320372;                                              
-    SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
-    SOURCE   5 EXPRESSION_SYSTEM
-    ...
+HEADER    HYDROLASE                               17-SEP-08   3EIY              
+TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
+TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
+COMPND    MOL_ID: 1;                                                            
+COMPND   2 MOLECULE: INORGANIC PYROPHOSPHATASE;                                 
+COMPND   3 CHAIN: A;                                                            
+COMPND   4 EC: 3.6.1.1;                                                         
+COMPND   5 ENGINEERED: YES                                                      
+SOURCE    MOL_ID: 1;                                                            
+SOURCE   2 ORGANISM_SCIENTIFIC: BURKHOLDERIA PSEUDOMALLEI 1710B;                
+SOURCE   3 ORGANISM_TAXID: 320372;                                              
+SOURCE   4 GENE: PPA, BURPS1710B_1237;                                          
+SOURCE   5 EXPRESSION_SYSTEM
+...
 </code></pre>
-
 <p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPDB.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
 <pre><code class="python">ppdb.df['ATOM'].head(3)
 </code></pre>
@@ -468,7 +470,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 ppdb.df.keys()
 </code></pre>
 
-<pre><code>dict_keys(['ANISOU', 'ATOM', 'OTHERS', 'HETATM'])
+<pre><code>dict_keys(['HETATM', 'ANISOU', 'ATOM', 'OTHERS'])
 </code></pre>
 <ul>
 <li>'ATOM': contains the entries from the ATOM coordinate section</li>
@@ -572,7 +574,7 @@ ppdb.df.keys()
 
 <pre><code>{'b_factor', 'occupancy', 'segment_id', 'x_coord', 'y_coord', 'z_coord'}
 </code></pre>
-<p>Instead, the "ANISOU" DataFrame contains the anisotropic temperature factors "U(-,-)" -- note that these are scaled by a factor of <mathjax>$10^4$</mathjax> (<mathjax>$\text{Angstroms}^2$</mathjax>) by convention.</p>
+<p>Instead, the "ANISOU" DataFrame contains the anisotropic temperature factors "U(-,-)" -- note that these are scaled by a factor of $10^4$ ($\text{Angstroms}^2$) by convention.</p>
 <pre><code class="python">set(ppdb.df['ANISOU'].columns).difference(set(ppdb.df['ATOM'].columns))
 </code></pre>
 
@@ -1059,8 +1061,8 @@ plt.show()
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>BioPandas also comes with certain convenience functions, for example, ...</p>
 <p>The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
-<p><mathjax>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
-= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$</mathjax></p>
+<p>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
+= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$</p>
 <p>So, assuming that the we have the following 2 conformation of a ligand molecule</p>
 <p><img alt="" src="../img/ligand_rmsd.png" /></p>
 <p>we can compute the RMSD as follows:</p>
@@ -1068,19 +1070,33 @@ plt.show()
 
 l_1 = PandasPDB().read_pdb('./data/lig_conf_1.pdb')
 l_2 = PandasPDB().read_pdb('./data/lig_conf_2.pdb')
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], s='hydrogen', invert=True)
+r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s=None) # all atoms, including hydrogens
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
 <pre><code>RMSD: 2.6444 Angstrom
 </code></pre>
-<p>Note that the <code>s</code> parameter in <a href="../../api/biopandas.pdb#pandaspdbrmsd"><code>PandasPDB.rmsd</code></a> specifies the search string "consider all hydrogen atoms" and via the <code>invert=True</code> option, we say "Compute the RMSD for everything BUT the hydrogen atoms" or "Compute the RSMD based on the heavy atoms only".</p>
+<pre><code class="python">r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s='carbon') # carbon atoms only
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+
+<pre><code>RMSD: 3.1405 Angstrom
+</code></pre>
+<pre><code class="python">r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s='heavy') # heavy atoms only
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+
+<pre><code>RMSD: 1.9959 Angstrom
+</code></pre>
 <p>Similarly, we can compute the RMSD between 2 related protein structures:</p>
 <p><img alt="" src="../img/1t48_rmsd.png" /></p>
 <p>The hydrogen-free RMSD:</p>
 <pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
 p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='hydrogen', invert=True)
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
@@ -1089,7 +1105,7 @@ print('RMSD: %.4f Angstrom' % r)
 <p>Or the RMSD between the main chains only:</p>
 <pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
 p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain', invert=False)
+r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
