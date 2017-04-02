@@ -8,7 +8,7 @@ import gzip
 
 
 def split_multimol2(mol2_path):
-    """
+    r"""
     Splits a multi-mol2 file into individual Mol2 file contents.
 
     Parameters

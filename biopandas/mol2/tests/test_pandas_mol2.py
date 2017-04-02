@@ -1,3 +1,4 @@
+""" Utility function for reading Tripos MOL2 files from files"""
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause

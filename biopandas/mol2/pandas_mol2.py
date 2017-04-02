@@ -1,3 +1,4 @@
+""" Class for working with Tripos MOL2 files"""
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
@@ -25,9 +26,10 @@ COLUMN_TYPES = (int, str, float, float, float, str, int, str, float)
 
 
 class PandasMol2(object):
-    """ Object for working with Tripos Mol2 structure files.
+    """
+    Object for working with Tripos Mol2 structure files.
 
-   Attributes
+    Attributes
     ----------
     df : pandas.DataFrame
         DataFrame of a Mol2's ATOM section
@@ -106,7 +108,7 @@ class PandasMol2(object):
         return self
 
     def read_mol2_from_list(self, mol2_lines, mol2_code, columns=None):
-        """Reads Mol2 file from a list into DataFrames
+        r"""Reads Mol2 file from a list into DataFrames
 
         Attributes
         ----------
@@ -143,7 +145,6 @@ class PandasMol2(object):
         self
 
         """
-
         self._load_mol2(mol2_lines, mol2_code, columns)
         return self
 

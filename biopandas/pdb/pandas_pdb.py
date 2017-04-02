@@ -1,3 +1,5 @@
+""" Class for working with PDB files"""
+
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
@@ -20,7 +22,8 @@ from .engines import amino3to1dict
 
 
 class PandasPdb(object):
-    """ Object for working with Protein Databank structure files.
+    """
+    Object for working with Protein Databank structure files.
 
     Attributes
     ----------
