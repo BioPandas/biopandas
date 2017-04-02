@@ -1,7 +1,7 @@
 biopandas version: 0.2.0.dev0
-## PandasMOL2
+## PandasMol2
 
-*PandasMOL2()*
+*PandasMol2()*
 
 Object for working with Tripos Mol2 structure files.
 

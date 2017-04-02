@@ -1,7 +1,7 @@
 biopandas version: 0.2.0.dev0
-## PandasPDB
+## PandasPdb
 
-*PandasPDB()*
+*PandasPdb()*
 
 Object for working with Protein Databank structure files.
 

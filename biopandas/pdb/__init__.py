@@ -9,6 +9,6 @@ BioPandas module for working with Protein Data Bank (PDB)
 files in pandas DataFrames.
 """
 
-from .pandas_pdb import PandasPDB
+from .pandas_pdb import PandasPdb
 
-__all__ = ["PandasPDB"]
+__all__ = ["PandasPdb"]

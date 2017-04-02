@@ -35,10 +35,10 @@ So, why don't we take pandas to the structural biology world? Working with molec
 ![3eiy](./docs/sources/img/index/3eiy.png)
 
 ```python
-# Initialize a new PandasPDB object
+# Initialize a new PandasPdb object
 # and fetch the PDB file from rcsb.org
->>> from biopandas.pdb import PandasPDB
->>> ppdb = PandasPDB().fetch_pdb('3eiy')
+>>> from biopandas.pdb import PandasPdb
+>>> ppdb = PandasPdb().fetch_pdb('3eiy')
 >>> ppdb.df['ATOM'].head()
 ```
 
@@ -53,10 +53,10 @@ So, why don't we take pandas to the structural biology world? Working with molec
 ```python
 # Load structures from your drive and compute the
 # Root Mean Square Deviation
->>> from biopandas.pdb import PandasPDB
->>> pl1 = PandasPDB().read_pdb('./docking_pose_1.pdb')
->>> pl2 = PandasPDB().read_pdb('./docking_pose_2.pdb')
->>> r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
+>>> from biopandas.pdb import PandasPdb
+>>> pl1 = PandasPdb().read_pdb('./docking_pose_1.pdb')
+>>> pl2 = PandasPdb().read_pdb('./docking_pose_2.pdb')
+>>> r = PandasPdb.rmsd(pl1.df['HETATM'], pl2.df['HETATM'],
                        s='hydrogen', invert=True)
 >>> print('RMSD: %.4f Angstrom' % r)
 

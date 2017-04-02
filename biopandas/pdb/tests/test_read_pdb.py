@@ -5,7 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 import os
 import numpy as np
 import pandas as pd
@@ -50,7 +50,7 @@ with open(TESTDATA_FILENAME2, 'r') as f:
 
 def test__read_pdb():
     """Test private _read_pdb"""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     txt = ppdb._read_pdb(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
@@ -60,7 +60,7 @@ def test_fetch_pdb():
     """Test fetch_pdb"""
 
     try:
-        ppdb = PandasPDB()
+        ppdb = PandasPdb()
         txt = ppdb._fetch_pdb('3eiy')
     except HTTPError:
         pass
@@ -73,14 +73,14 @@ def test_fetch_pdb():
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
 def test__construct_df():
     """Test pandas dataframe construction"""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     dfs = ppdb._construct_df(three_eiy.splitlines())
     assert set(dfs.keys()) == {'OTHERS', 'ATOM', 'ANISOU', 'HETATM'}
     assert set(dfs['ATOM'].columns) == set(ATOM_DF_COLUMNS)
@@ -102,7 +102,7 @@ def test__construct_df():
 
 def test_read_pdb():
     """Test public read_pdb"""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     assert ppdb.pdb_text == three_eiy
     assert ppdb.code == '3eiy', ppdb.code
@@ -110,7 +110,7 @@ def test_read_pdb():
 
 def test_anisou_input_handling():
     """Test public read_pdb"""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME2)
     assert ppdb.pdb_text == four_eiy
     assert ppdb.code == '4eiy', ppdb.code
@@ -118,20 +118,20 @@ def test_anisou_input_handling():
 
 @raises(AttributeError)
 def test_get_exceptions():
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     ppdb.get('main-chai')
 
 
 def test_get_all():
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     for i in ['c-alpha', 'hydrogen', 'main chain']:
         ppdb.get(i)
 
 
 def test_get_df():
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
 
     shape = ppdb.get('c-alpha').shape

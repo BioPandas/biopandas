@@ -4,14 +4,14 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 import os
 
 
 def test_defaults():
     TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), 'data',
                                                             '1t48_995.pdb')
-    p1t48 = PandasPDB()
+    p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     expect = ['M', 'E', 'M', 'E', 'K', 'E', 'F', 'E', 'Q',
               'I', 'D', 'K', 'S', 'G', 'S', 'W', 'A', 'A',

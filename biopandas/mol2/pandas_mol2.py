@@ -24,7 +24,7 @@ COLUMN_NAMES = (
 COLUMN_TYPES = (int, str, float, float, float, str, int, str, float)
 
 
-class PandasMOL2(object):
+class PandasMol2(object):
     """ Object for working with Tripos Mol2 structure files.
 
    Attributes

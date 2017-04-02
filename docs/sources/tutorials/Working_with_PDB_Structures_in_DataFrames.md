@@ -3,19 +3,19 @@
 
 ## Loading PDB Files
 
-There are 2 1/2 ways to load a PDB structure into a `PandasPDB` object.
+There are 2 1/2 ways to load a PDB structure into a `PandasPdb` object.
 
 
 #### 1
-PDB files can be directly fetched from The Protein Data Bank at [http://www.rcsb.org](http://www.rcsb.org) via its unique 4-letter after initializing a new [`PandasPDB`](../api/biopandas.pdb#pandaspdb) object and calling the [`fetch_pdb`](../api/biopandas.pdb#pandaspdbfetch_pdb) method:
+PDB files can be directly fetched from The Protein Data Bank at [http://www.rcsb.org](http://www.rcsb.org) via its unique 4-letter after initializing a new [`PandasPdb`](../api/biopandas.pdb#pandaspdb) object and calling the [`fetch_pdb`](../api/biopandas.pdb#pandaspdbfetch_pdb) method:
 
 
 ```python
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 
-# Initialize a new PandasPDB object
+# Initialize a new PandasPdb object
 # and fetch the PDB file from rcsb.org
-ppdb = PandasPDB().fetch_pdb('3eiy')
+ppdb = PandasPdb().fetch_pdb('3eiy')
 ```
 
 #### 2 a)
@@ -30,7 +30,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x104937cf8>
 
 
 
@@ -46,7 +46,7 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x104937cf8>
 
 
 
@@ -80,7 +80,7 @@ print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
     ...
 
 
-The most interesting / useful attribute is the [`PandasPDB.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
+The most interesting / useful attribute is the [`PandasPdb.df`](../api/biopandas.pdb#pandaspdbdf) DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
 
 ```python
@@ -195,12 +195,12 @@ Below is an example of how this would look like in an actual PDB file:
     ATOM    153  CG2AVAL A  25      30.835  18.826  57.661  0.28 13.58      A1   C
     ATOM    154  CG2BVAL A  25      29.909  16.996  55.922  0.72 13.25      A1   C
 
-After loading a PDB file from rcsb.org or our local drive, the [`PandasPDB.df`](../api/biopandas.pdb/#pandaspdbdf) attribute should contain the following 4 DataFrame objects:
+After loading a PDB file from rcsb.org or our local drive, the [`PandasPdb.df`](../api/biopandas.pdb/#pandaspdbdf) attribute should contain the following 4 DataFrame objects:
 
 
 ```python
-from biopandas.pdb import PandasPDB
-ppdb = PandasPDB()
+from biopandas.pdb import PandasPdb
+ppdb = PandasPdb()
 ppdb.read_pdb('./data/3eiy.pdb')
 ppdb.df.keys()
 ```
@@ -474,8 +474,8 @@ In the previous sections, we've seen how to load PDB structures into DataFrames,
 
 
 ```python
-from biopandas.pdb import PandasPDB
-ppdb = PandasPDB()
+from biopandas.pdb import PandasPdb
+ppdb = PandasPdb()
 ppdb.read_pdb('./data/3eiy.pdb.gz')
 ppdb.df['ATOM'].head()
 ```
@@ -874,8 +874,8 @@ Since we are using pandas under the hood, which in turns uses matplotlib under t
 
 
 ```python
-from biopandas.pdb import PandasPDB
-ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 ```
 
 
@@ -942,11 +942,11 @@ we can compute the RMSD as follows:
 
 
 ```python
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 
-l_1 = PandasPDB().read_pdb('./data/lig_conf_1.pdb')
-l_2 = PandasPDB().read_pdb('./data/lig_conf_2.pdb')
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+l_1 = PandasPdb().read_pdb('./data/lig_conf_1.pdb')
+l_2 = PandasPdb().read_pdb('./data/lig_conf_2.pdb')
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
                    s=None) # all atoms, including hydrogens
 print('RMSD: %.4f Angstrom' % r)
 ```
@@ -956,7 +956,7 @@ print('RMSD: %.4f Angstrom' % r)
 
 
 ```python
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
                    s='carbon') # carbon atoms only
 print('RMSD: %.4f Angstrom' % r)
 ```
@@ -966,7 +966,7 @@ print('RMSD: %.4f Angstrom' % r)
 
 
 ```python
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
                    s='heavy') # heavy atoms only
 print('RMSD: %.4f Angstrom' % r)
 ```
@@ -982,9 +982,9 @@ The hydrogen-free RMSD:
 
 
 ```python
-p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
-p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
+p_1 = PandasPdb().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPdb().read_pdb('./data/1t49_995.pdb')
+r = PandasPdb.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
 print('RMSD: %.4f Angstrom' % r)
 ```
 
@@ -995,9 +995,9 @@ Or the RMSD between the main chains only:
 
 
 ```python
-p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
-p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
+p_1 = PandasPdb().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPdb().read_pdb('./data/1t49_995.pdb')
+r = PandasPdb.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
 print('RMSD: %.4f Angstrom' % r)
 ```
 
@@ -1016,12 +1016,12 @@ Let's say we loaded a PDB structure, removed it from it's hydrogens:
 
 
 ```python
-from biopandas.pdb import PandasPDB
-ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
 ```
 
-We can save the file using the [`PandasPDB.to_pdb`](../api/biopandas.pdb#pandaspdbto_pdb) method:
+We can save the file using the [`PandasPdb.to_pdb`](../api/biopandas.pdb#pandaspdbto_pdb) method:
 
 
 ```python
