@@ -103,6 +103,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -115,6 +121,12 @@
                             
 <li >
     <a href="api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
 </li>
 
                         
@@ -200,7 +212,7 @@
 <a href="https://pypi.python.org/pypi/biopandas/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/biopandas.svg" /></a>
 <a href="https://github.com/rasbt/biopandas/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-new%20BSD-blue.svg" /></a>
 <img alt="Python 2.7" src="https://img.shields.io/badge/python-2.7-blue.svg" />
-<img alt="Python 3.5" src="https://img.shields.io/badge/python-3.5-blue.svg" /></p>
+<img alt="Python 3.6" src="https://img.shields.io/badge/python-3.6-blue.svg" /></p>
 <p><br></p>
 <hr>
 
@@ -215,15 +227,15 @@
 <h4 id="about">About</h4>
 <p>If you are a computational biologist, chances are that you cursed one too many times about protein structure files. Yes, I am talking about ye Goode Olde Protein Data Bank format, aka "PDB files." Nothing against PDB, it's a neatly structured format (if deployed correctly); yet, it is a bit cumbersome to work with PDB files in "modern" programming languages -- I am pretty sure we all agree on this.</p>
 <p>As machine learning and "data science" person, I fell in love with <a href="http://pandas.pydata.org">pandas</a> DataFrames for handling just about everything that can be loaded into memory.<br />
-So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules in pandas DataFrames is what BioPandas is all about!</p>
+So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules (from PDB and MOL2 files) in pandas DataFrames is what BioPandas is all about!</p>
 <hr>
 
 <h4 id="examples">Examples</h4>
 <p><img alt="3eiy" src="./img/index/3eiy.png" /></p>
-<pre><code class="python"># Initialize a new PandasPDB object
+<pre><code class="python"># Initialize a new PandasPdb object
 # and fetch the PDB file from rcsb.org
-&gt;&gt;&gt; from biopandas.pdb import PandasPDB
-&gt;&gt;&gt; ppdb = PandasPDB().fetch_pdb('3eiy')
+&gt;&gt;&gt; from biopandas.pdb import PandasPdb
+&gt;&gt;&gt; ppdb = PandasPdb().fetch_pdb('3eiy')
 &gt;&gt;&gt; ppdb.df['ATOM'].head()
 </code></pre>
 
@@ -232,10 +244,10 @@ So, why don't we take pandas to the structural biology world? Working with molec
 <p><img alt="3eiy head" src="./img/index/ligand_rmsd.png" /></p>
 <pre><code class="python"># Load structures from your drive and compute the
 # Root Mean Square Deviation
-&gt;&gt;&gt; from biopandas.pdb import PandasPDB
-&gt;&gt;&gt; pl1 = PandasPDB().read_pdb('./docking_pose_1.pdb')
-&gt;&gt;&gt; pl2 = PandasPDB().read_pdb('./docking_pose_2.pdb')
-&gt;&gt;&gt; r = PandasPDB.rmsd(pl1.df['HETATM'], pl2.df['HETATM'])
+&gt;&gt;&gt; from biopandas.pdb import PandasPdb
+&gt;&gt;&gt; pl1 = PandasPdb().read_pdb('./docking_pose_1.pdb')
+&gt;&gt;&gt; pl2 = PandasPdb().read_pdb('./docking_pose_2.pdb')
+&gt;&gt;&gt; r = PandasPdb.rmsd(pl1.df['HETATM'], pl2.df['HETATM'])
 &gt;&gt;&gt; print('RMSD: %.4f Angstrom' % r)
 RMSD: 2.6444 Angstrom
 </code></pre>
@@ -266,7 +278,7 @@ RMSD: 2.6444 Angstrom
     <footer class="col-md-12 text-center">
         <hr>
         <p>
-        <small>Copyright &copy; 2015-2016 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
+        <small>Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
         
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>
@@ -316,5 +328,5 @@ RMSD: 2.6444 Angstrom
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-02-16 04:44:55
+Build Date UTC : 2017-04-02 19:22:23
 -->

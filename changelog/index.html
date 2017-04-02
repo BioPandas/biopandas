@@ -102,6 +102,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -114,6 +120,12 @@
                             
 <li >
     <a href="../api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
 </li>
 
                         
@@ -150,7 +162,7 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../api_subpackages/biopandas.pdb/">
+                        <a rel="next" href="../api_subpackages/biopandas.mol2/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -182,7 +194,7 @@
     
         <li class="main active"><a href="#release-notes">Release Notes</a></li>
         
-            <li><a href="#020dev">0.2.0dev</a></li>
+            <li><a href="#020-2017-04-02">0.2.0 (2017-04-02)</a></li>
         
             <li><a href="#015-2016-11-19">0.1.5 (2016-11-19)</a></li>
         
@@ -198,21 +210,29 @@
         <div class="col-md-9" role="main">
 
 <h1 id="release-notes">Release Notes <img alt="" src="../img/logos/3eiy_120.png" /></h1>
-<h3 id="020dev">0.2.0dev</h3>
+<p>The CHANGELOG for the current development version is available at
+<a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md">https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md</a>.</p>
+<h3 id="020-2017-04-02">0.2.0 (2017-04-02)</h3>
 <h5 id="downloads">Downloads</h5>
 <ul>
-<li>-</li>
+<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.2.0">Source code (zip)</a></li>
+<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.2.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
 <h5 id="new-features">New Features</h5>
 <ul>
-<li>Added an <code>amino3to1</code> method to <code>BiopandasPDB</code> data frames to convert 3-amino acid letter codes to 1-letter codes.</li>
-<li>Added a <code>distance</code> method to <code>BiopandasPDB</code> data frames to compute the Euclidean distance between atoms and a reference point.</li>
+<li>Added an <code>amino3to1</code> method to <code>PandasPdb</code> data frames to convert 3-amino acid letter codes to 1-letter codes.</li>
+<li>Added a <code>distance</code> method to <code>PandasPdb</code> data frames to compute the Euclidean distance between atoms and a reference point.</li>
+<li>Added the <code>PandasMol2</code> class for working with Tripos MOL2 files in pandas DataFrames.</li>
 </ul>
 <h5 id="changes">Changes</h5>
 <ul>
-<li>Raises a warning if <code>PandasPDB</code> is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.</li>
+<li><code>PandasPDB</code> was renamed to <code>PandasPdb</code>.</li>
+<li>Raises a warning if <code>PandasPdb</code> is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.</li>
 </ul>
 <h5 id="bug-fixes">Bug Fixes</h5>
+<ul>
+<li>-</li>
+</ul>
 <h3 id="015-2016-11-19">0.1.5 (2016-11-19)</h3>
 <h5 id="downloads_1">Downloads</h5>
 <ul>
@@ -269,7 +289,7 @@
     <footer class="col-md-12 text-center">
         <hr>
         <p>
-        <small>Copyright &copy; 2015-2016 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
+        <small>Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
         
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>

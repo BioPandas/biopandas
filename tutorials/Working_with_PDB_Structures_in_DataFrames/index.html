@@ -102,6 +102,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -114,6 +120,12 @@
                             
 <li >
     <a href="../../api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
 </li>
 
                         
@@ -155,7 +167,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../api_subpackages/biopandas.pdb/">
+                        <a rel="prev" href="../Working_with_MOL2_Structures_in_DataFrames/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -192,6 +204,10 @@
         
             <li><a href="#computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</a></li>
         
+            <li><a href="#filtering-pdbs-by-distance">Filtering PDBs by Distance</a></li>
+        
+            <li><a href="#converting-amino-acid-codes-from-3-to-1-letter-codes">Converting Amino Acid codes from 3- to 1-letter codes</a></li>
+        
             <li><a href="#wrapping-it-up-saving-pdb-structures">Wrapping it up - Saving PDB structures</a></li>
         
     
@@ -201,14 +217,14 @@
 
 <h1 id="working-with-pdb-structures-in-dataframes">Working with PDB Structures in DataFrames</h1>
 <h2 id="loading-pdb-files">Loading PDB Files</h2>
-<p>There are 2 1/2 ways to load a PDB structure into a <code>PandasPDB</code> object.</p>
+<p>There are 2 1/2 ways to load a PDB structure into a <code>PandasPdb</code> object.</p>
 <h4 id="1">1</h4>
-<p>PDB files can be directly fetched from The Protein Data Bank at <a href="http://www.rcsb.org">http://www.rcsb.org</a> via its unique 4-letter after initializing a new <a href="../../api/biopandas.pdb#pandaspdb"><code>PandasPDB</code></a> object and calling the <a href="../../api/biopandas.pdb#pandaspdbfetch_pdb"><code>fetch_pdb</code></a> method:</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
+<p>PDB files can be directly fetched from The Protein Data Bank at <a href="http://www.rcsb.org">http://www.rcsb.org</a> via its unique 4-letter after initializing a new <a href="../../api/biopandas.pdb#pandaspdb"><code>PandasPdb</code></a> object and calling the <a href="../../api/biopandas.pdb#pandaspdbfetch_pdb"><code>fetch_pdb</code></a> method:</p>
+<pre><code class="python">from biopandas.pdb import PandasPdb
 
-# Initialize a new PandasPDB object
+# Initialize a new PandasPdb object
 # and fetch the PDB file from rcsb.org
-ppdb = PandasPDB().fetch_pdb('3eiy')
+ppdb = PandasPdb().fetch_pdb('3eiy')
 </code></pre>
 
 <h4 id="2-a">2 a)</h4>
@@ -216,14 +232,14 @@ ppdb = PandasPDB().fetch_pdb('3eiy')
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8&gt;
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898&gt;
 </code></pre>
 <h4 id="2-b">2 b)</h4>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPDB at 0x104937cf8&gt;
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898&gt;
 </code></pre>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
 <pre><code class="python">print('PDB Code: %s' % ppdb.code)
@@ -251,7 +267,7 @@ SOURCE   4 GENE: PPA, BURPS1710B_1237;
 SOURCE   5 EXPRESSION_SYSTEM
 ...
 </code></pre>
-<p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPDB.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
+<p>The most interesting / useful attribute is the <a href="../../api/biopandas.pdb#pandaspdbdf"><code>PandasPdb.df</code></a> DataFrame dictionary though, which gives us access to the PDB files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
 <pre><code class="python">ppdb.df['ATOM'].head(3)
 </code></pre>
 
@@ -449,7 +465,7 @@ SOURCE   5 EXPRESSION_SYSTEM
 </tbody>
 </table>
 <p>Below is an example of how this would look like in an actual PDB file:</p>
-<pre><code>Example:
+<pre><code>Example: 
          1         2         3         4         5         6         7         8
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 ATOM    145  N   VAL A  25      32.433  16.336  57.540  1.00 11.92      A1   N
@@ -463,9 +479,9 @@ ATOM    152  CG1BVAL A  25      30.805  18.788  57.449  0.72 15.11      A1   C
 ATOM    153  CG2AVAL A  25      30.835  18.826  57.661  0.28 13.58      A1   C
 ATOM    154  CG2BVAL A  25      29.909  16.996  55.922  0.72 13.25      A1   C
 </code></pre>
-<p>After loading a PDB file from rcsb.org or our local drive, the <a href="../../api/biopandas.pdb/#pandaspdbdf"><code>PandasPDB.df</code></a> attribute should contain the following 4 DataFrame objects:</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
-ppdb = PandasPDB()
+<p>After loading a PDB file from rcsb.org or our local drive, the <a href="../../api/biopandas.pdb/#pandaspdbdf"><code>PandasPdb.df</code></a> attribute should contain the following 4 DataFrame objects:</p>
+<pre><code class="python">from biopandas.pdb import PandasPdb
+ppdb = PandasPdb()
 ppdb.read_pdb('./data/3eiy.pdb')
 ppdb.df.keys()
 </code></pre>
@@ -475,7 +491,7 @@ ppdb.df.keys()
 <ul>
 <li>'ATOM': contains the entries from the ATOM coordinate section</li>
 <li>'ATOM':  ... entries from the "HETATM" coordinate section    </li>
-<li>'ANISOU': ... entries from the "ANISOU" coordinate section</li>
+<li>'ANISOU': ... entries from the "ANISOU" coordinate section </li>
 <li>'OTHERS': Everything else that is <em>not</em> a 'ATOM', 'HETATM', or 'ANISOU' entry</li>
 </ul>
 <p><img alt="" src="../img/df_dict.jpg" /></p>
@@ -662,8 +678,8 @@ dtype: object
 <p>Although these 'OTHER' entries are typically less useful for structure-related computations, you may still want to take a look at them to get a short summary of the PDB structure and learn about it's potential quirks and gotchas (typically listed in the REMARKs section). Lastly, the "OTHERS" DataFrame comes in handy if we want to reconstruct the structure as PDB file as we will see later (note the <code>line_idx</code> columns in all of the DataFrames).</p>
 <h2 id="working-with-pdb-dataframes">Working with PDB DataFrames</h2>
 <p>In the previous sections, we've seen how to load PDB structures into DataFrames, and how to access them. Now, let's talk about manipulating PDB files in DataFrames.</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
-ppdb = PandasPDB()
+<pre><code class="python">from biopandas.pdb import PandasPdb
+ppdb = PandasPdb()
 ppdb.read_pdb('./data/3eiy.pdb.gz')
 ppdb.df['ATOM'].head()
 </code></pre>
@@ -1011,9 +1027,9 @@ Once we have our PDB file in the DataFrame format, we have the whole convenience
 </div>
 
 <p>Or, let's compute the average temperature factor of our protein main chain:</p>
-<pre><code class="python">mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') |
-                            (ppdb.df['ATOM']['atom_name'] == 'O') |
-                            (ppdb.df['ATOM']['atom_name'] == 'N') |
+<pre><code class="python">mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'O') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'N') | 
                             (ppdb.df['ATOM']['atom_name'] == 'CA')]
 
 bfact_mc_avg = mainchain['b_factor'].mean()
@@ -1024,8 +1040,8 @@ print('Average B-Factor [Main Chain]: %.2f' % bfact_mc_avg)
 </code></pre>
 <h2 id="plotting">Plotting</h2>
 <p>Since we are using pandas under the hood, which in turns uses matplotlib under the hood, we can produce quick summary plots of our PDB structures relatively conveniently:</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
-ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+<pre><code class="python">from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
 <pre><code class="python">%matplotlib inline
@@ -1060,31 +1076,31 @@ plt.show()
 <p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_64_0.png" /></p>
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>BioPandas also comes with certain convenience functions, for example, ...</p>
-<p>The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
+<p>The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
 <p>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
 = \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$</p>
-<p>So, assuming that the we have the following 2 conformation of a ligand molecule</p>
+<p>So, assuming that the we have the following 2 conformations of a ligand molecule</p>
 <p><img alt="" src="../img/ligand_rmsd.png" /></p>
 <p>we can compute the RMSD as follows:</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
+<pre><code class="python">from biopandas.pdb import PandasPdb
 
-l_1 = PandasPDB().read_pdb('./data/lig_conf_1.pdb')
-l_2 = PandasPDB().read_pdb('./data/lig_conf_2.pdb')
-r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+l_1 = PandasPdb().read_pdb('./data/lig_conf_1.pdb')
+l_2 = PandasPdb().read_pdb('./data/lig_conf_2.pdb')
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
                    s=None) # all atoms, including hydrogens
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
 <pre><code>RMSD: 2.6444 Angstrom
 </code></pre>
-<pre><code class="python">r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+<pre><code class="python">r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                    s='carbon') # carbon atoms only
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
 <pre><code>RMSD: 3.1405 Angstrom
 </code></pre>
-<pre><code class="python">r = PandasPDB.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+<pre><code class="python">r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                    s='heavy') # heavy atoms only
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
@@ -1094,44 +1110,225 @@ print('RMSD: %.4f Angstrom' % r)
 <p>Similarly, we can compute the RMSD between 2 related protein structures:</p>
 <p><img alt="" src="../img/1t48_rmsd.png" /></p>
 <p>The hydrogen-free RMSD:</p>
-<pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
-p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
+<pre><code class="python">p_1 = PandasPdb().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPdb().read_pdb('./data/1t49_995.pdb')
+r = PandasPdb.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
 <pre><code>RMSD: 0.7377 Angstrom
 </code></pre>
 <p>Or the RMSD between the main chains only:</p>
-<pre><code class="python">p_1 = PandasPDB().read_pdb('./data/1t48_995.pdb')
-p_2 = PandasPDB().read_pdb('./data/1t49_995.pdb')
-r = PandasPDB.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
+<pre><code class="python">p_1 = PandasPdb().read_pdb('./data/1t48_995.pdb')
+p_2 = PandasPdb().read_pdb('./data/1t49_995.pdb')
+r = PandasPdb.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
 print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 
 <pre><code>RMSD: 0.4781 Angstrom
 </code></pre>
 <p><br></p>
-<p>[more to come]</p>
+<h2 id="filtering-pdbs-by-distance">Filtering PDBs by Distance</h2>
+<p>We can use the <code>distance</code> method to compute the distance between each atom (or a subset of atoms) in our data frame and a three-dimensional reference point. For example:</p>
+<pre><code class="python">p_1 = PandasPdb().read_pdb('./data/3eiy.pdb')
+
+reference_point = (9.362, 41.410, 10.542)
+distances = p_1.distance(xyz=reference_point, record='ATOM')
+</code></pre>
+
+<p>The distance method returns a Pandas Series object:</p>
+<pre><code class="python">distances.head()
+</code></pre>
+
+<pre><code>0    19.267419
+1    18.306060
+2    16.976934
+3    16.902897
+4    18.124171
+dtype: float64
+</code></pre>
+<p>And we can use this <code>Series</code> object, for instance, to select certain atoms in our DataFrame that fall within a desired distance threshold. For example, let's select all atoms that are within 7A of our reference point: </p>
+<pre><code class="python">all_within_7A = p_1.df['ATOM'][distances &lt; 7.0]
+all_within_7A.tail()
+</code></pre>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>786</th>
+      <td>ATOM</td>
+      <td>787</td>
+      <td></td>
+      <td>CB</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1395</td>
+    </tr>
+    <tr>
+      <th>787</th>
+      <td>ATOM</td>
+      <td>788</td>
+      <td></td>
+      <td>CG</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1396</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>ATOM</td>
+      <td>789</td>
+      <td></td>
+      <td>CD1</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1397</td>
+    </tr>
+    <tr>
+      <th>789</th>
+      <td>ATOM</td>
+      <td>790</td>
+      <td></td>
+      <td>CD2</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1398</td>
+    </tr>
+    <tr>
+      <th>790</th>
+      <td>ATOM</td>
+      <td>791</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>1399</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Visualized in PyMOL, this subset (yellow surface) would look as follows:</p>
+<p><img alt="" src="../img/3eiy_7a.png" /></p>
+<h2 id="converting-amino-acid-codes-from-3-to-1-letter-codes">Converting Amino Acid codes from 3- to 1-letter codes</h2>
+<p>Residues in the <code>residue_name</code> field can be converted into 1-letter amino acid codes, which may be useful for further sequence analysis, for example, pair-wise or multiple sequence alignments:</p>
+<pre><code class="python">from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
+ppdb.amino3to1()
+# By default, `amino3to1` returns a pandas Series object,
+# and to convert it into a Python list, you can wrap it in list
+# constructor, e.g.,
+# `list(ppdb.amino3to1())`
+</code></pre>
+
+<pre><code>0       S
+6       F
+17      S
+23      N
+31      V
+38      P
+45      A
+50      G
+54      K
+63      D
+71      L
+79      P
+86      Q
+95      D
+103     F
+114     N
+122     V
+129     I
+137     I
+145     E
+154     I
+162     P
+169     A
+174     Q
+183     S
+189     E
+198     P
+205     V
+212     K
+221     Y
+       ..
+1100    E
+1109    K
+1114    G
+1118    K
+1127    W
+1141    V
+1148    K
+1153    V
+1160    E
+1169    G
+1173    W
+1187    D
+1195    G
+1199    I
+1207    D
+1215    A
+1220    A
+1225    H
+1235    K
+1244    E
+1253    I
+1261    T
+1268    D
+1276    G
+1280    V
+1287    A
+1292    N
+1300    F
+1311    K
+1320    K
+Name: residue_name, dtype: object
+</code></pre>
 <h2 id="wrapping-it-up-saving-pdb-structures">Wrapping it up - Saving PDB structures</h2>
 <p>Finally, let's talk about how to get the PDB structures out of the DataFrame format back into the beloved .pdb format.</p>
 <p>Let's say we loaded a PDB structure, removed it from it's hydrogens:</p>
-<pre><code class="python">from biopandas.pdb import PandasPDB
-ppdb = PandasPDB().read_pdb('./data/3eiy.pdb.gz')
+<pre><code class="python">from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
 </code></pre>
 
-<p>We can save the file using the <a href="../../api/biopandas.pdb#pandaspdbto_pdb"><code>PandasPDB.to_pdb</code></a> method:</p>
-<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb',
-            records=None,
-            gz=False,
+<p>We can save the file using the <a href="../../api/biopandas.pdb#pandaspdbto_pdb"><code>PandasPdb.to_pdb</code></a> method:</p>
+<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb', 
+            records=None, 
+            gz=False, 
             append_newline=True)
 </code></pre>
 
 <p>By default, all records (that is, 'ATOM', 'HETATM', 'OTHERS', 'ANISOU') are written if we set <code>records=None</code>. Alternatively, let's say we want to get rid of the 'ANISOU' entries and produce a compressed gzip archive of our PDB structure:</p>
-<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz',
-            records=['ATOM', 'HETATM', 'OTHERS'],
-            gz=True,
+<pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz', 
+            records=['ATOM', 'HETATM', 'OTHERS'], 
+            gz=True, 
             append_newline=True)
 </code></pre></div>
         
@@ -1140,7 +1337,7 @@ ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
     <footer class="col-md-12 text-center">
         <hr>
         <p>
-        <small>Copyright &copy; 2015-2016 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
+        <small>Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
         
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>
