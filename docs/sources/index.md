@@ -9,6 +9,7 @@
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
+[![DOI](https://zenodo.org/badge/46593500.svg)](https://zenodo.org/badge/latestdoi/46593500)
 
 <br>
 
@@ -90,3 +91,5 @@ RMSD: 2.6444 Angstrom
 ```
 
 ![](./img/index/bfactor_trace.png)
+
+

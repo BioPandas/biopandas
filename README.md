@@ -11,6 +11,7 @@
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
+[![DOI](https://zenodo.org/badge/46593500.svg)](https://zenodo.org/badge/latestdoi/46593500)
 
 <hr>
 
@@ -75,3 +76,23 @@ RMSD: 2.6444 Angstrom
 
 
 For more information, please see [http://rasbt.github.io/biopandas/installation/](http://rasbt.github.io/biopandas/installation/).
+
+<br><br>
+<br><br>
+
+
+### Cite as
+
+If you use BioPandas as part of your workflow in a scientific publication, please consider citing the BioPandas repository with the following DOI:
+
+Sebastian Raschka. (2017). rasbt/biopandas: v0.2.0 (2017-04-02). Zenodo. [http://doi.org/10.5281/zenodo.439736](http://doi.org/10.5281/zenodo.439736)
+
+
+    @misc{raschkas_2016_49235,
+      author       = {Raschka, Sebastian},
+      title        = {BioPandas},
+      month        = apr,
+      year         = 2017,
+      doi          = {10.5281/zenodo.439736},
+      url          = {http://doi.org/10.5281/zenodo.439736}
+    }
