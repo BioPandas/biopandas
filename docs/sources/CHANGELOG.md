@@ -8,8 +8,9 @@
 
 ##### New Features
 
-- Added an `amino3to1` method to `BiopandasPDB` data frames to convert 3-amino acid letter codes to 1-letter codes.
-- Added a `distance` method to `BiopandasPDB` data frames to compute the Euclidean distance between atoms and a reference point.
+- Added an `amino3to1` method to `PandasPDB` data frames to convert 3-amino acid letter codes to 1-letter codes.
+- Added a `distance` method to `PandasPDB` data frames to compute the Euclidean distance between atoms and a reference point.
+- Added the `PandasMOL2` class for working with Tripos MOL2 files in pandas DataFrames
 
 
 ##### Changes
@@ -18,6 +19,7 @@
 
 ##### Bug Fixes
 
+- -
 
 
 ### 0.1.5 (2016-11-19)

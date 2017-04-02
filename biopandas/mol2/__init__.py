@@ -4,5 +4,11 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-__version__ = '0.2.0.dev0'
-__author__ = "Sebastian Raschka <mail@sebastianraschka.com>"
+"""
+BioPandas module for working with TRIPOS MOL2
+files in pandas DataFrames.
+"""
+
+from .pandas_mol2 import PandasMOL2
+
+__all__ = ["PandasMOL2"]
