@@ -24,7 +24,7 @@ extra_javascript:
 extra_css:
   - extra.css
 
-copyright: Copyright &copy; 2015-2016 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
+copyright: Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
 google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 
 pages:
@@ -33,6 +33,7 @@ pages:
   - tutorials/Working_with_PDB_Structures_in_DataFrames.md
 - API:
   - api_subpackages/biopandas.pdb.md
+  - api_subpackages/biopandas.mol2.md
 - Changelog: changelog.md
 - Installation: installation.md
 - Contributing: contributing.md

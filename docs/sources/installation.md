@@ -12,7 +12,7 @@ pip install biopandas
 
 ## Conda-forge
 
-The latest stable release of `biopandas` is now also available via [conda-forge](https://github.com/conda-forge/biopandas-feedstock); you can install it via
+Versions of `biopandas` are now also available via [conda-forge](https://github.com/conda-forge/biopandas-feedstock); you can install it via
 
 
 ```bash
@@ -21,9 +21,10 @@ conda install biopandas -c conda-forge
 
  or simply
 
- ```bash
+```bash
 conda install biopandas
 ```
+
 if you have `conda-forge` already [added to your channels](https://github.com/conda-forge/biopandas-feedstock).
 
 

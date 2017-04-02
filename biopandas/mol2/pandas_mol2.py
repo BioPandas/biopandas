@@ -5,6 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 import pandas as pd
+import numpy as np
 from .mol2_io import split_multimol2
 
 
@@ -211,3 +212,23 @@ class PandasMOL2(object):
                  (d1['z'] - d2['z'])**2)
         rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
+
+    def distance(self, xyz=(0.00, 0.00, 0.00)):
+        """Computes Euclidean distance between atoms and a 3D point.
+
+        Parameters
+        ----------
+        xyz : tuple (0.00, 0.00, 0.00)
+            X, Y, and Z coordinate of the reference center for the distance
+            computation
+
+        Returns
+        ---------
+        pandas.Series : Pandas Series object containing the Euclidean
+            distance between the atoms in the atom section and `xyz`.
+
+        """
+        return self.df.apply(lambda x: np.sqrt(np.sum(
+            ((x['x'] - xyz[0])**2,
+             (x['y'] - xyz[1])**2,
+             (x['z'] - xyz[2])**2))), axis=1)

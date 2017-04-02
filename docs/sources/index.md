@@ -8,7 +8,7 @@
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
-![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)
+![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
 
 <br>
 
@@ -28,7 +28,8 @@
 If you are a computational biologist, chances are that you cursed one too many times about protein structure files. Yes, I am talking about ye Goode Olde Protein Data Bank format, aka "PDB files." Nothing against PDB, it's a neatly structured format (if deployed correctly); yet, it is a bit cumbersome to work with PDB files in "modern" programming languages -- I am pretty sure we all agree on this.
 
 As machine learning and "data science" person, I fell in love with [pandas](http://pandas.pydata.org) DataFrames for handling just about everything that can be loaded into memory.  
-So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules in pandas DataFrames is what BioPandas is all about!
+So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules (from PDB and MOL2 files) in pandas DataFrames is what BioPandas is all about!
+
 
 
 

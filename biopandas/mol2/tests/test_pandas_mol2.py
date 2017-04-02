@@ -47,3 +47,10 @@ def test_rmsd():
 
     assert pdmol_1.rmsd(pdmol_1.df, pdmol_2.df, heavy_only=False) == 1.5523
     assert pdmol_1.rmsd(pdmol_1.df, pdmol_2.df) == 1.1609
+
+
+def test_distance():
+    data_path = os.path.join(this_dir, 'data', '1b5e_1.mol2')
+
+    pdmol = PandasMOL2().read_mol2(data_path)
+    assert round(pdmol.distance().values[0], 3) == 31.185

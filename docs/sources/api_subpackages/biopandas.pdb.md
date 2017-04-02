@@ -1,4 +1,4 @@
-biopandas version: 0.1.5.dev0
+biopandas version: 0.2.0.dev0
 ## PandasPDB
 
 *PandasPDB()*
@@ -30,6 +30,64 @@ Object for working with Protein Databank structure files.
     PDB code
 
 ### Methods
+
+<hr>
+
+*amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
+
+Creates 1-letter amino acid codes from DataFrame
+
+    Non-canonical amino-acids are converted as follows:
+    ASH (protonated ASP) => D
+    CYX (disulfide-bonded CYS) => C
+    GLH (protonated GLU) => E
+    HID/HIE/HIP (different protonation states of HIS) = H
+    HYP (hydroxyproline) => P
+    MSE (selenomethionine) => M
+
+**Parameters**
+
+- `record` : str (default: 'ATOM')
+
+    Specfies the record DataFrame
+
+- `residue_col` : str (default: 'residue_name')
+
+    Column in `record` DataFrame to look for 3-letter amino acid
+    codes for the conversion
+
+- `fillna` : str (default: '?')
+
+    Placeholder string to use for unknown amino acids
+
+**Returns**
+
+- `pandas.Series` : Pandas Series object containing the 1-letter amino
+
+    acid codes after conversion
+
+<hr>
+
+*distance(xyz=(0.0, 0.0, 0.0), record='ATOM')*
+
+Computes Euclidean distance between atoms and a 3D point.
+
+**Parameters**
+
+- `xyz` : tuple (0.00, 0.00, 0.00)
+
+    X, Y, and Z coordinate of the reference center for the distance
+    computation
+
+- `record` : str (default: 'ATOM')
+
+    Specfies the record DataFrame
+
+**Returns**
+
+- `pandas.Series` : Pandas Series object containing the Euclidean
+
+    distance between the atoms in the record section and `xyz`.
 
 <hr>
 

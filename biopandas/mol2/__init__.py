@@ -10,5 +10,6 @@ files in pandas DataFrames.
 """
 
 from .pandas_mol2 import PandasMOL2
+from .mol2_io import split_multimol2
 
-__all__ = ["PandasMOL2"]
+__all__ = ["PandasMOL2", "split_multimol2"]
