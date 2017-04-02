@@ -1,4 +1,4 @@
-biopandas version: 0.2.0.dev0
+biopandas version: 0.2.0
 ## PandasPdb
 
 *PandasPdb()*
@@ -137,13 +137,13 @@ Filter PDB DataFrames by properties
 
 <hr>
 
-*impute_element(sections=['ATOM', 'HETATM'], inplace=False)*
+*impute_element(sections=('ATOM', 'HETATM'), inplace=False)*
 
 Impute element_symbol from atom_name section.
 
 **Parameters**
 
-- `sections` : iterable (default: ['ATOM', 'HETATM'])
+- `sections` : iterable (default: ('ATOM', 'HETATM'))
 
     Coordinate sections for which the element symbols should be
     imputed.

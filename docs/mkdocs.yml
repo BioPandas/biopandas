@@ -31,6 +31,7 @@ pages:
 - Home: index.md
 - Tutorials:
   - tutorials/Working_with_PDB_Structures_in_DataFrames.md
+  - tutorials/Working_with_MOL2_Structures_in_DataFrames.md
 - API:
   - api_subpackages/biopandas.pdb.md
   - api_subpackages/biopandas.mol2.md

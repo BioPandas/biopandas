@@ -1,4 +1,3 @@
-
 # Working with PDB Structures in DataFrames
 
 ## Loading PDB Files
@@ -30,7 +29,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x104937cf8>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898>
 
 
 
@@ -46,7 +45,7 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x104937cf8>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898>
 
 
 
@@ -61,9 +60,9 @@ print('\nRaw PDB file contents:\n\n%s\n...' % ppdb.pdb_text[:1000])
 
     PDB Code: 3eiy
     PDB Header Line:     HYDROLASE                               17-SEP-08   3EIY
-
+    
     Raw PDB file contents:
-
+    
     HEADER    HYDROLASE                               17-SEP-08   3EIY              
     TITLE     CRYSTAL STRUCTURE OF INORGANIC PYROPHOSPHATASE FROM BURKHOLDERIA      
     TITLE    2 PSEUDOMALLEI WITH BOUND PYROPHOSPHATE                                
@@ -181,7 +180,7 @@ PDB files are parsed according to the [PDB file format description](http://www.r
 
 Below is an example of how this would look like in an actual PDB file:
 
-    Example:
+    Example: 
              1         2         3         4         5         6         7         8
     12345678901234567890123456789012345678901234567890123456789012345678901234567890
     ATOM    145  N   VAL A  25      32.433  16.336  57.540  1.00 11.92      A1   N
@@ -214,7 +213,7 @@ ppdb.df.keys()
 
 - 'ATOM': contains the entries from the ATOM coordinate section
 - 'ATOM':  ... entries from the "HETATM" coordinate section    
-- 'ANISOU': ... entries from the "ANISOU" coordinate section
+- 'ANISOU': ... entries from the "ANISOU" coordinate section 
 - 'OTHERS': Everything else that is *not* a 'ATOM', 'HETATM', or 'ANISOU' entry
 
 ![](./img/df_dict.jpg)
@@ -856,9 +855,9 @@ Or, let's compute the average temperature factor of our protein main chain:
 
 
 ```python
-mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') |
-                            (ppdb.df['ATOM']['atom_name'] == 'O') |
-                            (ppdb.df['ATOM']['atom_name'] == 'N') |
+mainchain = ppdb.df['ATOM'][(ppdb.df['ATOM']['atom_name'] == 'C') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'O') | 
+                            (ppdb.df['ATOM']['atom_name'] == 'N') | 
                             (ppdb.df['ATOM']['atom_name'] == 'CA')]
 
 bfact_mc_avg = mainchain['b_factor'].mean()
@@ -929,12 +928,12 @@ plt.show()
 
 BioPandas also comes with certain convenience functions, for example, ...
 
-The [Root-mean-square deviation] (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
+The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:
 
 $$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
 = \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}$$
 
-So, assuming that the we have the following 2 conformation of a ligand molecule
+So, assuming that the we have the following 2 conformations of a ligand molecule
 
 ![](./img/ligand_rmsd.png)
 
@@ -956,7 +955,7 @@ print('RMSD: %.4f Angstrom' % r)
 
 
 ```python
-r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                    s='carbon') # carbon atoms only
 print('RMSD: %.4f Angstrom' % r)
 ```
@@ -966,7 +965,7 @@ print('RMSD: %.4f Angstrom' % r)
 
 
 ```python
-r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                    s='heavy') # heavy atoms only
 print('RMSD: %.4f Angstrom' % r)
 ```
@@ -1006,7 +1005,218 @@ print('RMSD: %.4f Angstrom' % r)
 
 <br>
 
-[more to come]
+## Filtering PDBs by Distance
+
+We can use the `distance` method to compute the distance between each atom (or a subset of atoms) in our data frame and a three-dimensional reference point. For example:
+
+
+```python
+p_1 = PandasPdb().read_pdb('./data/3eiy.pdb')
+
+reference_point = (9.362, 41.410, 10.542)
+distances = p_1.distance(xyz=reference_point, record='ATOM')
+```
+
+The distance method returns a Pandas Series object:
+
+
+```python
+distances.head()
+```
+
+
+
+
+    0    19.267419
+    1    18.306060
+    2    16.976934
+    3    16.902897
+    4    18.124171
+    dtype: float64
+
+
+
+And we can use this `Series` object, for instance, to select certain atoms in our DataFrame that fall within a desired distance threshold. For example, let's select all atoms that are within 7A of our reference point: 
+
+
+```python
+all_within_7A = p_1.df['ATOM'][distances < 7.0]
+all_within_7A.tail()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_name</th>
+      <th>atom_number</th>
+      <th>blank_1</th>
+      <th>atom_name</th>
+      <th>...</th>
+      <th>segment_id</th>
+      <th>element_symbol</th>
+      <th>charge</th>
+      <th>line_idx</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>786</th>
+      <td>ATOM</td>
+      <td>787</td>
+      <td></td>
+      <td>CB</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1395</td>
+    </tr>
+    <tr>
+      <th>787</th>
+      <td>ATOM</td>
+      <td>788</td>
+      <td></td>
+      <td>CG</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1396</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>ATOM</td>
+      <td>789</td>
+      <td></td>
+      <td>CD1</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1397</td>
+    </tr>
+    <tr>
+      <th>789</th>
+      <td>ATOM</td>
+      <td>790</td>
+      <td></td>
+      <td>CD2</td>
+      <td>...</td>
+      <td></td>
+      <td>C</td>
+      <td>NaN</td>
+      <td>1398</td>
+    </tr>
+    <tr>
+      <th>790</th>
+      <td>ATOM</td>
+      <td>791</td>
+      <td></td>
+      <td>N</td>
+      <td>...</td>
+      <td></td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>1399</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+
+
+Visualized in PyMOL, this subset (yellow surface) would look as follows:
+    
+![](./img/3eiy_7a.png)
+
+## Converting Amino Acid codes from 3- to 1-letter codes
+
+Residues in the `residue_name` field can be converted into 1-letter amino acid codes, which may be useful for further sequence analysis, for example, pair-wise or multiple sequence alignments:
+
+
+```python
+from biopandas.pdb import PandasPdb
+ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
+ppdb.amino3to1()
+# By default, `amino3to1` returns a pandas Series object,
+# and to convert it into a Python list, you can wrap it in list
+# constructor, e.g.,
+# `list(ppdb.amino3to1())`
+```
+
+
+
+
+    0       S
+    6       F
+    17      S
+    23      N
+    31      V
+    38      P
+    45      A
+    50      G
+    54      K
+    63      D
+    71      L
+    79      P
+    86      Q
+    95      D
+    103     F
+    114     N
+    122     V
+    129     I
+    137     I
+    145     E
+    154     I
+    162     P
+    169     A
+    174     Q
+    183     S
+    189     E
+    198     P
+    205     V
+    212     K
+    221     Y
+           ..
+    1100    E
+    1109    K
+    1114    G
+    1118    K
+    1127    W
+    1141    V
+    1148    K
+    1153    V
+    1160    E
+    1169    G
+    1173    W
+    1187    D
+    1195    G
+    1199    I
+    1207    D
+    1215    A
+    1220    A
+    1225    H
+    1235    K
+    1244    E
+    1253    I
+    1261    T
+    1268    D
+    1276    G
+    1280    V
+    1287    A
+    1292    N
+    1300    F
+    1311    K
+    1320    K
+    Name: residue_name, dtype: object
+
+
 
 ## Wrapping it up - Saving PDB structures
 
@@ -1025,9 +1235,9 @@ We can save the file using the [`PandasPdb.to_pdb`](../api/biopandas.pdb#pandasp
 
 
 ```python
-ppdb.to_pdb(path='./data/3eiy_stripped.pdb',
-            records=None,
-            gz=False,
+ppdb.to_pdb(path='./data/3eiy_stripped.pdb', 
+            records=None, 
+            gz=False, 
             append_newline=True)
 ```
 
@@ -1035,8 +1245,8 @@ By default, all records (that is, 'ATOM', 'HETATM', 'OTHERS', 'ANISOU') are writ
 
 
 ```python
-ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz',
-            records=['ATOM', 'HETATM', 'OTHERS'],
-            gz=True,
+ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz', 
+            records=['ATOM', 'HETATM', 'OTHERS'], 
+            gz=True, 
             append_newline=True)
 ```

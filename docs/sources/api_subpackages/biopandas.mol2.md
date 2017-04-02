@@ -1,4 +1,4 @@
-biopandas version: 0.2.0.dev0
+biopandas version: 0.2.0
 ## PandasMol2
 
 *PandasMol2()*
@@ -21,9 +21,26 @@ Object for working with Tripos Mol2 structure files.
 
     ID, code, or name of the molecule stored
 
-
-
 ### Methods
+
+<hr>
+
+*distance(xyz=(0.0, 0.0, 0.0))*
+
+Computes Euclidean distance between atoms and a 3D point.
+
+**Parameters**
+
+- `xyz` : tuple (0.00, 0.00, 0.00)
+
+    X, Y, and Z coordinate of the reference center for the distance
+    computation
+
+**Returns**
+
+- `pandas.Series` : Pandas Series object containing the Euclidean
+
+    distance between the atoms in the atom section and `xyz`.
 
 <hr>
 
@@ -71,24 +88,15 @@ Reads Mol2 file from a list into DataFrames
 - `mol2_lines` : list
 
     A list of lines containing the mol2 file contents. For example,
-    ['@<TRIPOS>MOLECULE
-    ',
-    'ZINC38611810
-    ',
-    '   65    68     0     0     0
-    ',
-    'SMALL
-    ',
-    'NO_CHARGES
-    ',
-    '
-    ',
-    '@<TRIPOS>ATOM
-    ',
-    '      1 C1  -1.1786  2.7011  -4.0323 C.3  1 <0>   -0.1537
-    ',
-    '      2 C2  -1.2950  1.2442  -3.5798 C.3  1 <0>   -0.1156
-    ',
+    ['@<TRIPOS>MOLECULE\n',
+    'ZINC38611810\n',
+    '   65    68     0     0     0\n',
+    'SMALL\n',
+    'NO_CHARGES\n',
+    '\n',
+    '@<TRIPOS>ATOM\n',
+    '      1 C1  -1.1786  2.7011  -4.0323 C.3  1 <0>   -0.1537\n',
+    '      2 C2  -1.2950  1.2442  -3.5798 C.3  1 <0>   -0.1156\n',
     ...]
 
 
@@ -113,8 +121,6 @@ Reads Mol2 file from a list into DataFrames
 **Returns**
 
 self
-
-
 
 <hr>
 
@@ -169,10 +175,7 @@ Splits a multi-mol2 file into individual Mol2 file contents.
 
 A generator object for lists for every extracted mol2-file. Lists contain
     the molecule ID and the mol2 file contents.
-    e.g., ['ID1234', ['@<TRIPOS>MOLECULE
-    ', '...']]. Note that bytestrings
+    e.g., ['ID1234', ['@<TRIPOS>MOLECULE\n', '...']]. Note that bytestrings
     are returned (for reasons of efficieny) if the Mol2 content is read
     from a gzip (.gz) file.
-
-
 
