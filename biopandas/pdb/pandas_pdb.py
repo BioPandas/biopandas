@@ -1,3 +1,5 @@
+""" Class for working with PDB files"""
+
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
@@ -19,8 +21,9 @@ from .engines import pdb_df_columns
 from .engines import amino3to1dict
 
 
-class PandasPDB(object):
-    """ Object for working with Protein Databank structure files.
+class PandasPdb(object):
+    """
+    Object for working with Protein Databank structure files.
 
     Attributes
     ----------
@@ -117,12 +120,12 @@ class PandasPDB(object):
             df = self._df['ATOM']
         return self._get_dict[s](df, invert=invert)
 
-    def impute_element(self, sections=['ATOM', 'HETATM'], inplace=False):
+    def impute_element(self, sections=('ATOM', 'HETATM'), inplace=False):
         """Impute element_symbol from atom_name section.
 
         Parameters
         ----------
-        sections : iterable (default: ['ATOM', 'HETATM'])
+        sections : iterable (default: ('ATOM', 'HETATM'))
             Coordinate sections for which the element symbols should be
             imputed.
 
@@ -181,7 +184,7 @@ class PandasPDB(object):
         """
         if df1.shape[0] != df2.shape[0]:
             raise AttributeError('DataFrames have unequal lengths')
-        get_dict = PandasPDB._init_get_dict()
+        get_dict = PandasPdb._init_get_dict()
         if s:
             if s not in get_dict.keys():
                 raise AttributeError('s must be in '
@@ -198,11 +201,11 @@ class PandasPDB(object):
     @staticmethod
     def _init_get_dict():
         """Initialize dictionary for filter operations."""
-        get_dict = {'main chain': PandasPDB._get_mainchain,
-                    'hydrogen': PandasPDB._get_hydrogen,
-                    'c-alpha': PandasPDB._get_calpha,
-                    'carbon': PandasPDB._get_carbon,
-                    'heavy': PandasPDB._get_heavy}
+        get_dict = {'main chain': PandasPdb._get_mainchain,
+                    'hydrogen': PandasPdb._get_hydrogen,
+                    'c-alpha': PandasPdb._get_calpha,
+                    'carbon': PandasPdb._get_carbon,
+                    'heavy': PandasPdb._get_heavy}
         return get_dict
 
     @staticmethod

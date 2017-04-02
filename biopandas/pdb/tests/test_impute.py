@@ -5,7 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 import os
 import numpy as np
 import pandas as pd
@@ -14,7 +14,7 @@ from nose.tools import raises
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data',
                                  '3eiy_stripped_no_ele.pdb')
 
-ppdb = PandasPDB()
+ppdb = PandasPdb()
 ppdb.read_pdb(TESTDATA_FILENAME)
 
 

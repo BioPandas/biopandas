@@ -4,7 +4,7 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPDB
+from biopandas.pdb import PandasPdb
 import warnings
 import pandas as pd
 import os
@@ -27,7 +27,7 @@ with open(TESTDATA_FILENAME2, 'r') as f:
 
 
 def test_defaults():
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     ppdb.to_pdb(path=OUTFILE, records=None)
     with open(TESTDATA_FILENAME, 'r') as f:
@@ -39,7 +39,7 @@ def test_defaults():
 
 
 def test_nonexpected_column():
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     ppdb.df['HETATM']['test'] = pd.Series('test',
                                           index=ppdb.df['HETATM'].index)
@@ -53,7 +53,7 @@ def test_nonexpected_column():
 
 def test_records():
     """Test private _read_pdb."""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     ppdb.to_pdb(path=OUTFILE, records=['HETATM'])
     with open(OUTFILE, 'r') as f:
@@ -64,7 +64,7 @@ def test_records():
 
 def test_anisou():
     """Test writing ANISOU entries."""
-    ppdb = PandasPDB()
+    ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME2)
     ppdb.to_pdb(path=OUTFILE, records=None)
     with open(OUTFILE, 'r') as f:

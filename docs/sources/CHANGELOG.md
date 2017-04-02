@@ -1,23 +1,30 @@
 # Release Notes ![](img/logos/3eiy_120.png)
 
-### 0.2.0dev
+The CHANGELOG for the current development version is available at
+[https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
+
+### 0.2.0 (2017-04-02)
 
 ##### Downloads
 
-- -
+- [Source code (zip)](https://github.com/rasbt/biopandas/releases/tag/v0.2.0)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/releases/tag/v0.2.0.tar.gz)
 
 ##### New Features
 
-- Added an `amino3to1` method to `BiopandasPDB` data frames to convert 3-amino acid letter codes to 1-letter codes.
-- Added a `distance` method to `BiopandasPDB` data frames to compute the Euclidean distance between atoms and a reference point.
+- Added an `amino3to1` method to `PandasPdb` data frames to convert 3-amino acid letter codes to 1-letter codes.
+- Added a `distance` method to `PandasPdb` data frames to compute the Euclidean distance between atoms and a reference point.
+- Added the `PandasMol2` class for working with Tripos MOL2 files in pandas DataFrames.
 
 
 ##### Changes
 
-- Raises a warning if `PandasPDB` is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.
+- `PandasPDB` was renamed to `PandasPdb`.
+- Raises a warning if `PandasPdb` is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.
 
 ##### Bug Fixes
 
+- -
 
 
 ### 0.1.5 (2016-11-19)
