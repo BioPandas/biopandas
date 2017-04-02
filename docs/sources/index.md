@@ -10,6 +10,7 @@
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
 [![DOI](https://zenodo.org/badge/46593500.svg)](https://zenodo.org/badge/latestdoi/46593500)
+[![Discuss](https://img.shields.io/badge/discuss-google_group-blue.svg)](https://groups.google.com/forum/#!forum/biopandas-users)
 
 <br>
 
