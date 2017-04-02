@@ -10,7 +10,7 @@
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
-![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)
+![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
 
 <hr>
 
