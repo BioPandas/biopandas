@@ -262,7 +262,7 @@ For example,
 Please note that documents containing code examples are generated from IPython Notebook files and converted to markdown via
 
 ```bash
-~/github/mlxtend/docs/examples$ nbconvert --to markdown <file.ipynb>
+~/github/biopandas/docs/examples$ nbconvert --to markdown <file.ipynb>
 ```
 
 The markdown file should be placed into the documentation directory at `biopandas/docs/sources` to build the documentation via  MkDocs.
