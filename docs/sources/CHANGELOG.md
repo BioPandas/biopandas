@@ -7,8 +7,8 @@ The CHANGELOG for the current development version is available at
 
 ##### Downloads
 
-- [Source code (zip)](https://github.com/rasbt/biopandas/releases/tag/v0.2.0)
-- [Source code (tar.gz)](https://github.com/rasbt/biopandas/releases/tag/v0.2.0.tar.gz)
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.0.tar.gz)
 
 ##### New Features
 
