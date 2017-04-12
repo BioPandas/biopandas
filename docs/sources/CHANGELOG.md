@@ -3,6 +3,27 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.1dev
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.1.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.1.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+- The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now returns a pandas `DataFrame` instead of a pandas `Series` object. The returned data frame has two columns, `'chain_id'` and `'residue_name'`, where the former contains the chain ID of the amino acid and the latter contains the 1-letter amino acid code, respectively. 
+
+##### Bug Fixes
+
+- The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now handles multi-chain proteins correctly.
+
+
+
 ### 0.2.0 (2017-04-02)
 
 ##### Downloads

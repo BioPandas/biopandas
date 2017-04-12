@@ -363,12 +363,25 @@ class PandasPdb(object):
 
         Returns
         ---------
-        pandas.Series : Pandas Series object containing the 1-letter amino
-            acid codes after conversion
+        pandas.DataFrame : Pandas DataFrame object consisting of two columns,
+            `'chain_id'` and `'residue_name'`, where the former contains
+            the chain ID of the amino acid and the latter
+            contains the 1-letter amino acid code, respectively.
 
         """
-        tmp = self.df[record].drop_duplicates(subset='residue_number')
-        return tmp[residue_col].map(amino3to1dict).fillna(fillna)
+        tmp = self.df[record]
+        cmp = 'placeholder'
+        indices = []
+
+        for num, ind in zip(tmp['residue_number'], tmp.index):
+            if num != cmp:
+                indices.append(ind)
+            cmp = num
+
+        transl = tmp.iloc[indices][residue_col].map(
+            amino3to1dict).fillna(fillna)
+
+        return pd.concat((tmp.iloc[indices]['chain_id'], transl), axis=1)
 
     def distance(self, xyz=(0.00, 0.00, 0.00), record='ATOM'):
         """Computes Euclidean distance between atoms and a 3D point.
