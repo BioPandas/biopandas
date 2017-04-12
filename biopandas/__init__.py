@@ -4,5 +4,5 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-__version__ = '0.2.0'
+__version__ = '0.2.1.dev0'
 __author__ = "Sebastian Raschka <mail@sebastianraschka.com>"

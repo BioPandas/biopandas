@@ -1,4 +1,4 @@
-biopandas version: 0.2.0
+biopandas version: 0.2.1.dev0
 ## PandasPdb
 
 *PandasPdb()*
@@ -62,9 +62,11 @@ Creates 1-letter amino acid codes from DataFrame
 
 **Returns**
 
-- `pandas.Series` : Pandas Series object containing the 1-letter amino
+- `pandas.DataFrame` : Pandas DataFrame object consisting of two columns,
 
-    acid codes after conversion
+    `'chain_id'` and `'residue_name'`, where the former contains
+    the chain ID of the amino acid and the latter
+    contains the 1-letter amino acid code, respectively.
 
 <hr>
 
