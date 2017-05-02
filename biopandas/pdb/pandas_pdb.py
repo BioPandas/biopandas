@@ -400,10 +400,20 @@ class PandasPdb(object):
             distance between the atoms in the record section and `xyz`.
 
         """
-        return self.df[record].apply(lambda x: np.sqrt(np.sum(
-            ((x['x_coord'] - xyz[0])**2,
-             (x['y_coord'] - xyz[1])**2,
-             (x['z_coord'] - xyz[2])**2))), axis=1)
+
+        return pd.Series(np.linalg.norm(self.df[record][[
+            'x_coord', 'y_coord', 'z_coord']].subtract(xyz, axis=1), axis=1))
+
+        # Note:
+        # The solution above is about 10% faster than
+        # return np.sqrt(np.sum(self.df[record][[
+        #    'x_coord', 'y_coord', 'z_coord']]\
+        #   .subtract(xyz, axis=1)**2, axis=1))
+        # The solution below is equivalent but 300% slower:
+        # return self.df[record].apply(lambda x: np.sqrt(np.sum(
+        #    ((x['x_coord'] - xyz[0])**2,
+        #     (x['y_coord'] - xyz[1])**2,
+        #     (x['z_coord'] - xyz[2])**2))), axis=1)
 
     def to_pdb(self, path, records=None, gz=False, append_newline=True):
         """Write record DataFrames to a PDB file or gzipped PDB file.
