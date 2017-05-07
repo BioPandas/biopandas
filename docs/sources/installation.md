@@ -36,7 +36,7 @@ if you have `conda-forge` already [added to your channels](https://github.com/co
 You want to try out the latest features before they go live on PyPI? Install the `biopandas` dev-version latest development version from the GitHub repository by executing
 
 ```bash
-pip install git+git://github.com/rasbt/biopandas.git#egg=biopandas
+pip install git+git://github.com/rasbt/biopandas.git
 ```
 
 <br>
