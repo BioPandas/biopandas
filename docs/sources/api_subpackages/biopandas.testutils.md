@@ -1,1 +1,1 @@
-biopandas version: 0.2.1.dev0
+biopandas version: 0.2.1
