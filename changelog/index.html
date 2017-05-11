@@ -203,7 +203,7 @@
     
         <li class="main active"><a href="#release-notes">Release Notes</a></li>
         
-            <li><a href="#020-2017-04-02">0.2.0 (2017-04-02)</a></li>
+            <li><a href="#021-2017-05-11">0.2.1  (2017-05-11)</a></li>
                 <!-- 
                     <li><a href="#downloads">Downloads</a></li>
             
@@ -214,7 +214,7 @@
                     <li><a href="#bug-fixes">Bug Fixes</a></li>
              -->
         
-            <li><a href="#015-2016-11-19">0.1.5 (2016-11-19)</a></li>
+            <li><a href="#020-2017-04-02">0.2.0 (2017-04-02)</a></li>
                 <!-- 
                     <li><a href="#downloads_1">Downloads</a></li>
             
@@ -225,7 +225,7 @@
                     <li><a href="#bug-fixes_1">Bug Fixes</a></li>
              -->
         
-            <li><a href="#014-2015-11-24">0.1.4 (2015-11-24)</a></li>
+            <li><a href="#015-2016-11-19">0.1.5 (2016-11-19)</a></li>
                 <!-- 
                     <li><a href="#downloads_2">Downloads</a></li>
             
@@ -236,13 +236,24 @@
                     <li><a href="#bug-fixes_2">Bug Fixes</a></li>
              -->
         
-            <li><a href="#013-2015-11-23">0.1.3 (2015-11-23)</a></li>
+            <li><a href="#014-2015-11-24">0.1.4 (2015-11-24)</a></li>
                 <!-- 
+                    <li><a href="#downloads_3">Downloads</a></li>
+            
                     <li><a href="#new-features_3">New Features</a></li>
             
                     <li><a href="#changes_3">Changes</a></li>
             
                     <li><a href="#bug-fixes_3">Bug Fixes</a></li>
+             -->
+        
+            <li><a href="#013-2015-11-23">0.1.3 (2015-11-23)</a></li>
+                <!-- 
+                    <li><a href="#new-features_4">New Features</a></li>
+            
+                    <li><a href="#changes_4">Changes</a></li>
+            
+                    <li><a href="#bug-fixes_4">Bug Fixes</a></li>
              -->
         
             <li><a href="#012-2015-11-23">0.1.2 (2015-11-23)</a></li>
@@ -256,69 +267,89 @@
 <h1 id="release-notes">Release Notes <img alt="" src="../img/logos/3eiy_120.png" /></h1>
 <p>The CHANGELOG for the current development version is available at
 <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md">https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md</a>.</p>
-<h3 id="020-2017-04-02">0.2.0 (2017-04-02)</h3>
+<h3 id="021-2017-05-11">0.2.1  (2017-05-11)</h3>
 <h5 id="downloads">Downloads</h5>
+<ul>
+<li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.zip">Source code (zip)</a></li>
+<li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.tar.gz">Source code (tar.gz)</a></li>
+</ul>
+<h5 id="new-features">New Features</h5>
+<ul>
+<li>-</li>
+</ul>
+<h5 id="changes">Changes</h5>
+<ul>
+<li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now returns a pandas <code>DataFrame</code> instead of a pandas <code>Series</code> object. The returned data frame has two columns, <code>'chain_id'</code> and <code>'residue_name'</code>, where the former contains the chain ID of the amino acid and the latter contains the 1-letter amino acid code, respectively.</li>
+<li>Significant speed improvements of the <code>distance</code> method of both <code>PandasPdb</code> and <code>PandasMol2</code> (now about 300 percent faster than previously).</li>
+</ul>
+<h5 id="bug-fixes">Bug Fixes</h5>
+<ul>
+<li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now handles multi-chain proteins correctly.</li>
+<li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now also works as expected if the <code>'ATOM'</code> entry DataFrame contains disordered DataFrame indices or duplicate DataFrame index values.</li>
+</ul>
+<h3 id="020-2017-04-02">0.2.0 (2017-04-02)</h3>
+<h5 id="downloads_1">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features">New Features</h5>
+<h5 id="new-features_1">New Features</h5>
 <ul>
 <li>Added an <code>amino3to1</code> method to <code>PandasPdb</code> data frames to convert 3-amino acid letter codes to 1-letter codes.</li>
 <li>Added a <code>distance</code> method to <code>PandasPdb</code> data frames to compute the Euclidean distance between atoms and a reference point.</li>
 <li>Added the <code>PandasMol2</code> class for working with Tripos MOL2 files in pandas DataFrames.</li>
 </ul>
-<h5 id="changes">Changes</h5>
+<h5 id="changes_1">Changes</h5>
 <ul>
 <li><code>PandasPDB</code> was renamed to <code>PandasPdb</code>.</li>
 <li>Raises a warning if <code>PandasPdb</code> is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.</li>
-</ul>
-<h5 id="bug-fixes">Bug Fixes</h5>
-<ul>
-<li>-</li>
-</ul>
-<h3 id="015-2016-11-19">0.1.5 (2016-11-19)</h3>
-<h5 id="downloads_1">Downloads</h5>
-<ul>
-<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5">Source code (zip)</a></li>
-<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5.tar.gz">Source code (tar.gz)</a></li>
-</ul>
-<h5 id="new-features_1">New Features</h5>
-<ul>
-<li>Added an <code>impute_element</code> method to <code>PandasPDB</code> objects to infer the Element Symbol from the Atom Name column.</li>
-<li>Added two new selection types for <code>PandasPDB</code> ATOM and HETATM coordinate sections: <code>'heavy'</code> and <code>'carbon'</code>.</li>
-</ul>
-<h5 id="changes_1">Changes</h5>
-<ul>
-<li>Include test data in the PyPI package; add install_requires for pandas.</li>
-<li>The <code>'hydrogen'</code> atom selection in <code>PandasPDB</code> methods is now based on the element type instead of the atom name.</li>
-<li>By default, the RMSD is now computed on all atoms unless a specific selection is defined.</li>
 </ul>
 <h5 id="bug-fixes_1">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
-<h3 id="014-2015-11-24">0.1.4 (2015-11-24)</h3>
+<h3 id="015-2016-11-19">0.1.5 (2016-11-19)</h3>
 <h5 id="downloads_2">Downloads</h5>
+<ul>
+<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5">Source code (zip)</a></li>
+<li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5.tar.gz">Source code (tar.gz)</a></li>
+</ul>
+<h5 id="new-features_2">New Features</h5>
+<ul>
+<li>Added an <code>impute_element</code> method to <code>PandasPDB</code> objects to infer the Element Symbol from the Atom Name column.</li>
+<li>Added two new selection types for <code>PandasPDB</code> ATOM and HETATM coordinate sections: <code>'heavy'</code> and <code>'carbon'</code>.</li>
+</ul>
+<h5 id="changes_2">Changes</h5>
+<ul>
+<li>Include test data in the PyPI package; add install_requires for pandas.</li>
+<li>The <code>'hydrogen'</code> atom selection in <code>PandasPDB</code> methods is now based on the element type instead of the atom name.</li>
+<li>By default, the RMSD is now computed on all atoms unless a specific selection is defined.</li>
+</ul>
+<h5 id="bug-fixes_2">Bug Fixes</h5>
+<ul>
+<li>-</li>
+</ul>
+<h3 id="014-2015-11-24">0.1.4 (2015-11-24)</h3>
+<h5 id="downloads_3">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_2">New Features</h5>
+<h5 id="new-features_3">New Features</h5>
 <p>-</p>
-<h5 id="changes_2">Changes</h5>
+<h5 id="changes_3">Changes</h5>
 <ul>
 <li>Needed to bump the version number due to a bug in the PyPI setup.py script.</li>
 <li>Support for the old pandas sorting syntax (<code>DataFrame.sort</code> vs <code>DataFrame.sort_values</code>) incl. DeprecationWarning.</li>
 </ul>
-<h5 id="bug-fixes_2">Bug Fixes</h5>
+<h5 id="bug-fixes_3">Bug Fixes</h5>
 <p>-</p>
 <h3 id="013-2015-11-23">0.1.3 (2015-11-23)</h3>
-<h5 id="new-features_3">New Features</h5>
+<h5 id="new-features_4">New Features</h5>
 <p>-</p>
-<h5 id="changes_3">Changes</h5>
+<h5 id="changes_4">Changes</h5>
 <p>-</p>
-<h5 id="bug-fixes_3">Bug Fixes</h5>
+<h5 id="bug-fixes_4">Bug Fixes</h5>
 <ul>
 <li>Exception handling in tests if PDB goes down (which just happened).</li>
 <li>Added a separate ANISOU engine to handle those records correctly.</li>

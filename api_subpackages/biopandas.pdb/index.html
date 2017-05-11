@@ -214,7 +214,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<p>biopandas version: 0.2.0</p>
+<p>biopandas version: 0.2.1</p>
 <h2 id="pandaspdb">PandasPdb</h2>
 <p><em>PandasPdb()</em></p>
 <p>Object for working with Protein Databank structure files.</p>
@@ -272,8 +272,10 @@ codes for the conversion</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li>
-<p><code>pandas.Series</code> : Pandas Series object containing the 1-letter amino</p>
-<p>acid codes after conversion</p>
+<p><code>pandas.DataFrame</code> : Pandas DataFrame object consisting of two columns,</p>
+<p><code>'chain_id'</code> and <code>'residue_name'</code>, where the former contains
+the chain ID of the amino acid and the latter
+contains the 1-letter amino acid code, respectively.</p>
 </li>
 </ul>
 <hr>

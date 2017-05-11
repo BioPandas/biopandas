@@ -229,6 +229,26 @@
 </div></div>
         <div class="col-md-9" role="main">
 
+<p>BioPandas</p>
+<p>Author: Sebastian Raschka <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;">&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;</a><br />
+License: BSD 3 clause<br />
+Project Website: http://rasbt.github.io/biopandas/<br />
+Code Repository: https://github.com/rasbt/biopandas  </p>
+<pre><code class="python">%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+</code></pre>
+
+<pre><code>last updated: 2017-04-02
+
+pandas 0.19.2
+biopandas 0.2.0.dev0
+</code></pre>
+<pre><code class="python">from biopandas.mol2 import PandasMol2
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+</code></pre>
+
 <h1 id="working-with-mol2-structures-in-dataframes">Working with MOL2 Structures in DataFrames</h1>
 <p>The Tripos MOL2 format is a common format for working with small molecules. In this tutorial, we will go over some examples that illustrate how we can use Biopandas' MOL2 DataFrames to analyze molecules conveniently.</p>
 <h2 id="loading-mol2-files">Loading MOL2 Files</h2>
@@ -748,7 +768,7 @@ O.t3p      oxygen in Transferable Intermolecular Potential (TIP3P) water model
 S.3        sulfur sp3
 S.2        sulfur sp2
 S.O        sulfoxide sulfur
-S.O2       sulfone sulfur
+S.O2/S.o2  sulfone sulfur
 P.3        phosphorous sp3
 F          fluorine
 H          hydrogen

@@ -238,6 +238,26 @@
 </div></div>
         <div class="col-md-9" role="main">
 
+<p>BioPandas</p>
+<p>Author: Sebastian Raschka <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;">&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;</a><br />
+License: BSD 3 clause<br />
+Project Website: http://rasbt.github.io/biopandas/<br />
+Code Repository: https://github.com/rasbt/biopandas  </p>
+<pre><code class="python">%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+</code></pre>
+
+<pre><code>last updated: 2017-04-12
+
+pandas 0.19.2
+biopandas 0.2.1.dev0
+</code></pre>
+<pre><code class="python">from biopandas.pdb import PandasPdb
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+</code></pre>
+
 <h1 id="working-with-pdb-structures-in-dataframes">Working with PDB Structures in DataFrames</h1>
 <h2 id="loading-pdb-files">Loading PDB Files</h2>
 <p>There are 2 1/2 ways to load a PDB structure into a <code>PandasPdb</code> object.</p>
@@ -255,14 +275,14 @@ ppdb = PandasPdb().fetch_pdb('3eiy')
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898&gt;
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28&gt;
 </code></pre>
 <h4 id="2-b">2 b)</h4>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
-<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898&gt;
+<pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28&gt;
 </code></pre>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
 <pre><code class="python">print('PDB Code: %s' % ppdb.code)
@@ -509,7 +529,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 ppdb.df.keys()
 </code></pre>
 
-<pre><code>dict_keys(['HETATM', 'ANISOU', 'ATOM', 'OTHERS'])
+<pre><code>dict_keys(['ATOM', 'HETATM', 'ANISOU', 'OTHERS'])
 </code></pre>
 <ul>
 <li>'ATOM': contains the entries from the ATOM coordinate section</li>
@@ -1262,76 +1282,74 @@ all_within_7A.tail()
 <h2 id="converting-amino-acid-codes-from-3-to-1-letter-codes">Converting Amino Acid codes from 3- to 1-letter codes</h2>
 <p>Residues in the <code>residue_name</code> field can be converted into 1-letter amino acid codes, which may be useful for further sequence analysis, for example, pair-wise or multiple sequence alignments:</p>
 <pre><code class="python">from biopandas.pdb import PandasPdb
-ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
-ppdb.amino3to1()
-# By default, `amino3to1` returns a pandas Series object,
-# and to convert it into a Python list, you can wrap it in list
-# constructor, e.g.,
-# `list(ppdb.amino3to1())`
+ppdb = PandasPdb().fetch_pdb('5mtn')
+sequence = ppdb.amino3to1()
+sequence.tail()
 </code></pre>
 
-<pre><code>0       S
-6       F
-17      S
-23      N
-31      V
-38      P
-45      A
-50      G
-54      K
-63      D
-71      L
-79      P
-86      Q
-95      D
-103     F
-114     N
-122     V
-129     I
-137     I
-145     E
-154     I
-162     P
-169     A
-174     Q
-183     S
-189     E
-198     P
-205     V
-212     K
-221     Y
-       ..
-1100    E
-1109    K
-1114    G
-1118    K
-1127    W
-1141    V
-1148    K
-1153    V
-1160    E
-1169    G
-1173    W
-1187    D
-1195    G
-1199    I
-1207    D
-1215    A
-1220    A
-1225    H
-1235    K
-1244    E
-1253    I
-1261    T
-1268    D
-1276    G
-1280    V
-1287    A
-1292    N
-1300    F
-1311    K
-1320    K
-Name: residue_name, dtype: object
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>chain_id</th>
+      <th>residue_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1378</th>
+      <td>B</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <th>1386</th>
+      <td>B</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>1394</th>
+      <td>B</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <th>1406</th>
+      <td>B</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <td>B</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>As shown above, the <code>amino3to1</code> method returns a <code>DataFrame</code> containing the <code>chain_id</code> and <code>residue_name</code> of the translated 1-letter amino acids. If you like to work with the sequence as a Python list of string characters, you could do the following:</p>
+<pre><code class="python">sequence_list = list(sequence.loc[sequence['chain_id'] == 'A', 'residue_name'])
+sequence_list[-5:] # last 5 residues of chain A
+</code></pre>
+
+<pre><code>['V', 'R', 'H', 'Y', 'T']
+</code></pre>
+<p>And if you prefer to work with the sequence as a string, you can use the <code>join</code> method: </p>
+<pre><code class="python">''.join(sequence.loc[sequence['chain_id'] == 'A', 'residue_name'])
+</code></pre>
+
+<pre><code>'SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT'
+</code></pre>
+<p>To iterate over the sequences of multi-chain proteins, you can use the <code>unique</code> method as shown below:</p>
+<pre><code class="python">for chain_id in sequence['chain_id'].unique():
+    print('\nChain ID: %s' % chain_id)
+    print(''.join(sequence.loc[sequence['chain_id'] == chain_id, 'residue_name']))
+</code></pre>
+
+<pre><code>Chain ID: A
+SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT
+
+Chain ID: B
+SVSSVPTKLEVVAATPTSLLISWDAPAVTVVYYLITYGETGSPWPGGQAFEVPGSKSTATISGLKPGVDYTITVYAHRSSYGYSENPISINYRT
 </code></pre>
 <h2 id="wrapping-it-up-saving-pdb-structures">Wrapping it up - Saving PDB structures</h2>
 <p>Finally, let's talk about how to get the PDB structures out of the DataFrame format back into the beloved .pdb format.</p>
