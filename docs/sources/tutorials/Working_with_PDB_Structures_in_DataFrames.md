@@ -1,3 +1,31 @@
+
+BioPandas
+
+Author: Sebastian Raschka <mail@sebastianraschka.com>  
+License: BSD 3 clause  
+Project Website: http://rasbt.github.io/biopandas/  
+Code Repository: https://github.com/rasbt/biopandas  
+
+
+```python
+%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+```
+
+    last updated: 2017-04-12 
+    
+    pandas 0.19.2
+    biopandas 0.2.1.dev0
+
+
+
+```python
+from biopandas.pdb import PandasPdb
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+```
+
 # Working with PDB Structures in DataFrames
 
 ## Loading PDB Files
@@ -29,7 +57,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28>
 
 
 
@@ -45,7 +73,7 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x106795898>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28>
 
 
 
@@ -207,7 +235,7 @@ ppdb.df.keys()
 
 
 
-    dict_keys(['HETATM', 'ANISOU', 'ATOM', 'OTHERS'])
+    dict_keys(['ATOM', 'HETATM', 'ANISOU', 'OTHERS'])
 
 
 
@@ -1142,80 +1170,99 @@ Residues in the `residue_name` field can be converted into 1-letter amino acid c
 
 ```python
 from biopandas.pdb import PandasPdb
-ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
-ppdb.amino3to1()
-# By default, `amino3to1` returns a pandas Series object,
-# and to convert it into a Python list, you can wrap it in list
-# constructor, e.g.,
-# `list(ppdb.amino3to1())`
+ppdb = PandasPdb().fetch_pdb('5mtn')
+sequence = ppdb.amino3to1()
+sequence.tail()
 ```
 
 
 
 
-    0       S
-    6       F
-    17      S
-    23      N
-    31      V
-    38      P
-    45      A
-    50      G
-    54      K
-    63      D
-    71      L
-    79      P
-    86      Q
-    95      D
-    103     F
-    114     N
-    122     V
-    129     I
-    137     I
-    145     E
-    154     I
-    162     P
-    169     A
-    174     Q
-    183     S
-    189     E
-    198     P
-    205     V
-    212     K
-    221     Y
-           ..
-    1100    E
-    1109    K
-    1114    G
-    1118    K
-    1127    W
-    1141    V
-    1148    K
-    1153    V
-    1160    E
-    1169    G
-    1173    W
-    1187    D
-    1195    G
-    1199    I
-    1207    D
-    1215    A
-    1220    A
-    1225    H
-    1235    K
-    1244    E
-    1253    I
-    1261    T
-    1268    D
-    1276    G
-    1280    V
-    1287    A
-    1292    N
-    1300    F
-    1311    K
-    1320    K
-    Name: residue_name, dtype: object
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>chain_id</th>
+      <th>residue_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1378</th>
+      <td>B</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <th>1386</th>
+      <td>B</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>1394</th>
+      <td>B</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <th>1406</th>
+      <td>B</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <td>B</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
+
+
+As shown above, the `amino3to1` method returns a `DataFrame` containing the `chain_id` and `residue_name` of the translated 1-letter amino acids. If you like to work with the sequence as a Python list of string characters, you could do the following:
+
+
+```python
+sequence_list = list(sequence.loc[sequence['chain_id'] == 'A', 'residue_name'])
+sequence_list[-5:] # last 5 residues of chain A
+```
+
+
+
+
+    ['V', 'R', 'H', 'Y', 'T']
+
+
+
+And if you prefer to work with the sequence as a string, you can use the `join` method: 
+
+
+```python
+''.join(sequence.loc[sequence['chain_id'] == 'A', 'residue_name'])
+```
+
+
+
+
+    'SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT'
+
+
+
+To iterate over the sequences of multi-chain proteins, you can use the `unique` method as shown below:
+
+
+```python
+for chain_id in sequence['chain_id'].unique():
+    print('\nChain ID: %s' % chain_id)
+    print(''.join(sequence.loc[sequence['chain_id'] == chain_id, 'residue_name']))
+```
+
+    
+    Chain ID: A
+    SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT
+    
+    Chain ID: B
+    SVSSVPTKLEVVAATPTSLLISWDAPAVTVVYYLITYGETGSPWPGGQAFEVPGSKSTATISGLKPGVDYTITVYAHRSSYGYSENPISINYRT
 
 
 ## Wrapping it up - Saving PDB structures

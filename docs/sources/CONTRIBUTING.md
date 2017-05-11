@@ -262,7 +262,7 @@ For example,
 Please note that documents containing code examples are generated from IPython Notebook files and converted to markdown via
 
 ```bash
-~/github/biopandas/docs/examples$ nbconvert --to markdown <file.ipynb>
+~/github/biopandas/docs/sources/tutorials$ nbconvert --to markdown <file.ipynb>
 ```
 
 The markdown file should be placed into the documentation directory at `biopandas/docs/sources` to build the documentation via  MkDocs.
@@ -349,7 +349,7 @@ $ pip uninstall biopandas
 Consider deploying the package to the PyPI test server first. The setup instructions can be found [here](https://wiki.python.org/moin/TestPyPI).
 
 ```bash
-$ python setup.py sdist upload -r https://testpypi.python.org/pypi
+$ python setup.py sdist bdist_wheel upload -r https://testpypi.python.org/pypi
 ```
 
 Test if it can be installed from there by executing
@@ -367,7 +367,7 @@ $ pip uninstall biopandas
 After this dry-run succeeded, repeat this process using the "real" PyPI:
 
 ```bash
-$ python setup.py sdist upload
+$ python setup.py sdist bdist_wheel upload
 ```
 
 #### 4. Removing the virtual environment

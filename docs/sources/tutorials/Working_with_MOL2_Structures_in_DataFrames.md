@@ -1,3 +1,31 @@
+
+BioPandas
+
+Author: Sebastian Raschka <mail@sebastianraschka.com>  
+License: BSD 3 clause  
+Project Website: http://rasbt.github.io/biopandas/  
+Code Repository: https://github.com/rasbt/biopandas  
+
+
+```python
+%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+```
+
+    last updated: 2017-04-02 
+    
+    pandas 0.19.2
+    biopandas 0.2.0.dev0
+
+
+
+```python
+from biopandas.mol2 import PandasMol2
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+```
+
 # Working with MOL2 Structures in DataFrames
 
 The Tripos MOL2 format is a common format for working with small molecules. In this tutorial, we will go over some examples that illustrate how we can use Biopandas' MOL2 DataFrames to analyze molecules conveniently.
@@ -569,7 +597,7 @@ A list of all the allowed atom types that can be found in Tripos MOL2 files is p
     S.3        sulfur sp3
     S.2        sulfur sp2
     S.O        sulfoxide sulfur
-    S.O2       sulfone sulfur
+    S.O2/S.o2  sulfone sulfur
     P.3        phosphorous sp3
     F          fluorine
     H          hydrogen
