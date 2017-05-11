@@ -488,7 +488,7 @@ If you are adding a new document, please also include it in the pages section in
 
 <h4 id="3-deploying-the-package">3. Deploying the package</h4>
 <p>Consider deploying the package to the PyPI test server first. The setup instructions can be found <a href="https://wiki.python.org/moin/TestPyPI">here</a>.</p>
-<pre><code class="bash">$ python setup.py sdist upload -r https://testpypi.python.org/pypi
+<pre><code class="bash">$ python setup.py sdist bdist_wheel upload -r https://testpypi.python.org/pypi
 </code></pre>
 
 <p>Test if it can be installed from there by executing</p>
@@ -500,7 +500,7 @@ If you are adding a new document, please also include it in the pages section in
 </code></pre>
 
 <p>After this dry-run succeeded, repeat this process using the "real" PyPI:</p>
-<pre><code class="bash">$ python setup.py sdist upload
+<pre><code class="bash">$ python setup.py sdist bdist_wheel upload
 </code></pre>
 
 <h4 id="4-removing-the-virtual-environment">4. Removing the virtual environment</h4>
