@@ -55,6 +55,14 @@ class PandasPdb(object):
         """Acccess dictionary of pandas DataFrames for PDB record sections."""
         return self._df
 
+    @df.setter
+    def df(self, value):
+        """Assign a new value to the pandas DataFrame"""
+        raise AttributeError('Please use `PandasPdb.df_ = ... ` instead\n'
+                             'of `PandasPdb.df = ... ` if you are sure that\n'
+                             'you want to overwrite the `df` attribute.')
+        # self._df = value
+
     def read_pdb(self, path):
         """Read PDB files (unzipped or gzipped) from local drive
 

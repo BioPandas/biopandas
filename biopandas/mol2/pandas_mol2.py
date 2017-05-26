@@ -52,6 +52,14 @@ class PandasMol2(object):
         """Acccesses the pandas DataFrame"""
         return self._df
 
+    @df.setter
+    def df(self, value):
+        """Assign a new value to the pandas DataFrame"""
+        raise AttributeError('Please use `PandasMol2.df_ = ... ` instead\n'
+                             'of `PandasMol2.df = ... ` if you are sure that\n'
+                             'you want to overwrite the `df` attribute.')
+        # self._df = value
+
     def _load_mol2(self, mol2_lines, mol2_code, columns):
         """Load mol2 contents into assert_raise_message instance"""
         if columns is None:
