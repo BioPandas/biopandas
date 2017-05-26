@@ -8,6 +8,7 @@
 import os
 from biopandas.mol2 import PandasMol2
 from biopandas.mol2.mol2_io import split_multimol2
+from biopandas.testutils import assert_raises
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -55,3 +56,21 @@ def test_distance():
 
     pdmol = PandasMol2().read_mol2(data_path)
     assert round(pdmol.distance().values[0], 3) == 31.185
+
+
+def test_overwrite_df():
+    data_path = os.path.join(this_dir, 'data', '1b5e_1.mol2')
+    pdmol = PandasMol2().read_mol2(data_path)
+
+    def overwrite():
+        pdmol.df = pdmol.df[(pdmol.df['atom_type'] != 'H')]
+
+    expect = ('Please use `PandasMol2.df_ = ... `'
+              ' instead\nof `PandasMol2.df = ... `'
+              ' if you are sure that\nyou want'
+              ' to overwrite the `df` attribute.')
+
+    assert_raises(AttributeError,
+                  expect,
+                  overwrite)
+
