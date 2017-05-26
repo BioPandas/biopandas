@@ -55,7 +55,7 @@ class PandasMol2(object):
     @df.setter
     def df(self, value):
         """Assign a new value to the pandas DataFrame"""
-        raise AttributeError('Please use `PandasMol2.df_ = ... ` instead\n'
+        raise AttributeError('Please use `PandasMol2._df = ... ` instead\n'
                              'of `PandasMol2.df = ... ` if you are sure that\n'
                              'you want to overwrite the `df` attribute.')
         # self._df = value

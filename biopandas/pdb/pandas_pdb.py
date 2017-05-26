@@ -58,7 +58,7 @@ class PandasPdb(object):
     @df.setter
     def df(self, value):
         """Assign a new value to the pandas DataFrame"""
-        raise AttributeError('Please use `PandasPdb.df_ = ... ` instead\n'
+        raise AttributeError('Please use `PandasPdb._df = ... ` instead\n'
                              'of `PandasPdb.df = ... ` if you are sure that\n'
                              'you want to overwrite the `df` attribute.')
         # self._df = value
