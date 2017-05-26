@@ -19,7 +19,7 @@ def test_overwrite_df():
     def overwrite():
         pdb.df = 'bla'
 
-    expect = ('Please use `PandasPdb.df_ = ... ` instead\n'
+    expect = ('Please use `PandasPdb._df = ... ` instead\n'
               'of `PandasPdb.df = ... ` if you are sure that\n'
               'you want to overwrite the `df` attribute.')
 

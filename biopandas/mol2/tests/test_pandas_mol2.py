@@ -65,7 +65,7 @@ def test_overwrite_df():
     def overwrite():
         pdmol.df = pdmol.df[(pdmol.df['atom_type'] != 'H')]
 
-    expect = ('Please use `PandasMol2.df_ = ... `'
+    expect = ('Please use `PandasMol2._df = ... `'
               ' instead\nof `PandasMol2.df = ... `'
               ' if you are sure that\nyou want'
               ' to overwrite the `df` attribute.')
