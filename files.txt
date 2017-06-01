@@ -1,1 +1,0 @@
-/Users/Sebastian/miniconda3/lib/python3.5/site-packages/biopandas-0.1.5-py3.5.egg

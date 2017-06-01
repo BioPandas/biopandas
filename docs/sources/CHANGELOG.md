@@ -3,6 +3,24 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.2dev (TBD)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.2.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.2.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+-  Add meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
+
+##### Bug Fixes
+
+
 ### 0.2.1  (2017-05-11)
 
 ##### Downloads
@@ -18,7 +36,7 @@ The CHANGELOG for the current development version is available at
 
 - The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now returns a pandas `DataFrame` instead of a pandas `Series` object. The returned data frame has two columns, `'chain_id'` and `'residue_name'`, where the former contains the chain ID of the amino acid and the latter contains the 1-letter amino acid code, respectively.
 -  Significant speed improvements of the `distance` method of both `PandasPdb` and `PandasMol2` (now about 300 percent faster than previously).
--  Add meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
+
 
 ##### Bug Fixes
 
