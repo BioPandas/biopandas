@@ -1,6 +1,15 @@
 # Installing BioPandas ![](img/logos/1j1v_120.png)
 
 
+## Requirements
+
+BioPandas requires the following software and packages:
+
+- [Python](https://www.python.org) 2.7, 3.5, or 3.6
+- [NumPy](http://www.numpy.org) >= 1.11.2
+- [SciPy](https://www.scipy.org/scipylib/index.html) >= 0.18.1
+- [Pandas](http://pandas.pydata.org) >= 0.19.1
+
 
 ## PyPI
 
@@ -9,6 +18,7 @@ You can install the latest stable release of `biopandas` directly from Python's 
 ```bash
 pip install biopandas  
 ```
+
 
 ## Conda-forge
 
@@ -47,3 +57,5 @@ Alternatively, you download the package manually from [PYPI](https://pypi.python
 ```bash
 python setup.py install
 ```
+
+

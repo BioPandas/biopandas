@@ -75,6 +75,13 @@ RMSD: 2.6444 Angstrom
 - install the latest PyPI version: `pip install biopandas`
 - install biopandas via conda-forge: `conda install biopandas -c conda-forge`
 
+#### Requirements
+
+- [Python](https://www.python.org) 2.7, 3.5, or 3.6
+- [NumPy](http://www.numpy.org) >= 1.11.2
+- [SciPy](https://www.scipy.org/scipylib/index.html) >= 0.18.1
+- [Pandas](http://pandas.pydata.org) >= 0.19.1
+
 
 For more information, please see [http://rasbt.github.io/biopandas/installation/](http://rasbt.github.io/biopandas/installation/).
 
