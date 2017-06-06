@@ -36,6 +36,11 @@ class PandasPdb(object):
     pdb_text : str
         PDB file contents in raw text format
 
+    pdb_path : str
+        Location of the PDB file that was read in via `read_pdb`
+        or URL of the page where the PDB content was fetched from
+        if `fetch_pdb` was called
+
     header : str
         PDB file description
 
@@ -49,6 +54,7 @@ class PandasPdb(object):
         self.header = ''
         self.code = ''
         self._get_dict = {}
+        self.pdb_path = ''
 
     @property
     def df(self):
@@ -76,7 +82,7 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_text = self._read_pdb(path=path)
+        self.pdb_path, self.pdb_text = self._read_pdb(path=path)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         self.header, self.code = self._parse_header_code()
         return self
@@ -94,7 +100,7 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_text = self._fetch_pdb(pdb_code)
+        self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
 
@@ -231,15 +237,15 @@ class PandasPdb(object):
                 txt = txt.decode('utf-8')
             else:
                 txt = txt.encode('ascii')
-        return txt
+        return path, txt
 
     @staticmethod
     def _fetch_pdb(pdb_code):
         """Load PDB file from rcsb.org."""
         txt = None
+        url = 'http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower()
         try:
-            response = urlopen('http://www.rcsb.org/pdb/files/%s.pdb'
-                               % pdb_code.lower())
+            response = urlopen(url)
             txt = response.read()
             if sys.version_info[0] >= 3:
                 txt = txt.decode('utf-8')
@@ -249,7 +255,7 @@ class PandasPdb(object):
             print('HTTP Error %s' % e.code)
         except URLError as e:
             print('URL Error %s' % e.args)
-        return txt
+        return url, txt
 
     def _parse_header_code(self):
         """Extract header information and PDB code."""
