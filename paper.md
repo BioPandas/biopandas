@@ -32,6 +32,6 @@ Furthermore, useful small-molecule related functions are provided for reading an
 
 **Berman, Helen, Kim Henrick, and Haruki Nakamura** (2003). Announcing the Worldwide Protein Data Bank. *Nature Structural & Molecular Biology 10.12: pp. 980-980.*
 
-**Berman, H.M., Westbrook, J., Feng, Z., Gilliland, G., Bhat, T.N., Weissig, H., Shindyalov, I.N. and Bourne, P.E. (2000)**. The Protein Data Bank. *Nucleic Acids Research 28.1: pp. 235-242.*
+**Berman, H.M., Westbrook, J., Feng, Z., Gilliland, G., Bhat, T.N., Weissig, H., Shindyalov, I.N. and Bourne, P.E. (2000)**. The Protein Data Bank. *Nucleic Acids Research 28.1: pp. 235-242, https://doi.org/10.1093/nar/28.1.235*
 
 **Tripos, L.** (2007). Tripos Mol2 File Format. *St. Louis, MO: Tripos.*
