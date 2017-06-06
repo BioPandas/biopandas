@@ -20,6 +20,8 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
+- The `rmsd` methods of `PandasMol2` and `PandasPdb` don't return a NaN anymore if the array indices of to structures are different.
+
 
 ### 0.2.1  (2017-05-11)
 

@@ -200,9 +200,9 @@ class PandasPdb(object):
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
-        total = ((df1['x_coord'] - df2['x_coord'])**2 +
-                 (df1['y_coord'] - df2['y_coord'])**2 +
-                 (df1['z_coord'] - df2['z_coord'])**2)
+        total = ((df1['x_coord'].values - df2['x_coord'].values)**2 +
+                 (df1['y_coord'].values - df2['y_coord'].values)**2 +
+                 (df1['z_coord'].values - df2['z_coord'].values)**2)
         rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
 

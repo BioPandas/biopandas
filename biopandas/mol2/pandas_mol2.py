@@ -216,9 +216,9 @@ class PandasMol2(object):
         else:
             d1, d2 = df1, df2
 
-        total = ((d1['x'] - d2['x'])**2 +
-                 (d1['y'] - d2['y'])**2 +
-                 (d1['z'] - d2['z'])**2)
+        total = ((d1['x'].values - d2['x'].values)**2 +
+                 (d1['y'].values - d2['y'].values)**2 +
+                 (d1['z'].values - d2['z'].values)**2)
         rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
 

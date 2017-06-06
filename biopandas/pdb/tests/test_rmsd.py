@@ -18,6 +18,9 @@ TESTDATA_lig1 = os.path.join(os.path.dirname(__file__), 'data',
 TESTDATA_lig2 = os.path.join(os.path.dirname(__file__), 'data',
                                                         'lig_conf_2.pdb')
 
+TESTDATA_rna = os.path.join(os.path.dirname(__file__), 'data',
+                                                       '1ehz-rna_short.pdb')
+
 p1t48 = PandasPdb()
 p1t48.read_pdb(TESTDATA_1t48)
 p1t49 = PandasPdb()
@@ -53,6 +56,15 @@ def test_protein():
     r = PandasPdb.rmsd(p1t48.df['ATOM'], p1t49.df['ATOM'],
                        s='c-alpha', invert=False)
     assert r == 0.4785, r
+
+
+def test_rna_and_nonmatching_indices():
+    ehz = PandasPdb().fetch_pdb('1ehz')
+    at = ehz.df['ATOM']
+    a64 = at[at['residue_number'] == 64]
+    a66 = at[at['residue_number'] == 66]
+    r = PandasPdb.rmsd(a64, a66)
+    assert r == 10.2007, r
 
 
 def test_ligand():
