@@ -51,7 +51,7 @@ with open(TESTDATA_FILENAME2, 'r') as f:
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasPdb()
-    txt = ppdb._read_pdb(TESTDATA_FILENAME)
+    path, txt = ppdb._read_pdb(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
 
@@ -61,7 +61,7 @@ def test_fetch_pdb():
 
     try:
         ppdb = PandasPdb()
-        txt = ppdb._fetch_pdb('3eiy')
+        url, txt = ppdb._fetch_pdb('3eiy')
     except HTTPError:
         pass
 
@@ -69,12 +69,13 @@ def test_fetch_pdb():
         txt[:100] == three_eiy[:100]
         ppdb.fetch_pdb('3eiy')
         assert ppdb.pdb_text == txt
+        assert ppdb.pdb_path == 'http://www.rcsb.org/pdb/files/3eiy.pdb'
 
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasPdb()
-    txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
+    path, txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
@@ -106,6 +107,7 @@ def test_read_pdb():
     ppdb.read_pdb(TESTDATA_FILENAME)
     assert ppdb.pdb_text == three_eiy
     assert ppdb.code == '3eiy', ppdb.code
+    assert ppdb.pdb_path == TESTDATA_FILENAME
 
 
 def test_anisou_input_handling():

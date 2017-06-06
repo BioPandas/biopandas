@@ -27,6 +27,7 @@ def test_read_mol2():
                   'atom_type', 'subst_id', 'subst_name', 'charge']
         assert expect == list(pdmol.df.columns)
         assert len(pdmol.mol2_text) == 6469
+        assert pdmol.mol2_path == data_path
 
 
 def test_read_mol2_from_list():

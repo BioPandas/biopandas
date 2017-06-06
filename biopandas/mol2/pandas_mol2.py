@@ -40,12 +40,16 @@ class PandasMol2(object):
     code : str
         ID, code, or name of the molecule stored
 
+    pdb_path : str
+        Location of the MOL2 file that was read in via `read_mol2`
+
     """
     def __init__(self):
         self._df = None
         self.mol2_text = ''
         self.header = ''
         self.code = ''
+        self.mol2_path = ''
 
     @property
     def df(self):
@@ -113,6 +117,7 @@ class PandasMol2(object):
         """
         mol2_code, mol2_lines = next(split_multimol2(path))
         self._load_mol2(mol2_lines, mol2_code, columns)
+        self.mol2_path = path
         return self
 
     def read_mol2_from_list(self, mol2_lines, mol2_code, columns=None):

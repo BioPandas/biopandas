@@ -12,7 +12,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+- New `PandasPdb.pdb_path` and `PandasMol2.mol2_path` attributes that store the location of the data file last read.
 
 ##### Changes
 
