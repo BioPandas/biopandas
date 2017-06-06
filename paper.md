@@ -26,12 +26,12 @@ In addition to parsing protein and small molecule data into a data frame format,
 
 Furthermore, useful small-molecule related functions are provided for reading and parsing millions of small molecule structures (from multi-MOL2 files) fast and efficiently in virtual screening applications. Inbuilt functions for filtering molecules by the presence of functional groups and their pair-wise distances to each other make BioPandas a particularly attractive utility library for virtual screening and protein-ligand docking applications.
 
-
 # References
 
-**McKinney, Wes** (2010). Data structures for statistical computing in Pyt
-hon. *Proceedings of the 9th Python in Science Conference. Vol. 445.* 
+**McKinney, Wes** (2010). Data Structures for Statistical Computing in Python. *Proceedings of the 9th Python in Science Conference. Vol. 445: pp. 51-56* 
 
-**Bernstein, Frances C., Thomas F. Koetzle, Graheme JB Williams, Edgar F. Meyer, Michael D. Brice, John R. Rodgers, Olga Kennard, Takehiko Shimanouchi, and Mitsuo Tasumi** (1977). The Protein Data Bank. *European Journal of Biochemistry 80, no. 2: 319-324.*
+**Berman, Helen, Kim Henrick, and Haruki Nakamura** (2003). Announcing the Worldwide Protein Data Bank. *Nature Structural & Molecular Biology 10.12: pp. 980-980.*
+
+**Berman, H.M., Westbrook, J., Feng, Z., Gilliland, G., Bhat, T.N., Weissig, H., Shindyalov, I.N. and Bourne, P.E. (2000)**. The Protein Data Bank. *Nucleic Acids Research 28.1: pp. 235-242.*
 
 **Tripos, L.** (2007). Tripos Mol2 File Format. *St. Louis, MO: Tripos.*
