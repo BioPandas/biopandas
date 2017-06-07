@@ -1,4 +1,4 @@
-biopandas version: 0.2.1
+biopandas version: 0.2.2dev
 ## PandasMol2
 
 *PandasMol2()*
@@ -20,6 +20,11 @@ Object for working with Tripos Mol2 structure files.
 - `code` : str
 
     ID, code, or name of the molecule stored
+
+
+- `pdb_path` : str
+
+    Location of the MOL2 file that was read in via `read_mol2`
 
 ### Methods
 
