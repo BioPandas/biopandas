@@ -1,4 +1,4 @@
-biopandas version: 0.2.1
+biopandas version: 0.2.2dev
 ## PandasPdb
 
 *PandasPdb()*
@@ -18,6 +18,13 @@ Object for working with Protein Databank structure files.
 - `pdb_text` : str
 
     PDB file contents in raw text format
+
+
+- `pdb_path` : str
+
+    Location of the PDB file that was read in via `read_pdb`
+    or URL of the page where the PDB content was fetched from
+    if `fetch_pdb` was called
 
 
 - `header` : str
