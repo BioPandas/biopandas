@@ -3,7 +3,7 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
-### 0.2.2dev (TBD)
+### 0.2.2 (06-07-2017)
 
 ##### Downloads
 
@@ -12,11 +12,12 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- New `PandasPdb.pdb_path` and `PandasMol2.mol2_path` attributes that store the location of the data file last read.
+- -
 
 ##### Changes
 
--  Add meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
+-  Raises a meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
+-  Added `PandasPdb.pdb_path` and `PandasMol2.mol2_path` attributes that store the location of the data file last read.
 
 ##### Bug Fixes
 
