@@ -286,13 +286,16 @@
 </ul>
 <h5 id="new-features">New Features</h5>
 <ul>
-<li>-</li>
+<li>New <code>PandasPdb.pdb_path</code> and <code>PandasMol2.mol2_path</code> attributes that store the location of the data file last read.</li>
 </ul>
 <h5 id="changes">Changes</h5>
 <ul>
 <li>Add meaningful error message if attempting to overwrite the <code>df</code> attributes of <code>PandasMol2</code> and <code>PandasPdb</code> directly.</li>
 </ul>
 <h5 id="bug-fixes">Bug Fixes</h5>
+<ul>
+<li>The <code>rmsd</code> methods of <code>PandasMol2</code> and <code>PandasPdb</code> don't return a NaN anymore if the array indices of to structures are different.</li>
+</ul>
 <h3 id="021-2017-05-11">0.2.1  (2017-05-11)</h3>
 <h5 id="downloads_1">Downloads</h5>
 <ul>

@@ -238,26 +238,6 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<p>BioPandas</p>
-<p>Author: Sebastian Raschka <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;">&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;</a><br />
-License: BSD 3 clause<br />
-Project Website: http://rasbt.github.io/biopandas/<br />
-Code Repository: https://github.com/rasbt/biopandas  </p>
-<pre><code class="python">%load_ext watermark
-%watermark -d -u -p pandas,biopandas
-</code></pre>
-
-<pre><code>last updated: 2017-04-12
-
-pandas 0.19.2
-biopandas 0.2.1.dev0
-</code></pre>
-<pre><code class="python">from biopandas.pdb import PandasPdb
-import pandas as pd
-pd.set_option('display.width', 600)
-pd.set_option('display.max_columns', 8)
-</code></pre>
-
 <h1 id="working-with-pdb-structures-in-dataframes">Working with PDB Structures in DataFrames</h1>
 <h2 id="loading-pdb-files">Loading PDB Files</h2>
 <p>There are 2 1/2 ways to load a PDB structure into a <code>PandasPdb</code> object.</p>
@@ -277,6 +257,7 @@ ppdb = PandasPdb().fetch_pdb('3eiy')
 
 <pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28&gt;
 </code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb">3eiy.pdb</a>]</p>
 <h4 id="2-b">2 b)</h4>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="python">ppdb.read_pdb('./data/3eiy.pdb.gz')
@@ -284,6 +265,7 @@ ppdb = PandasPdb().fetch_pdb('3eiy')
 
 <pre><code>&lt;biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28&gt;
 </code></pre>
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/3eiy.pdb.gz?raw=true">3eiy.pdb.gz</a>]</p>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
 <pre><code class="python">print('PDB Code: %s' % ppdb.code)
 print('PDB Header Line: %s' % ppdb.header)
@@ -531,6 +513,7 @@ ppdb.df.keys()
 
 <pre><code>dict_keys(['ATOM', 'HETATM', 'ANISOU', 'OTHERS'])
 </code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb">3eiy.pdb</a>]</p>
 <ul>
 <li>'ATOM': contains the entries from the ATOM coordinate section</li>
 <li>'ATOM':  ... entries from the "HETATM" coordinate section    </li>
@@ -809,6 +792,7 @@ ppdb.df['ATOM'].head()
 <p>5 rows × 21 columns</p>
 </div>
 
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/3eiy.pdb.gz?raw=true">3eiy.pdb.gz</a>]</p>
 <p>Okay, there's actually not <em>that</em> much to say ... <br />
 Once we have our PDB file in the DataFrame format, we have the whole convenience of <a href="http://pandas.pydata.org">pandas</a> right there at our fingertips.</p>
 <p>For example, let's get all Proline residues:</p>
@@ -1087,6 +1071,7 @@ print('Average B-Factor [Main Chain]: %.2f' % bfact_mc_avg)
 ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 </code></pre>
 
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/3eiy.pdb.gz?raw=true">3eiy.pdb.gz</a>]</p>
 <pre><code class="python">%matplotlib inline
 import matplotlib.pyplot as plt
 from matplotlib import style
@@ -1100,7 +1085,7 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_62_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_67_0.png" /></p>
 <pre><code class="python">ppdb.df['ATOM']['b_factor'].plot(kind='line')
 plt.title('B-Factors Along the Amino Acid Chain')
 plt.xlabel('Residue Number')
@@ -1108,7 +1093,7 @@ plt.ylabel('B-factor in $A^2$')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_63_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_68_0.png" /></p>
 <pre><code class="python">ppdb.df['ATOM']['element_symbol'].value_counts().plot(kind='bar')
 plt.title('Distribution of Atom Types')
 plt.xlabel('elements')
@@ -1116,7 +1101,7 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_64_0.png" /></p>
+<p><img alt="png" src="../Working_with_PDB_Structures_in_DataFrames_files/Working_with_PDB_Structures_in_DataFrames_69_0.png" /></p>
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>BioPandas also comes with certain convenience functions, for example, ...</p>
 <p>The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
@@ -1136,6 +1121,7 @@ print('RMSD: %.4f Angstrom' % r)
 
 <pre><code>RMSD: 2.6444 Angstrom
 </code></pre>
+<p>[File links: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/lig_conf_1.pdb">lig_conf_1.pdb</a>, <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/lig_conf_2.pdb">lig_conf_2.pdb</a>]</p>
 <pre><code class="python">r = PandasPdb.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                    s='carbon') # carbon atoms only
 print('RMSD: %.4f Angstrom' % r)
@@ -1179,6 +1165,7 @@ reference_point = (9.362, 41.410, 10.542)
 distances = p_1.distance(xyz=reference_point, record='ATOM')
 </code></pre>
 
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb">3eiy.pdb</a>]</p>
 <p>The distance method returns a Pandas Series object:</p>
 <pre><code class="python">distances.head()
 </code></pre>
@@ -1359,6 +1346,7 @@ ppdb = PandasPdb().read_pdb('./data/3eiy.pdb.gz')
 ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
 </code></pre>
 
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/3eiy.pdb.gz?raw=true">3eiy.pdb.gz</a>]</p>
 <p>We can save the file using the <a href="../../api/biopandas.pdb#pandaspdbto_pdb"><code>PandasPdb.to_pdb</code></a> method:</p>
 <pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb', 
             records=None, 
@@ -1366,12 +1354,15 @@ ppdb.df['ATOM'] = ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H']
             append_newline=True)
 </code></pre>
 
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy_stripped.pdb">3eiy_stripped.pdb</a>]</p>
 <p>By default, all records (that is, 'ATOM', 'HETATM', 'OTHERS', 'ANISOU') are written if we set <code>records=None</code>. Alternatively, let's say we want to get rid of the 'ANISOU' entries and produce a compressed gzip archive of our PDB structure:</p>
 <pre><code class="python">ppdb.to_pdb(path='./data/3eiy_stripped.pdb.gz', 
             records=['ATOM', 'HETATM', 'OTHERS'], 
             gz=True, 
             append_newline=True)
-</code></pre></div>
+</code></pre>
+
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/3eiy_stripped.pdb.gz?raw=true">3eiy_stripped.pdb.gz</a>]</p></div>
         
     </div>
 

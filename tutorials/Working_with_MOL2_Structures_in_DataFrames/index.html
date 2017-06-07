@@ -222,32 +222,16 @@
                 <!--  -->
         
             <li><a href="#parsing-multi-mol2-files">Parsing Multi-MOL2 files</a></li>
-                <!--  -->
+                <!-- 
+                    <li><a href="#basic-multi-mol2-file-parsing">Basic Multi-MOL2 File Parsing</a></li>
+            
+                    <li><a href="#using-multiprocessing-for-multi-mol2-file-analysis">Using Multiprocessing for Multi-MOL2 File Analysis</a></li>
+             -->
         
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
-
-<p>BioPandas</p>
-<p>Author: Sebastian Raschka <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;">&#109;&#97;&#105;&#108;&#64;&#115;&#101;&#98;&#97;&#115;&#116;&#105;&#97;&#110;&#114;&#97;&#115;&#99;&#104;&#107;&#97;&#46;&#99;&#111;&#109;</a><br />
-License: BSD 3 clause<br />
-Project Website: http://rasbt.github.io/biopandas/<br />
-Code Repository: https://github.com/rasbt/biopandas  </p>
-<pre><code class="python">%load_ext watermark
-%watermark -d -u -p pandas,biopandas
-</code></pre>
-
-<pre><code>last updated: 2017-04-02
-
-pandas 0.19.2
-biopandas 0.2.0.dev0
-</code></pre>
-<pre><code class="python">from biopandas.mol2 import PandasMol2
-import pandas as pd
-pd.set_option('display.width', 600)
-pd.set_option('display.max_columns', 8)
-</code></pre>
 
 <h1 id="working-with-mol2-structures-in-dataframes">Working with MOL2 Structures in DataFrames</h1>
 <p>The Tripos MOL2 format is a common format for working with small molecules. In this tutorial, we will go over some examples that illustrate how we can use Biopandas' MOL2 DataFrames to analyze molecules conveniently.</p>
@@ -258,10 +242,12 @@ pd.set_option('display.max_columns', 8)
 pmol = PandasMol2().read_mol2('./data/1b5e_1.mol2')
 </code></pre>
 
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_1.mol2">1b5e_1.mol2</a>]</p>
 <p>The <code>read_mol2</code> method can also load structures from <code>.mol2.gz</code> files, but if you have a multi-mol2 file, keep in mind that it will only fetch the first molecule in this file. In the section "<a href="#parsing-multi-mol2-files">Parsing Multi-MOL2 files</a>," we will see how we can parse files that contain multiple structures.</p>
 <pre><code class="python">pmol = PandasMol2().read_mol2('./data/40_mol2_files.mol2.gz')
 </code></pre>
 
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/master/docs/sources/tutorials/data/40_mol2_files.mol2.gz?raw=true">40_mol2_files.mol2.gz</a>]</p>
 <p>After the file was succesfully loaded, we have access to the following basic <code>PandasMol2</code> attributes:</p>
 <pre><code class="python">print('Molecule ID: %s' % pmol.code)
 print('\nRaw MOL2 file contents:\n\n%s\n...' % pmol.mol2_text[:500])
@@ -547,6 +533,7 @@ pmol.df.tail(10)
 </table>
 </div>
 
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_1.mol2">1b5e_1.mol2</a>]</p>
 <p>For example, we can select all hydrogen atoms by filtering on the atom type column:</p>
 <pre><code class="python">pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
 </code></pre>
@@ -802,6 +789,7 @@ Cu         copper
 pmol = PandasMol2().read_mol2('./data/1b5e_1.mol2')
 </code></pre>
 
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_1.mol2">1b5e_1.mol2</a>]</p>
 <pre><code class="python">%matplotlib inline
 import matplotlib.pyplot as plt
 from matplotlib import style
@@ -815,7 +803,7 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_30_0.png" /></p>
+<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_34_0.png" /></p>
 <p>If this is too fine-grained for our needs, we could summarize the different atom types by atomic elements:</p>
 <pre><code class="python">pmol.df['element_type'] = pmol.df['atom_type'].apply(lambda x: x.split('.')[0])
 
@@ -825,7 +813,7 @@ plt.ylabel('count')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_32_0.png" /></p>
+<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_36_0.png" /></p>
 <p>One of the coolest features in pandas is the groupby method. Below is an example plotting the average charge of the different atom types with the standard deviation as error bars:</p>
 <pre><code class="python">groupby_charge = pmol.df.groupby(['atom_type'])['charge']
 groupby_charge.mean().plot(kind='bar', yerr=groupby_charge.std())
@@ -833,7 +821,7 @@ plt.ylabel('charge')
 plt.show()
 </code></pre>
 
-<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_34_0.png" /></p>
+<p><img alt="png" src="../Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_38_0.png" /></p>
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 structures. This calculation of the Cartesian error follows the equation:</p>
 <p>$$RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)} \\
@@ -856,6 +844,7 @@ print('All-atom RMSD: %.4f Angstrom' % r_all)
 <pre><code>Heavy-atom RMSD: 1.1609 Angstrom
 All-atom RMSD: 1.5523 Angstrom
 </code></pre>
+<p>[File links: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_1.mol2">1b5e_1.mol2</a>, <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_2.mol2">1b5e_2.mol2</a>]</p>
 <p><br></p>
 <h2 id="filtering-atoms-by-distance">Filtering Atoms by Distance</h2>
 <p>We can use the <code>distance</code> method to compute the distance between each atom (or a subset of atoms) in our data frame and a three-dimensional reference point. For example, let's assume were are interested in computing the distance between a keto group in the DMC molecule, which we've seen earlier, and other atoms in the same molecule.</p>
@@ -1141,6 +1130,7 @@ all_within_3A.tail()
 </div>
 
 <h2 id="parsing-multi-mol2-files">Parsing Multi-MOL2 files</h2>
+<h3 id="basic-multi-mol2-file-parsing">Basic Multi-MOL2 File Parsing</h3>
 <p>As mentioned earlier, <code>PandasMol2.read_mol2</code> method only reads in the first molecule if it is given a multi-MOL2 file. However, if we want to create DataFrames from multiple structures in a MOL2 file, we can use the handy <code>split_multimol2</code> generator.</p>
 <p>The <code>split_multimol2</code> generator yields tuples containing the molecule IDs and the MOL2 content as strings in a list -- each line in the MOL2 file is stored as a string in the list.</p>
 <pre><code class="python">from biopandas.mol2 import split_multimol2
@@ -1156,6 +1146,7 @@ print('First 10 lines:\n', mol2_cont[:10])
 First 10 lines:
  ['@&lt;TRIPOS&gt;MOLECULE\n', 'ZINC38611810\n', '   65    68     0     0     0\n', 'SMALL\n', 'NO_CHARGES\n', '\n', '@&lt;TRIPOS&gt;ATOM\n', '      1 C1         -1.1786    2.7011   -4.0323 C.3       1 &lt;0&gt;        -0.1537\n', '      2 C2         -1.2950    1.2442   -3.5798 C.3       1 &lt;0&gt;        -0.1156\n', '      3 C3         -0.1742    0.4209   -4.2178 C.3       1 &lt;0&gt;        -0.1141\n']
 </code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/40_mol2_files.mol2">40_mol2_files.mol2</a>]</p>
 <p>We can now use this generator to loop over all files in a multi-MOL2 file and create PandasMol2 DataFrames. A typical use case would be the filtering of mol2 files by certain properties:</p>
 <pre><code class="python">pdmol = PandasMol2()
 
@@ -1170,7 +1161,60 @@ with open('./data/filtered.mol2', 'w') as f:
         if keep_molecule: 
             # note that the mol2_text contains the original mol2 content
             f.write(pdmol.mol2_text) 
-</code></pre></div>
+</code></pre>
+
+<h3 id="using-multiprocessing-for-multi-mol2-file-analysis">Using Multiprocessing for Multi-MOL2 File Analysis</h3>
+<p>To improve the computational efficiency and throughput for multi-mol2 analyses, it is recommended to use the <a href="https://github.com/rasbt/mputil"><code>mputil</code></a> package, which evaluates Python generators lazily. The <code>lazy_imap</code> function from <code>mputil</code> is based on Python's standardlib multiprocessing <code>imap</code> function, but it doesn't consume the generator upfront. This lazy evaluation is important, for example, if we are parsing large (possibly Gigabyte- or Terabyte-large) multi-mol2 files for multiprocessing.</p>
+<p>The following example provides a template for atom-type based molecule queries, but the <code>data_processor</code> function can be extended to do any kind of functional group queries (for example, involving the <code>'charge'</code> column and/or <code>PandasMol2.distance</code> method). </p>
+<pre><code class="python">import pandas as pd
+from mputil import lazy_imap
+from biopandas.mol2 import PandasMol2
+from biopandas.mol2 import split_multimol2
+</code></pre>
+
+<pre><code class="python"># Selection strings to capture
+# all molecules that contain at least one sp2 hybridized
+# oxygen atom and at least one Fluorine atom
+SELECTIONS = [&quot;(pdmol.df.atom_type == 'O.2')&quot;,
+              &quot;(pdmol.df.atom_type == 'F')&quot;]
+
+# Path to the multi-mol2 input file
+MOL2_FILE = &quot;./data/40_mol2_files.mol2&quot;
+
+# Data processing function to be run in parallel
+def data_processor(mol2):
+    &quot;&quot;&quot;Return molecule ID if there's a match and '' otherwise&quot;&quot;&quot;
+    pdmol = PandasMol2().read_mol2_from_list(mol2_lines=mol2[1],
+                                             mol2_code=mol2[0])
+    match = mol2[0]
+    for sub_sele in SELECTIONS:
+        if not pd.eval(sub_sele).any():
+            match = ''
+            break
+    return match
+
+# Process molecules and save IDs of hits to disk
+with open('./data/selected_ids.txt', 'w') as f:       
+    searched, found = 0, 0
+    for chunk in lazy_imap(data_processor=data_processor,
+                           data_generator=split_multimol2(MOL2_FILE),
+                           n_cpus=0): # means all available cpus
+
+        for mol2_id in chunk:
+            if mol2_id:
+                # write IDs of matching molecules to disk
+                f.write('%s\n' % mol2_id)
+                found += 1
+        searched += len(chunk)
+
+
+print('Searched %d molecules. Got %d hits.' % (searched, found))
+</code></pre>
+
+<pre><code>Searched 40 molecules. Got 3 hits.
+</code></pre>
+<p>[Input File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/40_mol2_files.mol2">40_mol2_files.mol2</a>]</p>
+<p>[Output File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/selected_ids.txt">selected_ids.txt</a>]</p></div>
         
     </div>
 
