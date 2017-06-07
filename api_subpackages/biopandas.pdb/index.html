@@ -214,7 +214,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<p>biopandas version: 0.2.1</p>
+<p>biopandas version: 0.2.2dev</p>
 <h2 id="pandaspdb">PandasPdb</h2>
 <p><em>PandasPdb()</em></p>
 <p>Object for working with Protein Databank structure files.</p>
@@ -230,6 +230,12 @@ where 'OTHERS' contains all entries that are not parsed as
 <li>
 <p><code>pdb_text</code> : str</p>
 <p>PDB file contents in raw text format</p>
+</li>
+<li>
+<p><code>pdb_path</code> : str</p>
+<p>Location of the PDB file that was read in via <code>read_pdb</code>
+or URL of the page where the PDB content was fetched from
+if <code>fetch_pdb</code> was called</p>
 </li>
 <li>
 <p><code>header</code> : str</p>
