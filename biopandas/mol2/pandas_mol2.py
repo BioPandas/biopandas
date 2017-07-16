@@ -227,11 +227,14 @@ class PandasMol2(object):
         rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
 
-    def distance(self, xyz=(0.00, 0.00, 0.00)):
+    def distance(self, df=None, xyz=(0.00, 0.00, 0.00)):
         """Computes Euclidean distance between atoms and a 3D point.
 
         Parameters
         ----------
+        df : DataFrame, default: None
+            If a DataFrame is provided as an argument, uses this DataFrame
+            for the distance computation instead of `self.df`.
         xyz : tuple (0.00, 0.00, 0.00)
             X, Y, and Z coordinate of the reference center for the distance
             computation
@@ -242,18 +245,10 @@ class PandasMol2(object):
             distance between the atoms in the atom section and `xyz`.
 
         """
-        return pd.Series(np.linalg.norm(self.df[['x', 'y', 'z']]
-                                        .subtract(xyz, axis=1), axis=1))
+        if df is None:
+            use_df = self.df
+        else:
+            use_df = df
 
-        # Note:
-        # The solution above is about 10% faster than
-        #
-        # return np.sqrt(np.sum(self.df[['x', 'y', 'z']]\
-        #   .subtract(xyz, axis=1)**2, axis=1))
-        #
-        # The solution below is equivalent but 300% slower:
-        #
-        # return self.df.apply(lambda x: np.sqrt(np.sum(
-        #    ((x['x'] - xyz[0])**2,
-        #     (x['y'] - xyz[1])**2,
-        #     (x['z'] - xyz[2])**2))), axis=1)
+        return np.sqrt(np.sum(use_df[['x', 'y', 'z']]
+                       .subtract(xyz, axis=1)**2, axis=1))

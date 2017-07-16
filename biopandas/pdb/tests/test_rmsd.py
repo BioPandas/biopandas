@@ -59,7 +59,7 @@ def test_protein():
 
 
 def test_rna_and_nonmatching_indices():
-    ehz = PandasPdb().fetch_pdb('1ehz')
+    ehz = PandasPdb().read_pdb(TESTDATA_rna)
     at = ehz.df['ATOM']
     a64 = at[at['residue_number'] == 64]
     a66 = at[at['residue_number'] == 66]
