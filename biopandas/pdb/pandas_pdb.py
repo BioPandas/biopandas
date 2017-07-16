@@ -31,18 +31,18 @@ class PandasPdb(object):
         Dictionary storing pandas DataFrames for PDB record sections.
         The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
         where 'OTHERS' contains all entries that are not parsed as
-        'ATOM', 'HETATM', or 'ANISOU'
+        'ATOM', 'HETATM', or 'ANISOU'.
 
     pdb_text : str
-        PDB file contents in raw text format
+        PDB file contents in raw text format.
 
     pdb_path : str
         Location of the PDB file that was read in via `read_pdb`
         or URL of the page where the PDB content was fetched from
-        if `fetch_pdb` was called
+        if `fetch_pdb` was called.
 
     header : str
-        PDB file description
+        PDB file description.
 
     code : str
         PDB code
@@ -75,7 +75,7 @@ class PandasPdb(object):
         Attributes
         ----------
         path : str
-            Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
+            Path to the PDB file in .pdb format or gzipped format (.pdb.gz).
 
         Returns
         ---------
@@ -93,7 +93,7 @@ class PandasPdb(object):
         Parameters
         ----------
         pdb_code : str
-            A 4-letter PDB code, e.g., "3eiy"
+            A 4-letter PDB code, e.g., "3eiy".
 
         Returns
         ---------
@@ -110,15 +110,15 @@ class PandasPdb(object):
         Parameters
         ----------
         s : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}
-            String to specify which entries to return
+            String to specify which entries to return.
 
         df : pandas.DataFrame, default: None
             Optional DataFrame to perform the filter operation on.
-            If df=None, filters on self.df['ATOM']
+            If df=None, filters on self.df['ATOM'].
 
         invert : bool, default: True
             Inverts the search query. For example if s='hydrogen' and
-            invert=True, all but hydrogen entries are returned
+            invert=True, all but hydrogen entries are returned.
 
         Returns
         --------
@@ -139,11 +139,11 @@ class PandasPdb(object):
 
         Parameters
         ----------
-        sections : iterable (default: ('ATOM', 'HETATM'))
+        sections : iterable, default: ('ATOM', 'HETATM')
             Coordinate sections for which the element symbols should be
             imputed.
 
-        inplace : bool (default: False)
+        inplace : bool, (default: False
             Performs the operation in-place if True and returns a copy of the
             PDB DataFrame otherwise.
 
@@ -174,11 +174,11 @@ class PandasPdb(object):
         Parameters
         ----------
         df1 : pandas.DataFrame
-            DataFrame with HETATM, ATOM, and/or ANISOU entries
+            DataFrame with HETATM, ATOM, and/or ANISOU entries.
 
         df2 : pandas.DataFrame
             Second DataFrame for RMSD computation against df1. Must have the
-            same number of entries as df1
+            same number of entries as df1.
 
         s : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,
             default: None
@@ -367,13 +367,13 @@ class PandasPdb(object):
 
         Parameters
         ----------
-        record : str (default: 'ATOM')
-            Specfies the record DataFrame
-        residue_col : str (default: 'residue_name')
+        record : str, default: 'ATOM'
+            Specfies the record DataFrame.
+        residue_col : str,  default: 'residue_name'
             Column in `record` DataFrame to look for 3-letter amino acid
-            codes for the conversion
-        fillna : str (default: '?')
-            Placeholder string to use for unknown amino acids
+            codes for the conversion.
+        fillna : str, default: '?'
+            Placeholder string to use for unknown amino acids.
 
         Returns
         ---------
@@ -397,16 +397,19 @@ class PandasPdb(object):
 
         return pd.concat((tmp.iloc[indices]['chain_id'], transl), axis=1)
 
-    def distance(self, xyz=(0.00, 0.00, 0.00), record='ATOM'):
+    def distance(self, df=None, xyz=(0.00, 0.00, 0.00), record='ATOM'):
         """Computes Euclidean distance between atoms and a 3D point.
 
         Parameters
         ----------
-        xyz : tuple (0.00, 0.00, 0.00)
+        df : DataFrame, default: None
+            If a DataFrame is provided as an argument, uses this DataFrame
+            for the distance computation instead of `self.df[record]`.
+        xyz : tuple, default: (0.00, 0.00, 0.00)
             X, Y, and Z coordinate of the reference center for the distance
-            computation
-        record : str (default: 'ATOM')
-            Specfies the record DataFrame
+            computation.
+        record : str, default: 'ATOM'
+            Specfies the record DataFrame. Only used if `df=None`.
 
         Returns
         ---------
@@ -414,20 +417,14 @@ class PandasPdb(object):
             distance between the atoms in the record section and `xyz`.
 
         """
+        if df is None:
+            use_df = self.df[record]
+        else:
+            use_df = df
 
-        return pd.Series(np.linalg.norm(self.df[record][[
-            'x_coord', 'y_coord', 'z_coord']].subtract(xyz, axis=1), axis=1))
-
-        # Note:
-        # The solution above is about 10% faster than
-        # return np.sqrt(np.sum(self.df[record][[
-        #    'x_coord', 'y_coord', 'z_coord']]\
-        #   .subtract(xyz, axis=1)**2, axis=1))
-        # The solution below is equivalent but 300% slower:
-        # return self.df[record].apply(lambda x: np.sqrt(np.sum(
-        #    ((x['x_coord'] - xyz[0])**2,
-        #     (x['y_coord'] - xyz[1])**2,
-        #     (x['z_coord'] - xyz[2])**2))), axis=1)
+        return np.sqrt(np.sum(use_df[[
+            'x_coord', 'y_coord', 'z_coord']]
+            .subtract(xyz, axis=1)**2, axis=1))
 
     def to_pdb(self, path, records=None, gz=False, append_newline=True):
         """Write record DataFrames to a PDB file or gzipped PDB file.
@@ -440,10 +437,10 @@ class PandasPdb(object):
         records : iterable, default: None
             A list of PDB record sections in
             {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
-            Writes all lines to PDB if records=None
+            Writes all lines to PDB if `records=None`.
 
         gz : bool, default: False
-            Writes a gzipped PDB file if True
+            Writes a gzipped PDB file if True.
 
         append_newline : bool, default: True
             Appends a new line at the end of the PDB file if True

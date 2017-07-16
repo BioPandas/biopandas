@@ -3,6 +3,27 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.3dev (TBD)
+
+##### Downloads
+
+- [Source code (zip)]
+- [Source code (tar.gz)]
+
+##### New Features
+
+- -
+
+##### Changes
+
+- `PandasPdb.distance` and `PandasMol2.distancd` now accept external `DataFrames` to allow for more efficient distance computations on smaller `DataFrames` if desired. 
+
+##### Bug Fixes
+
+-
+
+
+
 ### 0.2.2 (06-07-2017)
 
 ##### Downloads

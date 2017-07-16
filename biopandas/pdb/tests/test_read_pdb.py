@@ -63,7 +63,9 @@ def test_fetch_pdb():
         ppdb = PandasPdb()
         url, txt = ppdb._fetch_pdb('3eiy')
     except HTTPError:
-        pass
+        url, txt = None, None
+    except ConnectionResetError:
+        url, txt = None, None
 
     if txt:  # skip if PDB down
         txt[:100] == three_eiy[:100]
