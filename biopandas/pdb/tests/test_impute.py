@@ -19,7 +19,7 @@ ppdb.read_pdb(TESTDATA_FILENAME)
 
 
 def test_impute_hetatm():
-    new = ppdb.impute_element(sections=['HETATM'])
+    new = ppdb.impute_element(records=['HETATM'])
     assert new['HETATM']['element_symbol'][1] == 'N'
     assert new['HETATM']['element_symbol'][10] == 'O'
     assert new['ATOM']['element_symbol'][1] == ''
@@ -27,7 +27,7 @@ def test_impute_hetatm():
 
 
 def test_impute_atom():
-    new = ppdb.impute_element(sections=['ATOM'])
+    new = ppdb.impute_element(records=['ATOM'])
     assert new['ATOM']['element_symbol'][1] == 'C'
     assert new['ATOM']['element_symbol'][10] == 'C'
     assert new['HETATM']['element_symbol'][1] == ''

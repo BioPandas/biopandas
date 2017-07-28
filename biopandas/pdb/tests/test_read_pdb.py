@@ -141,17 +141,17 @@ def test_get_df():
     shape = ppdb.get('c-alpha').shape
     assert shape == (174, 21), shape
 
-    shape = ppdb.get('hydrogen', invert=True).shape
+    shape = ppdb.get('hydrogen', invert=True, records=('ATOM',)).shape
     assert shape == (1330, 21), shape
 
     shape = ppdb.get('hydrogen').shape
     assert shape == (0, 21), shape
 
-    shape = ppdb.get('main chain').shape
+    shape = ppdb.get('main chain', records=('ATOM',)).shape
     assert shape == (696, 21), shape
 
-    shape = ppdb.get('heavy').shape
+    shape = ppdb.get('heavy', records=('ATOM',)).shape
     assert shape == (1330, 21), shape
 
-    shape = ppdb.get('carbon').shape
+    shape = ppdb.get('carbon', records=('ATOM',)).shape
     assert shape == (473, 21), shape
