@@ -104,7 +104,7 @@ class PandasPdb(object):
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
 
-    def get(self, s, df=None, invert=False, records=('ATOM',)):
+    def get(self, s, df=None, invert=False, records=('ATOM', 'HETATM')):
         """Filter PDB DataFrames by properties
 
         Parameters
@@ -120,9 +120,9 @@ class PandasPdb(object):
             Inverts the search query. For example if s='hydrogen' and
             invert=True, all but hydrogen entries are returned.
 
-        records : iterable, default: ('ATOM',)
+        records : iterable, default: ('ATOM', 'HETATM')
             Specify which record sections to consider. For example, to consider
-            both protein and ligand atoms, set `records=('ATOM', 'HETATM)`.
+            both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
             This setting is ignored if `df` is not set to None.
 
         Returns
@@ -144,7 +144,7 @@ class PandasPdb(object):
 
         Parameters
         ----------
-        sections : iterable, default: ('ATOM', 'HETATM')
+        records : iterable, default: ('ATOM', 'HETATM')
             Coordinate sections for which the element symbols should be
             imputed.
 
@@ -164,7 +164,7 @@ class PandasPdb(object):
             for d in self.df:
                 t[d] = self.df[d].copy()
 
-        for sec in sections:
+        for sec in records:
             t[sec]['element_symbol'] = \
                 t[sec][['atom_name', 'element_symbol']].\
                 apply(lambda x: x[0][1]
