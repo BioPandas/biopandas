@@ -104,7 +104,7 @@ class PandasPdb(object):
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
 
-    def get(self, s, df=None, invert=False):
+    def get(self, s, df=None, invert=False, records=('ATOM',)):
         """Filter PDB DataFrames by properties
 
         Parameters
@@ -120,6 +120,11 @@ class PandasPdb(object):
             Inverts the search query. For example if s='hydrogen' and
             invert=True, all but hydrogen entries are returned.
 
+        records : iterable, default: ('ATOM',)
+            Specify which record sections to consider. For example, to consider
+            both protein and ligand atoms, set `records=('ATOM', 'HETATM)`.
+            This setting is ignored if `df` is not set to None.
+
         Returns
         --------
         df : pandas.DataFrame
@@ -131,10 +136,10 @@ class PandasPdb(object):
         if s not in self._get_dict.keys():
             raise AttributeError('s must be in %s' % self._get_dict.keys())
         if not df:
-            df = self._df['ATOM']
+            df = pd.concat(objs=[self.df[i] for i in records])
         return self._get_dict[s](df, invert=invert)
 
-    def impute_element(self, sections=('ATOM', 'HETATM'), inplace=False):
+    def impute_element(self, records=('ATOM', 'HETATM'), inplace=False):
         """Impute element_symbol from atom_name section.
 
         Parameters

@@ -17,6 +17,8 @@ The CHANGELOG for the current development version is available at
 ##### Changes
 
 - `PandasPdb.distance` and `PandasMol2.distancd` now accept external `DataFrames` to allow for more efficient distance computations on smaller `DataFrames` if desired. 
+- `PandasPdb.get(...)` now supports external data frames and lets the user specify the record section to be considered (e.g., `records=('ATOM', 'HETATM`)` to include both protein and ligand in a query.
+- The `section` parameter of `PandasPdb.impute_element(...)` was renamed to `records` for API consistency.
 
 ##### Bug Fixes
 
