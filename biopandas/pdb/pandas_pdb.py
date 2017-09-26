@@ -499,3 +499,6 @@ class PandasPdb(object):
                     f.write('\n')
                 else:
                     f.write('\n')
+
+    def parse_sse(self):
+        """Parse secondary structure elements"""

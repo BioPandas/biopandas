@@ -1,9 +1,12 @@
 from setuptools import setup, find_packages
 
+
 def calculate_version():
     initpy = open('biopandas/__init__.py').read().split('\n')
-    version = list(filter(lambda x: '__version__' in x, initpy))[0].split('\'')[1]
+    version = list(filter(lambda x: '__version__'
+                          in x, initpy))[0].split('\'')[1]
     return version
+
 
 package_version = calculate_version()
 
@@ -44,7 +47,8 @@ in pandas DataFrames.
 Contact
 =============
 
-If you have any questions or comments about biopandas, please feel free to contact me via
+If you have any questions or comments about biopandas,
+please feel free to contact me via
 eMail: mail@sebastianraschka.com
 or Twitter: https://twitter.com/rasbt
 
@@ -52,5 +56,4 @@ This project is hosted at https://github.com/rasbt/biopandas
 
 The documentation can be found at http://rasbt.github.io/biopandas/
 
-""",
-    )
+""")
