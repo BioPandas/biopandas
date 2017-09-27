@@ -77,25 +77,49 @@ Creates 1-letter amino acid codes from DataFrame
 
 <hr>
 
-*distance(df=None, xyz=(0.0, 0.0, 0.0), record='ATOM')*
+*distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))*
 
 Computes Euclidean distance between atoms and a 3D point.
 
 **Parameters**
-
-- `df` : DataFrame, default: None
-
-    If a DataFrame is provided as an argument, uses this DataFrame
-    for the distance computation instead of `self.df[record]`.
 
 - `xyz` : tuple, default: (0.00, 0.00, 0.00)
 
     X, Y, and Z coordinate of the reference center for the distance
     computation.
 
-- `record` : str, default: 'ATOM'
+- `records` : iterable, default: ('ATOM', 'HETATM')
 
-    Specfies the record DataFrame. Only used if `df=None`.
+    Specify which record sections to consider. For example, to consider
+    both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
+    This setting is ignored if `df` is not set to None.
+    For downward compatibility, a string argument is still supported
+    but deprecated and will be removed in future versions.
+
+**Returns**
+
+- `pandas.Series` : Pandas Series object containing the Euclidean
+
+    distance between the atoms in the record section and `xyz`.
+
+<hr>
+
+*distance_df(df, xyz=(0.0, 0.0, 0.0))*
+
+Computes Euclidean distance between atoms and a 3D point.
+
+**Parameters**
+
+- `df` : DataFrame
+
+    DataFrame containing entries in the `PandasPdb.df['ATOM']`
+    or `PandasPdb.df['HETATM']` format for the
+    the distance computation to the `xyz` reference coordinates.
+
+- `xyz` : tuple, default: (0.00, 0.00, 0.00)
+
+    X, Y, and Z coordinate of the reference center for the distance
+    computation.
 
 **Returns**
 

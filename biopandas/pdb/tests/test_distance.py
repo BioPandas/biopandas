@@ -7,7 +7,6 @@
 import pandas as pd
 from biopandas.pdb import PandasPdb
 import os
-from nose.tools import raises
 
 
 def test_equal():
@@ -16,7 +15,7 @@ def test_equal():
 
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
-    dist = p1t48.distance(xyz=(70.785, 15.477, 23.359), record='ATOM')
+    dist = p1t48.distance(xyz=(70.785, 15.477, 23.359), records=('ATOM',))
 
     expect = pd.Series([2.533259, 1.520502, 0.000000, 1.257597, 1.252510],
                        index=[12, 13, 14, 15, 16])
@@ -30,7 +29,7 @@ def test_use_external_df():
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     new_df = p1t48.df['ATOM'].iloc[:-1, :].copy()
-    dist = p1t48.distance(df=new_df, xyz=(70.785, 15.477, 23.359))
+    dist = PandasPdb.distance_df(df=new_df, xyz=(70.785, 15.477, 23.359))
 
     expect = pd.Series([2.533259, 1.520502, 0.000000, 1.257597],
                        index=[12, 13, 14, 15])

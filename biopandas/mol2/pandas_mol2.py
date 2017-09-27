@@ -227,14 +227,12 @@ class PandasMol2(object):
         rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
         return rmsd
 
-    def distance(self, df=None, xyz=(0.00, 0.00, 0.00)):
-        """Computes Euclidean distance between atoms and a 3D point.
+    def distance(self, xyz=(0.00, 0.00, 0.00)):
+        """Computes Euclidean distance between atoms in
+            self.df and a 3D point.
 
         Parameters
         ----------
-        df : DataFrame, default: None
-            If a DataFrame is provided as an argument, uses this DataFrame
-            for the distance computation instead of `self.df`.
         xyz : tuple (0.00, 0.00, 0.00)
             X, Y, and Z coordinate of the reference center for the distance
             computation
@@ -245,10 +243,29 @@ class PandasMol2(object):
             distance between the atoms in the atom section and `xyz`.
 
         """
-        if df is None:
-            use_df = self.df
-        else:
-            use_df = df
+        return np.sqrt(np.sum(self.df[['x', 'y', 'z']]
+                       .subtract(xyz, axis=1)**2, axis=1))
 
-        return np.sqrt(np.sum(use_df[['x', 'y', 'z']]
+    @staticmethod
+    def distance_df(df, xyz=(0.00, 0.00, 0.00)):
+        """Computes Euclidean distance between atoms and a 3D point.
+
+        Parameters
+        ----------
+        df : DataFrame
+            DataFrame containing entries similar to the PandasMol2.df
+            format for the
+            the distance computation to the `xyz` reference coordinates.
+        xyz : tuple (0.00, 0.00, 0.00)
+            X, Y, and Z coordinate of the reference center for the distance
+            computation
+
+        Returns
+        ---------
+        pandas.Series : Pandas Series object containing the Euclidean
+            distance between the atoms in the atom section and `xyz`.
+
+        """
+
+        return np.sqrt(np.sum(df[['x', 'y', 'z']]
                        .subtract(xyz, axis=1)**2, axis=1))
