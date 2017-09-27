@@ -19,6 +19,7 @@ except ImportError:
 from .engines import pdb_records
 from .engines import pdb_df_columns
 from .engines import amino3to1dict
+import warnings
 
 
 class PandasPdb(object):
@@ -124,6 +125,8 @@ class PandasPdb(object):
             Specify which record sections to consider. For example, to consider
             both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
             This setting is ignored if `df` is not set to None.
+            For downward compatibility, a string argument is still supported
+            but deprecated and will be removed in future versions.
 
         Returns
         --------
@@ -131,6 +134,13 @@ class PandasPdb(object):
             Returns a DataFrame view on the filtered entries.
 
         """
+        if isinstance(records, str):
+            warnings.warn('Using a string as `records` argument is '
+                          'deprecated and will not be supported in future'
+                          ' versions. Please use a tuple or'
+                          ' other iterable instead', DeprecationWarning)
+            records = (records,)
+
         if not self._get_dict:
             self._get_dict = self._init_get_dict()
         if s not in self._get_dict.keys():

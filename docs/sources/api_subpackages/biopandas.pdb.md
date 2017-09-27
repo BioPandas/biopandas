@@ -1,4 +1,4 @@
-biopandas version: 0.2.2dev
+biopandas version: 0.2.3dev0
 ## PandasPdb
 
 *PandasPdb()*
@@ -12,24 +12,24 @@ Object for working with Protein Databank structure files.
     Dictionary storing pandas DataFrames for PDB record sections.
     The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
     where 'OTHERS' contains all entries that are not parsed as
-    'ATOM', 'HETATM', or 'ANISOU'
+    'ATOM', 'HETATM', or 'ANISOU'.
 
 
 - `pdb_text` : str
 
-    PDB file contents in raw text format
+    PDB file contents in raw text format.
 
 
 - `pdb_path` : str
 
     Location of the PDB file that was read in via `read_pdb`
     or URL of the page where the PDB content was fetched from
-    if `fetch_pdb` was called
+    if `fetch_pdb` was called.
 
 
 - `header` : str
 
-    PDB file description
+    PDB file description.
 
 
 - `code` : str
@@ -54,18 +54,18 @@ Creates 1-letter amino acid codes from DataFrame
 
 **Parameters**
 
-- `record` : str (default: 'ATOM')
+- `record` : str, default: 'ATOM'
 
-    Specfies the record DataFrame
+    Specfies the record DataFrame.
 
-- `residue_col` : str (default: 'residue_name')
+- `residue_col` : str,  default: 'residue_name'
 
     Column in `record` DataFrame to look for 3-letter amino acid
-    codes for the conversion
+    codes for the conversion.
 
-- `fillna` : str (default: '?')
+- `fillna` : str, default: '?'
 
-    Placeholder string to use for unknown amino acids
+    Placeholder string to use for unknown amino acids.
 
 **Returns**
 
@@ -77,20 +77,25 @@ Creates 1-letter amino acid codes from DataFrame
 
 <hr>
 
-*distance(xyz=(0.0, 0.0, 0.0), record='ATOM')*
+*distance(df=None, xyz=(0.0, 0.0, 0.0), record='ATOM')*
 
 Computes Euclidean distance between atoms and a 3D point.
 
 **Parameters**
 
-- `xyz` : tuple (0.00, 0.00, 0.00)
+- `df` : DataFrame, default: None
+
+    If a DataFrame is provided as an argument, uses this DataFrame
+    for the distance computation instead of `self.df[record]`.
+
+- `xyz` : tuple, default: (0.00, 0.00, 0.00)
 
     X, Y, and Z coordinate of the reference center for the distance
-    computation
+    computation.
 
-- `record` : str (default: 'ATOM')
+- `record` : str, default: 'ATOM'
 
-    Specfies the record DataFrame
+    Specfies the record DataFrame. Only used if `df=None`.
 
 **Returns**
 
@@ -108,7 +113,7 @@ Fetches PDB file contents from the Protein Databank at rcsb.org.
 
 - `pdb_code` : str
 
-    A 4-letter PDB code, e.g., "3eiy"
+    A 4-letter PDB code, e.g., "3eiy".
 
 **Returns**
 
@@ -116,7 +121,7 @@ self
 
 <hr>
 
-*get(s, df=None, invert=False)*
+*get(s, df=None, invert=False, records=('ATOM', 'HETATM'))*
 
 Filter PDB DataFrames by properties
 
@@ -124,19 +129,28 @@ Filter PDB DataFrames by properties
 
 - `s` : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}
 
-    String to specify which entries to return
+    String to specify which entries to return.
 
 
 - `df` : pandas.DataFrame, default: None
 
     Optional DataFrame to perform the filter operation on.
-    If df=None, filters on self.df['ATOM']
+    If df=None, filters on self.df['ATOM'].
 
 
 - `invert` : bool, default: True
 
     Inverts the search query. For example if s='hydrogen' and
-    invert=True, all but hydrogen entries are returned
+    invert=True, all but hydrogen entries are returned.
+
+
+- `records` : iterable, default: ('ATOM', 'HETATM')
+
+    Specify which record sections to consider. For example, to consider
+    both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
+    This setting is ignored if `df` is not set to None.
+    For downward compatibility, a string argument is still supported
+    but deprecated and will be removed in future versions.
 
 **Returns**
 
@@ -146,19 +160,19 @@ Filter PDB DataFrames by properties
 
 <hr>
 
-*impute_element(sections=('ATOM', 'HETATM'), inplace=False)*
+*impute_element(records=('ATOM', 'HETATM'), inplace=False)*
 
 Impute element_symbol from atom_name section.
 
 **Parameters**
 
-- `sections` : iterable (default: ('ATOM', 'HETATM'))
+- `records` : iterable, default: ('ATOM', 'HETATM')
 
     Coordinate sections for which the element symbols should be
     imputed.
 
 
-- `inplace` : bool (default: False)
+- `inplace` : bool, (default: False
 
     Performs the operation in-place if True and returns a copy of the
     PDB DataFrame otherwise.
@@ -166,6 +180,12 @@ Impute element_symbol from atom_name section.
 **Returns**
 
 DataFrame
+
+<hr>
+
+*parse_sse()*
+
+Parse secondary structure elements
 
 <hr>
 
@@ -177,7 +197,7 @@ Read PDB files (unzipped or gzipped) from local drive
 
 - `path` : str
 
-    Path to the PDB file in .pdb format or gzipped format (.pdb.gz)
+    Path to the PDB file in .pdb format or gzipped format (.pdb.gz).
 
 **Returns**
 
@@ -193,13 +213,13 @@ Compute the Root Mean Square Deviation between molecules.
 
 - `df1` : pandas.DataFrame
 
-    DataFrame with HETATM, ATOM, and/or ANISOU entries
+    DataFrame with HETATM, ATOM, and/or ANISOU entries.
 
 
 - `df2` : pandas.DataFrame
 
     Second DataFrame for RMSD computation against df1. Must have the
-    same number of entries as df1
+    same number of entries as df1.
 
 
 - `s` : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,
@@ -238,12 +258,12 @@ Write record DataFrames to a PDB file or gzipped PDB file.
 
     A list of PDB record sections in
     {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
-    Writes all lines to PDB if records=None
+    Writes all lines to PDB if `records=None`.
 
 
 - `gz` : bool, default: False
 
-    Writes a gzipped PDB file if True
+    Writes a gzipped PDB file if True.
 
 
 - `append_newline` : bool, default: True

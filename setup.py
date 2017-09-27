@@ -1,10 +1,12 @@
-from distutils.core import setup
 from pkgutil import walk_packages
 from fnmatch import fnmatch as wc_match
 from itertools import chain
 
 
-import biopandas
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 
 def find_packages(where, exclude=None):
@@ -30,8 +32,6 @@ def calculate_version():
 
 
 package_version = calculate_version()
-
-print(find_packages(biopandas.__path__, biopandas.__name__))
 
 setup(name='biopandas',
       version=package_version,
