@@ -64,7 +64,7 @@ def test_distance_external_df():
 
     pdmol = PandasMol2().read_mol2(data_path)
     new_df = pdmol.df.iloc[1:, :].copy()
-    assert round(pdmol.distance(df=new_df).values[0], 3) == 31.165
+    assert round(PandasMol2.distance_df(df=new_df).values[0], 3) == 31.165
 
 
 def test_overwrite_df():

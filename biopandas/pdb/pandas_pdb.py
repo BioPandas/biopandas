@@ -412,19 +412,20 @@ class PandasPdb(object):
 
         return pd.concat((tmp.iloc[indices]['chain_id'], transl), axis=1)
 
-    def distance(self, df=None, xyz=(0.00, 0.00, 0.00), record='ATOM'):
+    def distance(self, xyz=(0.00, 0.00, 0.00), records=('ATOM', 'HETATM')):
         """Computes Euclidean distance between atoms and a 3D point.
 
         Parameters
         ----------
-        df : DataFrame, default: None
-            If a DataFrame is provided as an argument, uses this DataFrame
-            for the distance computation instead of `self.df[record]`.
         xyz : tuple, default: (0.00, 0.00, 0.00)
             X, Y, and Z coordinate of the reference center for the distance
             computation.
-        record : str, default: 'ATOM'
-            Specfies the record DataFrame. Only used if `df=None`.
+        records : iterable, default: ('ATOM', 'HETATM')
+            Specify which record sections to consider. For example, to consider
+            both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
+            This setting is ignored if `df` is not set to None.
+            For downward compatibility, a string argument is still supported
+            but deprecated and will be removed in future versions.
 
         Returns
         ---------
@@ -432,12 +433,41 @@ class PandasPdb(object):
             distance between the atoms in the record section and `xyz`.
 
         """
-        if df is None:
-            use_df = self.df[record]
-        else:
-            use_df = df
 
-        return np.sqrt(np.sum(use_df[[
+        if isinstance(records, str):
+            warnings.warn('Using a string as `records` argument is '
+                          'deprecated and will not be supported in future'
+                          ' versions. Please use a tuple or'
+                          ' other iterable instead', DeprecationWarning)
+            records = (records,)
+
+        df = pd.concat(objs=[self.df[i] for i in records])
+
+        return np.sqrt(np.sum(df[[
+            'x_coord', 'y_coord', 'z_coord']]
+            .subtract(xyz, axis=1)**2, axis=1))
+
+    @staticmethod
+    def distance_df(df, xyz=(0.00, 0.00, 0.00)):
+        """Computes Euclidean distance between atoms and a 3D point.
+
+        Parameters
+        ----------
+        df : DataFrame
+            DataFrame containing entries in the `PandasPdb.df['ATOM']`
+            or `PandasPdb.df['HETATM']` format for the
+            the distance computation to the `xyz` reference coordinates.
+        xyz : tuple, default: (0.00, 0.00, 0.00)
+            X, Y, and Z coordinate of the reference center for the distance
+            computation.
+
+        Returns
+        ---------
+        pandas.Series : Pandas Series object containing the Euclidean
+            distance between the atoms in the record section and `xyz`.
+
+        """
+        return np.sqrt(np.sum(df[[
             'x_coord', 'y_coord', 'z_coord']]
             .subtract(xyz, axis=1)**2, axis=1))
 
