@@ -144,6 +144,10 @@ def test_get_df():
     shape = ppdb.get('hydrogen', invert=True, records=('ATOM',)).shape
     assert shape == (1330, 21), shape
 
+    # deprecated use of string
+    shape = ppdb.get('hydrogen', invert=True, records='ATOM').shape
+    assert shape == (1330, 21), shape
+
     shape = ppdb.get('hydrogen').shape
     assert shape == (0, 21), shape
 

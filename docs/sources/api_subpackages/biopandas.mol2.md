@@ -1,4 +1,4 @@
-biopandas version: 0.2.2dev
+biopandas version: 0.2.3dev0
 ## PandasMol2
 
 *PandasMol2()*
@@ -30,11 +30,16 @@ Object for working with Tripos Mol2 structure files.
 
 <hr>
 
-*distance(xyz=(0.0, 0.0, 0.0))*
+*distance(df=None, xyz=(0.0, 0.0, 0.0))*
 
 Computes Euclidean distance between atoms and a 3D point.
 
 **Parameters**
+
+- `df` : DataFrame, default: None
+
+    If a DataFrame is provided as an argument, uses this DataFrame
+    for the distance computation instead of `self.df`.
 
 - `xyz` : tuple (0.00, 0.00, 0.00)
 
