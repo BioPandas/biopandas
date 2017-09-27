@@ -35,7 +35,6 @@ def test_deprecated_str_arg():
     assert dist[dist < 3].all() == expect.all()
 
 
-
 def test_use_external_df():
     TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), 'data',
                                                             '1t48_995.pdb')
