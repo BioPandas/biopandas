@@ -1,4 +1,25 @@
-from setuptools import setup, find_packages
+from distutils.core import setup
+from pkgutil import walk_packages
+from fnmatch import fnmatch as wc_match
+from itertools import chain
+
+
+import biopandas
+
+
+def find_packages(where, exclude=None):
+    if not exclude:
+        exclude = ()
+    if isinstance(where, str):
+        where = (where, )
+
+    ret_list = []
+    for name in chain.from_iterable(map(lambda w: (
+      n for _, n, ispkg in w if ispkg), (walk_packages(p) for p in where))):
+        if not any(wc_match(name, p) for p in exclude):
+            ret_list.append(name)
+
+    return tuple(ret_list)
 
 
 def calculate_version():
@@ -10,6 +31,8 @@ def calculate_version():
 
 package_version = calculate_version()
 
+print(find_packages(biopandas.__path__, biopandas.__name__))
+
 setup(name='biopandas',
       version=package_version,
       description='Molecular Structures in Pandas DataFrames',
@@ -18,7 +41,7 @@ setup(name='biopandas',
       url='https://github.com/rasbt/biopandas',
       license='new BSD',
       zip_safe=True,
-      packages=find_packages(),
+      packages=find_packages('.'),
       platforms='any',
       install_requires=['numpy', 'pandas'],
       keywords=['bioinformatics', 'molecular structures',
