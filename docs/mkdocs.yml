@@ -24,7 +24,7 @@ extra_javascript:
 extra_css:
   - extra.css
 
-copyright: Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
+copyright: Copyright &copy; 2015-2018 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
 google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 
 pages:
