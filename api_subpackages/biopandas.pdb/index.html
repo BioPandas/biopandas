@@ -214,7 +214,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<p>biopandas version: 0.2.2dev</p>
+<p>biopandas version: 0.2.3dev0</p>
 <h2 id="pandaspdb">PandasPdb</h2>
 <p><em>PandasPdb()</em></p>
 <p>Object for working with Protein Databank structure files.</p>
@@ -225,21 +225,21 @@
 <p>Dictionary storing pandas DataFrames for PDB record sections.
 The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
 where 'OTHERS' contains all entries that are not parsed as
-'ATOM', 'HETATM', or 'ANISOU'</p>
+'ATOM', 'HETATM', or 'ANISOU'.</p>
 </li>
 <li>
 <p><code>pdb_text</code> : str</p>
-<p>PDB file contents in raw text format</p>
+<p>PDB file contents in raw text format.</p>
 </li>
 <li>
 <p><code>pdb_path</code> : str</p>
 <p>Location of the PDB file that was read in via <code>read_pdb</code>
 or URL of the page where the PDB content was fetched from
-if <code>fetch_pdb</code> was called</p>
+if <code>fetch_pdb</code> was called.</p>
 </li>
 <li>
 <p><code>header</code> : str</p>
-<p>PDB file description</p>
+<p>PDB file description.</p>
 </li>
 <li>
 <p><code>code</code> : str</p>
@@ -262,17 +262,17 @@ MSE (selenomethionine) =&gt; M
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>record</code> : str (default: 'ATOM')</p>
-<p>Specfies the record DataFrame</p>
+<p><code>record</code> : str, default: 'ATOM'</p>
+<p>Specfies the record DataFrame.</p>
 </li>
 <li>
-<p><code>residue_col</code> : str (default: 'residue_name')</p>
+<p><code>residue_col</code> : str,  default: 'residue_name'</p>
 <p>Column in <code>record</code> DataFrame to look for 3-letter amino acid
-codes for the conversion</p>
+codes for the conversion.</p>
 </li>
 <li>
-<p><code>fillna</code> : str (default: '?')</p>
-<p>Placeholder string to use for unknown amino acids</p>
+<p><code>fillna</code> : str, default: '?'</p>
+<p>Placeholder string to use for unknown amino acids.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -286,18 +286,47 @@ contains the 1-letter amino acid code, respectively.</p>
 </ul>
 <hr>
 
-<p><em>distance(xyz=(0.0, 0.0, 0.0), record='ATOM')</em></p>
+<p><em>distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))</em></p>
 <p>Computes Euclidean distance between atoms and a 3D point.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>xyz</code> : tuple (0.00, 0.00, 0.00)</p>
+<p><code>xyz</code> : tuple, default: (0.00, 0.00, 0.00)</p>
 <p>X, Y, and Z coordinate of the reference center for the distance
-computation</p>
+computation.</p>
 </li>
 <li>
-<p><code>record</code> : str (default: 'ATOM')</p>
-<p>Specfies the record DataFrame</p>
+<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
+<p>Specify which record sections to consider. For example, to consider
+both protein and ligand atoms, set <code>records=('ATOM', 'HETATM')</code>.
+This setting is ignored if <code>df</code> is not set to None.
+For downward compatibility, a string argument is still supported
+but deprecated and will be removed in future versions.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas.Series</code> : Pandas Series object containing the Euclidean</p>
+<p>distance between the atoms in the record section and <code>xyz</code>.</p>
+</li>
+</ul>
+<hr>
+
+<p><em>distance_df(df, xyz=(0.0, 0.0, 0.0))</em></p>
+<p>Computes Euclidean distance between atoms and a 3D point.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>df</code> : DataFrame</p>
+<p>DataFrame containing entries in the <code>PandasPdb.df['ATOM']</code>
+or <code>PandasPdb.df['HETATM']</code> format for the
+the distance computation to the <code>xyz</code> reference coordinates.</p>
+</li>
+<li>
+<p><code>xyz</code> : tuple, default: (0.00, 0.00, 0.00)</p>
+<p>X, Y, and Z coordinate of the reference center for the distance
+computation.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -315,30 +344,38 @@ computation</p>
 <ul>
 <li>
 <p><code>pdb_code</code> : str</p>
-<p>A 4-letter PDB code, e.g., "3eiy"</p>
+<p>A 4-letter PDB code, e.g., "3eiy".</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
 <p>self</p>
 <hr>
 
-<p><em>get(s, df=None, invert=False)</em></p>
+<p><em>get(s, df=None, invert=False, records=('ATOM', 'HETATM'))</em></p>
 <p>Filter PDB DataFrames by properties</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
 <p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}</p>
-<p>String to specify which entries to return</p>
+<p>String to specify which entries to return.</p>
 </li>
 <li>
 <p><code>df</code> : pandas.DataFrame, default: None</p>
 <p>Optional DataFrame to perform the filter operation on.
-If df=None, filters on self.df['ATOM']</p>
+If df=None, filters on self.df['ATOM'].</p>
 </li>
 <li>
 <p><code>invert</code> : bool, default: True</p>
 <p>Inverts the search query. For example if s='hydrogen' and
-invert=True, all but hydrogen entries are returned</p>
+invert=True, all but hydrogen entries are returned.</p>
+</li>
+<li>
+<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
+<p>Specify which record sections to consider. For example, to consider
+both protein and ligand atoms, set <code>records=('ATOM', 'HETATM')</code>.
+This setting is ignored if <code>df</code> is not set to None.
+For downward compatibility, a string argument is still supported
+but deprecated and will be removed in future versions.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -350,17 +387,17 @@ invert=True, all but hydrogen entries are returned</p>
 </ul>
 <hr>
 
-<p><em>impute_element(sections=('ATOM', 'HETATM'), inplace=False)</em></p>
+<p><em>impute_element(records=('ATOM', 'HETATM'), inplace=False)</em></p>
 <p>Impute element_symbol from atom_name section.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>sections</code> : iterable (default: ('ATOM', 'HETATM'))</p>
+<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
 <p>Coordinate sections for which the element symbols should be
 imputed.</p>
 </li>
 <li>
-<p><code>inplace</code> : bool (default: False)</p>
+<p><code>inplace</code> : bool, (default: False</p>
 <p>Performs the operation in-place if True and returns a copy of the
 PDB DataFrame otherwise.</p>
 </li>
@@ -369,13 +406,17 @@ PDB DataFrame otherwise.</p>
 <p>DataFrame</p>
 <hr>
 
+<p><em>parse_sse()</em></p>
+<p>Parse secondary structure elements</p>
+<hr>
+
 <p><em>read_pdb(path)</em></p>
 <p>Read PDB files (unzipped or gzipped) from local drive</p>
 <p><strong>Attributes</strong></p>
 <ul>
 <li>
 <p><code>path</code> : str</p>
-<p>Path to the PDB file in .pdb format or gzipped format (.pdb.gz)</p>
+<p>Path to the PDB file in .pdb format or gzipped format (.pdb.gz).</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -388,12 +429,12 @@ PDB DataFrame otherwise.</p>
 <ul>
 <li>
 <p><code>df1</code> : pandas.DataFrame</p>
-<p>DataFrame with HETATM, ATOM, and/or ANISOU entries</p>
+<p>DataFrame with HETATM, ATOM, and/or ANISOU entries.</p>
 </li>
 <li>
 <p><code>df2</code> : pandas.DataFrame</p>
 <p>Second DataFrame for RMSD computation against df1. Must have the
-same number of entries as df1</p>
+same number of entries as df1.</p>
 </li>
 <li>
 <p><code>s</code> : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,</p>
@@ -429,11 +470,11 @@ but hydrogen atoms.</p>
 <p><code>records</code> : iterable, default: None</p>
 <p>A list of PDB record sections in
 {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
-Writes all lines to PDB if records=None</p>
+Writes all lines to PDB if <code>records=None</code>.</p>
 </li>
 <li>
 <p><code>gz</code> : bool, default: False</p>
-<p>Writes a gzipped PDB file if True</p>
+<p>Writes a gzipped PDB file if True.</p>
 </li>
 <li>
 <p><code>append_newline</code> : bool, default: True</p>
@@ -451,7 +492,7 @@ Writes all lines to PDB if records=None</p>
     <footer class="col-md-12 text-center">
         <hr>
         <p>
-        <small>Copyright &copy; 2015-2017 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
+        <small>Copyright &copy; 2015-2018 <a href="http://sebastianraschka.com">Sebastian Raschka</a><br></small>
         
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>
