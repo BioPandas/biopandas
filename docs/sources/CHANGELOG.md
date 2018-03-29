@@ -3,12 +3,12 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
-### 0.2.3dev (TBD)
+### 0.2.3 (03-29-2018)
 
 ##### Downloads
 
-- [Source code (zip)]
-- [Source code (tar.gz)]
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.3.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.3.tar.gz)
 
 ##### New Features
 
