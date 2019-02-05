@@ -1,4 +1,3 @@
-
 # Working with MOL2 Structures in DataFrames
 
 The Tripos MOL2 format is a common format for working with small molecules. In this tutorial, we will go over some examples that illustrate how we can use Biopandas' MOL2 DataFrames to analyze molecules conveniently.
@@ -64,6 +63,19 @@ pmol.df.head(3)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -193,6 +205,19 @@ pmol.df.tail(10)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -201,7 +226,7 @@ pmol.df.tail(10)
       <th>atom_name</th>
       <th>x</th>
       <th>y</th>
-      <th>z</th>
+      <th>...</th>
       <th>atom_type</th>
       <th>subst_id</th>
       <th>subst_name</th>
@@ -215,7 +240,7 @@ pmol.df.tail(10)
       <td>H3</td>
       <td>15.8520</td>
       <td>2.8983</td>
-      <td>24.1870</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -227,7 +252,7 @@ pmol.df.tail(10)
       <td>H4</td>
       <td>14.3405</td>
       <td>3.3601</td>
-      <td>24.9711</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -239,7 +264,7 @@ pmol.df.tail(10)
       <td>H5</td>
       <td>15.3663</td>
       <td>0.9351</td>
-      <td>25.4839</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -251,7 +276,7 @@ pmol.df.tail(10)
       <td>H6</td>
       <td>16.6681</td>
       <td>1.6130</td>
-      <td>27.8171</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -263,7 +288,7 @@ pmol.df.tail(10)
       <td>H7</td>
       <td>15.3483</td>
       <td>4.6961</td>
-      <td>26.6094</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -275,7 +300,7 @@ pmol.df.tail(10)
       <td>H8</td>
       <td>18.8490</td>
       <td>1.8078</td>
-      <td>26.4511</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -287,7 +312,7 @@ pmol.df.tail(10)
       <td>H9</td>
       <td>17.8303</td>
       <td>1.5497</td>
-      <td>25.0110</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -299,7 +324,7 @@ pmol.df.tail(10)
       <td>H10</td>
       <td>19.9527</td>
       <td>7.4708</td>
-      <td>22.7715</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -311,7 +336,7 @@ pmol.df.tail(10)
       <td>H11</td>
       <td>18.5977</td>
       <td>8.5756</td>
-      <td>22.6932</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -323,7 +348,7 @@ pmol.df.tail(10)
       <td>H12</td>
       <td>14.2530</td>
       <td>1.0535</td>
-      <td>27.4278</td>
+      <td>...</td>
       <td>H</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -331,6 +356,7 @@ pmol.df.tail(10)
     </tr>
   </tbody>
 </table>
+<p>10 rows × 9 columns</p>
 </div>
 
 
@@ -348,6 +374,19 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -356,7 +395,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <th>atom_name</th>
       <th>x</th>
       <th>y</th>
-      <th>z</th>
+      <th>...</th>
       <th>atom_type</th>
       <th>subst_id</th>
       <th>subst_name</th>
@@ -370,7 +409,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>N2</td>
       <td>16.8196</td>
       <td>5.0644</td>
-      <td>25.2302</td>
+      <td>...</td>
       <td>N.am</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -382,7 +421,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>N3</td>
       <td>19.0194</td>
       <td>7.7275</td>
-      <td>22.9859</td>
+      <td>...</td>
       <td>N.pl3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -394,7 +433,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O1</td>
       <td>18.7676</td>
       <td>-2.3524</td>
-      <td>26.1510</td>
+      <td>...</td>
       <td>O.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -406,7 +445,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O2</td>
       <td>20.3972</td>
       <td>-0.3812</td>
-      <td>26.2318</td>
+      <td>...</td>
       <td>O.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -418,7 +457,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O3</td>
       <td>15.0888</td>
       <td>6.5824</td>
-      <td>25.0727</td>
+      <td>...</td>
       <td>O.2</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -430,7 +469,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O4</td>
       <td>18.9314</td>
       <td>-0.7527</td>
-      <td>24.1606</td>
+      <td>...</td>
       <td>O.2</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -442,7 +481,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O5</td>
       <td>16.9690</td>
       <td>3.4315</td>
-      <td>26.8994</td>
+      <td>...</td>
       <td>O.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -454,7 +493,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O6</td>
       <td>14.3223</td>
       <td>1.8946</td>
-      <td>26.9702</td>
+      <td>...</td>
       <td>O.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -466,7 +505,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>O7</td>
       <td>17.9091</td>
       <td>-0.0135</td>
-      <td>26.3390</td>
+      <td>...</td>
       <td>O.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -478,7 +517,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
       <td>P1</td>
       <td>19.0969</td>
       <td>-0.9440</td>
-      <td>25.6653</td>
+      <td>...</td>
       <td>P.3</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
@@ -486,6 +525,7 @@ pmol.df[pmol.df['atom_type'] != 'H'].tail(10)
     </tr>
   </tbody>
 </table>
+<p>10 rows × 9 columns</p>
 </div>
 
 
@@ -506,6 +546,19 @@ keto
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -724,6 +777,19 @@ keto_coord
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -760,7 +826,7 @@ print('x, y, z coords:', keto_coord.values[0])
 distances = pmol.distance(keto_coord.values[0])
 ```
 
-    x, y, z coords: [ 15.0888   6.5824  25.0727]
+    x, y, z coords: [15.0888  6.5824 25.0727]
 
 
 For our convenience, we can add these `distances` to our MOL2 DataFrame:
@@ -775,6 +841,19 @@ pmol.df.head()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -783,8 +862,7 @@ pmol.df.head()
       <th>atom_name</th>
       <th>x</th>
       <th>y</th>
-      <th>z</th>
-      <th>atom_type</th>
+      <th>...</th>
       <th>subst_id</th>
       <th>subst_name</th>
       <th>charge</th>
@@ -798,8 +876,7 @@ pmol.df.head()
       <td>C1</td>
       <td>18.8934</td>
       <td>5.5819</td>
-      <td>24.1747</td>
-      <td>C.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.1356</td>
@@ -811,8 +888,7 @@ pmol.df.head()
       <td>C2</td>
       <td>18.1301</td>
       <td>4.7642</td>
-      <td>24.8969</td>
-      <td>C.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.0410</td>
@@ -824,8 +900,7 @@ pmol.df.head()
       <td>C3</td>
       <td>18.2645</td>
       <td>6.8544</td>
-      <td>23.7342</td>
-      <td>C.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>0.4856</td>
@@ -837,8 +912,7 @@ pmol.df.head()
       <td>C4</td>
       <td>16.2520</td>
       <td>6.2866</td>
-      <td>24.7933</td>
-      <td>C.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>0.8410</td>
@@ -850,8 +924,7 @@ pmol.df.head()
       <td>C5</td>
       <td>15.3820</td>
       <td>3.0682</td>
-      <td>25.1622</td>
-      <td>C.3</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>0.0000</td>
@@ -859,6 +932,7 @@ pmol.df.head()
     </tr>
   </tbody>
 </table>
+<p>5 rows × 10 columns</p>
 </div>
 
 
@@ -874,6 +948,19 @@ pmol.df[pmol.df['atom_type'] == 'O.2']
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -882,8 +969,7 @@ pmol.df[pmol.df['atom_type'] == 'O.2']
       <th>atom_name</th>
       <th>x</th>
       <th>y</th>
-      <th>z</th>
-      <th>atom_type</th>
+      <th>...</th>
       <th>subst_id</th>
       <th>subst_name</th>
       <th>charge</th>
@@ -897,8 +983,7 @@ pmol.df[pmol.df['atom_type'] == 'O.2']
       <td>O3</td>
       <td>15.0888</td>
       <td>6.5824</td>
-      <td>25.0727</td>
-      <td>O.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.5700</td>
@@ -910,8 +995,7 @@ pmol.df[pmol.df['atom_type'] == 'O.2']
       <td>O4</td>
       <td>18.9314</td>
       <td>-0.7527</td>
-      <td>24.1606</td>
-      <td>O.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-1.0333</td>
@@ -919,6 +1003,7 @@ pmol.df[pmol.df['atom_type'] == 'O.2']
     </tr>
   </tbody>
 </table>
+<p>2 rows × 10 columns</p>
 </div>
 
 
@@ -939,6 +1024,19 @@ all_within_3A.tail()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -947,8 +1045,7 @@ all_within_3A.tail()
       <th>atom_name</th>
       <th>x</th>
       <th>y</th>
-      <th>z</th>
-      <th>atom_type</th>
+      <th>...</th>
       <th>subst_id</th>
       <th>subst_name</th>
       <th>charge</th>
@@ -962,8 +1059,7 @@ all_within_3A.tail()
       <td>C8</td>
       <td>16.0764</td>
       <td>4.1199</td>
-      <td>26.0119</td>
-      <td>C.3</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>0.5801</td>
@@ -975,8 +1071,7 @@ all_within_3A.tail()
       <td>N1</td>
       <td>17.0289</td>
       <td>7.1510</td>
-      <td>24.0411</td>
-      <td>N.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.6610</td>
@@ -988,8 +1083,7 @@ all_within_3A.tail()
       <td>N2</td>
       <td>16.8196</td>
       <td>5.0644</td>
-      <td>25.2302</td>
-      <td>N.am</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.4691</td>
@@ -1001,8 +1095,7 @@ all_within_3A.tail()
       <td>O3</td>
       <td>15.0888</td>
       <td>6.5824</td>
-      <td>25.0727</td>
-      <td>O.2</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>-0.5700</td>
@@ -1014,8 +1107,7 @@ all_within_3A.tail()
       <td>H7</td>
       <td>15.3483</td>
       <td>4.6961</td>
-      <td>26.6094</td>
-      <td>H</td>
+      <td>...</td>
       <td>1</td>
       <td>&lt;0&gt;</td>
       <td>0.0000</td>
@@ -1023,6 +1115,7 @@ all_within_3A.tail()
     </tr>
   </tbody>
 </table>
+<p>5 rows × 10 columns</p>
 </div>
 
 
@@ -1087,6 +1180,21 @@ from biopandas.mol2 import split_multimol2
 ```
 
 
+    ---------------------------------------------------------------------------
+
+    ModuleNotFoundError                       Traceback (most recent call last)
+
+    <ipython-input-23-1a655249f2ec> in <module>()
+          1 import pandas as pd
+    ----> 2 from mputil import lazy_imap
+          3 from biopandas.mol2 import PandasMol2
+          4 from biopandas.mol2 import split_multimol2
+
+
+    ModuleNotFoundError: No module named 'mputil'
+
+
+
 ```python
 # Selection strings to capture
 # all molecules that contain at least one sp2 hybridized
@@ -1126,9 +1234,6 @@ with open('./data/selected_ids.txt', 'w') as f:
         
 print('Searched %d molecules. Got %d hits.' % (searched, found))
 ```
-
-    Searched 40 molecules. Got 3 hits.
-
 
 [Input File link: [40_mol2_files.mol2](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/40_mol2_files.mol2)]
 

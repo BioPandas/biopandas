@@ -29,7 +29,7 @@ ppdb.read_pdb('./data/3eiy.pdb')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x11912b710>
 
 
 
@@ -47,7 +47,7 @@ ppdb.read_pdb('./data/3eiy.pdb.gz')
 
 
 
-    <biopandas.pdb.pandas_pdb.PandasPdb at 0x10462bf28>
+    <biopandas.pdb.pandas_pdb.PandasPdb at 0x11912b710>
 
 
 
@@ -94,6 +94,19 @@ ppdb.df['ATOM'].head(3)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -218,7 +231,7 @@ ppdb.df.keys()
 [File link: [3eiy.pdb](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb)]
 
 - 'ATOM': contains the entries from the ATOM coordinate section
-- 'HETATM':  ... entries from the "HETATM" coordinate section    
+- 'ATOM':  ... entries from the "HETATM" coordinate section    
 - 'ANISOU': ... entries from the "ANISOU" coordinate section 
 - 'OTHERS': Everything else that is *not* a 'ATOM', 'HETATM', or 'ANISOU' entry
 
@@ -235,6 +248,19 @@ ppdb.df['HETATM'].head(2)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -295,6 +321,19 @@ ppdb.df['ANISOU'].head(2)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -425,6 +464,19 @@ ppdb.df['OTHERS'].head(5)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -489,6 +541,19 @@ ppdb.df['ATOM'].head()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -588,6 +653,19 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name'] == 'PRO'].head()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -682,6 +760,19 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['atom_name'] == 'C'].head()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -776,6 +867,19 @@ ppdb.df['ATOM'][ppdb.df['ATOM']['element_symbol'] != 'H'].head()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1026,7 +1130,7 @@ We can use the `distance` method to compute the distance between each atom (or a
 p_1 = PandasPdb().read_pdb('./data/3eiy.pdb')
 
 reference_point = (9.362, 41.410, 10.542)
-distances = p_1.distance(xyz=reference_point, record='ATOM')
+distances = p_1.distance(xyz=reference_point, records=('ATOM',))
 ```
 
 [File link: [3eiy.pdb](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb)]
@@ -1062,6 +1166,19 @@ all_within_7A.tail()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1165,6 +1282,19 @@ sequence.tail()
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">

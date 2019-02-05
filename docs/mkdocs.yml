@@ -11,13 +11,15 @@ docs_dir: sources
 
 site_favicon: favicon.ico
 
-theme_dir: cinder
+theme:
+  name: null
+  custom_dir: "./cinder"
 
 markdown_extensions:
-  - extra
   - tables
   - fenced_code
-  - mathjax
+  - mdx_math:
+      enable_dollar_delimiter: True #for use of inline $..$
 extra_javascript:
   - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
   - mathjaxhelper.js
