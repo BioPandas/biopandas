@@ -6,22 +6,23 @@
     <page.page.meta http-equiv="X-UA-Compatible" page.content="IE=edge">
     <page.page.meta name="viewport" page.content="width=device-width, initial-scale=1.0">
     <page.page.meta name="description" page.content="Biopandas is a python package for working with molecular structures in pandas DataFrames."> 
-    <page.page.meta name="author" page.content="Sebastian Raschka">  
-    <link rel="shortcut icon" href="/biopandas/img/favicon.ico">
+    <page.page.meta name="author" page.content="Sebastian Raschka"> 
+    <link rel="canonical" href="http://rasbt.github.io/biopandas/api_modules/biopandas.testutils/assert_raises/"> 
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-    <title>BioPandas</title>
+    <title>Assert raises - BioPandas</title>
 
-    <link href="/biopandas/css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-    <link href="/biopandas/css/base.css" rel="stylesheet">
-    <link href="/biopandas/css/cinder.css" rel="stylesheet">
-    <link rel="stylesheet" href="/biopandas/css/highlight.css">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
 
 
-    <link href="/biopandas/extra.css" rel="stylesheet">
+    <link href="../../../extra.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -76,7 +77,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="/biopandas/">BioPandas</a>
+            <a class="navbar-brand" href="">BioPandas</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -87,7 +88,7 @@
                 
                 
                     <li >
-                        <a href="/biopandas/">Home</a>
+                        <a href="">Home</a>
                     </li>
                 
                 
@@ -98,13 +99,13 @@
                         
                             
 <li >
-    <a href="/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
+    <a href="tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
 </li>
 
                         
                             
 <li >
-    <a href="/biopandas/tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
+    <a href="tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
 </li>
 
                         
@@ -119,13 +120,13 @@
                         
                             
 <li >
-    <a href="/biopandas/api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+    <a href="api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
 </li>
 
                         
                             
 <li >
-    <a href="/biopandas/api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
+    <a href="api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
 </li>
 
                         
@@ -135,25 +136,25 @@
                 
                 
                     <li >
-                        <a href="/biopandas/changelog/">Changelog</a>
+                        <a href="changelog.md">Changelog</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="/biopandas/installation/">Installation</a>
+                        <a href="installation/">Installation</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="/biopandas/contributing/">Contributing</a>
+                        <a href="contributing.md">Contributing</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="/biopandas/citing/">Citing</a>
+                        <a href="citing/">Citing</a>
                     </li>
                 
                 
@@ -170,7 +171,7 @@
 
 
                     <li>
-                        <a href="https://github.com/rasbt/biopandas">
+                        <a href="https://github.com/rasbt/biopandas/">
                                 <i class="fa fa-github"></i>
                             GitHub
                         </a>
@@ -186,16 +187,41 @@
 
     <div class="container">
         
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#assert_raises">assert_raises</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-        <p style="text-align: center"><a href="/biopandas">Home</a></p>
-      </div>
-    </div>
-
-
+<h2 id="assert_raises">assert_raises</h2>
+<p><em>assert_raises(exception_type, message, func, </em>args, *<em>kwargs)</em></p>
+<p>Check that an exception is raised with a specific message</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>exception_type</code> : exception</p>
+<p>The exception that should be raised</p>
+</li>
+<li>
+<p><code>message</code> : str (default: None)</p>
+<p>The error message that should be raised. Ignored if False or None</p>
+</li>
+<li>
+<p><code>func</code> : callable</p>
+<p>The function that raises the exception</p>
+</li>
+<li>
+<p><code>*args</code> : positional arguments to <code>func</code></p>
+</li>
+<li>
+<p><code>**kwargs</code> : keyword arguments to <code>func</code></p>
+</li>
+</ul></div>
+        
     </div>
 
     <footer class="col-md-12 text-center">
@@ -206,17 +232,18 @@
         <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
     </footer>
 
-    <script src="/biopandas/js/jquery-1.10.2.min.js"></script>
-    <script src="/biopandas/js/bootstrap-3.0.3.min.js"></script>
-    <script src="/biopandas/js/highlight.pack.js"></script>
+    <script src="../../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
-    var base_url = '/biopandas';
+    var base_url = '../../..';
     </script>
-    <script data-main="/biopandas/mkdocs/js/search.js" src="/biopandas/mkdocs/js/require.js"></script>
-    <script src="/biopandas/js/base.js"></script>
+    <script data-main="../../../mkdocs/js/search.js" src="../../../mkdocs/js/require.js"></script>
+    <script src="../../../js/base.js"></script>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-    <script src="/biopandas/mathjaxhelper.js"></script>
+    <script src="../../../mathjaxhelper.js"></script>
+    <script src="../../../search/main.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">
