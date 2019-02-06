@@ -20,6 +20,10 @@ from .engines import pdb_records
 from .engines import pdb_df_columns
 from .engines import amino3to1dict
 import warnings
+from distutils.version import LooseVersion
+
+
+pd_version = LooseVersion(pd.__version__)
 
 
 class PandasPdb(object):
@@ -516,16 +520,22 @@ class PandasPdb(object):
                 else:
                     dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
 
-        df = pd.concat(dfs)
-        if pd.__version__ < '0.17.0':
+        if pd_version < LooseVersion('0.17.0'):
             warn("You are using an old pandas version (< 0.17)"
                  " that relies on the old sorting syntax."
                  " Please consider updating your pandas"
                  " installation to a more recent version.",
                  DeprecationWarning)
             df.sort(columns='line_idx', inplace=True)
+
+        elif pd_version < LooseVersion('0.23.0'):
+            df = pd.concat(dfs)
+
         else:
-            df.sort_values(by='line_idx', inplace=True)
+            df = pd.concat(dfs, sort=False)
+
+        df.sort_values(by='line_idx', inplace=True)
+
         with openf(path, w_mode) as f:
 
             s = df['OUT'].tolist()

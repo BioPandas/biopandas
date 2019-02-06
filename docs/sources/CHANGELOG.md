@@ -3,7 +3,7 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
-### 0.2.4 (TBD)
+### 0.2.4 (02-05-2019)
 
 ##### Downloads
 
@@ -16,7 +16,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Changes
 
-- -
+- Minor adjustments to support to address deprecation warnings in pandas >= 23.0
 
 ##### Bug Fixes
 
