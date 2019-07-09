@@ -1,52 +1,32 @@
-from pkgutil import walk_packages
-from fnmatch import fnmatch as wc_match
-from itertools import chain
+from os.path import realpath, dirname, join
+from setuptools import setup, find_packages
+import biopandas
 
+VERSION = biopandas.__version__
+PROJECT_ROOT = dirname(realpath(__file__))
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+REQUIREMENTS_FILE = join(PROJECT_ROOT, 'requirements.txt')
 
+with open(REQUIREMENTS_FILE) as f:
+    install_reqs = f.read().splitlines()
 
-def find_packages(where, exclude=None):
-    if not exclude:
-        exclude = ()
-    if isinstance(where, str):
-        where = (where, )
-
-    ret_list = []
-    for name in chain.from_iterable(map(lambda w: (
-      n for _, n, ispkg in w if ispkg), (walk_packages(p) for p in where))):
-        if not any(wc_match(name, p) for p in exclude):
-            ret_list.append(name)
-
-    return tuple(ret_list)
-
-
-def calculate_version():
-    initpy = open('biopandas/__init__.py').read().split('\n')
-    version = list(filter(lambda x: '__version__'
-                          in x, initpy))[0].split('\'')[1]
-    return version
-
-
-package_version = calculate_version()
+install_reqs.append('setuptools')
 
 setup(name='biopandas',
-      version=package_version,
-      description='Molecular Structures in Pandas DataFrames',
+      version=VERSION,
+      description='Machine Learning Library Extensions',
       author='Sebastian Raschka',
       author_email='mail@sebastianraschka.com',
       url='https://github.com/rasbt/biopandas',
-      license='new BSD',
-      zip_safe=True,
-      packages=find_packages('.'),
+      packages=find_packages(),
+      package_data={'': ['LICENSE.txt',
+                         'README.md',
+                         'requirements.txt']
+                    },
+      include_package_data=True,
+      install_requires=install_reqs,
+      license='BSD 3-Clause',
       platforms='any',
-      install_requires=['numpy', 'pandas'],
-      keywords=['bioinformatics', 'molecular structures',
-                'protein databank', 'computational biology',
-                'protein structures'],
       classifiers=[
              'License :: OSI Approved :: BSD License',
              'Development Status :: 5 - Production/Stable',
@@ -54,12 +34,10 @@ setup(name='biopandas',
              'Operating System :: POSIX',
              'Operating System :: Unix',
              'Operating System :: MacOS',
-             'Programming Language :: Python :: 2',
-             'Programming Language :: Python :: 2.7',
              'Programming Language :: Python :: 3',
-             'Programming Language :: Python :: 3.3',
-             'Programming Language :: Python :: 3.4',
              'Programming Language :: Python :: 3.5',
+             'Programming Language :: Python :: 3.6',
+             'Programming Language :: Python :: 3.7',
              'Topic :: Scientific/Engineering',
       ],
       long_description="""

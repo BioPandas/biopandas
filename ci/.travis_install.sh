@@ -19,11 +19,15 @@ deactivate
 
 # Use the miniconda installer for faster download / install of conda
 # itself
-wget http://repo.continuum.io/miniconda/Miniconda-3.9.1-Linux-x86_64.sh \
-    -O miniconda.sh
-chmod +x miniconda.sh && ./miniconda.sh -b
-export PATH=/home/travis/miniconda/bin:$PATH
-conda update --yes conda
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+
+bash miniconda.sh -b -p $HOME/miniconda
+export PATH="$HOME/miniconda/bin:$PATH"
+hash -r
+conda config --set always_yes yes --set changeps1 no
+conda update -q conda
+conda update -q pip
+conda info -a
 
 # Configure the conda environment and put it in the path using the
 # provided versions
@@ -36,6 +40,7 @@ else
 	    pandas=$PANDAS_VERSION 
 fi
 
+conda init bash
 source activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
