@@ -406,7 +406,8 @@ class PandasPdb(object):
         cmp = 'placeholder'
         indices = []
 
-        residue_number_insertion = tmp['residue_number'].astype(str) + tmp['insertion']
+        residue_number_insertion = (tmp['residue_number'].astype(str)
+                                    + tmp['insertion'])
 
         for num, ind in zip(residue_number_insertion, np.arange(tmp.shape[0])):
             if num != cmp:
@@ -528,7 +529,7 @@ class PandasPdb(object):
                  " Please consider updating your pandas"
                  " installation to a more recent version.",
                  DeprecationWarning)
-            df.sort(columns='line_idx', inplace=True)
+            dfs.sort(columns='line_idx', inplace=True)
 
         elif pd_version < LooseVersion('0.23.0'):
             df = pd.concat(dfs)
