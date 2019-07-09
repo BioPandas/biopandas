@@ -2,6 +2,7 @@ include biopandas/pdb/tests/*
 include biopandas/pdb/tests/data/*
 include README.md
 include LICENSE
+include requirements.txt
 
 global-exclude *.pyo
 global-exclude *.pyc
