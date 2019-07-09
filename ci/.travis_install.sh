@@ -41,7 +41,7 @@ else
 fi
 
 conda init bash
-conda activate testenv
+source activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
     pip install coverage coveralls
