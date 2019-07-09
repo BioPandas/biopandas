@@ -4,10 +4,10 @@ virtualenv:
 env:
   matrix:
     - PYTHON_VERSION="2.7" LATEST="true"
-    - PYTHON_VERSION="3.5" LATEST="true"
-    - PYTHON_VERSION="3.6" NUMPY_VERSION="1.11.2" SCIPY_VERSION="0.18.1" PANDAS_VERSION="0.19.1"
-    - PYTHON_VERSION="3.6" COVERAGE="true" LATEST="true"
-install: bash ./ci/.travis_install.sh
+    - PYTHON_VERSION="3.7" LATEST="true"
+    - PYTHON_VERSION="3.7" COVERAGE="false" NUMPY_VERSION="1.16.2" SCIPY_VERSION="1.2.1" PANDAS_VERSION="0.24.2"
+    - PYTHON_VERSION="3.7" COVERAGE="true" LATEST="true"
+install: source ./ci/.travis_install.sh
 script: bash ./ci/.travis_test.sh
 after_success:
     # Ignore coveralls failures as the coveralls server is not very reliable
