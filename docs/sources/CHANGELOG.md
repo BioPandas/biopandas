@@ -3,12 +3,33 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.5 (07-09-2019)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.5.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.5.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+- -
+
+##### Bug Fixes
+
+- The `PandasPdb.amino3to1` method now also considers insertion codes when converting the amino acid codes; before, inserted amino acides were skipped. 
+
+
+
 ### 0.2.4 (02-05-2019)
 
 ##### Downloads
 
-- [Source code (zip)]
-- [Source code (tar.gz)]
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.4.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.4.tar.gz)
 
 ##### New Features
 

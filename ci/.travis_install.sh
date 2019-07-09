@@ -36,7 +36,7 @@ else
 	    pandas=$PANDAS_VERSION 
 fi
 
-source activate testenv
+conda activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
     pip install coverage coveralls
