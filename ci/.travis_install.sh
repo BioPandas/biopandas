@@ -29,7 +29,6 @@ conda update -q conda
 conda update -q pip
 conda info -a
 
-
 # Configure the conda environment and put it in the path using the
 # provided versions
 if [[ "$LATEST" == "true" ]]; then
@@ -41,6 +40,7 @@ else
 	    pandas=$PANDAS_VERSION 
 fi
 
+conda init bash
 conda activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
