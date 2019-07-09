@@ -1,6 +1,6 @@
 language: python
 virtualenv:
-  system_site_packages: true
+  system_site_packages: false
 env:
   matrix:
     - PYTHON_VERSION="2.7" LATEST="true"
