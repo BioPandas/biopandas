@@ -406,7 +406,9 @@ class PandasPdb(object):
         cmp = 'placeholder'
         indices = []
 
-        for num, ind in zip(tmp['residue_number'], np.arange(tmp.shape[0])):
+        residue_number_insertion = tmp['residue_number'].astype(str) + tmp['insertion']
+
+        for num, ind in zip(residue_number_insertion, np.arange(tmp.shape[0])):
             if num != cmp:
                 indices.append(ind)
             cmp = num

@@ -106,3 +106,12 @@ def test_multichain():
     assert expect_res_a == got_res_a
     assert expect_res_b == got_res_b
 
+
+def test_pdb_with_insertion_codes():
+
+    PDB_2D7T_PATH = os.path.join(os.path.dirname(__file__),
+                                 'data', '2d7t.pdb')
+
+    ppdb = PandasPdb().read_pdb(PDB_2D7T_PATH)
+    sequence = ppdb.amino3to1()
+    assert "".join(sequence[50:60]['residue_name'].values) == 'INPKSGDTNY'
