@@ -1,8 +1,9 @@
+import io
 import os
 from setuptools import setup, find_packages
 
 VERSION = None
-with open(
+with io.open(
     os.path.join(os.path.dirname(__file__), 'biopandas/__init__.py'),
     encoding='utf-8'
 ) as f:
