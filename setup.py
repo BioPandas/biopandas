@@ -1,4 +1,4 @@
-from os.path import realpath, dirname, join
+import os
 from setuptools import setup, find_packages
 
 VERSION = None
@@ -11,9 +11,9 @@ with open(
             continue
         VERSION = l.split('=')[1].strip(' "\'\n')
         break
-PROJECT_ROOT = dirname(realpath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-REQUIREMENTS_FILE = join(PROJECT_ROOT, 'requirements.txt')
+REQUIREMENTS_FILE = os.path.join(PROJECT_ROOT, 'requirements.txt')
 
 with open(REQUIREMENTS_FILE) as f:
     install_reqs = f.read().splitlines()
