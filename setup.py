@@ -1,11 +1,20 @@
-from os.path import realpath, dirname, join
+import io
+import os
 from setuptools import setup, find_packages
-import biopandas
 
-VERSION = biopandas.__version__
-PROJECT_ROOT = dirname(realpath(__file__))
+VERSION = None
+with io.open(
+    os.path.join(os.path.dirname(__file__), 'biopandas/__init__.py'),
+    encoding='utf-8'
+) as f:
+    for l in f:
+        if not l.startswith('__version__'):
+            continue
+        VERSION = l.split('=')[1].strip(' "\'\n')
+        break
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-REQUIREMENTS_FILE = join(PROJECT_ROOT, 'requirements.txt')
+REQUIREMENTS_FILE = os.path.join(PROJECT_ROOT, 'requirements.txt')
 
 with open(REQUIREMENTS_FILE) as f:
     install_reqs = f.read().splitlines()
