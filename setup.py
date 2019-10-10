@@ -2,7 +2,7 @@ from os.path import realpath, dirname, join
 from setuptools import setup, find_packages
 
 VERSION = None
-with io.open(
+with open(
     os.path.join(os.path.dirname(__file__), 'biopandas/__init__.py'),
     encoding='utf-8'
 ) as f:
