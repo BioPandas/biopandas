@@ -1,8 +1,13 @@
 from os.path import realpath, dirname, join
 from setuptools import setup, find_packages
-import biopandas
 
-VERSION = biopandas.__version__
+VERSION = None
+with io.open(os.path.join(os.path.dirname(__file__), 'biopandas/__init__.py'), encoding='utf-8') as f:
+    for l in f:
+        if not l.startswith('__version__'):
+            continue
+        VERSION = l.split('=')[1].strip(' "\'\n')
+        break
 PROJECT_ROOT = dirname(realpath(__file__))
 
 REQUIREMENTS_FILE = join(PROJECT_ROOT, 'requirements.txt')
