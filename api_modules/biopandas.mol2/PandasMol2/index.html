@@ -7,10 +7,10 @@
     <page.page.meta name="viewport" page.content="width=device-width, initial-scale=1.0">
     <page.page.meta name="description" page.content="Biopandas is a python package for working with molecular structures in pandas DataFrames."> 
     <page.page.meta name="author" page.content="Sebastian Raschka"> 
-    <link rel="canonical" href="http://rasbt.github.io/biopandas/api_modules/biopandas.pdb/PandasPDB/"> 
+    <link rel="canonical" href="http://rasbt.github.io/biopandas/api_modules/biopandas.mol2/PandasMol2/"> 
     <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-    <title>PandasPDB - BioPandas</title>
+    <title>PandasMol2 - BioPandas</title>
 
     <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
@@ -120,13 +120,13 @@
                         
                             
 <li >
-    <a href="api_subpackages/biopandas.pdb/">Biopandas.pdb</a>
+    <a href="api_subpackages/biopandas.pdb/">biopandas.pdb</a>
 </li>
 
                         
                             
 <li >
-    <a href="api_subpackages/biopandas.mol2/">Biopandas.mol2</a>
+    <a href="api_subpackages/biopandas.mol2/">biopandas.mol2</a>
 </li>
 
                         
@@ -136,7 +136,7 @@
                 
                 
                     <li >
-                        <a href="changelog.md">Changelog</a>
+                        <a href="CHANGELOG/">Changelog</a>
                     </li>
                 
                 
@@ -148,7 +148,7 @@
                 
                 
                     <li >
-                        <a href="contributing.md">Contributing</a>
+                        <a href="CONTRIBUTING/">Contributing</a>
                     </li>
                 
                 
@@ -190,7 +190,7 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#pandaspdb">PandasPdb</a></li>
+        <li class="main active"><a href="#pandasmol2">PandasMol2</a></li>
         
             <li><a href="#methods">Methods</a></li>
                 <!--  -->
@@ -203,100 +203,47 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h2 id="pandaspdb">PandasPdb</h2>
-<p><em>PandasPdb()</em></p>
-<p>Object for working with Protein Databank structure files.</p>
+<h2 id="pandasmol2">PandasMol2</h2>
+<p><em>PandasMol2()</em></p>
+<p>Object for working with Tripos Mol2 structure files.</p>
 <p><strong>Attributes</strong></p>
 <ul>
 <li>
-<p><code>df</code> : dict</p>
-<p>Dictionary storing pandas DataFrames for PDB record sections.
-The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
-where 'OTHERS' contains all entries that are not parsed as
-'ATOM', 'HETATM', or 'ANISOU'.</p>
+<p><code>df</code> : pandas.DataFrame</p>
+<p>DataFrame of a Mol2's ATOM section</p>
 </li>
 <li>
-<p><code>pdb_text</code> : str</p>
-<p>PDB file contents in raw text format.</p>
-</li>
-<li>
-<p><code>pdb_path</code> : str</p>
-<p>Location of the PDB file that was read in via <code>read_pdb</code>
-or URL of the page where the PDB content was fetched from
-if <code>fetch_pdb</code> was called.</p>
-</li>
-<li>
-<p><code>header</code> : str</p>
-<p>PDB file description.</p>
+<p><code>mol2_text</code> : str</p>
+<p>Mol2 file contents in string format</p>
 </li>
 <li>
 <p><code>code</code> : str</p>
-<p>PDB code</p>
+<p>ID, code, or name of the molecule stored</p>
+</li>
+<li>
+<p><code>pdb_path</code> : str</p>
+<p>Location of the MOL2 file that was read in via <code>read_mol2</code></p>
 </li>
 </ul>
 <h3 id="methods">Methods</h3>
 <hr>
 
-<p><em>amino3to1(record='ATOM', residue_col='residue_name', fillna='?')</em></p>
-<p>Creates 1-letter amino acid codes from DataFrame</p>
-<pre><code>Non-canonical amino-acids are converted as follows:
-ASH (protonated ASP) =&gt; D
-CYX (disulfide-bonded CYS) =&gt; C
-GLH (protonated GLU) =&gt; E
-HID/HIE/HIP (different protonation states of HIS) = H
-HYP (hydroxyproline) =&gt; P
-MSE (selenomethionine) =&gt; M
-</code></pre>
+<p><em>distance(xyz=(0.0, 0.0, 0.0))</em></p>
+<p>Computes Euclidean distance between atoms in
+    self.df and a 3D point.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>record</code> : str, default: 'ATOM'</p>
-<p>Specfies the record DataFrame.</p>
-</li>
-<li>
-<p><code>residue_col</code> : str,  default: 'residue_name'</p>
-<p>Column in <code>record</code> DataFrame to look for 3-letter amino acid
-codes for the conversion.</p>
-</li>
-<li>
-<p><code>fillna</code> : str, default: '?'</p>
-<p>Placeholder string to use for unknown amino acids.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li>
-<p><code>pandas.DataFrame</code> : Pandas DataFrame object consisting of two columns,</p>
-<p><code>'chain_id'</code> and <code>'residue_name'</code>, where the former contains
-the chain ID of the amino acid and the latter
-contains the 1-letter amino acid code, respectively.</p>
-</li>
-</ul>
-<hr>
-
-<p><em>distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))</em></p>
-<p>Computes Euclidean distance between atoms and a 3D point.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>xyz</code> : tuple, default: (0.00, 0.00, 0.00)</p>
+<p><code>xyz</code> : tuple (0.00, 0.00, 0.00)</p>
 <p>X, Y, and Z coordinate of the reference center for the distance
-computation.</p>
-</li>
-<li>
-<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
-<p>Specify which record sections to consider. For example, to consider
-both protein and ligand atoms, set <code>records=('ATOM', 'HETATM')</code>.
-This setting is ignored if <code>df</code> is not set to None.
-For downward compatibility, a string argument is still supported
-but deprecated and will be removed in future versions.</p>
+computation</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li>
 <p><code>pandas.Series</code> : Pandas Series object containing the Euclidean</p>
-<p>distance between the atoms in the record section and <code>xyz</code>.</p>
+<p>distance between the atoms in the atom section and <code>xyz</code>.</p>
 </li>
 </ul>
 <hr>
@@ -307,134 +254,111 @@ but deprecated and will be removed in future versions.</p>
 <ul>
 <li>
 <p><code>df</code> : DataFrame</p>
-<p>DataFrame containing entries in the <code>PandasPdb.df['ATOM']</code>
-or <code>PandasPdb.df['HETATM']</code> format for the
+<p>DataFrame containing entries similar to the PandasMol2.df
+format for the
 the distance computation to the <code>xyz</code> reference coordinates.</p>
 </li>
 <li>
-<p><code>xyz</code> : tuple, default: (0.00, 0.00, 0.00)</p>
+<p><code>xyz</code> : tuple (0.00, 0.00, 0.00)</p>
 <p>X, Y, and Z coordinate of the reference center for the distance
-computation.</p>
+computation</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li>
 <p><code>pandas.Series</code> : Pandas Series object containing the Euclidean</p>
-<p>distance between the atoms in the record section and <code>xyz</code>.</p>
+<p>distance between the atoms in the atom section and <code>xyz</code>.</p>
 </li>
 </ul>
 <hr>
 
-<p><em>fetch_pdb(pdb_code)</em></p>
-<p>Fetches PDB file contents from the Protein Databank at rcsb.org.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>pdb_code</code> : str</p>
-<p>A 4-letter PDB code, e.g., "3eiy".</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<p>self</p>
-<hr>
-
-<p><em>get(s, df=None, invert=False, records=('ATOM', 'HETATM'))</em></p>
-<p>Filter PDB DataFrames by properties</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}</p>
-<p>String to specify which entries to return.</p>
-</li>
-<li>
-<p><code>df</code> : pandas.DataFrame, default: None</p>
-<p>Optional DataFrame to perform the filter operation on.
-If df=None, filters on self.df['ATOM'].</p>
-</li>
-<li>
-<p><code>invert</code> : bool, default: True</p>
-<p>Inverts the search query. For example if s='hydrogen' and
-invert=True, all but hydrogen entries are returned.</p>
-</li>
-<li>
-<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
-<p>Specify which record sections to consider. For example, to consider
-both protein and ligand atoms, set <code>records=('ATOM', 'HETATM')</code>.
-This setting is ignored if <code>df</code> is not set to None.
-For downward compatibility, a string argument is still supported
-but deprecated and will be removed in future versions.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li>
-<p><code>df</code> : pandas.DataFrame</p>
-<p>Returns a DataFrame view on the filtered entries.</p>
-</li>
-</ul>
-<hr>
-
-<p><em>impute_element(records=('ATOM', 'HETATM'), inplace=False)</em></p>
-<p>Impute element_symbol from atom_name section.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
-<p>Coordinate sections for which the element symbols should be
-imputed.</p>
-</li>
-<li>
-<p><code>inplace</code> : bool, (default: False</p>
-<p>Performs the operation in-place if True and returns a copy of the
-PDB DataFrame otherwise.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<p>DataFrame</p>
-<hr>
-
-<p><em>parse_sse()</em></p>
-<p>Parse secondary structure elements</p>
-<hr>
-
-<p><em>read_pdb(path)</em></p>
-<p>Read PDB files (unzipped or gzipped) from local drive</p>
+<p><em>read_mol2(path, columns=None)</em></p>
+<p>Reads Mol2 files (unzipped or gzipped) from local drive</p>
+<pre><code>Note that if your mol2 file contains more than one molecule,
+only the first molecule is loaded into the DataFrame
+</code></pre>
 <p><strong>Attributes</strong></p>
 <ul>
 <li>
 <p><code>path</code> : str</p>
-<p>Path to the PDB file in .pdb format or gzipped format (.pdb.gz).</p>
+<p>Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)</p>
+</li>
+<li>
+<p><code>columns</code> : dict or None (default: None)</p>
+<p>If None, this methods expects a 9-column ATOM section that contains
+the following columns:</p>
+<p>{0:('atom_id', int), 1:('atom_name', str),
+2:('x', float), 3:('y', float), 4:('z', float),
+5:('atom_type', str), 6:('subst_id', int),
+7:('subst_name', str), 8:('charge', float)}</p>
+<p>If your Mol2 files are formatted differently, you can provide your
+own column_mapping dictionary in a format similar to the one above.
+However, note that not all assert_raise_message methods
+may be supported then.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
 <p>self</p>
 <hr>
 
-<p><em>rmsd(df1, df2, s=None, invert=False)</em></p>
-<p>Compute the Root Mean Square Deviation between molecules.</p>
+<p><em>read_mol2_from_list(mol2_lines, mol2_code, columns=None)</em></p>
+<p>Reads Mol2 file from a list into DataFrames</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li>
+<p><code>mol2_lines</code> : list</p>
+<p>A list of lines containing the mol2 file contents. For example,
+['@<TRIPOS>MOLECULE\n',
+'ZINC38611810\n',
+'   65    68     0     0     0\n',
+'SMALL\n',
+'NO_CHARGES\n',
+'\n',
+'@<TRIPOS>ATOM\n',
+'      1 C1  -1.1786  2.7011  -4.0323 C.3  1 &lt;0&gt;   -0.1537\n',
+'      2 C2  -1.2950  1.2442  -3.5798 C.3  1 &lt;0&gt;   -0.1156\n',
+...]</p>
+</li>
+<li>
+<p><code>mol2_code</code> : str or None</p>
+<p>Name or ID of the molecule.</p>
+</li>
+<li>
+<p><code>columns</code> : dict or None (default: None)</p>
+<p>If None, this methods expects a 9-column ATOM section that contains
+the following columns:
+{0:('atom_id', int), 1:('atom_name', str),
+2:('x', float), 3:('y', float), 4:('z', float),
+5:('atom_type', str), 6:('subst_id', int),
+7:('subst_name', str), 8:('charge', float)}
+If your Mol2 files are formatted differently, you can provide your
+own column_mapping dictionary in a format similar to the one above.
+However, note that not all assert_raise_message methods may be
+supported then.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>self</p>
+<hr>
+
+<p><em>rmsd(df1, df2, heavy_only=True)</em></p>
+<p>Compute the Root Mean Square Deviation between molecules</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
 <p><code>df1</code> : pandas.DataFrame</p>
-<p>DataFrame with HETATM, ATOM, and/or ANISOU entries.</p>
+<p>DataFrame with HETATM, ATOM, and/or ANISOU entries</p>
 </li>
 <li>
 <p><code>df2</code> : pandas.DataFrame</p>
 <p>Second DataFrame for RMSD computation against df1. Must have the
-same number of entries as df1.</p>
+same number of entries as df1</p>
 </li>
 <li>
-<p><code>s</code> : {'main chain', 'hydrogen', 'c-alpha', 'heavy', 'carbon'} or None,</p>
-<p>default: None
-String to specify which entries to consider. If None, considers
-all atoms for comparison.</p>
-</li>
-<li>
-<p><code>invert</code> : bool, default: False</p>
-<p>Inverts the string query if true. For example, the setting
-<code>s='hydrogen', invert=True</code> computes the RMSD based on all
-but hydrogen atoms.</p>
+<p><code>heavy_only</code> : bool (default: True)</p>
+<p>Which atoms to compare to compute the RMSD. If <code>True</code> (default),
+computes the RMSD between non-hydrogen atoms only.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -444,36 +368,11 @@ but hydrogen atoms.</p>
 <p>Root Mean Square Deviation between df1 and df2</p>
 </li>
 </ul>
-<hr>
-
-<p><em>to_pdb(path, records=None, gz=False, append_newline=True)</em></p>
-<p>Write record DataFrames to a PDB file or gzipped PDB file.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>path</code> : str</p>
-<p>A valid output path for the pdb file</p>
-</li>
-<li>
-<p><code>records</code> : iterable, default: None</p>
-<p>A list of PDB record sections in
-{'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
-Writes all lines to PDB if <code>records=None</code>.</p>
-</li>
-<li>
-<p><code>gz</code> : bool, default: False</p>
-<p>Writes a gzipped PDB file if True.</p>
-</li>
-<li>
-<p><code>append_newline</code> : bool, default: True</p>
-<p>Appends a new line at the end of the PDB file if True</p>
-</li>
-</ul>
 <h3 id="properties">Properties</h3>
 <hr>
 
 <p><em>df</em></p>
-<p>Acccess dictionary of pandas DataFrames for PDB record sections.</p></div>
+<p>Acccesses the pandas DataFrame</p></div>
         
     </div>
 
