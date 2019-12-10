@@ -9,21 +9,8 @@ h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before, h5[id]:before, h6[id
     height: 75px;
 }
 
-p > img {
-    max-width: 100%;
-    height: auto;
-}
-
-ul.nav li.first-level {
+ul.nav li.main {
     font-weight: bold;
-}
-
-ul.nav li.third-level {
-    padding-left: 12px;
-}
-
-div.col-md-3 {
-    padding-left: 0;
 }
 
 div.col-md-9 {
@@ -32,6 +19,10 @@ div.col-md-9 {
 
 div.source-links {
     float: right;
+}
+
+div.col-md-9 img {
+  max-width: 100%;
 }
 
 /*
@@ -103,7 +94,6 @@ div.source-links {
     .bs-sidebar.affix {
         position: fixed; /* Undo the static from mobile first approach */
         top: 80px;
-        max-height: calc(100% - 90px);
     }
     .bs-sidebar.affix-bottom {
         position: absolute; /* Undo the static from mobile first approach */
@@ -120,162 +110,4 @@ div.source-links {
     .bs-sidebar.affix {
         width: 263px;
     }
-}
-
-
-/* Added to support >2 level nav in drop down */
-
-.dropdown-submenu {
-    position: relative;
-}
-
-.dropdown-submenu>.dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: 0px;
-    margin-left: 0px;
-}
-
-.dropdown-submenu:hover>.dropdown-menu {
-    display: block;
-}
-
-.dropdown-submenu>a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #ccc;
-    margin-top: 5px;
-    margin-right: -10px;
-}
-
-.dropdown-submenu:hover>a:after {
-    border-left-color: #fff;
-}
-
-.dropdown-submenu.pull-left {
-    float: none;
-}
-
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 00px;
-}
-/* Start Bootstrap Callouts CSS Source by Chris Pratt (https://codepen.io/chrisdpratt/pen/IAymB) MIT License*/
-.bs-callout {
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #eee;
-    border-left-width: 5px;
-    border-radius: 3px;
-    background-color: #FCFDFF;
-}
-.bs-callout h4 {
-    font-style: normal;
-    font-weight: 400;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-.bs-callout p:last-child {
-    margin-bottom: 0;
-}
-.bs-callout code {
-    border-radius: 3px;
-}
-.bs-callout+.bs-callout {
-    margin-top: -5px;
-}
-.bs-callout-default {
-    border-left-color: #FA023C; /*modified from upstream default by Christopher Simpkins*/
-}
-.bs-callout-default h4 {
-    color: #FA023C; /*modified from upstream default by Christopher Simpkins*/
-}
-.bs-callout-primary {
-    border-left-color: #428bca;
-}
-.bs-callout-primary h4 {
-    color: #428bca;
-}
-.bs-callout-success {
-    border-left-color: #5cb85c;
-}
-.bs-callout-success h4 {
-    color: #5cb85c;
-}
-.bs-callout-danger {
-    border-left-color: #d9534f;
-}
-.bs-callout-danger h4 {
-    color: #d9534f;
-}
-.bs-callout-warning {
-    border-left-color: #f0ad4e;
-}
-.bs-callout-warning h4 {
-    color: #f0ad4e;
-}
-.bs-callout-info {
-    border-left-color: #5bc0de;
-}
-.bs-callout-info h4 {
-    color: #5bc0de;
-}
-/* End Bootstrap Callouts CSS Source by Chris Pratt */
-
-/* Admonitions */
-.admonition {
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #eee;
-    border-left-width: 5px;
-    border-radius: 3px;
-    background-color: #FCFDFF;
-}
-
-.admonition p:last-child {
-    margin-bottom: 0;
-}
-.admonition code {
-    border-radius: 3px;
-}
-.admonition+.admonition {
-    margin-top: -5px;
-}
-
-.admonition.note { /* csslint allow: adjoining-classes */
-    border-left-color: #428bca;
-}
-
-.admonition.warning { /* csslint allow: adjoining-classes */
-    border-left-color: #f0ad4e;
-}
-
-.admonition.danger { /* csslint allow: adjoining-classes */
-    border-left-color: #d9534f;
-}
-
-.admonition-title {
-    font-size: 19px;
-    font-style: normal;
-    font-weight: 400;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.admonition.note > .admonition-title {
-    color: #428bca;
-}
-
-.admonition.warning > .admonition-title {
-    color: #f0ad4e;
-}
-
-.admonition.danger > .admonition-title {
-    color: #d9534f;
 }
