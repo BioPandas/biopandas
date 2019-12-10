@@ -13,7 +13,7 @@ site_favicon: favicon.ico
 
 theme:
   name: null
-  custom_dir: "./cinder"
+  custom_theme: 'cinder'
 
 markdown_extensions:
   - tables
@@ -29,15 +29,15 @@ extra_css:
 copyright: Copyright &copy; 2015-2018 <a href="http://sebastianraschka.com">Sebastian Raschka</a>
 google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 
-pages:
-- Home: index.md
-- Tutorials:
-  - tutorials/Working_with_PDB_Structures_in_DataFrames.md
-  - tutorials/Working_with_MOL2_Structures_in_DataFrames.md
-- API:
-  - api_subpackages/biopandas.pdb.md
-  - api_subpackages/biopandas.mol2.md
-- Changelog: changelog.md
-- Installation: installation.md
-- Contributing: contributing.md
-- Citing: citing.md
+nav:
+    - Home: index.md
+    - Tutorials:
+          - Working with PDB Structures in DataFrames: tutorials/Working_with_PDB_Structures_in_DataFrames.md
+          - Working with MOL2 Structures in DataFrames: tutorials/Working_with_MOL2_Structures_in_DataFrames.md
+    - API:
+          - biopandas.pdb: api_subpackages/biopandas.pdb.md
+          - biopandas.mol2: api_subpackages/biopandas.mol2.md
+    - Changelog: CHANGELOG.md
+    - Installation: installation.md
+    - Contributing: CONTRIBUTING.md
+    - Citing: citing.md

@@ -52,7 +52,7 @@ print('\nRaw MOL2 file contents:\n\n%s\n...' % pmol.mol2_text[:500])
     ...
 
 
-The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api/biopandas.mol2#pandasmol2df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
+The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api_subpackages/biopandas.mol2#pandasmol2df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
 
 ```python
