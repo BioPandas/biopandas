@@ -11,9 +11,7 @@ docs_dir: sources
 
 site_favicon: favicon.ico
 
-theme:
-  name: null
-  custom_theme: 'cinder'
+theme: cinder
 
 markdown_extensions:
   - tables
