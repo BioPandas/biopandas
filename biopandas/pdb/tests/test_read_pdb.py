@@ -71,7 +71,7 @@ def test_fetch_pdb():
         txt[:100] == three_eiy[:100]
         ppdb.fetch_pdb('3eiy')
         assert ppdb.pdb_text == txt
-        assert ppdb.pdb_path == 'http://www.rcsb.org/pdb/files/3eiy.pdb'
+        assert ppdb.pdb_path == 'https://files.rcsb.org/download/3eiy.pdb'
 
 
 def test__read_pdb_gz():

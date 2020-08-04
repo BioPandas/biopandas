@@ -3,6 +3,28 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.6 (08-03-2020)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.6.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.6.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+- Uses more modern `https` queries for the RCSB server via the `fetch_pdb` function.
+- Updates the documentation (incl. a code of conduct)
+
+##### Bug Fixes
+
+- -
+
+
+
 ### 0.2.5 (07-09-2019)
 
 ##### Downloads
