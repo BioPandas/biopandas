@@ -1,45 +1,39 @@
-<!-- Please read the following guidelines for new Pull Requests -- thank you! -->
+### Code of Conduct
 
-<!--
-Make sure that you submit this pull request as a separate topic branch (and not to "master")
+<!-- 
+If this is your first Pull Request for the BioPandas repository, please review
+the code of conduct, which is available at http://rasbt.github.io/biopandas/CODE_OF_CONDUCT/. 
 -->
 
-<!-- Provide a small summary describing the Pull Request below -->
 
 ### Description
 
-Insert Description Here
+<!--  
+Please insert a brief description of the Pull request below.
+-->
 
 ### Related issues or pull requests
 
-<!-- Please provide a link to the respective issue on the [Issue Tracker](https://github.com/rasbt/biopandas/issues) if one exists. E.g.,
+<!--  
+If applicable, please link related issues/pull request below. For example,   
+"Fixes #366". Note that the "Fixes" keyword in GitHub will automatically
+close the listed issue upon merging this Pull Request.
+-->
 
-Fixes #<ISSUE_NUMBER> -->
-
-Link related issues/pull requests here
-
-<!-- Below is a general todo list for typical pull request -->
-
-### Pull Request requirements
-
-For new features or bug fixes, pleas consider the following to-do list:
-
-- [ ] Added appropriate unit test functions in the `./biopandas/*/tests` directories
-- [ ] Ran `nosetests ./biopandas -sv` and make sure that all unit tests pass
-- [ ] Checked the test coverage by running `nosetests ./biopandas --with-coverage`
-- [ ] Checked for style issues by running `flake8 ./biopandas`
-- [ ] Added a note about the modification or contribution to the `./docs/sources/`CHANGELOG.md` file
-- [ ] Modified documentation in the appropriate location under `biopandas/docs/sources/` (optional)
-- [ ] Checked that the Travis-CI build passed at https://travis-ci.org/rasbt/biopandas
-
-
-
+### Pull Request Checklist
 
 <!--
-NOTE
+Please fill out the following checklist if applicable. For more more information and help, please see the Contributor Documentation avaialable at http://rasbt.github.io/biopandas/contributing/.
+-->
 
+- [ ] Added a note about the modification or contribution to the `./docs/sources/CHANGELOG.md` file (if applicable)
+- [ ] Added appropriate unit test functions in the `./biopandas/*/tests` directories (if applicable)
+- [ ] Modify documentation in the corresponding Jupyter Notebook under `biopandas/docs/sources/` (if applicable)
+- [ ] Ran `PYTHONPATH='.' pytest ./biopandas -sv` and make sure that all unit tests pass (for small modifications, it might be sufficient to only run the specific test file, e.g., `PYTHONPATH='.' pytest ./biopandas/classifier/tests/test_stacking_cv_classifier.py -sv`)
+- [ ] Checked for style issues by running `flake8 ./biopandas`
+
+
+<!--NOTE  
 Due to the improved GitHub UI, the squashing of commits is no longer necessary.
 Please DO NOT SQUASH commits since they help with keeping track of the changes during the discussion).
-
-For more information and instructions, please see http://rasbt.github.io/biopandas/contributing/
 -->

@@ -2,6 +2,10 @@
 
 I would be very happy about any kind of contributions that help to improve and extend the functionality of biopandas.
 
+### Code of Conduct
+
+If this is your first contribution, please review the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 
 ### Quick Contributor Checklist
 
