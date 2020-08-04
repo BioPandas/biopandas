@@ -262,7 +262,7 @@ class PandasPdb(object):
     def _fetch_pdb(pdb_code):
         """Load PDB file from rcsb.org."""
         txt = None
-        url = 'http://www.rcsb.org/pdb/files/%s.pdb' % pdb_code.lower()
+        url = 'https://files.rcsb.org/download/%s.pdb' % pdb_code.lower()
         try:
             response = urlopen(url)
             txt = response.read()
