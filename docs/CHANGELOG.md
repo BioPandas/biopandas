@@ -3,6 +3,27 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+### 0.2.7 (08-04-2020)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.2.7.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.2.7.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+- -
+
+##### Bug Fixes
+
+- Fix Manifest file to include license file in the PyPI tar.gz file so that BioPandas can be packaged by conda-forge.
+
+
+
 ### 0.2.6 (08-03-2020)
 
 ##### Downloads
