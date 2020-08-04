@@ -4,25 +4,25 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Biopandas is a python package for working with molecular structures in pandas DataFrames.">
-        <meta name="author" content="Sebastian Raschka">
-        <link rel="canonical" href="http://rasbt.github.io/biopandas/">
-        <link rel="shortcut icon" href="favicon.ico">
         
-        <title>BioPandas</title>
-    <link href="css/bootstrap-3.3.7.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/base.css" rel="stylesheet">
+        <meta name="author" content="Sebastian Raschka">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/sources/api_modules/biopandas.mol2/PandasMol2/">
+        <link rel="shortcut icon" href="../../../../favicon.ico">
+        
+        <title>PandasMol2 - BioPandas</title>
+    <link href="../../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../../css/base.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-    <link href="extra.css" rel="stylesheet">
+    <link href="../../../../extra.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="js/jquery-1.10.2.min.js" defer></script>
-    <script src="js/bootstrap-3.3.7.min.js" defer></script>
+    <script src="../../../../js/jquery-1.10.2.min.js" defer></script>
+    <script src="../../../../js/bootstrap-3.3.7.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
         <script>
@@ -36,7 +36,7 @@
         </script> 
     </head>
 
-    <body class="homepage">
+    <body>
 
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -50,26 +50,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href=".">BioPandas</a>
+                    <a class="navbar-brand" href="../../../..">BioPandas</a>
                 </div>
 
                 <!-- Expanded navigation -->
                 <div class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href=".">Home</a>
+                            <li >
+                                <a href="../../../..">Home</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
+    <a href="../../../../tutorials/Working_with_PDB_Structures_in_DataFrames/">Working with PDB Structures in DataFrames</a>
 </li>
                                     
 <li >
-    <a href="tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
+    <a href="../../../../tutorials/Working_with_MOL2_Structures_in_DataFrames/">Working with MOL2 Structures in DataFrames</a>
 </li>
                                 </ul>
                             </li>
@@ -78,25 +78,25 @@
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="api_subpackages/biopandas.pdb/">biopandas.pdb</a>
+    <a href="../../../../api_subpackages/biopandas.pdb/">biopandas.pdb</a>
 </li>
                                     
 <li >
-    <a href="api_subpackages/biopandas.mol2/">biopandas.mol2</a>
+    <a href="../../../../api_subpackages/biopandas.mol2/">biopandas.mol2</a>
 </li>
                                 </ul>
                             </li>
                             <li >
-                                <a href="CHANGELOG/">Changelog</a>
+                                <a href="../../../../CHANGELOG/">Changelog</a>
                             </li>
                             <li >
-                                <a href="installation/">Installation</a>
+                                <a href="../../../../installation/">Installation</a>
                             </li>
                             <li >
-                                <a href="CONTRIBUTING/">Contributing</a>
+                                <a href="../../../../CONTRIBUTING/">Contributing</a>
                             </li>
                             <li >
-                                <a href="citing/">Citing</a>
+                                <a href="../../../../citing/">Citing</a>
                             </li>
                         </ul>
 
@@ -106,18 +106,8 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
-                            <li class="disabled">
-                                <a rel="next" >
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="tutorials/Working_with_PDB_Structures_in_DataFrames/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
                             <li>
-                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/index.md"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/sources/api_modules/biopandas.mol2/PandasMol2.md"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -127,100 +117,183 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#links">Links</a></li>
-        <li class="main "><a href="#about">About</a></li>
-        <li class="main "><a href="#examples">Examples</a></li>
-        <li class="main "><a href="#cite-as">Cite as</a></li>
+        <li class="main active"><a href="#pandasmol2">PandasMol2</a></li>
+            <li><a href="#methods">Methods</a></li>
+            <li><a href="#properties">Properties</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p><img alt="Logo" src="img/logos/logo_size_1.png" /></p>
-<p><strong>Working with molecular structures in pandas DataFrames</strong></p>
-<p><a href="https://travis-ci.org/rasbt/biopandas"><img alt="Continuous Integration" src="https://travis-ci.org/rasbt/biopandas.svg?branch=master" /></a>
-<a href="https://pypi.python.org/pypi/biopandas/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/biopandas.svg" /></a>
-<a href="https://github.com/rasbt/biopandas/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-new%20BSD-blue.svg" /></a>
-<img alt="Python 2.7" src="https://img.shields.io/badge/python-2.7-blue.svg" />
-<img alt="Python 3.6" src="https://img.shields.io/badge/python-3.6-blue.svg" />
-<a href="http://joss.theoj.org/papers/10.21105/joss.00279"><img alt="JOSS" src="http://joss.theoj.org/papers/10.21105/joss.00279/status.svg" /></a>
-<a href="https://groups.google.com/forum/#!forum/biopandas-users"><img alt="Discuss" src="https://img.shields.io/badge/discuss-google_group-blue.svg" /></a></p>
-<p><br></p>
+<h2 id="pandasmol2">PandasMol2</h2>
+<p><em>PandasMol2()</em></p>
+<p>Object for working with Tripos Mol2 structure files.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li>
+<p><code>df</code> : pandas.DataFrame</p>
+<p>DataFrame of a Mol2's ATOM section</p>
+</li>
+<li>
+<p><code>mol2_text</code> : str</p>
+<p>Mol2 file contents in string format</p>
+</li>
+<li>
+<p><code>code</code> : str</p>
+<p>ID, code, or name of the molecule stored</p>
+</li>
+<li>
+<p><code>pdb_path</code> : str</p>
+<p>Location of the MOL2 file that was read in via <code>read_mol2</code></p>
+</li>
+</ul>
+<h3 id="methods">Methods</h3>
 <hr>
 
-<h4 id="links">Links</h4>
+<p><em>distance(xyz=(0.0, 0.0, 0.0))</em></p>
+<p>Computes Euclidean distance between atoms in
+    self.df and a 3D point.</p>
+<p><strong>Parameters</strong></p>
 <ul>
-<li>Documentation: <a href="http://rasbt.github.io/biopandas/">http://rasbt.github.io/biopandas/</a></li>
-<li>Source code repository: <a href="https://github.com/rasbt/biopandas">https://github.com/rasbt/biopandas</a></li>
-<li>PyPI: <a href="https://pypi.python.org/pypi/biopandas">https://pypi.python.org/pypi/biopandas</a></li>
+<li>
+<p><code>xyz</code> : tuple (0.00, 0.00, 0.00)</p>
+<p>X, Y, and Z coordinate of the reference center for the distance
+computation</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas.Series</code> : Pandas Series object containing the Euclidean</p>
+<p>distance between the atoms in the atom section and <code>xyz</code>.</p>
+</li>
 </ul>
 <hr>
 
-<h4 id="about">About</h4>
-<p>If you are a computational biologist, chances are that you cursed one too many times about protein structure files. Yes, I am talking about ye Goode Olde Protein Data Bank format, aka "PDB files." Nothing against PDB, it's a neatly structured format (if deployed correctly); yet, it is a bit cumbersome to work with PDB files in "modern" programming languages -- I am pretty sure we all agree on this.</p>
-<p>As machine learning and "data science" person, I fell in love with <a href="http://pandas.pydata.org">pandas</a> DataFrames for handling just about everything that can be loaded into memory.<br />
-So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules (from PDB and MOL2 files) in pandas DataFrames is what BioPandas is all about!</p>
+<p><em>distance_df(df, xyz=(0.0, 0.0, 0.0))</em></p>
+<p>Computes Euclidean distance between atoms and a 3D point.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>df</code> : DataFrame</p>
+<p>DataFrame containing entries similar to the PandasMol2.df
+format for the
+the distance computation to the <code>xyz</code> reference coordinates.</p>
+</li>
+<li>
+<p><code>xyz</code> : tuple (0.00, 0.00, 0.00)</p>
+<p>X, Y, and Z coordinate of the reference center for the distance
+computation</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas.Series</code> : Pandas Series object containing the Euclidean</p>
+<p>distance between the atoms in the atom section and <code>xyz</code>.</p>
+</li>
+</ul>
 <hr>
 
-<h4 id="examples">Examples</h4>
-<p><img alt="3eiy" src="img/index/3eiy.png" /></p>
-<pre><code class="python"># Initialize a new PandasPdb object
-# and fetch the PDB file from rcsb.org
-&gt;&gt;&gt; from biopandas.pdb import PandasPdb
-&gt;&gt;&gt; ppdb = PandasPdb().fetch_pdb('3eiy')
-&gt;&gt;&gt; ppdb.df['ATOM'].head()
+<p><em>read_mol2(path, columns=None)</em></p>
+<p>Reads Mol2 files (unzipped or gzipped) from local drive</p>
+<pre><code>Note that if your mol2 file contains more than one molecule,
+only the first molecule is loaded into the DataFrame
 </code></pre>
-
-<p><img alt="3eiy head" src="img/index/3eiy_head.png" /></p>
-<p><br></p>
-<p><img alt="3eiy head" src="img/index/ligand_rmsd.png" /></p>
-<pre><code class="python"># Load structures from your drive and compute the
-# Root Mean Square Deviation
-&gt;&gt;&gt; from biopandas.pdb import PandasPdb
-&gt;&gt;&gt; pl1 = PandasPdb().read_pdb('./docking_pose_1.pdb')
-&gt;&gt;&gt; pl2 = PandasPdb().read_pdb('./docking_pose_2.pdb')
-&gt;&gt;&gt; r = PandasPdb.rmsd(pl1.df['HETATM'], pl2.df['HETATM'])
-&gt;&gt;&gt; print('RMSD: %.4f Angstrom' % r)
-RMSD: 2.6444 Angstrom
-</code></pre>
-
-<p><br></p>
-<pre><code class="python"># Producing quick summary plots
-&gt;&gt;&gt; import matplotlib.pyplot as plt
-&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='hist')
-&gt;&gt;&gt; plt.title('Distribution of B-Factors')
-&gt;&gt;&gt; plt.xlabel('B-factor')
-&gt;&gt;&gt; plt.ylabel('count')
-&gt;&gt;&gt; plt.show()
-</code></pre>
-
-<p><img alt="" src="img/index/bfactor_hist.png" /></p>
-<p><br></p>
-<pre><code class="python">&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='line')
-&gt;&gt;&gt; plt.title('B-Factors Along the Amino Acid Chain')
-&gt;&gt;&gt; plt.xlabel('Residue Number')
-&gt;&gt;&gt; plt.ylabel('B-factor in $A^2$')
-&gt;&gt;&gt; plt.show()
-</code></pre>
-
-<p><img alt="" src="img/index/bfactor_trace.png" /></p>
-<h3 id="cite-as">Cite as</h3>
-<p>If you use BioPandas as part of your workflow in a scientific publication, please consider citing the BioPandas repository with the following DOI:</p>
+<p><strong>Attributes</strong></p>
 <ul>
-<li>Sebastian Raschka. Biopandas: Working with molecular structures in pandas dataframes. <em>The Journal of Open Source Software</em>, 2(14), jun 2017. doi: 10.21105/joss.00279. URL http://dx.doi.org/10.21105/joss.00279.</li>
+<li>
+<p><code>path</code> : str</p>
+<p>Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)</p>
+</li>
+<li>
+<p><code>columns</code> : dict or None (default: None)</p>
+<p>If None, this methods expects a 9-column ATOM section that contains
+the following columns:</p>
+<p>{0:('atom_id', int), 1:('atom_name', str),
+2:('x', float), 3:('y', float), 4:('z', float),
+5:('atom_type', str), 6:('subst_id', int),
+7:('subst_name', str), 8:('charge', float)}</p>
+<p>If your Mol2 files are formatted differently, you can provide your
+own column_mapping dictionary in a format similar to the one above.
+However, note that not all assert_raise_message methods
+may be supported then.</p>
+</li>
 </ul>
-<pre><code>@article{raschkas2017biopandas,
-  doi = {10.21105/joss.00279},
-  url = {http://dx.doi.org/10.21105/joss.00279},
-  year  = {2017},
-  month = {jun},
-  publisher = {The Open Journal},
-  volume = {2},
-  number = {14},
-  author = {Sebastian Raschka},
-  title = {BioPandas: Working with molecular structures in pandas DataFrames},
-  journal = {The Journal of Open Source Software}
-}
-</code></pre></div>
+<p><strong>Returns</strong></p>
+<p>self</p>
+<hr>
+
+<p><em>read_mol2_from_list(mol2_lines, mol2_code, columns=None)</em></p>
+<p>Reads Mol2 file from a list into DataFrames</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li>
+<p><code>mol2_lines</code> : list</p>
+<p>A list of lines containing the mol2 file contents. For example,
+['@<TRIPOS>MOLECULE\n',
+'ZINC38611810\n',
+'   65    68     0     0     0\n',
+'SMALL\n',
+'NO_CHARGES\n',
+'\n',
+'@<TRIPOS>ATOM\n',
+'      1 C1  -1.1786  2.7011  -4.0323 C.3  1 &lt;0&gt;   -0.1537\n',
+'      2 C2  -1.2950  1.2442  -3.5798 C.3  1 &lt;0&gt;   -0.1156\n',
+...]</p>
+</li>
+<li>
+<p><code>mol2_code</code> : str or None</p>
+<p>Name or ID of the molecule.</p>
+</li>
+<li>
+<p><code>columns</code> : dict or None (default: None)</p>
+<p>If None, this methods expects a 9-column ATOM section that contains
+the following columns:
+{0:('atom_id', int), 1:('atom_name', str),
+2:('x', float), 3:('y', float), 4:('z', float),
+5:('atom_type', str), 6:('subst_id', int),
+7:('subst_name', str), 8:('charge', float)}
+If your Mol2 files are formatted differently, you can provide your
+own column_mapping dictionary in a format similar to the one above.
+However, note that not all assert_raise_message methods may be
+supported then.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>self</p>
+<hr>
+
+<p><em>rmsd(df1, df2, heavy_only=True)</em></p>
+<p>Compute the Root Mean Square Deviation between molecules</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>df1</code> : pandas.DataFrame</p>
+<p>DataFrame with HETATM, ATOM, and/or ANISOU entries</p>
+</li>
+<li>
+<p><code>df2</code> : pandas.DataFrame</p>
+<p>Second DataFrame for RMSD computation against df1. Must have the
+same number of entries as df1</p>
+</li>
+<li>
+<p><code>heavy_only</code> : bool (default: True)</p>
+<p>Which atoms to compare to compute the RMSD. If <code>True</code> (default),
+computes the RMSD between non-hydrogen atoms only.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>rmsd</code> : float</p>
+<p>Root Mean Square Deviation between df1 and df2</p>
+</li>
+</ul>
+<h3 id="properties">Properties</h3>
+<hr>
+
+<p><em>df</em></p>
+<p>Acccesses the pandas DataFrame</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -229,13 +302,13 @@ RMSD: 2.6444 Angstrom
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = ".",
+            var base_url = "../../../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js" defer></script>
+        <script src="../../../../js/base.js" defer></script>
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" defer></script>
-        <script src="mathjaxhelper.js" defer></script>
-        <script src="search/main.js" defer></script>
+        <script src="../../../../mathjaxhelper.js" defer></script>
+        <script src="../../../../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -303,8 +376,3 @@ RMSD: 2.6444 Angstrom
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.0.4
-Build Date UTC : 2020-08-04 01:51:37
--->
