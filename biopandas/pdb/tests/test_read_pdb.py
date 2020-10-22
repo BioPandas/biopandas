@@ -15,6 +15,7 @@ try:
     from urllib.error import HTTPError, URLError
 except ImportError:
     from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatib
+import pytest
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
@@ -54,6 +55,15 @@ def test__read_pdb():
     path, txt = ppdb._read_pdb(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
+
+
+def test__read_pdb_raises():
+    """Test private _read_pdb:
+    Test if ValueError is raised for wrong file formats."""
+    with pytest.raises(ValueError):
+        PandasPdb()._read_pdb("protein.mol2")
+    with pytest.raises(ValueError):
+        PandasPdb()._read_pdb("protein.mol2.gz")
 
 
 def test_fetch_pdb():
