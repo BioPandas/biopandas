@@ -1,4 +1,4 @@
-biopandas version: 0.2.6
+biopandas version: 0.2.7
 ## PandasPdb
 
 *PandasPdb()*
@@ -222,6 +222,22 @@ Read PDB files (unzipped or gzipped) from local drive
 - `path` : str
 
     Path to the PDB file in .pdb format or gzipped format (.pdb.gz).
+
+**Returns**
+
+self
+
+<hr>
+
+*read_pdb_from_list(pdb_lines)*
+
+Reads PDB file from a list into DataFrames
+
+**Attributes**
+
+- `pdb_lines` : list
+
+    A list of lines containing the pdb file contents.
 
 **Returns**
 
