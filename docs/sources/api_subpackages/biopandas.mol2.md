@@ -1,4 +1,4 @@
-biopandas version: 0.2.6
+biopandas version: 0.2.7
 ## PandasMol2
 
 *PandasMol2()*
