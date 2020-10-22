@@ -92,6 +92,24 @@ class PandasPdb(object):
         self.header, self.code = self._parse_header_code()
         return self
 
+    def read_pdb_from_list(self, pdb_lines):
+        """Reads PDB file from a list into DataFrames
+
+        Attributes
+        ----------
+        pdb_lines : list
+            A list of lines containing the pdb file contents.
+
+        Returns
+        ---------
+        self
+
+        """
+        self.pdb_text = ''.join(pdb_lines)
+        self._df = self._construct_df(pdb_lines)
+        self.header, self.code = self._parse_header_code()
+        return self
+
     def fetch_pdb(self, pdb_code):
         """Fetches PDB file contents from the Protein Databank at rcsb.org.
 

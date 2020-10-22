@@ -111,6 +111,15 @@ def test_read_pdb():
     assert ppdb.code == '3eiy', ppdb.code
     assert ppdb.pdb_path == TESTDATA_FILENAME
 
+def test_read_pdb_from_list():
+    """Test public read_pdb_from_list"""
+
+    for pdb_text, code in zip([three_eiy, four_eiy], ['3eiy', '4eiy']):
+        ppdb = PandasPdb()
+        ppdb.read_pdb_from_list(pdb_text.splitlines(True))
+        assert ppdb.pdb_text == pdb_text
+        assert ppdb.code == code
+        assert ppdb.pdb_path == ''
 
 def test_anisou_input_handling():
     """Test public read_pdb"""
