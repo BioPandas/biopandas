@@ -13,7 +13,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+- A `PandasPdb.read_pdb_from_list` method was added analogous to the existing `PandasMol2.read_mol2_from_list` (via PR [72](https://github.com/rasbt/biopandas/pull/72/files) by [dominiquesydow](https://github.com/dominiquesydow))
 
 ##### Changes
 
