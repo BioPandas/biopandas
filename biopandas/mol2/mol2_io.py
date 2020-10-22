@@ -9,7 +9,8 @@ import gzip
 
 def split_multimol2(mol2_path):
     r"""
-    Splits a multi-mol2 file into individual Mol2 file contents.
+    Generator function that
+    splits a multi-mol2 file into individual Mol2 file contents.
 
     Parameters
     -----------
@@ -26,12 +27,16 @@ def split_multimol2(mol2_path):
         from a gzip (.gz) file.
 
     """
-    if mol2_path.endswith('.gz'):
+    if mol2_path.endswith('.mol2'):
+        open_file = open
+        read_mode = 'r'
+    elif mol2_path.endswith('mol2.gz'):
         open_file = gzip.open
         read_mode = 'rb'
     else:
-        open_file = open
-        read_mode = 'r'
+        raise ValueError('Wrong file format;'
+                         'allowed file formats are .mol2 and .mol2.gz.')
+
     check = {'rb': b'@<TRIPOS>MOLECULE', 'r': '@<TRIPOS>MOLECULE'}
 
     with open_file(mol2_path, read_mode) as f:
