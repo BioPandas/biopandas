@@ -3,6 +3,27 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
+
+### 0.3.0 (TBA)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.3.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz)
+
+##### New Features
+
+- -
+
+##### Changes
+
+- `ValueError` raising and improved file format error messages for `read_pdb` and `read_mol2` functionality. (via PR [73](https://github.com/rasbt/biopandas/pull/73/files) by [dominiquesydow](https://github.com/dominiquesydow))
+
+##### Bug Fixes
+
+- -
+
+
 ### 0.2.7 (08-04-2020)
 
 ##### Downloads

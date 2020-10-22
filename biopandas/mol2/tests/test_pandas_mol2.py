@@ -6,7 +6,6 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 import os
-import pytest
 from biopandas.mol2 import PandasMol2
 from biopandas.mol2.mol2_io import split_multimol2
 from biopandas.testutils import assert_raises
@@ -88,5 +87,12 @@ def test_overwrite_df():
 def test__get_atomsection_raises():
     """Test if ValueError is raised if input list is not in the mol2 format."""
 
-    with pytest.raises(ValueError):
+    expect = ("Structural data could not be loaded. "
+              "Is the input file/text in the mol2 format?")
+
+    def run_code():
         PandasMol2()._get_atomsection(["", ""])
+
+    assert_raises(ValueError,
+                  expect,
+                  run_code)
