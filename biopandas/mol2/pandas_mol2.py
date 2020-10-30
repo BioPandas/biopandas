@@ -169,8 +169,10 @@ class PandasMol2(object):
 
     @staticmethod
     def _get_atomsection(mol2_lst):
-        """Returns atom section from mol2 provided as list of strings"""
+        """Returns atom section from mol2 provided as list of strings.
+        Raises ValueError if data is not provided in the mol2 format."""
         started = False
+        first_idx = None
         for idx, s in enumerate(mol2_lst):
             if s.startswith('@<TRIPOS>ATOM'):
                 first_idx = idx + 1
@@ -178,6 +180,13 @@ class PandasMol2(object):
             elif started and s.startswith('@<TRIPOS>'):
                 last_idx_plus1 = idx
                 break
+        if first_idx is None:
+            # Raise error when file contains no @<TRIPOS>ATOM
+            # (i.e. file is no mol2 file)
+            raise ValueError(
+                    "Structural data could not be loaded. "
+                    "Is the input file/text in the mol2 format?"
+                )
         return mol2_lst[first_idx:last_idx_plus1]
 
     @staticmethod

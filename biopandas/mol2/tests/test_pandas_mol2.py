@@ -82,3 +82,17 @@ def test_overwrite_df():
     assert_raises(AttributeError,
                   expect,
                   overwrite)
+
+
+def test__get_atomsection_raises():
+    """Test if ValueError is raised if input list is not in the mol2 format."""
+
+    expect = ("Structural data could not be loaded. "
+              "Is the input file/text in the mol2 format?")
+
+    def run_code():
+        PandasMol2()._get_atomsection(["", ""])
+
+    assert_raises(ValueError,
+                  expect,
+                  run_code)

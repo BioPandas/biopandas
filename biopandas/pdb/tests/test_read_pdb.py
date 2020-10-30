@@ -10,6 +10,7 @@ import os
 import numpy as np
 import pandas as pd
 from nose.tools import raises
+from biopandas.testutils import assert_raises
 try:
     from urllib.request import urlopen
     from urllib.error import HTTPError, URLError
@@ -54,6 +55,28 @@ def test__read_pdb():
     path, txt = ppdb._read_pdb(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
+
+
+def test__read_pdb_raises():
+    """Test private _read_pdb:
+    Test if ValueError is raised for wrong file formats."""
+
+    expect = ('Wrong file format; allowed file formats'
+              ' are .pdb and .pdb.gz.')
+
+    def run_code_1():
+        PandasPdb()._read_pdb("protein.mol2")
+
+    assert_raises(ValueError,
+                  expect,
+                  run_code_1)
+
+    def run_code_2():
+        PandasPdb()._read_pdb("protein.mol2.gz")
+
+    assert_raises(ValueError,
+                  expect,
+                  run_code_2)
 
 
 def test_fetch_pdb():
