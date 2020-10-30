@@ -377,6 +377,12 @@ class PandasPdb(object):
                     df[c['id']] = pd.Series(np.nan, index=df.index)
 
             dfs[r[0]] = df
+
+        # issue a warning if no atoms have been loaded 
+        if len(dfs['ATOM']) == 0:
+            warnings.warn('No ATOM entries have been loaded. '
+                          'Is the input file/text in the pdb format?')
+
         return dfs
 
     def amino3to1(self, record='ATOM',
