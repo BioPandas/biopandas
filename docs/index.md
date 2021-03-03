@@ -7,10 +7,9 @@
 [![Continuous Integration](https://travis-ci.org/rasbt/biopandas.svg?branch=master)](https://travis-ci.org/rasbt/biopandas)
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
-![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
-![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
+![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00279/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00279)
-[![Discuss](https://img.shields.io/badge/discuss-google_group-blue.svg)](https://groups.google.com/forum/#!forum/biopandas-users)
+[![Discuss](https://github.com/rasbt/biopandas/discussions)
 
 <br>
 

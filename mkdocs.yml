@@ -28,7 +28,6 @@ copyright: Copyright &copy; 2015-2021 <a href="http://sebastianraschka.com">Seba
 google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 
 nav:
-    - Home: index.md
     - Tutorials:
           - Working with PDB Structures in DataFrames: tutorials/Working_with_PDB_Structures_in_DataFrames.md
           - Working with MOL2 Structures in DataFrames: tutorials/Working_with_MOL2_Structures_in_DataFrames.md
@@ -36,6 +35,7 @@ nav:
           - biopandas.pdb: api_subpackages/biopandas.pdb.md
           - biopandas.mol2: api_subpackages/biopandas.mol2.md
     - Changelog: CHANGELOG.md
-    - Installation: installation.md
-    - Contributing: CONTRIBUTING.md
-    - Citing: citing.md
+    - Install: installation.md
+    - Discuss: https://github.com/rasbt/biopandas/discussions
+    - Contribute: CONTRIBUTING.md
+    - Cite: citing.md
