@@ -37,12 +37,15 @@ def docstring_to_markdown(docstring):
     """
     new_docstring_lst = []
 
+    encountered_examples = False
     for idx, line in enumerate(docstring.split('\n')):
         line = line.strip()
         if set(line) in ({'-'}, {'='}):
             new_docstring_lst[idx-1] = '**%s**' % new_docstring_lst[idx-1]
         elif line.startswith('>>>'):
-            line = '    %s' % line
+            if not encountered_examples:
+                new_docstring_lst.append('```')
+                encountered_examples = True
         new_docstring_lst.append(line)
 
     for idx, line in enumerate(new_docstring_lst[1:]):
@@ -62,6 +65,9 @@ def docstring_to_markdown(docstring):
     for line in new_docstring_lst:
         if set(line.strip()) not in ({'-'}, {'='}):
             clean_lst.append(line)
+
+    if encountered_examples:
+        clean_lst.append('```')
     return clean_lst
 
 
