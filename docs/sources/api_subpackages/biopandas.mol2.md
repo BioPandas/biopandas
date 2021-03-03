@@ -1,4 +1,4 @@
-biopandas version: 0.2.7
+biopandas version: 0.3.0
 ## PandasMol2
 
 *PandasMol2()*
@@ -193,7 +193,8 @@ Acccesses the pandas DataFrame
 
 *split_multimol2(mol2_path)*
 
-Splits a multi-mol2 file into individual Mol2 file contents.
+Generator function that
+    splits a multi-mol2 file into individual Mol2 file contents.
 
 **Parameters**
 
