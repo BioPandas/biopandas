@@ -52,7 +52,7 @@ print('\nRaw MOL2 file contents:\n\n%s\n...' % pmol.mol2_text[:500])
     ...
 
 
-The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api_subpackages/biopandas.mol2#pandasmol2df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
+The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api/biopandas.mol2#pandasmol2df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
 
 ```python
@@ -689,7 +689,9 @@ plt.show()
 ```
 
 
+    
 ![png](Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_34_0.png)
+    
 
 
 If this is too fine-grained for our needs, we could summarize the different atom types by atomic elements:
@@ -705,7 +707,9 @@ plt.show()
 ```
 
 
+    
 ![png](Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_36_0.png)
+    
 
 
 One of the coolest features in pandas is the groupby method. Below is an example plotting the average charge of the different atom types with the standard deviation as error bars:
@@ -719,7 +723,9 @@ plt.show()
 ```
 
 
+    
 ![png](Working_with_MOL2_Structures_in_DataFrames_files/Working_with_MOL2_Structures_in_DataFrames_38_0.png)
+    
 
 
 ## Computing the Root Mean Square Deviation
@@ -1178,21 +1184,6 @@ from mputil import lazy_imap
 from biopandas.mol2 import PandasMol2
 from biopandas.mol2 import split_multimol2
 ```
-
-
-    ---------------------------------------------------------------------------
-
-    ModuleNotFoundError                       Traceback (most recent call last)
-
-    <ipython-input-23-1a655249f2ec> in <module>()
-          1 import pandas as pd
-    ----> 2 from mputil import lazy_imap
-          3 from biopandas.mol2 import PandasMol2
-          4 from biopandas.mol2 import split_multimol2
-
-
-    ModuleNotFoundError: No module named 'mputil'
-
 
 
 ```python
