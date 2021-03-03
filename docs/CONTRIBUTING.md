@@ -48,7 +48,7 @@ and checking off items as you go.
 ## Syncing an Existing Fork
 
 If you already forked biopandas earlier, you can bring you "Fork" up to date
-with the master branch as follows:
+with the main branch as follows:
 
 #### 1. Configuring a remote that points to the upstream repository on GitHub
 
@@ -87,7 +87,7 @@ upstream	https://github.com/rasbt/biopandas.git (push)
 
 #### 2. Syncing your Fork
 
-First, fetch the updates of the original project's master branch by executing:
+First, fetch the updates of the original project's `main` branch by executing:
 
 ```bash
 $ git fetch upstream
@@ -101,23 +101,23 @@ remote: Compressing objects: 100% (xx/xx), done.
 remote: Total xx (delta xx), reused xx (delta x)
 Unpacking objects: 100% (xx/xx), done.
 From https://github.com/rasbt/biopandas
- * [new branch]      master     -> upstream/master
+ * [new branch]      main         -> upstream/main
 ```
 
-This means that the commits to the `rasbt/biopandas` master branch are now
-stored in the local branch `upstream/master`.
+This means that the commits to the `rasbt/biopandas` `main` branch are now
+stored in the local branch `upstream/main`.
 
-If you are not already on your local project's master branch, execute
+If you are not already on your local project's main branch, execute
 
 ```bash
-$ git checkout master
+$ git checkout main
 ```
 
-Finally, merge the changes in upstream/master to your local master branch by
+Finally, merge the changes in upstream/main to your local main branch by
 executing
 
 ```bash
-$ git merge upstream/master
+$ git merge upstream/main
 ```
 
 which will give you an output that looks similar to
@@ -135,7 +135,7 @@ SOME FILE2                    |    10 +++++++
 
 #### 1. Creating a new feature branch
 
-Please avoid working directly on the master branch but create a new feature branch:
+Please avoid working directly on the main branch but create a new feature branch:
 
 ```bash
 $ git branch <new_feature>
@@ -258,8 +258,18 @@ The documentation is built via [MkDocs](http://www.mkdocs.org); to ensure that t
 For example,
 
 ```bash
-~/github/biopandas/docs$ mkdocs serve
+~/github/biopandas$ mkdocs serve
 ```
+
+To install and set up mkdocs for the first time, please follow the following steps:
+
+
+1. `~$ conda install mkdocs --channel conda-forge`
+2. `~$ cd ~/github/biopandas/docs`
+3. `~/github/biopandas$ python mdx_math_setup.py install`
+4. `~/github/biopandas$ conda install mkdocs-bootstrap --channel conda-forge`
+
+
 
 #### 1.  Editing the Tutorials
 
