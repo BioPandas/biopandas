@@ -1,7 +1,7 @@
 # Release Notes ![](img/logos/3eiy_120.png)
 
 The CHANGELOG for the current development version is available at
-[https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
+[https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
 ### 0.2.8 (03-30-2021)
