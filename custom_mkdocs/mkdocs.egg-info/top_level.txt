@@ -1,0 +1,9 @@
+mkdocs
+mkdocs/commands
+mkdocs/config
+mkdocs/contrib
+mkdocs/contrib/search
+mkdocs/structure
+mkdocs/themes
+mkdocs/themes/mkdocs
+mkdocs/utils
