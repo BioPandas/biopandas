@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
 ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00279/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00279)
-[![Discuss](https://github.com/rasbt/biopandas/discussions)
+[![Discuss](https://img.shields.io/badge/discuss-github-blue.svg)](https://github.com/rasbt/biopandas/discussions)
 
 <br>
 
