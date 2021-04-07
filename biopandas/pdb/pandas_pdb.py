@@ -263,14 +263,16 @@ class PandasPdb(object):
     def _read_pdb(path):
         """Read PDB file from local drive."""
         r_mode = 'r'
-        if path.endswith('.pdb'):
+        if path.endswith(('.pdb', '.ent')):
             openf = open
-        elif path.endswith('pdb.gz'):
+        elif path.endswith(('pdb.gz', '.ent.gz')):
             r_mode = 'rb'
             openf = gzip.open
         else:
+            allowed_formats = ", ".join(('.pdb', '.pdb.gz', '.ent', '.ent.gz'))
             raise ValueError(
-                'Wrong file format; allowed file formats are .pdb and .pdb.gz.'
+                ('Wrong file format; allowed file formats are %s'
+                  % allowed_formats)
             )
 
         with openf(path, r_mode) as f:
