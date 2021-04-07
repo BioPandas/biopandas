@@ -61,8 +61,8 @@ def test__read_pdb_raises():
     """Test private _read_pdb:
     Test if ValueError is raised for wrong file formats."""
 
-    expect = ('Wrong file format; allowed file formats'
-              ' are .pdb and .pdb.gz.')
+    expect = ('Wrong file format; allowed file formats are '
+              '.pdb, .pdb.gz, .ent, .ent.gz')
 
     def run_code_1():
         PandasPdb()._read_pdb("protein.mol2")

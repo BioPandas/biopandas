@@ -4,6 +4,25 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/master/docs/sources/CHANGELOG.md).
 
 
+### 0.2.9 (TBD)
+
+##### Downloads
+
+- -
+- -
+
+##### New Features
+
+- -
+
+##### Changes
+
+- Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR [82](https://github.com/rasbt/biopandas/pull/82/files)
+
+##### Bug Fixes
+
+- -
+
 ### 0.2.8 (03-30-2021)
 
 ##### Downloads
