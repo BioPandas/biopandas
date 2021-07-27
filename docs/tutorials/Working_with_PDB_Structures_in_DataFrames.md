@@ -838,7 +838,7 @@ ppdb.df.keys()
 [File link: [3eiy.pdb](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/3eiy.pdb)]
 
 - 'ATOM': contains the entries from the ATOM coordinate section
-- 'ATOM':  ... entries from the "HETATM" coordinate section    
+- 'HETATM':  ... entries from the "HETATM" coordinate section    
 - 'ANISOU': ... entries from the "ANISOU" coordinate section 
 - 'OTHERS': Everything else that is *not* a 'ATOM', 'HETATM', or 'ANISOU' entry
 
