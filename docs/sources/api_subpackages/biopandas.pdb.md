@@ -1,5 +1,4 @@
-biopandas version: 0.2.8
-
+biopandas version: 0.2.9
 ## PandasPdb
 
 *PandasPdb()*
