@@ -4,7 +4,7 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
-### 0.2.9 (TBD)
+### 0.2.9
 
 ##### Downloads
 
@@ -18,6 +18,7 @@ The CHANGELOG for the current development version is available at
 ##### Changes
 
 - Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR [82](https://github.com/rasbt/biopandas/pull/82/files)
+- Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR [87](https://github.com/rasbt/biopandas/pull/87/files)
 
 ##### Bug Fixes
 
