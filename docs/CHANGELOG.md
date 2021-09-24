@@ -3,6 +3,24 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
+### 0.3.0dev0 (TBD)
+
+##### Downloads
+
+- 
+
+##### New Features
+
+- -
+
+##### Changes
+
+- 
+
+##### Bug Fixes
+
+- Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via PR [90](https://github.com/rasbt/biopandas/pull/90/files)
+
 
 ### 0.2.9 (08-30-2021)
 
