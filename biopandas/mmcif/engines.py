@@ -1,0 +1,25 @@
+from typing import Any, Dict
+
+mmcif_col_types: Dict[str, Any] = {
+    "B_iso_or_equiv": float,
+    "Cartn_x": float,
+    "Cartn_y": float,
+    "Cartn_z": float,
+    "auth_asym_id": str,
+    "auth_atom_id": str,
+    "auth_comp_id": str,
+    "auth_seq_id": int,
+    "group_PDB": str,
+    "id": int,
+    "label_alt_id": int,
+    "label_asym_id": str,
+    "label_atom_id": str,
+    "label_comp_id": str,
+    "label_entity_id": int,
+    "label_seq_id": int,
+    "occupancy": float,
+    "pdbx_PDB_ins_code": str,
+    "pdbx_PDB_model_num": int,
+    "pdbx_formal_charge": int,
+    "type_symbol": str,
+}

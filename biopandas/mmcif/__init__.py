@@ -5,7 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 """
-BioPandas module for working with TRIPOS MOL2
+BioPandas module for working with mmCIF
 files in pandas DataFrames.
 """
 
