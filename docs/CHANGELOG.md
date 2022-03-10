@@ -20,7 +20,7 @@ The CHANGELOG for the current development version is available at
 ##### Bug Fixes
 
 - Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via PR [90](https://github.com/rasbt/biopandas/pull/90/files)
-
+- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case
 
 ### 0.2.9 (08-30-2021)
 
