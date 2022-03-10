@@ -234,9 +234,9 @@ class PandasMMCIF:
     def _get_carbon(df, invert):
         """Return carbon atom entries from a DataFrame"""
         if invert:
-            return df[df["type_symbol"] == "C"]
-        else:
             return df[df["type_symbol"] != "C"]
+        else:
+            return df[df["type_symbol"] == "C"]
 
     def amino3to1(
         self,
