@@ -192,4 +192,4 @@ def test_get_df():
     assert shape == (1330, 21), shape
 
     shape = ppdb.get('carbon', records=('ATOM',)).shape
-    assert shape == (473, 21), shape
+    assert shape == (857, 21), shape
