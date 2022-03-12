@@ -3,7 +3,7 @@ import re
 
 try:
     import json
-except:
+except ImportError:
     import simplejson as json
 
 try:
@@ -164,7 +164,7 @@ class CIFparser:
                 self.setDataValue(c)
 
     def setDataName(self, name):
-        if self.loopPointer != None:
+        if self.loopPointer is not None:
             if self.loopPointer.namesDefined:
                 self.loopPointer = None
             else:
@@ -212,9 +212,6 @@ class CIFparser:
 
     def endFrame(self):
         self.currentTarget = self.currentTarget[:3]
-
-
-####################################################################################################################################################
 
 
 class __CIFfloat__(float):
@@ -300,9 +297,9 @@ def __dumpStr__(inp):
     else:
         if type(inp) != str and type(inp) != unicode:
             return str(inp)
-        if re.search(__cifStrNLCheck__, inp) != None:
+        if re.search(__cifStrNLCheck__, inp) is not None:
             return "\n;%s\n;" % inp
-        if re.search(__cifStrCheck__, inp) != None:
+        if re.search(__cifStrCheck__, inp) is not None:
             return "'%s'" % inp
         else:
             return inp
@@ -397,7 +394,7 @@ def __loadCIFData__(data, doClean=True, doType=True):
                     for r in range(len(data[k][k2])):
                         try:
                             data[k][k2][r] = v2(data[k][k2][r])
-                        except:
+                        except KeyError:
                             pass
 
     return parser.data
@@ -417,7 +414,7 @@ def __loadCIF__(cifFile, doClean=True, doType=True):
         for k2, v2 in v.items():
             for k3, v3 in v2.items():
                 for i in range(len(v3)):
-                    v2[k3][i] = v3[i] not in ["?", "."] and v3[i] or None
+                    v2[k3][i] = v3[i] not in ["?", "."] and v3[i]  # or None
 
     if not doType or not __mmcifTyping__:
         return parser.data
@@ -431,7 +428,7 @@ def __loadCIF__(cifFile, doClean=True, doType=True):
                     for r in range(len(data[k][k2])):
                         try:
                             data[k][k2][r] = v2(data[k][k2][r])
-                        except:
+                        except KeyError:
                             pass
 
     return parser.data
