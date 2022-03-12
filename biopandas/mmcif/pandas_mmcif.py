@@ -27,7 +27,7 @@ import warnings
 from distutils.version import LooseVersion
 
 from ..pdb.engines import amino3to1dict
-from .engines import mmcif_col_types
+from .engines import ANISOU_DF_COLUMNS, mmcif_col_types
 from .mmcif_parser import __loadCIFData__
 
 pd_version = LooseVersion(pd.__version__)
@@ -41,6 +41,7 @@ class PandasMMCIF:
         self.code = ""
         self.mmcif_path = ""
         self.auth = use_auth
+        self._get_dict = {}
 
     @property
     def df(self):
@@ -72,6 +73,7 @@ class PandasMMCIF:
         self.mmcif_path, self.pdb_text = self._read_mmcif(path=path)
         self._df = self._construct_df(text=self.pdb_text)
         # self.header, self.code = self._parse_header_code() #TODO: implement
+        self.code = self.data["entry"]["id"][0].lower()
         return self
 
     def fetch_mmcif(self, pdb_code: str):
@@ -96,10 +98,14 @@ class PandasMMCIF:
         data = data[list(data.keys())[0]]
         self.data = data
         df: Dict[str, pd.DataFrame] = {}
-        full_df = pd.DataFrame.from_records(data["atom_site"])
+        full_df = pd.DataFrame.from_dict(data["atom_site"], orient="index").transpose()
         full_df = full_df.astype(mmcif_col_types, errors="ignore")
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])
+        try:
+            df["ANISOU"] = pd.DataFrame(data["atom_site_anisotrop"])
+        except KeyError:
+            df["ANISOU"] = pd.DataFrame(columns=ANISOU_DF_COLUMNS)
         return df
 
     @staticmethod
@@ -412,3 +418,22 @@ class PandasMMCIF:
             "carbon": PandasMMCIF._get_carbon,
             "heavy": PandasMMCIF._get_heavy,
         }
+
+    def read_mmcif_from_list(self, mmcif_lines):
+        """Reads mmCIF file from a list into DataFrames
+
+        Attributes
+        ----------
+        pdb_lines : list
+            A list of lines containing the mmCIF file contents.
+
+        Returns
+        ---------
+        self
+
+        """
+        self.pdb_text = "".join(mmcif_lines)
+        self._df = self._construct_df(mmcif_lines)
+        # self.header, self.code = self._parse_header_code()
+        self.code = self.data["entry"]["id"][0].lower()
+        return self
