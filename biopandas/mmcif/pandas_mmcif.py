@@ -1,14 +1,10 @@
 """Class for working with MMCIF files."""
-
 # BioPandas
-# Author: Arian Jamasb <arian@jamasb.io>, Sebastian Raschka <mail@sebastianraschka.com>
+# Authors: Arian Jamasb <arian@jamasb.io>,
+# Authors: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
-# The CIF parser relieves heavily on the parser from PDBJapan (author: Gert-Jan Bekker).
-# Python CIF parser: https://gitlab.com/pdbjapan/tools/cif-parsers
-# License: MIT
-#   See https://gitlab.com/pdbjapan/tools/cif-parsers/blob/master/LICENSE
 
 import gzip
 import sys
@@ -98,7 +94,9 @@ class PandasMMCIF:
         data = data[list(data.keys())[0]]
         self.data = data
         df: Dict[str, pd.DataFrame] = {}
-        full_df = pd.DataFrame.from_dict(data["atom_site"], orient="index").transpose()
+        full_df = pd.DataFrame.from_dict(
+            data["atom_site"], orient="index"
+        ).transpose()
         full_df = full_df.astype(mmcif_col_types, errors="ignore")
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])
@@ -117,7 +115,8 @@ class PandasMMCIF:
             response = urlopen(url)
             txt = response.read()
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+                txt.decode("utf-8") if sys.version_info[0] >= 3
+                else txt.encode("ascii")
             )
         except HTTPError as e:
             print("HTTP Error %s" % e.code)
@@ -135,9 +134,11 @@ class PandasMMCIF:
             r_mode = "rb"
             openf = gzip.open
         else:
-            allowed_formats = ", ".join((".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
+            allowed_formats = ", ".join(
+                (".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
             raise ValueError(
-                ("Wrong file format; allowed file formats are %s" % allowed_formats)
+                ("Wrong file format; allowed file formats are %s" %
+                    allowed_formats)
             )
 
         with openf(path, r_mode) as f:
@@ -145,7 +146,8 @@ class PandasMMCIF:
 
         if path.endswith(".gz"):
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+                txt.decode("utf-8") if sys.version_info[0] >= 3
+                else txt.encode("ascii")
             )
         return path, txt
 
@@ -197,7 +199,11 @@ class PandasMMCIF:
         return self._get_dict[s](df, invert=invert)
 
     @staticmethod
-    def _get_mainchain(df, invert: bool = False, atom_col: str = "auth_atom_id"):
+    def _get_mainchain(
+        df: pd.DataFrame,
+        invert: bool = False,
+        atom_col: str = "auth_atom_id"
+    ) -> pd.DataFrame:
         """Return only main chain atom entries from a DataFrame"""
         return (
             df[
@@ -293,7 +299,9 @@ class PandasMMCIF:
                 indices.append(ind)
             cmp = num
 
-        transl = tmp.iloc[indices][residue_col].map(amino3to1dict).fillna(fillna)
+        transl = tmp.iloc[indices][residue_col].map(
+            amino3to1dict
+        ).fillna(fillna)
 
         return pd.concat((tmp.iloc[indices][chain_col], transl), axis=1)
 
@@ -331,7 +339,9 @@ class PandasMMCIF:
         get_dict = PandasMMCIF._init_get_dict()
         if s:
             if s not in get_dict.keys():
-                raise AttributeError("s must be in " "%s or None" % get_dict.keys())
+                raise AttributeError(
+                    "s must be in " "%s or None" % get_dict.keys()
+                )
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
@@ -378,7 +388,9 @@ class PandasMMCIF:
 
         return np.sqrt(
             np.sum(
-                df[["Cartn_x", "Cartn_y", "Cartn_z"]].subtract(xyz, axis=1) ** 2, axis=1
+                df[
+                    ["Cartn_x", "Cartn_y", "Cartn_z"]
+                ].subtract(xyz, axis=1) ** 2, axis=1
             )
         )
 
@@ -404,7 +416,9 @@ class PandasMMCIF:
         """
         return np.sqrt(
             np.sum(
-                df[["Cartn_x", "Cartn_y", "Cartn_z"]].subtract(xyz, axis=1) ** 2, axis=1
+                df[
+                    ["Cartn_x", "Cartn_y", "Cartn_z"]
+                ].subtract(xyz, axis=1) ** 2, axis=1
             )
         )
 

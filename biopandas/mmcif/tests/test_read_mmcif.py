@@ -26,8 +26,10 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # TESTDATA_FILENAME2 = os.path.join(
 #    os.path.dirname(__file__), "data", "4eiy_anisouchunk.cif"
 # )
-TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
+TESTDATA_FILENAME2 = os.path.join(
+    os.path.dirname(__file__), "data", "4eiy.cif")
+TESTDATA_FILENAME_GZ = os.path.join(
+    os.path.dirname(__file__), "data", "3eiy.cif.gz")
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",

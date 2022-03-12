@@ -1,3 +1,7 @@
+# The CIF parser relieves heavily on the parser from PDBJapan (author: Gert-Jan Bekker).
+# Python CIF parser: https://gitlab.com/pdbjapan/tools/cif-parsers
+# License: MIT
+#   See https://gitlab.com/pdbjapan/tools/cif-parsers/blob/master/LICENSE
 import gzip
 import re
 
@@ -11,6 +15,7 @@ try:
 
     def partitionString(string, sep):
         return string.partition(sep)
+
 
 except:
 
@@ -30,7 +35,8 @@ class _loop:
         self.namesDefined = False
 
     def addName(self, name):
-        catName = type(name) == str and partitionString(name, ".") or ["", "", ""]
+        catName = type(name) == str and partitionString(
+            name, ".") or ["", "", ""]
         if catName[1]:
             if not catName[0] in self.parserObj.currentTarget[-2]:
                 self.parserObj.currentTarget[-2][catName[0]] = {}
@@ -227,7 +233,7 @@ class __CIFint__(int):
 def __CIFfloatRange__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFfloat__(inp[:pos]), __CIFfloat__(inp[pos + 1 :]))
+        return (__CIFfloat__(inp[:pos]), __CIFfloat__(inp[pos + 1:]))
     except:
         return (__CIFfloat__(inp),)
 
@@ -235,7 +241,7 @@ def __CIFfloatRange__(inp):
 def __CIFintRange__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFint__(inp[:pos]), __CIFint__(inp[pos + 1 :]))
+        return (__CIFint__(inp[:pos]), __CIFint__(inp[pos + 1:]))
     except:
         return (__CIFint__(inp),)
 
@@ -319,7 +325,8 @@ def __dumpCat__(k, v):
                 pad = len(k2)
         pad += 3
         for k2 in v.keys():
-            output += "_%s.%s%s\n" % (k, __padString__(k2, pad), __dumpStr__(v[k2][0]))
+            output += "_%s.%s%s\n" % (k, __padString__(k2,
+                                                       pad), __dumpStr__(v[k2][0]))
     else:
         output += "loop_\n"
         pad = []

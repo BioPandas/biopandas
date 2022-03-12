@@ -1,5 +1,6 @@
 # BioPandas
-# Author: Sebastian Raschka <mail@sebastianraschka.com>, Arian Jamasb <arian@jamasb.io>
+# Authors: Sebastian Raschka <mail@sebastianraschka.com>
+# Authors: Arian Jamasb <arian@jamasb.io>
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
