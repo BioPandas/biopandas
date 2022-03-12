@@ -358,11 +358,11 @@ class PandasPdb(object):
 
     @staticmethod
     def _get_carbon(df, invert):
-        """Return c-alpha atom entries from a DataFrame"""
+        """Return carbon atom entries from a DataFrame"""
         if invert:
-            return df[df['element_symbol'] == 'C']
-        else:
             return df[df['element_symbol'] != 'C']
+        else:
+            return df[df['element_symbol'] == 'C']
 
     @staticmethod
     def _construct_df(pdb_lines):
