@@ -23,3 +23,24 @@ mmcif_col_types: Dict[str, Any] = {
     "pdbx_formal_charge": int,
     "type_symbol": str,
 }
+
+ANISOU_DF_COLUMNS = [
+    "id",
+    "type_symbol",
+    "pdbx_label_atom_id",
+    "pdbx_label_alt_id",
+    "pdbx_label_comp_id",
+    "pdbx_label_asym_id",
+    "pdbx_label_seq_id",
+    "pdbx_PDB_ins_code",
+    "U[1][1]",
+    "U[2][2]",
+    "U[3][3]",
+    "U[1][2]",
+    "U[1][3]",
+    "U[2][3]",
+    "pdbx_auth_seq_id",
+    "pdbx_auth_comp_id",
+    "pdbx_auth_asym_id",
+    "pdbx_auth_atom_id",
+]
