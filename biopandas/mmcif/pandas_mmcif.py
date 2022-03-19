@@ -24,7 +24,7 @@ from distutils.version import LooseVersion
 
 from ..pdb.engines import amino3to1dict
 from .engines import ANISOU_DF_COLUMNS, mmcif_col_types
-from .mmcif_parser import __loadCIFData__
+from .mmcif_parser import load_cif_data
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -90,7 +90,7 @@ class PandasMMCIF:
         return self
 
     def _construct_df(self, text: str):
-        data = __loadCIFData__(text)
+        data = load_cif_data(text)
         data = data[list(data.keys())[0]]
         self.data = data
         df: Dict[str, pd.DataFrame] = {}
@@ -110,7 +110,7 @@ class PandasMMCIF:
     def _fetch_mmcif(pdb_code):
         """Load MMCIF file from rcsb.org."""
         txt = None
-        url = "https://files.rcsb.org/download/%s.cif" % pdb_code.lower()
+        url = f"https://files.rcsb.org/download/{pdb_code.lower()}.cif"
         try:
             response = urlopen(url)
             txt = response.read()
@@ -119,9 +119,9 @@ class PandasMMCIF:
                 else txt.encode("ascii")
             )
         except HTTPError as e:
-            print("HTTP Error %s" % e.code)
+            print(f"HTTP Error {e.code}")
         except URLError as e:
-            print("URL Error %s" % e.args)
+            print(f"URL Error {e.args}")
         return url, txt
 
     @staticmethod
@@ -137,8 +137,7 @@ class PandasMMCIF:
             allowed_formats = ", ".join(
                 (".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
             raise ValueError(
-                ("Wrong file format; allowed file formats are %s" %
-                    allowed_formats)
+                f"Wrong file format; allowed file formats are {allowed_formats}"
             )
 
         with openf(path, r_mode) as f:
@@ -193,7 +192,7 @@ class PandasMMCIF:
         if not self._get_dict:
             self._get_dict = self._init_get_dict()
         if s not in self._get_dict.keys():
-            raise AttributeError("s must be in %s" % self._get_dict.keys())
+            raise AttributeError(f"s must be in {self._get_dict.keys()}")
         if not df:
             df = pd.concat(objs=[self.df[i] for i in records])
         return self._get_dict[s](df, invert=invert)
@@ -224,18 +223,16 @@ class PandasMMCIF:
     @staticmethod
     def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
-        if invert:
-            return df[(df["type_symbol"] != "H")]
-        else:
-            return df[(df["type_symbol"] == "H")]
+        return (
+            df[(df["type_symbol"] != "H")]
+            if invert
+            else df[(df["type_symbol"] == "H")]
+        )
 
     @staticmethod
     def _get_heavy(df, invert):
         """Return only heavy atom entries from a DataFrame"""
-        if invert:
-            return df[df["type_symbol"] == "H"]
-        else:
-            return df[df["type_symbol"] != "H"]
+        return df[df["type_symbol"] == "H"] if invert else df[df["type_symbol"] != "H"]
 
     @staticmethod
     def _get_calpha(df, invert, atom_col: str = "auth_atom_id"):
@@ -245,10 +242,7 @@ class PandasMMCIF:
     @staticmethod
     def _get_carbon(df, invert):
         """Return carbon atom entries from a DataFrame"""
-        if invert:
-            return df[df["type_symbol"] != "C"]
-        else:
-            return df[df["type_symbol"] == "C"]
+        return df[df["type_symbol"] != "C"] if invert else df[df["type_symbol"] == "C"]
 
     def amino3to1(
         self,
@@ -339,9 +333,7 @@ class PandasMMCIF:
         get_dict = PandasMMCIF._init_get_dict()
         if s:
             if s not in get_dict.keys():
-                raise AttributeError(
-                    "s must be in " "%s or None" % get_dict.keys()
-                )
+                raise AttributeError(f"s must be in {get_dict.keys()} or None")
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
