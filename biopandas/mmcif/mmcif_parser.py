@@ -18,28 +18,23 @@ class LoopMMCIF:
         self.parser_obj = parser_obj
         self.length = 0
         self.ref_id = -1
-
         self.ref_list = []
-
         self.names_defined = False
 
     def add_name(self, name):
-        cat_name = type(name) == str and partition_string(
-            name, ".") or ["", "", ""]
+        cat_name = type(name) == str and partition_string(name, ".") or ["", "", ""]
         if cat_name[1]:
             if cat_name[0] not in self.parser_obj.current_target[-2]:
                 self.parser_obj.current_target[-2][cat_name[0]] = {}
             if cat_name[2] not in self.parser_obj.current_target[-2][cat_name[0]]:
-                self.parser_obj.current_target[-2][cat_name[0]
-                                                   ][cat_name[2]] = []
+                self.parser_obj.current_target[-2][cat_name[0]][cat_name[2]] = []
             self.ref_list.append(
                 self.parser_obj.current_target[-2][cat_name[0]][cat_name[2]]
             )
         else:
             if cat_name[0] not in self.parser_obj.current_target[-2]:
                 self.parser_obj.current_target[-2][cat_name[0]] = []
-            self.ref_list.append(
-                self.parser_obj.current_target[-2][cat_name[0]])
+            self.ref_list.append(self.parser_obj.current_target[-2][cat_name[0]])
         self.length = len(self.ref_list)
 
     def push_value(self, value):
@@ -223,7 +218,7 @@ class __CIFInt__(int):
 def __cif_float_range__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFFloat__(inp[:pos]), __CIFFloat__(inp[pos + 1:]))
+        return (__CIFFloat__(inp[:pos]), __CIFFloat__(inp[pos + 1 :]))
     except:
         return (__CIFFloat__(inp),)
 
@@ -231,7 +226,7 @@ def __cif_float_range__(inp):
 def __cif_int_range__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFInt__(inp[:pos]), __CIFInt__(inp[pos + 1:]))
+        return (__CIFInt__(inp[:pos]), __CIFInt__(inp[pos + 1 :]))
     except:
         return (__CIFInt__(inp),)
 
@@ -311,8 +306,7 @@ def __dump_cat__(k, v):
                 pad = len(k2)
         pad += 3
         for k2 in v.keys():
-            output += "_%s.%s%s\n" % (k, __pad_string__(k2,
-                                                        pad), __dump_str__(v[k2][0]))
+            output += "_%s.%s%s\n" % (k, __pad_string__(k2, pad), __dump_str__(v[k2][0]))
     else:
         output += "loop_\n"
         pad = []

@@ -7,12 +7,12 @@
 import os
 
 import numpy as np
-from biopandas.mmcif import PandasMMCIF
+from biopandas.mmcif import PandasMmcif
 
 
 def test_defaults():
     TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
-    p1t48 = PandasMMCIF()
+    p1t48 = PandasMmcif()
     p1t48.read_mmcif(TESTDATA_1t48)
     expect_res = [
         "M",
@@ -310,7 +310,7 @@ def test_defaults():
 
 def test_sameindex():
     TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
-    p1t48 = PandasMMCIF()
+    p1t48 = PandasMmcif()
     p1t48.read_mmcif(TESTDATA_1t48)
     p1t48.df["ATOM"].index = np.zeros(p1t48.df["ATOM"].shape[0], dtype=int)
 
@@ -611,7 +611,7 @@ def test_multichain():
     TESTDATA_5mtn = os.path.join(
         os.path.dirname(__file__), "data", "5mtn_multichain.cif"
     )
-    mtn = PandasMMCIF()
+    mtn = PandasMmcif()
     mtn.read_mmcif(TESTDATA_5mtn)
     expect_res_a = [
         "S",
@@ -805,10 +805,8 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["auth_asym_id"].values)
 
-    got_res_a = list(
-        transl.loc[transl["auth_asym_id"] == "A", "auth_comp_id"].values)
-    got_res_b = list(
-        transl.loc[transl["auth_asym_id"] == "B", "auth_comp_id"].values)
+    got_res_a = list(transl.loc[transl["auth_asym_id"] == "A", "auth_comp_id"].values)
+    got_res_b = list(transl.loc[transl["auth_asym_id"] == "B", "auth_comp_id"].values)
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a
@@ -818,6 +816,6 @@ def test_multichain():
 def test_pdb_with_insertion_codes():
     PDB_2D7T_PATH = os.path.join(os.path.dirname(__file__), "data", "2d7t.cif")
 
-    ppdb = PandasMMCIF().read_mmcif(PDB_2D7T_PATH)
+    ppdb = PandasMmcif().read_mmcif(PDB_2D7T_PATH)
     sequence = ppdb.amino3to1()
     assert "".join(sequence[50:60]["auth_comp_id"].values) == "INPKSGDTNY"

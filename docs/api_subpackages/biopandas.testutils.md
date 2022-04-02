@@ -1,4 +1,4 @@
-biopandas version: 0.2.5
+biopandas version: 0.3.0dev0
 ## assert_raises
 
 *assert_raises(exception_type, message, func, *args, **kwargs)*

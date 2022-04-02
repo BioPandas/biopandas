@@ -10,6 +10,6 @@ BioPandas module for working with mmCIF
 files in pandas DataFrames.
 """
 
-from .pandas_mmcif import PandasMMCIF
+from .pandas_mmcif import PandasMmcif
 
-__all__ = ["PandasMMCIF"]
+__all__ = ["PandasMmcif"]

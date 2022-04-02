@@ -17,7 +17,7 @@ try:
     from urllib.error import HTTPError, URLError
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
+    raise ValueError("Python 2.7 is no longer supported")
 
 import warnings
 from distutils.version import LooseVersion
@@ -29,7 +29,7 @@ from .mmcif_parser import load_cif_data
 pd_version = LooseVersion(pd.__version__)
 
 
-class PandasMMCIF:
+class PandasMmcif:
     def __init__(self, use_auth: bool = True):
         self._df = None
         self.mmcif_text = ""
@@ -48,8 +48,8 @@ class PandasMMCIF:
     def df(self, value):
         """Assign a new value to the pandas DataFrame"""
         raise AttributeError(
-            "Please use `PandasMMCIF._df = ... ` instead\n"
-            "of `PandasMMCIF.df = ... ` if you are sure that\n"
+            "Please use `PandasMmcif._df = ... ` instead\n"
+            "of `PandasMmcif.df = ... ` if you are sure that\n"
             "you want to overwrite the `df` attribute."
         )
 
@@ -73,7 +73,7 @@ class PandasMMCIF:
         return self
 
     def fetch_mmcif(self, pdb_code: str):
-        """Fetches mmcif file contents from the Protein Databank at rcsb.org.
+        """Fetches mmCIF file contents from the Protein Databank at rcsb.org.
 
         Parameters
         ----------
@@ -94,9 +94,7 @@ class PandasMMCIF:
         data = data[list(data.keys())[0]]
         self.data = data
         df: Dict[str, pd.DataFrame] = {}
-        full_df = pd.DataFrame.from_dict(
-            data["atom_site"], orient="index"
-        ).transpose()
+        full_df = pd.DataFrame.from_dict(data["atom_site"], orient="index").transpose()
         full_df = full_df.astype(mmcif_col_types, errors="ignore")
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])
@@ -115,8 +113,7 @@ class PandasMMCIF:
             response = urlopen(url)
             txt = response.read()
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3
-                else txt.encode("ascii")
+                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
             )
         except HTTPError as e:
             print(f"HTTP Error {e.code}")
@@ -134,8 +131,7 @@ class PandasMMCIF:
             r_mode = "rb"
             openf = gzip.open
         else:
-            allowed_formats = ", ".join(
-                (".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
+            allowed_formats = ", ".join((".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
             raise ValueError(
                 f"Wrong file format; allowed file formats are {allowed_formats}"
             )
@@ -145,8 +141,7 @@ class PandasMMCIF:
 
         if path.endswith(".gz"):
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3
-                else txt.encode("ascii")
+                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
             )
         return path, txt
 
@@ -199,9 +194,7 @@ class PandasMMCIF:
 
     @staticmethod
     def _get_mainchain(
-        df: pd.DataFrame,
-        invert: bool = False,
-        atom_col: str = "auth_atom_id"
+        df: pd.DataFrame, invert: bool = False, atom_col: str = "auth_atom_id"
     ) -> pd.DataFrame:
         """Return only main chain atom entries from a DataFrame"""
         return (
@@ -224,9 +217,7 @@ class PandasMMCIF:
     def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
         return (
-            df[(df["type_symbol"] != "H")]
-            if invert
-            else df[(df["type_symbol"] == "H")]
+            df[(df["type_symbol"] != "H")] if invert else df[(df["type_symbol"] == "H")]
         )
 
     @staticmethod
@@ -293,9 +284,7 @@ class PandasMMCIF:
                 indices.append(ind)
             cmp = num
 
-        transl = tmp.iloc[indices][residue_col].map(
-            amino3to1dict
-        ).fillna(fillna)
+        transl = tmp.iloc[indices][residue_col].map(amino3to1dict).fillna(fillna)
 
         return pd.concat((tmp.iloc[indices][chain_col], transl), axis=1)
 
@@ -330,7 +319,7 @@ class PandasMMCIF:
         """
         if df1.shape[0] != df2.shape[0]:
             raise AttributeError("DataFrames have unequal lengths")
-        get_dict = PandasMMCIF._init_get_dict()
+        get_dict = PandasMmcif._init_get_dict()
         if s:
             if s not in get_dict.keys():
                 raise AttributeError(f"s must be in {get_dict.keys()} or None")
@@ -380,9 +369,7 @@ class PandasMMCIF:
 
         return np.sqrt(
             np.sum(
-                df[
-                    ["Cartn_x", "Cartn_y", "Cartn_z"]
-                ].subtract(xyz, axis=1) ** 2, axis=1
+                df[["Cartn_x", "Cartn_y", "Cartn_z"]].subtract(xyz, axis=1) ** 2, axis=1
             )
         )
 
@@ -408,9 +395,7 @@ class PandasMMCIF:
         """
         return np.sqrt(
             np.sum(
-                df[
-                    ["Cartn_x", "Cartn_y", "Cartn_z"]
-                ].subtract(xyz, axis=1) ** 2, axis=1
+                df[["Cartn_x", "Cartn_y", "Cartn_z"]].subtract(xyz, axis=1) ** 2, axis=1
             )
         )
 
@@ -418,11 +403,11 @@ class PandasMMCIF:
     def _init_get_dict():
         """Initialize dictionary for filter operations."""
         return {
-            "main chain": PandasMMCIF._get_mainchain,
-            "hydrogen": PandasMMCIF._get_hydrogen,
-            "c-alpha": PandasMMCIF._get_calpha,
-            "carbon": PandasMMCIF._get_carbon,
-            "heavy": PandasMMCIF._get_heavy,
+            "main chain": PandasMmcif._get_mainchain,
+            "hydrogen": PandasMmcif._get_hydrogen,
+            "c-alpha": PandasMmcif._get_calpha,
+            "carbon": PandasMmcif._get_carbon,
+            "heavy": PandasMmcif._get_heavy,
         }
 
     def read_mmcif_from_list(self, mmcif_lines):

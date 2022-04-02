@@ -9,7 +9,7 @@ import os
 
 import numpy as np
 import pandas as pd
-from biopandas.mmcif import PandasMMCIF
+from biopandas.mmcif import PandasMmcif
 from biopandas.testutils import assert_raises
 from nose.tools import raises
 
@@ -26,10 +26,8 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # TESTDATA_FILENAME2 = os.path.join(
 #    os.path.dirname(__file__), "data", "4eiy_anisouchunk.cif"
 # )
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy.cif")
-TESTDATA_FILENAME_GZ = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.cif.gz")
+TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
+TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",
@@ -85,7 +83,7 @@ with open(TESTDATA_FILENAME2, "r") as f:
 
 def test__read_pdb():
     """Test private _read_pdb"""
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     path, txt = ppdb._read_mmcif(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
@@ -96,17 +94,16 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are "
-        ".cif, .cif.gz, .mmcif, .mmcif.gz"
+        "Wrong file format; allowed file formats are " ".cif, .cif.gz, .mmcif, .mmcif.gz"
     )
 
     def run_code_1():
-        PandasMMCIF()._read_mmcif("protein.mol2")
+        PandasMmcif()._read_mmcif("protein.mol2")
 
     assert_raises(ValueError, expect, run_code_1)
 
     def run_code_2():
-        PandasMMCIF()._read_mmcif("protein.mol2.gz")
+        PandasMmcif()._read_mmcif("protein.mol2.gz")
 
     assert_raises(ValueError, expect, run_code_2)
 
@@ -115,7 +112,7 @@ def test_fetch_pdb():
     """Test fetch_pdb"""
 
     try:
-        ppdb = PandasMMCIF()
+        ppdb = PandasMmcif()
         url, txt = ppdb._fetch_mmcif("3eiy")
     except (HTTPError, ConnectionResetError):
         url, txt = None, None
@@ -128,14 +125,14 @@ def test_fetch_pdb():
 
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     path, txt = ppdb._read_mmcif(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
 def test__construct_df():
     """Test pandas dataframe construction"""
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     dfs = ppdb._construct_df(three_eiy)
     # assert set(dfs.keys()) == {"OTHERS", "ATOM", "ANISOU", "HETATM"}
     # Currently don't parse OTHERS records as I'm not sure where they're located in mmCIF files
@@ -201,7 +198,7 @@ def test__construct_df():
 
 def test_read_pdb():
     """Test public read_pdb"""
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
     assert ppdb.pdb_text == three_eiy
     assert ppdb.code == "3eiy", ppdb.code
@@ -212,7 +209,7 @@ def test_read_pdb_from_list():
     """Test public read_pdb_from_list"""
 
     for pdb_text, code in zip([three_eiy, four_eiy], ["3eiy", "4eiy"]):
-        ppdb = PandasMMCIF()
+        ppdb = PandasMmcif()
         ppdb.read_mmcif_from_list(pdb_text)
         assert ppdb.pdb_text == pdb_text
         assert ppdb.code == code
@@ -224,7 +221,7 @@ def test_read_pdb_from_list():
 # previously ANISOU records were only present for a subset of atoms
 # def test_anisou_input_handling():
 #    """Test public read_pdb"""
-#    ppdb = PandasMMCIF()
+#    ppdb = PandasMmcif()
 #    ppdb.read_pdb(TESTDATA_FILENAME2)
 #    assert ppdb.pdb_text == four_eiy
 #    assert ppdb.code == "4eiy", ppdb.code
@@ -232,20 +229,20 @@ def test_read_pdb_from_list():
 
 @raises(AttributeError)
 def test_get_exceptions():
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
     ppdb.get("main-chai")
 
 
 def test_get_all():
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
     for i in ["c-alpha", "hydrogen", "main chain"]:
         ppdb.get(i)
 
 
 def test_get_df():
-    ppdb = PandasMMCIF()
+    ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
 
     shape = ppdb.get("c-alpha").shape

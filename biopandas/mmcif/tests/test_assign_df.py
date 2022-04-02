@@ -6,7 +6,7 @@
 
 import os
 
-from biopandas.mmcif import PandasMMCIF
+from biopandas.mmcif import PandasMmcif
 from biopandas.testutils import assert_raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
@@ -14,14 +14,14 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 
 def test_overwrite_df():
     data_path = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
-    pdb = PandasMMCIF().read_mmcif(data_path)
+    pdb = PandasMmcif().read_mmcif(data_path)
 
     def overwrite():
         pdb.df = "bla"
 
     expect = (
-        "Please use `PandasMMCIF._df = ... ` instead\n"
-        "of `PandasMMCIF.df = ... ` if you are sure that\n"
+        "Please use `PandasMmcif._df = ... ` instead\n"
+        "of `PandasMmcif.df = ... ` if you are sure that\n"
         "you want to overwrite the `df` attribute."
     )
 
