@@ -285,7 +285,7 @@ __CIF_STR_NL_CHECK__ = re.compile(r"[\n]")
 def __dump_str__(inp):
     if inp is None:
         return "?"
-    if type(inp) not in [str, unicode]:
+    if type(inp) is not str:
         return str(inp)
     if re.search(__CIF_STR_NL_CHECK__, inp) is not None:
         return "\n;%s\n;" % inp
