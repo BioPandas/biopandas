@@ -1,7 +1,7 @@
-biopandas version: 0.3.0dev0
-## PandasMMCIF
+biopandas version: 0.3.0
+## PandasMmcif
 
-*PandasMMCIF(use_auth: bool = True)*
+*PandasMmcif(use_auth: bool = True)*
 
 None
 
@@ -100,7 +100,7 @@ Computes Euclidean distance between atoms and a 3D point.
 
 *fetch_mmcif(pdb_code: str)*
 
-Fetches mmcif file contents from the Protein Databank at rcsb.org.
+Fetches mmCIF file contents from the Protein Databank at rcsb.org.
 
 **Parameters**
 

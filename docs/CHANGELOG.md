@@ -3,24 +3,29 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
-### 0.3.0dev0 (TBD)
+### 0.3.0 (04-06-2022)
 
 ##### Downloads
 
--
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.3.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz)
+
+
 
 ##### New Features
 
-- Adds support for parsing mmCIF protein structure files (via PR [94](https://github.com/rasbt/biopandas/pull/94/files))
+- Adds support for parsing mmCIF protein structure files (via [Arian Jamasb](https://github.com/a-r-j), PR #[94](https://github.com/rasbt/biopandas/pull/94/files))
 
 ##### Changes
 
--
+- -
 
 ##### Bug Fixes
 
-- Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via PR #[90](https://github.com/rasbt/biopandas/pull/90/files))
-- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via PR #[96](https://github.com/rasbt/biopandas/pull/96/files)) 
+- Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via  PR #[90](https://github.com/rasbt/biopandas/pull/90/files))
+- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via [Arian Jamasb](https://github.com/a-r-j) PR #[96](https://github.com/rasbt/biopandas/pull/96/files)) 
+
 
 
 ### 0.2.9 (08-30-2021)
@@ -36,8 +41,8 @@ The CHANGELOG for the current development version is available at
 
 ##### Changes
 
-- Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR [82](https://github.com/rasbt/biopandas/pull/82/files)
-- Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR [87](https://github.com/rasbt/biopandas/pull/87/files)
+- Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR #[82](https://github.com/rasbt/biopandas/pull/82/files)
+- Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR #[87](https://github.com/rasbt/biopandas/pull/87/files)
 
 ##### Bug Fixes
 
@@ -52,11 +57,11 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- A `PandasPdb.read_pdb_from_list` method was added analogous to the existing `PandasMol2.read_mol2_from_list` (via PR [72](https://github.com/rasbt/biopandas/pull/72/files) by [dominiquesydow](https://github.com/dominiquesydow))
+- A `PandasPdb.read_pdb_from_list` method was added analogous to the existing `PandasMol2.read_mol2_from_list` (via PR #[72](https://github.com/rasbt/biopandas/pull/72/files) by [dominiquesydow](https://github.com/dominiquesydow))
 
 ##### Changes
 
-- `ValueError` raising and improved file format error messages for `read_pdb` and `read_mol2` functionality. (via PR [73](https://github.com/rasbt/biopandas/pull/73/files) by [dominiquesydow](https://github.com/dominiquesydow))
+- `ValueError` raising and improved file format error messages for `read_pdb` and `read_mol2` functionality. (via PR #[73](https://github.com/rasbt/biopandas/pull/73/files) by [dominiquesydow](https://github.com/dominiquesydow))
 
 ##### Bug Fixes
 
