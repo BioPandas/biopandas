@@ -1,6 +1,6 @@
 # IPython Notebook to Markdown conversion script
 #
-# Sebastian Raschka 2014-2021
+# Sebastian Raschka 2014-2022
 #
 # Author: Sebastian Raschka <sebastianraschka.com>
 #

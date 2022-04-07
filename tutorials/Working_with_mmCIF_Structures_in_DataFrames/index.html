@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Sebastian Raschka">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/tutorials/Working_with_mmCIF_Structures_in_DataFrames/">
+        <link rel="shortcut icon" href="../../favicon.ico">
+        
+        <title>Working with mmCIF Structures in DataFrames - BioPandas</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
+        <link href="../../extra.css" rel="stylesheet">
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-38457794-3', 'rasbt.github.io/biopandas');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">BioPandas</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../Working_with_PDB_Structures_in_DataFrames/" class="dropdown-item">Working with PDB Structures in DataFrames</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active">Working with mmCIF Structures in DataFrames</a>
+</li>
+                                    
+<li>
+    <a href="../Working_with_MOL2_Structures_in_DataFrames/" class="dropdown-item">Working with MOL2 Structures in DataFrames</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api_subpackages/biopandas.pdb/" class="dropdown-item">biopandas.pdb</a>
+</li>
+                                    
+<li>
+    <a href="../../api_subpackages/biopandas.mmcif/" class="dropdown-item">biopandas.mmcif</a>
+</li>
+                                    
+<li>
+    <a href="../../api_subpackages/biopandas.mol2/" class="dropdown-item">biopandas.mol2</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../CHANGELOG/" class="nav-link">Changelog</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../installation/" class="nav-link">Install</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="https://github.com/rasbt/biopandas/discussions" class="nav-link">Discuss</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../CONTRIBUTING/" class="nav-link">Contribute</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../citing/" class="nav-link">Cite</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Working_with_PDB_Structures_in_DataFrames/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Working_with_MOL2_Structures_in_DataFrames/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/tutorials/Working_with_mmCIF_Structures_in_DataFrames.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#working-with-mmcif-structures-in-dataframes" class="nav-link">Working with mmCIF Structures in DataFrames</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#loading-mmcif-files" class="nav-link">Loading mmCIF Files</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#looking-at-mmcif-files-in-dataframes" class="nav-link">Looking at mmCIF files in DataFrames</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#working-with-mmcif-dataframes" class="nav-link">Working with mmCIF DataFrames</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#plotting" class="nav-link">Plotting</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#computing-the-root-mean-square-deviation" class="nav-link">Computing the Root Mean Square Deviation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#filtering-pdbs-by-distance" class="nav-link">Filtering PDBs by Distance</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#converting-amino-acid-codes-from-3-to-1-letter-codes" class="nav-link">Converting Amino Acid codes from 3- to 1-letter codes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="working-with-mmcif-structures-in-dataframes">Working with mmCIF Structures in DataFrames</h1>
+<h2 id="loading-mmcif-files">Loading mmCIF Files</h2>
+<p>There are 3 ways to load a mmCIF structure into a <code>PandasMmcif</code> object.</p>
+<h4 id="1">1</h4>
+<p>MmCIF files can be directly fetched from The Protein Data Bank at <a href="http://www.rcsb.org">http://www.rcsb.org</a> via its unique 4-letter after initializing a new <a href="../api_subpackages/biopandas.mmcif"><code>PandasMmcif</code></a> object and calling the <code>fetch_mmcif</code> method:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+# Initialize a new PandasMmcif object
+# and fetch the mmCIF file from rcsb.org
+pmmcif = PandasMmcif().fetch_mmcif('3eiy')
+</code></pre>
+<h4 id="2-a">2 a)</h4>
+<p>Alternatively, we can load mmCIF files from local directories as regular mmCIF files using <code>read_mmcif</code>:</p>
+<pre><code class="language-python">pmmcif.read_mmcif('./data/3eiy.cif')
+</code></pre>
+<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640&gt;
+</code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.cif</a>]</p>
+<h4 id="2-b">2 b)</h4>
+<p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
+<pre><code class="language-python">pmmcif.read_mmcif('./data/3eiy.cif.gz')
+</code></pre>
+<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640&gt;
+</code></pre>
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/main/docs/tutorials/data/3eiy.cif.gz?raw=true">3eiy.cif.gz</a>]</p>
+<p>After the file was succesfully loaded, we have access to the following attributes:</p>
+<pre><code class="language-python">print('mmCIF Code: %s' % pmmcif.code)
+print('mmCIF Header Line: %s' % pmmcif.header)
+print('\nRaw mmCIF file contents:\n\n%s\n...' % pmmcif.pdb_text[:1000])
+</code></pre>
+<pre><code>mmCIF Code: 3eiy
+mmCIF Header Line:
+
+Raw mmCIF file contents:
+
+data_3EIY
+# 
+_entry.id   3EIY 
+# 
+_audit_conform.dict_name       mmcif_pdbx.dic 
+_audit_conform.dict_version    5.281 
+_audit_conform.dict_location   http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic 
+# 
+loop_
+_database_2.database_id 
+_database_2.database_code 
+PDB   3EIY         
+RCSB  RCSB049380   
+WWPDB D_1000049380 
+# 
+loop_
+_pdbx_database_related.db_name 
+_pdbx_database_related.db_id 
+_pdbx_database_related.details 
+_pdbx_database_related.content_type 
+TargetDB BupsA.00023.a .                                                                        unspecified 
+PDB      3d63          
+;The same protein, "open" conformation, apo form, in space group P21212
+;
+unspecified 
+PDB      3EIZ          .                                                                        unspecified 
+PDB      3EJ0          .                                                                        unspecified 
+PDB      3EJ2          .                                                                       
+...
+</code></pre>
+<p>The most interesting / useful attribute is the <code>PandasMmcif.df</code> DataFrame dictionary though, which gives us access to the mmCIF files as pandas DataFrames. Let's print the first 3 lines from the <code>ATOM</code> coordinate section to see how it looks like:</p>
+<pre><code class="language-python">pmmcif.df['ATOM'].head(3)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td>C</td>
+      <td>C</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 21 columns</p>
+</div>
+
+<p>But more on that in the next section.</p>
+<h4 id="3">3</h4>
+<p><strong>Loading mmCif files from a Python List</strong></p>
+<p>Mmcif files can also be loaded into a <code>PandasMmcif</code> object from a Python list:</p>
+<pre><code class="language-python">with open('./data/3eiy.cif', 'r') as f:
+    three_eiy = f.read()
+
+pmmcif2 = PandasMmcif()
+pmmcif2.read_mmcif_from_list(three_eiy)
+
+pmmcif2.df['ATOM'].head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td>C</td>
+      <td>C</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ATOM</td>
+      <td>4</td>
+      <td>O</td>
+      <td>O</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>O</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ATOM</td>
+      <td>5</td>
+      <td>C</td>
+      <td>CB</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CB</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<h2 id="looking-at-mmcif-files-in-dataframes">Looking at mmCIF files in DataFrames</h2>
+<p>mmCIF files are parsed according to the <a href="https://mmcif.wwpdb.org">mmCIF file format description</a>. </p>
+<p>For more information, we recommend the helpful <a href="https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/beginner’s-guide-to-pdb-structures-and-the-pdbx-mmcif-format">Beginner’s Guide to PDB Structures and the PDBx/mmCIF Format</a> guide.</p>
+<p>After loading a PDB file from rcsb.org or our local drive, the <a href="../api/biopandas.pdb/#pandaspdbdf"><code>PandasPdb.df</code></a> attribute should contain the following 3 DataFrame objects:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+
+pmmcif = PandasMmcif()
+pmmcif.read_mmcif('./data/3eiy.cif')
+pmmcif.df.keys()
+</code></pre>
+<pre><code>dict_keys(['ATOM', 'HETATM', 'ANISOU'])
+</code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.cif</a>]</p>
+<ul>
+<li>'ATOM': contains the entries from the ATOM coordinate section</li>
+<li>'HETATM':  ... entries from the "HETATM" coordinate section    </li>
+<li>'ANISOU': ... entries from the "ANISOU" coordinate section </li>
+</ul>
+<p>The columns for <code>'ATOM'</code> DataFrame are as follows:</p>
+<pre><code class="language-python">pmmcif.df['ATOM'].columns
+</code></pre>
+<pre><code>Index(['group_PDB', 'id', 'type_symbol', 'label_atom_id', 'label_alt_id', 'label_comp_id', 'label_asym_id', 'label_entity_id', 'label_seq_id', 'pdbx_PDB_ins_code', 'Cartn_x', 'Cartn_y', 'Cartn_z', 'occupancy', 'B_iso_or_equiv', 'pdbx_formal_charge', 'auth_seq_id', 'auth_comp_id', 'auth_asym_id', 'auth_atom_id', 'pdbx_PDB_model_num'], dtype='object')
+</code></pre>
+<ul>
+<li><strong>'group_PDB'</strong>:
+The group of atoms to which the atom site belongs. This data
+               item is provided for compatibility with the original Protein
+               Data Bank format, and only for that purpose.</li>
+<li><strong>'id'</strong>:   The value of _atom_site.id must uniquely identify a record in the
+               ATOM_SITE list. Note that this item need not be a number; it can be any unique
+               identifier.</li>
+<li><strong>'type_symbol'</strong>:     The code used to identify the atom species (singular or plural)
+               representing this atom type. Normally this code is the element
+               symbol. The code may be composed of any character except
+               an underscore with the additional proviso that digits designate
+               an oxidation state and must be followed by a + or - character.</li>
+<li><strong>'label_atom_id'</strong>: An atom name identifier, e.g., N, CA, C, O, ...</li>
+<li><strong>'label_alt_id'</strong>: A place holder to indicate alternate conformation. The alternate conformation
+               can be an entire polymer chain, or several residues or
+               partial residue (several atoms within one residue). If
+               an atom is provided in more than one position, then a
+               non-blank alternate location indicator must be used for
+               each of the atomic positions.</li>
+<li><strong>'label_comp_id'</strong>: For protein polymer entities, this is the three-letter code for
+               the amino acid. For nucleic acid polymer entities, this is the one-letter code
+               for the base.</li>
+<li><strong>'label_asym_id'</strong>: A value that uniquely identifies a record in
+               the STRUCT_ASYM list.</li>
+<li><strong>'label_entity_id'</strong>: A value that uniquely identifies a record in
+               the ENTITY list.</li>
+<li><strong>'label_seq_id'</strong>: A value that uniquely identifies a record in
+               the ENTITY_POLY_SEQ list.</li>
+<li><strong>'pdbx_PDB_ins_code'</strong>: PDB insertion code.</li>
+<li><strong>'Cartn_x'</strong>: The x atom-site coordinate in angstroms</li>
+<li><strong>'Cartn_y'</strong>: The y atom-site coordinate in angstroms</li>
+<li><strong>'Cartn_z'</strong>: The z atom-site coordinate in angstroms</li>
+<li><strong>'occupancy'</strong>: The fraction of the atom type present at this site.
+               The sum of the occupancies of all the atom types at this site
+               may not significantly exceed 1.0 unless it is a dummy site.</li>
+<li><strong>'B_iso_or_equiv'</strong>: Isotropic atomic displacement parameter, or equivalent isotropic
+               atomic displacement parameter, B_eq, calculated from the
+               anisotropic displacement parameters. </li>
+<li><strong>'pdbx_formal_charge'</strong>: The net integer charge assigned to this atom. This is the
+               formal charge assignment normally found in chemical diagrams.</li>
+<li><strong>'auth_seq_id'</strong>: An alternative identifier for _atom_site.label_seq_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.</li>
+<li><strong>'auth_comp_id'</strong>: An alternative identifier for _atom_site.label_comp_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.</li>
+<li><strong>'auth_asym_id'</strong>: An alternative identifier for _atom_site.label_asym_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.</li>
+<li><strong>'auth_atom_id'</strong>: An alternative identifier for _atom_site.label_atom_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.</li>
+<li><strong>'pdbx_PDB_model_num'</strong>: PDB model number.</li>
+</ul>
+<p>The columns of the 'HETATM' DataFrame are indentical to the 'ATOM' DataFrame that we've seen earlier:</p>
+<pre><code class="language-python">pmmcif.df['HETATM'].head(2)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1330</th>
+      <td>HETATM</td>
+      <td>1331</td>
+      <td>K</td>
+      <td>K</td>
+      <td>...</td>
+      <td>K</td>
+      <td>A</td>
+      <td>K</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1331</th>
+      <td>HETATM</td>
+      <td>1332</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>...</td>
+      <td>NA</td>
+      <td>A</td>
+      <td>NA</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 21 columns</p>
+</div>
+
+<pre><code class="language-python">set(pmmcif.df['HETATM'].columns) == set(pmmcif.df['ATOM'].columns)
+</code></pre>
+<pre><code>True
+</code></pre>
+<p>However, there are a few naming differences in the ANISOU columns, for instance, the <code>'ATOM'</code> and <code>'HETATM'</code> DataFrames feature the following columns that are not contained in ANISOU:</p>
+<pre><code class="language-python">set(pmmcif.df['ATOM'].columns) - set(pmmcif.df['ANISOU'].columns)
+</code></pre>
+<pre><code>{'B_iso_or_equiv',
+ 'Cartn_x',
+ 'Cartn_y',
+ 'Cartn_z',
+ 'auth_asym_id',
+ 'auth_atom_id',
+ 'auth_comp_id',
+ 'auth_seq_id',
+ 'group_PDB',
+ 'label_alt_id',
+ 'label_asym_id',
+ 'label_atom_id',
+ 'label_comp_id',
+ 'label_entity_id',
+ 'label_seq_id',
+ 'occupancy',
+ 'pdbx_PDB_model_num',
+ 'pdbx_formal_charge'}
+</code></pre>
+<p>Vice versa, ANISOU contains the following columns that are not in the <code>'ATOM'</code> and <code>'HETATM'</code> DataFrames:</p>
+<pre><code class="language-python">set(pmmcif.df['ANISOU'].columns) - set(pmmcif.df['ATOM'].columns) 
+</code></pre>
+<pre><code>{'U[1][1]',
+ 'U[1][2]',
+ 'U[1][3]',
+ 'U[2][2]',
+ 'U[2][3]',
+ 'U[3][3]',
+ 'pdbx_auth_asym_id',
+ 'pdbx_auth_atom_id',
+ 'pdbx_auth_comp_id',
+ 'pdbx_auth_seq_id',
+ 'pdbx_label_alt_id',
+ 'pdbx_label_asym_id',
+ 'pdbx_label_atom_id',
+ 'pdbx_label_comp_id',
+ 'pdbx_label_seq_id'}
+</code></pre>
+<p>BioPandas tries to stay to the original column names as close as possible, and for more details, we recommend checking the original descriptions:</p>
+<ul>
+<li><a href="https://mmcif.wwpdb.org/docs/pdb_to_pdbx_correspondences.html#ATOMP">ATOM/HETATM</a></li>
+<li><a href="https://mmcif.wwpdb.org/docs/pdb_to_pdbx_correspondences.html#ANISOU">ANISOU</a></li>
+</ul>
+<p><br></p>
+<p><br></p>
+<h2 id="working-with-mmcif-dataframes">Working with mmCIF DataFrames</h2>
+<p>In the previous sections, we've seen how to load mmCIF structures into DataFrames, and how to access them. Now, let's talk about manipulating mmCIF files in DataFrames.</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+pmmcif = PandasMmcif()
+pmmcif.read_mmcif('./data/3eiy.cif.gz')
+pmmcif.df['ATOM'].head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td>C</td>
+      <td>C</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ATOM</td>
+      <td>4</td>
+      <td>O</td>
+      <td>O</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>O</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ATOM</td>
+      <td>5</td>
+      <td>C</td>
+      <td>CB</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CB</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/main/docs/tutorials/data/3eiy.cif.gz?raw=true">3eiy.cif.gz</a>]</p>
+<p>Okay, there's actually not <em>that</em> much to say ... <br />
+Once we have our mmCIF file in the DataFrame format, we have the whole convenience of <a href="http://pandas.pydata.org">pandas</a> right there at our fingertips.</p>
+<p>For example, let's get all Proline residues:</p>
+<pre><code class="language-python">pmmcif.df['ATOM'][pmmcif.df['ATOM']['auth_comp_id'] == 'PRO'].head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>38</th>
+      <td>ATOM</td>
+      <td>39</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>PRO</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>ATOM</td>
+      <td>40</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>PRO</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>ATOM</td>
+      <td>41</td>
+      <td>C</td>
+      <td>C</td>
+      <td>...</td>
+      <td>PRO</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>ATOM</td>
+      <td>42</td>
+      <td>O</td>
+      <td>O</td>
+      <td>...</td>
+      <td>PRO</td>
+      <td>A</td>
+      <td>O</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>ATOM</td>
+      <td>43</td>
+      <td>C</td>
+      <td>CB</td>
+      <td>...</td>
+      <td>PRO</td>
+      <td>A</td>
+      <td>CB</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Or main chain atoms:</p>
+<pre><code class="language-python">pmmcif.df['ATOM'][pmmcif.df['ATOM']['label_atom_id'] == 'CA'].head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>ATOM</td>
+      <td>8</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>PHE</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>ATOM</td>
+      <td>19</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>ATOM</td>
+      <td>25</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>ASN</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>ATOM</td>
+      <td>33</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>VAL</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>It's also easy to strip our coordinate section from hydrogen atoms if there are any ...</p>
+<pre><code class="language-python">pmmcif.df['ATOM'][pmmcif.df['ATOM']['type_symbol'] != 'H'].head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ATOM</td>
+      <td>1</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ATOM</td>
+      <td>2</td>
+      <td>C</td>
+      <td>CA</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ATOM</td>
+      <td>3</td>
+      <td>C</td>
+      <td>C</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ATOM</td>
+      <td>4</td>
+      <td>O</td>
+      <td>O</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>O</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ATOM</td>
+      <td>5</td>
+      <td>C</td>
+      <td>CB</td>
+      <td>...</td>
+      <td>SER</td>
+      <td>A</td>
+      <td>CB</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Or, let's compute the average temperature factor of our protein main chain:</p>
+<pre><code class="language-python">mainchain = pmmcif.df['ATOM'][(pmmcif.df['ATOM']['label_atom_id'] == 'C') | 
+                              (pmmcif.df['ATOM']['label_atom_id'] == 'O') | 
+                              (pmmcif.df['ATOM']['label_atom_id'] == 'N') | 
+                              (pmmcif.df['ATOM']['label_atom_id'] == 'CA')]
+
+bfact_mc_avg = mainchain['occupancy'].mean()
+print('Average B-Factor [Main Chain]: %.2f' % bfact_mc_avg)
+</code></pre>
+<pre><code>Average B-Factor [Main Chain]: 1.00
+</code></pre>
+<h2 id="plotting">Plotting</h2>
+<p>Since we are using pandas under the hood, which in turns uses matplotlib under the hood, we can produce quick summary plots of our mmCIF structures relatively conveniently:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+
+pmmcif = PandasMmcif().read_mmcif('./data/3eiy.cif.gz')
+</code></pre>
+<p>[File link: <a href="https://github.com/rasbt/biopandas/blob/main/docs/tutorials/data/3eiy.cif.gz?raw=true">3eiy.cif.gz</a>]</p>
+<pre><code class="language-python">%matplotlib inline
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
+</code></pre>
+<pre><code class="language-python">pmmcif.df['ATOM']['B_iso_or_equiv'].plot(kind='hist')
+plt.title('Distribution of B-Factors')
+plt.xlabel('B-factor')
+plt.ylabel('count')
+plt.show()
+</code></pre>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_61_0.png" /></p>
+<pre><code class="language-python">pmmcif.df['ATOM']['B_iso_or_equiv'].plot(kind='line')
+plt.title('B-Factors Along the Amino Acid Chain')
+plt.xlabel('Residue Number')
+plt.ylabel('B-factor in $A^2$')
+plt.show()
+</code></pre>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png" /></p>
+<pre><code class="language-python">pmmcif.df['ATOM']['type_symbol'].value_counts().plot(kind='bar')
+plt.title('Distribution of Atom Types')
+plt.xlabel('elements')
+plt.ylabel('count')
+plt.show()
+</code></pre>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png" /></p>
+<h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
+<p>BioPandas also comes with certain convenience functions, for example, ...</p>
+<p>The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
+<p>
+<script type="math/tex; mode=display">
+RMSD(a, b) = \sqrt{\frac{1}{n} \sum^{n}_{i=1} \big((a_{ix})^2 + (a_{iy})^2 + (a_{iz})^2 \big)}
+= \sqrt{\frac{1}{n} \sum^{n}_{i=1} || a_i + b_i||_2^2}
+</script>
+</p>
+<p>So, assuming that the we have the following 2 conformations of a ligand molecule</p>
+<p><img alt="" src="../img/ligand_rmsd.png" /></p>
+<p>we can compute the RMSD as follows:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+l_1 = PandasMmcif().read_mmcif('./data/lig_conf_1.cif')
+l_2 = PandasMmcif().read_mmcif('./data/lig_conf_2.cif')
+r = PandasMmcif.rmsd(l_1.df['HETATM'], l_2.df['HETATM'],
+                   s=None) # all atoms, including hydrogens
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+<pre><code>RMSD: 2.6444 Angstrom
+</code></pre>
+<p>[File links: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_1.cif">lig_conf_1.pdb</a>, <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_2.cif">lig_conf_2.cif</a>]</p>
+<pre><code class="language-python">r = PandasMmcif.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
+                     s='carbon') # carbon atoms only
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+<pre><code>RMSD: 1.7249 Angstrom
+</code></pre>
+<pre><code class="language-python">r = PandasMmcif.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
+                   s='heavy') # heavy atoms only
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+<pre><code>RMSD: 1.9959 Angstrom
+</code></pre>
+<p>Similarly, we can compute the RMSD between 2 related protein structures:</p>
+<p><img alt="" src="../img/1t48_rmsd.png" /></p>
+<p>The hydrogen-free RMSD:</p>
+<pre><code class="language-python">p_1 = PandasMmcif().read_mmcif('./data/1t48_995.cif')
+p_2 = PandasMmcif().read_mmcif('./data/1t49_995.cif')
+r = PandasMmcif.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='heavy')
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+<pre><code>RMSD: 0.7377 Angstrom
+</code></pre>
+<p>Or the RMSD between the main chains only:</p>
+<pre><code class="language-python">p_1 = PandasMmcif().read_mmcif('./data/1t48_995.cif')
+p_2 = PandasMmcif().read_mmcif('./data/1t49_995.cif')
+r = PandasMmcif.rmsd(p_1.df['ATOM'], p_2.df['ATOM'], s='main chain')
+print('RMSD: %.4f Angstrom' % r)
+</code></pre>
+<pre><code>RMSD: 0.4781 Angstrom
+</code></pre>
+<p><br></p>
+<h2 id="filtering-pdbs-by-distance">Filtering PDBs by Distance</h2>
+<p>We can use the <code>distance</code> method to compute the distance between each atom (or a subset of atoms) in our data frame and a three-dimensional reference point. For example:</p>
+<pre><code class="language-python">p_1 = PandasMmcif().read_mmcif('./data/3eiy.cif')
+
+reference_point = (9.362, 41.410, 10.542)
+distances = p_1.distance(xyz=reference_point, records=('ATOM',))
+</code></pre>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.pdb</a>]</p>
+<p>The distance method returns a Pandas Series object:</p>
+<pre><code class="language-python">distances.head()
+</code></pre>
+<pre><code>0    19.267419
+1    18.306060
+2    16.976934
+3    16.902897
+4    18.124171
+dtype: float64
+</code></pre>
+<p>And we can use this <code>Series</code> object, for instance, to select certain atoms in our DataFrame that fall within a desired distance threshold. For example, let's select all atoms that are within 7A of our reference point: </p>
+<pre><code class="language-python">all_within_7A = p_1.df['ATOM'][distances &lt; 7.0]
+all_within_7A.tail()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group_PDB</th>
+      <th>id</th>
+      <th>type_symbol</th>
+      <th>label_atom_id</th>
+      <th>...</th>
+      <th>auth_comp_id</th>
+      <th>auth_asym_id</th>
+      <th>auth_atom_id</th>
+      <th>pdbx_PDB_model_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>786</th>
+      <td>ATOM</td>
+      <td>787</td>
+      <td>C</td>
+      <td>CB</td>
+      <td>...</td>
+      <td>LEU</td>
+      <td>A</td>
+      <td>CB</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>787</th>
+      <td>ATOM</td>
+      <td>788</td>
+      <td>C</td>
+      <td>CG</td>
+      <td>...</td>
+      <td>LEU</td>
+      <td>A</td>
+      <td>CG</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>ATOM</td>
+      <td>789</td>
+      <td>C</td>
+      <td>CD1</td>
+      <td>...</td>
+      <td>LEU</td>
+      <td>A</td>
+      <td>CD1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>789</th>
+      <td>ATOM</td>
+      <td>790</td>
+      <td>C</td>
+      <td>CD2</td>
+      <td>...</td>
+      <td>LEU</td>
+      <td>A</td>
+      <td>CD2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>790</th>
+      <td>ATOM</td>
+      <td>791</td>
+      <td>N</td>
+      <td>N</td>
+      <td>...</td>
+      <td>VAL</td>
+      <td>A</td>
+      <td>N</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+
+<p>Visualized in PyMOL, this subset (yellow surface) would look as follows:</p>
+<p><img alt="" src="../img/3eiy_7a.png" /></p>
+<h2 id="converting-amino-acid-codes-from-3-to-1-letter-codes">Converting Amino Acid codes from 3- to 1-letter codes</h2>
+<p>Residues in the <code>residue_name</code> field can be converted into 1-letter amino acid codes, which may be useful for further sequence analysis, for example, pair-wise or multiple sequence alignments:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+
+pmmcif = PandasMmcif().fetch_mmcif('5mtn')
+sequence = pmmcif.amino3to1()
+sequence.tail()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>auth_asym_id</th>
+      <th>auth_comp_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1378</th>
+      <td>B</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <th>1386</th>
+      <td>B</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>1394</th>
+      <td>B</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <th>1406</th>
+      <td>B</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <td>B</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>As shown above, the <code>amino3to1</code> method returns a <code>DataFrame</code> containing the <code>auth_asym_id</code> (chain ID) and <code>auth_comp_id</code> (residue name) of the translated 1-letter amino acids. If you like to work with the sequence as a Python list of string characters, you could do the following:</p>
+<pre><code class="language-python">sequence_list = list(sequence.loc[sequence['auth_asym_id'] == 'A', 'auth_comp_id'])
+sequence_list[-5:] # last 5 residues of chain A
+</code></pre>
+<pre><code>['V', 'R', 'H', 'Y', 'T']
+</code></pre>
+<p>And if you prefer to work with the sequence as a string, you can use the <code>join</code> method: </p>
+<pre><code class="language-python">''.join(sequence.loc[sequence['auth_asym_id'] == 'A', 'auth_comp_id'])
+</code></pre>
+<pre><code>'SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT'
+</code></pre>
+<p>To iterate over the sequences of multi-chain proteins, you can use the <code>unique</code> method as shown below:</p>
+<pre><code class="language-python">for chain_id in sequence['auth_asym_id'].unique():
+    print('\nChain ID: %s' % chain_id)
+    print(''.join(sequence.loc[sequence['auth_asym_id'] == chain_id, 'auth_comp_id']))
+</code></pre>
+<pre><code>Chain ID: A
+SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGLHELVRHYT
+
+Chain ID: B
+SVSSVPTKLEVVAATPTSLLISWDAPAVTVVYYLITYGETGSPWPGGQAFEVPGSKSTATISGLKPGVDYTITVYAHRSSYGYSENPISINYRT
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright &copy; 2015-2022 <a href="http://sebastianraschka.com">Sebastian Raschka</a></p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" defer></script>
+        <script src="../../mathjaxhelper.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
