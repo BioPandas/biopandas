@@ -5,7 +5,7 @@
 
 BioPandas requires the following software and packages:
 
-- [Python](https://www.python.org) 2.7, 3.5, or 3.6
+- [Python](https://www.python.org)  >= 3.7
 - [NumPy](http://www.numpy.org) >= 1.11.2
 - [SciPy](https://www.scipy.org/scipylib/index.html) >= 0.18.1
 - [Pandas](http://pandas.pydata.org) >= 0.19.1
@@ -57,5 +57,4 @@ Alternatively, you download the package manually from [PYPI](https://pypi.python
 ```bash
 python setup.py install
 ```
-
 

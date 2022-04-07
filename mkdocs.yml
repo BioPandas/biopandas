@@ -30,9 +30,11 @@ google_analytics: ['UA-38457794-3', 'rasbt.github.io/biopandas']
 nav:
     - Tutorials:
           - Working with PDB Structures in DataFrames: tutorials/Working_with_PDB_Structures_in_DataFrames.md
+          - Working with mmCIF Structures in DataFrames: tutorials/Working_with_mmCIF_Structures_in_DataFrames.md
           - Working with MOL2 Structures in DataFrames: tutorials/Working_with_MOL2_Structures_in_DataFrames.md
     - API:
           - biopandas.pdb: api_subpackages/biopandas.pdb.md
+          - biopandas.mmcif: api_subpackages/biopandas.mmcif.md
           - biopandas.mol2: api_subpackages/biopandas.mol2.md
     - Changelog: CHANGELOG.md
     - Install: installation.md

@@ -1,45 +1,14 @@
-## PandasPdb
+## PandasMMCIF
 
-*PandasPdb()*
+*PandasMMCIF(use_auth: bool = True)*
 
-Object for working with Protein Databank structure files.
-
-**Attributes**
-
-- `df` : dict
-
-    Dictionary storing pandas DataFrames for PDB record sections.
-    The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
-    where 'OTHERS' contains all entries that are not parsed as
-    'ATOM', 'HETATM', or 'ANISOU'.
-
-
-- `pdb_text` : str
-
-    PDB file contents in raw text format.
-
-
-- `pdb_path` : str
-
-    Location of the PDB file that was read in via `read_pdb`
-    or URL of the page where the PDB content was fetched from
-    if `fetch_pdb` was called.
-
-
-- `header` : str
-
-    PDB file description.
-
-
-- `code` : str
-
-    PDB code
+None
 
 ### Methods
 
 <hr>
 
-*amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
+*amino3to1(record: str = 'ATOM', residue_col: str = 'auth_comp_id', residue_number_col: str = 'auth_seq_id', chain_col: str = 'auth_asym_id', fillna: str = '?')*
 
 Creates 1-letter amino acid codes from DataFrame
 
@@ -128,9 +97,9 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
-*fetch_pdb(pdb_code)*
+*fetch_mmcif(pdb_code: str)*
 
-Fetches PDB file contents from the Protein Databank at rcsb.org.
+Fetches mmcif file contents from the Protein Databank at rcsb.org.
 
 **Parameters**
 
@@ -183,44 +152,15 @@ Filter PDB DataFrames by properties
 
 <hr>
 
-*impute_element(records=('ATOM', 'HETATM'), inplace=False)*
+*read_mmcif(path)*
 
-Impute element_symbol from atom_name section.
-
-**Parameters**
-
-- `records` : iterable, default: ('ATOM', 'HETATM')
-
-    Coordinate sections for which the element symbols should be
-    imputed.
-
-
-- `inplace` : bool, (default: False
-
-    Performs the operation in-place if True and returns a copy of the
-    PDB DataFrame otherwise.
-
-**Returns**
-
-DataFrame
-
-<hr>
-
-*parse_sse()*
-
-Parse secondary structure elements
-
-<hr>
-
-*read_pdb(path)*
-
-Read PDB files (unzipped or gzipped) from local drive
+Read MMCIF files (unzipped or gzipped) from local drive
 
 **Attributes**
 
 - `path` : str
 
-    Path to the PDB file in .pdb format or gzipped format (.pdb.gz).
+    Path to the MMCIF file in .cif format or gzipped format (.cif.gz).
 
 **Returns**
 
@@ -228,15 +168,15 @@ self
 
 <hr>
 
-*read_pdb_from_list(pdb_lines)*
+*read_mmcif_from_list(mmcif_lines)*
 
-Reads PDB file from a list into DataFrames
+Reads mmCIF file from a list into DataFrames
 
 **Attributes**
 
 - `pdb_lines` : list
 
-    A list of lines containing the pdb file contents.
+    A list of lines containing the mmCIF file contents.
 
 **Returns**
 
@@ -279,35 +219,6 @@ Compute the Root Mean Square Deviation between molecules.
 - `rmsd` : float
 
     Root Mean Square Deviation between df1 and df2
-
-<hr>
-
-*to_pdb(path, records=None, gz=False, append_newline=True)*
-
-Write record DataFrames to a PDB file or gzipped PDB file.
-
-**Parameters**
-
-- `path` : str
-
-    A valid output path for the pdb file
-
-
-- `records` : iterable, default: None
-
-    A list of PDB record sections in
-    {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
-    Writes all lines to PDB if `records=None`.
-
-
-- `gz` : bool, default: False
-
-    Writes a gzipped PDB file if True.
-
-
-- `append_newline` : bool, default: True
-
-    Appends a new line at the end of the PDB file if True
 
 ### Properties
 
