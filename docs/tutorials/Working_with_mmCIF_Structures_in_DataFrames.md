@@ -29,7 +29,7 @@ pmmcif.read_mmcif('./data/3eiy.cif')
 
 
 
-    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x12753fdc0>
+    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640>
 
 
 
@@ -47,7 +47,7 @@ pmmcif.read_mmcif('./data/3eiy.cif.gz')
 
 
 
-    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x12753fdc0>
+    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640>
 
 
 
@@ -302,9 +302,7 @@ pmmcif2.df['ATOM'].head()
 
 ## Looking at mmCIF files in DataFrames
 
-mmCIF files are parsed according to the [mmCIF file format description](https://mmcif.wwpdb.org). More specifically, BioPandas  
-
-TODO
+mmCIF files are parsed according to the [mmCIF file format description](https://mmcif.wwpdb.org). 
 
 For more information, we recommend the helpful [Beginner’s Guide to PDB Structures and the PDBx/mmCIF Format](https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/beginner’s-guide-to-pdb-structures-and-the-pdbx-mmcif-format) guide.
 
@@ -332,6 +330,74 @@ pmmcif.df.keys()
 - 'ATOM': contains the entries from the ATOM coordinate section
 - 'HETATM':  ... entries from the "HETATM" coordinate section    
 - 'ANISOU': ... entries from the "ANISOU" coordinate section 
+
+The columns for `'ATOM'` DataFrame are as follows:
+
+
+```python
+pmmcif.df['ATOM'].columns
+```
+
+
+
+
+    Index(['group_PDB', 'id', 'type_symbol', 'label_atom_id', 'label_alt_id', 'label_comp_id', 'label_asym_id', 'label_entity_id', 'label_seq_id', 'pdbx_PDB_ins_code', 'Cartn_x', 'Cartn_y', 'Cartn_z', 'occupancy', 'B_iso_or_equiv', 'pdbx_formal_charge', 'auth_seq_id', 'auth_comp_id', 'auth_asym_id', 'auth_atom_id', 'pdbx_PDB_model_num'], dtype='object')
+
+
+
+- **'group_PDB'**:
+The group of atoms to which the atom site belongs. This data
+               item is provided for compatibility with the original Protein
+               Data Bank format, and only for that purpose.
+- **'id'**:   The value of _atom_site.id must uniquely identify a record in the
+               ATOM_SITE list. Note that this item need not be a number; it can be any unique
+               identifier.
+- **'type_symbol'**:     The code used to identify the atom species (singular or plural)
+               representing this atom type. Normally this code is the element
+               symbol. The code may be composed of any character except
+               an underscore with the additional proviso that digits designate
+               an oxidation state and must be followed by a + or - character.
+- **'label_atom_id'**: An atom name identifier, e.g., N, CA, C, O, ...
+- **'label_alt_id'**: A place holder to indicate alternate conformation. The alternate conformation
+               can be an entire polymer chain, or several residues or
+               partial residue (several atoms within one residue). If
+               an atom is provided in more than one position, then a
+               non-blank alternate location indicator must be used for
+               each of the atomic positions.
+- **'label_comp_id'**: For protein polymer entities, this is the three-letter code for
+               the amino acid. For nucleic acid polymer entities, this is the one-letter code
+               for the base.
+- **'label_asym_id'**: A value that uniquely identifies a record in
+               the STRUCT_ASYM list.
+- **'label_entity_id'**: A value that uniquely identifies a record in
+               the ENTITY list.
+- **'label_seq_id'**: A value that uniquely identifies a record in
+               the ENTITY_POLY_SEQ list.
+- **'pdbx_PDB_ins_code'**: PDB insertion code.
+- **'Cartn_x'**: The x atom-site coordinate in angstroms
+- **'Cartn_y'**: The y atom-site coordinate in angstroms
+- **'Cartn_z'**: The z atom-site coordinate in angstroms
+- **'occupancy'**: The fraction of the atom type present at this site.
+               The sum of the occupancies of all the atom types at this site
+               may not significantly exceed 1.0 unless it is a dummy site.
+- **'B_iso_or_equiv'**: Isotropic atomic displacement parameter, or equivalent isotropic
+               atomic displacement parameter, B_eq, calculated from the
+               anisotropic displacement parameters. 
+- **'pdbx_formal_charge'**: The net integer charge assigned to this atom. This is the
+               formal charge assignment normally found in chemical diagrams.
+- **'auth_seq_id'**: An alternative identifier for _atom_site.label_seq_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.
+- **'auth_comp_id'**: An alternative identifier for _atom_site.label_comp_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.
+- **'auth_asym_id'**: An alternative identifier for _atom_site.label_asym_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.
+- **'auth_atom_id'**: An alternative identifier for _atom_site.label_atom_id that
+               may be provided by an author in order to match the identification
+               used in the publication that describes the structure.
+- **'pdbx_PDB_model_num'**: PDB model number.
 
 The columns of the 'HETATM' DataFrame are indentical to the 'ATOM' DataFrame that we've seen earlier:
 
@@ -404,60 +470,9 @@ pmmcif.df['HETATM'].head(2)
 
 
 
-<br>
-
-Note that "ANISOU" entries are handled a bit differently as specified at ???
-
 
 ```python
-pmmcif.df['ANISOU'].head(2)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>type_symbol</th>
-      <th>pdbx_label_atom_id</th>
-      <th>pdbx_label_alt_id</th>
-      <th>...</th>
-      <th>pdbx_auth_seq_id</th>
-      <th>pdbx_auth_comp_id</th>
-      <th>pdbx_auth_asym_id</th>
-      <th>pdbx_auth_atom_id</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-<p>0 rows × 18 columns</p>
-</div>
-
-
-
-Not every PDB file contains ANISOU entries (similarly, some PDB files may only contain HETATM or ATOM entries). If records are present, the DataFrame will be empty as show above.
-
-
-```python
-pmmcif.df['ANISOU'].empty
+set(pmmcif.df['HETATM'].columns) == set(pmmcif.df['ATOM'].columns)
 ```
 
 
@@ -467,59 +482,71 @@ pmmcif.df['ANISOU'].empty
 
 
 
-Since the DataFrames are fairly wide, let's us take a look at the columns by accessing the DataFrame's `column` attribute:
+However, there are a few naming differences in the ANISOU columns, for instance, the `'ATOM'` and `'HETATM'` DataFrames feature the following columns that are not contained in ANISOU:
 
 
 ```python
-pmmcif.df['ANISOU'].columns
+set(pmmcif.df['ATOM'].columns) - set(pmmcif.df['ANISOU'].columns)
 ```
 
 
 
 
-    Index(['id', 'type_symbol', 'pdbx_label_atom_id', 'pdbx_label_alt_id', 'pdbx_label_comp_id', 'pdbx_label_asym_id', 'pdbx_label_seq_id', 'pdbx_PDB_ins_code', 'U[1][1]', 'U[2][2]', 'U[3][3]', 'U[1][2]', 'U[1][3]', 'U[2][3]', 'pdbx_auth_seq_id', 'pdbx_auth_comp_id', 'pdbx_auth_asym_id', 'pdbx_auth_atom_id'], dtype='object')
+    {'B_iso_or_equiv',
+     'Cartn_x',
+     'Cartn_y',
+     'Cartn_z',
+     'auth_asym_id',
+     'auth_atom_id',
+     'auth_comp_id',
+     'auth_seq_id',
+     'group_PDB',
+     'label_alt_id',
+     'label_asym_id',
+     'label_atom_id',
+     'label_comp_id',
+     'label_entity_id',
+     'label_seq_id',
+     'occupancy',
+     'pdbx_PDB_model_num',
+     'pdbx_formal_charge'}
 
 
 
-TODO
-
-<br>
-<br>
-
-Ah, another interesting thing to mention is that the columns already come with the types you'd expect (where `object` essentially "means" `str` here):
+Vice versa, ANISOU contains the following columns that are not in the `'ATOM'` and `'HETATM'` DataFrames:
 
 
 ```python
-pmmcif.df['ATOM'].dtypes
+set(pmmcif.df['ANISOU'].columns) - set(pmmcif.df['ATOM'].columns) 
 ```
 
 
 
 
-    group_PDB              object
-    id                      int64
-    type_symbol            object
-    label_atom_id          object
-    label_alt_id           object
-    label_comp_id          object
-    label_asym_id          object
-    label_entity_id         int64
-    label_seq_id           object
-    pdbx_PDB_ins_code      object
-    Cartn_x               float64
-    Cartn_y               float64
-    Cartn_z               float64
-    occupancy             float64
-    B_iso_or_equiv        float64
-    pdbx_formal_charge     object
-    auth_seq_id             int64
-    auth_comp_id           object
-    auth_asym_id           object
-    auth_atom_id           object
-    pdbx_PDB_model_num      int64
-    dtype: object
+    {'U[1][1]',
+     'U[1][2]',
+     'U[1][3]',
+     'U[2][2]',
+     'U[2][3]',
+     'U[3][3]',
+     'pdbx_auth_asym_id',
+     'pdbx_auth_atom_id',
+     'pdbx_auth_comp_id',
+     'pdbx_auth_seq_id',
+     'pdbx_label_alt_id',
+     'pdbx_label_asym_id',
+     'pdbx_label_atom_id',
+     'pdbx_label_comp_id',
+     'pdbx_label_seq_id'}
 
 
+
+BioPandas tries to stay to the original column names as close as possible, and for more details, we recommend checking the original descriptions:
+
+- [ATOM/HETATM](https://mmcif.wwpdb.org/docs/pdb_to_pdbx_correspondences.html#ATOMP)
+- [ANISOU](https://mmcif.wwpdb.org/docs/pdb_to_pdbx_correspondences.html#ANISOU)
+
+<br>
 
 <br>
 
@@ -1001,7 +1028,7 @@ style.use('ggplot')
 
 
 ```python
-pmmcif.df['ATOM']['occupancy'].plot(kind='hist')
+pmmcif.df['ATOM']['B_iso_or_equiv'].plot(kind='hist')
 plt.title('Distribution of B-Factors')
 plt.xlabel('B-factor')
 plt.ylabel('count')
@@ -1010,13 +1037,13 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_61_0.png)
     
 
 
 
 ```python
-pmmcif.df['ATOM']['occupancy'].plot(kind='line')
+pmmcif.df['ATOM']['B_iso_or_equiv'].plot(kind='line')
 plt.title('B-Factors Along the Amino Acid Chain')
 plt.xlabel('Residue Number')
 plt.ylabel('B-factor in $A^2$')
@@ -1025,7 +1052,7 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png)
     
 
 
@@ -1040,7 +1067,7 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_64_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png)
     
 
 
