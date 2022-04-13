@@ -1,4 +1,4 @@
-![Logo](./docs/img/logos/logo.png)
+![Logo](./docs/img/logos/logo.png#gh-light-mode-only)![Logo](./docs/img/logos/logo_dark.png#gh-dark-mode-only)
 
 **Working with molecular structures in pandas DataFrames**
 
@@ -32,7 +32,7 @@ So, why don't we take pandas to the structural biology world? Working with molec
 
 ## Examples
 
-![3eiy](./docs/img/index/3eiy.png)
+![3eiy](./docs/img/index/3eiy.png#gh-light-mode-only)![3eiy](./docs/img/index/3eiy_dark.png#gh-dark-mode-only)
 
 ```python
 # Initialize a new PandasPdb object
@@ -42,13 +42,13 @@ So, why don't we take pandas to the structural biology world? Working with molec
 >>> ppdb.df['ATOM'].head()
 ```
 
-![3eiy head](./docs/img/index/3eiy_head.png)
+![3eiy head](./docs/img/index/3eiy_head.png#gh-light-mode-only)![3eiy head](./docs/img/index/3eiy_head_dark.png#gh-dark-mode-only)
 
 <br><br>
 <br><br>
 
 
-![3eiy head](./docs/img/index/ligand_rmsd.png)
+![3eiy head](./docs/img/index/ligand_rmsd.png#gh-light-mode-only)![3eiy head](./docs/img/index/ligand_rmsd_dark.png#gh-dark-mode-only)
 
 ```python
 # Load structures from your drive and compute the
