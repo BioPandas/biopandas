@@ -11,6 +11,7 @@ from biopandas.pdb import PandasPdb
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data',
                                  '2jyf.pdb')
 
+
 def test_get_index_df():
     df = PandasPdb().read_pdb(TESTDATA_FILENAME)
     idxs = df.get_model_start_end()["model_idx"]
@@ -28,6 +29,7 @@ def test_get_model():
     MODEL_INDEX = 1
     new_df = df.get_model(MODEL_INDEX)
     assert new_df.df["ATOM"]["model_id"].all() == MODEL_INDEX
+
 
 def test_get_models():
     df = PandasPdb().read_pdb(TESTDATA_FILENAME)
