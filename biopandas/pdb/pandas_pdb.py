@@ -5,23 +5,27 @@
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
+from __future__ import annotations
 
-import pandas as pd
-import numpy as np
-import sys
 import gzip
+import sys
+from copy import deepcopy
+from typing import List
 from warnings import warn
+
+import numpy as np
+import pandas as pd
+
 try:
-    from urllib.request import urlopen
     from urllib.error import HTTPError, URLError
+    from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
-from .engines import pdb_records
-from .engines import pdb_df_columns
-from .engines import amino3to1dict
+
 import warnings
 from distutils.version import LooseVersion
 
+from .engines import amino3to1dict, pdb_df_columns, pdb_records
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -166,7 +170,7 @@ class PandasPdb(object):
         if not self._get_dict:
             self._get_dict = self._init_get_dict()
         if s not in self._get_dict.keys():
-            raise AttributeError('s must be in %s' % self._get_dict.keys())
+            raise AttributeError(f's must be in {self._get_dict.keys()}')
         if not df:
             df = pd.concat(objs=[self.df[i] for i in records])
         return self._get_dict[s](df, invert=invert)
@@ -246,18 +250,16 @@ class PandasPdb(object):
         total = ((df1['x_coord'].values - df2['x_coord'].values)**2 +
                  (df1['y_coord'].values - df2['y_coord'].values)**2 +
                  (df1['z_coord'].values - df2['z_coord'].values)**2)
-        rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
-        return rmsd
+        return round((total.sum() / df1.shape[0])**0.5, 4)
 
     @staticmethod
     def _init_get_dict():
         """Initialize dictionary for filter operations."""
-        get_dict = {'main chain': PandasPdb._get_mainchain,
+        return {'main chain': PandasPdb._get_mainchain,
                     'hydrogen': PandasPdb._get_hydrogen,
                     'c-alpha': PandasPdb._get_calpha,
                     'carbon': PandasPdb._get_carbon,
                     'heavy': PandasPdb._get_heavy}
-        return get_dict
 
     @staticmethod
     def _read_pdb(path):
@@ -270,37 +272,29 @@ class PandasPdb(object):
             openf = gzip.open
         else:
             allowed_formats = ", ".join(('.pdb', '.pdb.gz', '.ent', '.ent.gz'))
-            raise ValueError(
-                ('Wrong file format; allowed file formats are %s'
-                  % allowed_formats)
-            )
+            raise ValueError(f'Wrong file format; allowed file formats are {allowed_formats}')
+
 
         with openf(path, r_mode) as f:
             txt = f.read()
 
         if path.endswith('.gz'):
-            if sys.version_info[0] >= 3:
-                txt = txt.decode('utf-8')
-            else:
-                txt = txt.encode('ascii')
+            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
         return path, txt
 
     @staticmethod
     def _fetch_pdb(pdb_code):
         """Load PDB file from rcsb.org."""
         txt = None
-        url = 'https://files.rcsb.org/download/%s.pdb' % pdb_code.lower()
+        url = f'https://files.rcsb.org/download/{pdb_code.lower()}.pdb'
         try:
             response = urlopen(url)
             txt = response.read()
-            if sys.version_info[0] >= 3:
-                txt = txt.decode('utf-8')
-            else:
-                txt = txt.encode('ascii')
+            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
         except HTTPError as e:
-            print('HTTP Error %s' % e.code)
+            print(f'HTTP Error {e.code}')
         except URLError as e:
-            print('URL Error %s' % e.args)
+            print(f'URL Error {e.args}')
         return url, txt
 
     def _parse_header_code(self):
@@ -312,8 +306,7 @@ class PandasPdb(object):
                       'HEADER'])
             if not header.empty:
                 header = header['entry'].values[0]
-                s = header.split()
-                if s:
+                if s := header.split():
                     code = s[-1].lower()
         return header, code
 
@@ -542,7 +535,7 @@ class PandasPdb(object):
 
         dfs = {r: self.df[r].copy() for r in records if not self.df[r].empty}
 
-        for r in dfs.keys():
+        for r in dfs:
             for col in pdb_records[r]:
                 dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
                 dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
@@ -584,14 +577,104 @@ class PandasPdb(object):
             s = df['OUT'].tolist()
             for idx in range(len(s)):
                 if len(s[idx]) < 80:
-                    s[idx] = '%s%s' % (s[idx], ' ' * (80 - len(s[idx])))
+                    s[idx] = f"{s[idx]}{' ' * (80 - len(s[idx]))}"
             to_write = '\n'.join(s)
             f.write(to_write)
             if append_newline:
-                if gz:
-                    f.write('\n')
-                else:
-                    f.write('\n')
+                f.write('\n')
 
     def parse_sse(self):
         """Parse secondary structure elements"""
+        raise NotImplementedError
+
+    def get_model_start_end(self) -> pd.DataFrame:
+        """Get the start and end of the models contained in the PDB file.
+
+        Extracts model start and end line indexes based on lines labelled 'OTHERS' during parsing.
+
+        Returns
+        ---------
+        pandas.DataFrame : Pandas DataFrame object containing the start and end line indexes of the models.
+        """
+
+        other_records = self.df["OTHERS"]
+
+        idxs = other_records.loc[other_records["record_name"] == "MODEL"]
+        ends = other_records.loc[other_records["record_name"] == "ENDMDL"]
+        idxs.columns = ["record_name", "model_idx", "start_idx"]
+        idxs["end_idx"] = ends.line_idx.values
+        return idxs
+
+    def label_models(self):
+        """Adds a column (`"model_id"`) to the underlying DataFrames containing the model number."""
+        idxs = self.get_model_start_end()
+        # Label ATOMS
+        if "ATOM" in self.df.keys():
+            pdb_df = self.df["ATOM"]
+            idx_map = np.piecewise(
+                np.zeros(len(pdb_df)),
+                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+            self.df["ATOM"]["model_id"] = idx_map
+        # LABEL HETATMS
+        if "HETATM" in self.df.keys():
+            pdb_df = self.df["HETATM"]
+            idx_map = np.piecewise(
+                np.zeros(len(pdb_df)),
+                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+            self.df["HETATM"]["model_id"] = idx_map
+        if "ANISOU" in self.df.keys():
+            pdb_df = self.df["ANISOU"]
+            idx_map = np.piecewise(
+                np.zeros(len(pdb_df)),
+                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+            self.df["ANISOU"]["model_id"] = idx_map
+        return self
+
+    def get_model(self, model_index: int) -> PandasPdb:
+        """Returns a new PandasPDB object with the dataframes subset to the given model index.
+
+        Parameters
+        ----------
+        model_index : int
+            An integer representing the model index to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasPdb : A new PandasPdb object containing the structure subsetted to the given model.
+        """
+
+        df = deepcopy(self)
+        df.label_models()
+
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["model_id"] == model_index]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[df.df["HETATM"]["model_id"] == model_index]
+        if "ANISOU" in df.df.keys():
+            df.df["ANISOU"] = df.df["ANISOU"].loc[df.df["ANISOU"]["model_id"] == model_index]
+        return df
+
+    def get_models(self, model_indices: List[int]) -> PandasPdb:
+        """Returns a new PandasPDB object with the dataframes subset to the given model index.
+
+        Parameters
+        ----------
+        model_index : int
+            An integer representing the model index to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasPdb : A new PandasPdb object containing the structure subsetted to the given model.
+        """
+
+        df = deepcopy(self)
+        df.label_models()
+
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[[x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[[x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]]
+        if "ANISOU" in df.df.keys():
+            df.df["ANISOU"] = df.df["ANISOU"].loc[[x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]]
+        return df
+
