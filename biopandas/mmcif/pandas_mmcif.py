@@ -88,6 +88,23 @@ class PandasMmcif:
         self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
         self._df = self._construct_df(text=self.mmcif_text)
         return self
+    
+    def fetch_af2(self, uniprot_id: str):
+        """Fetches mmCIF file contents from the EBI-DeepMind AlphaFold Structure Database at https://alphafold.ebi.ac.uk/.
+
+        Parameters
+        ----------
+        uniprot_id : str
+            A UniProt Identifier, e.g., "Q5VSL9".
+
+        Returns
+        ---------
+        self
+
+        """
+        self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id)
+        self._df = self._construct_df(text=self.mmcif_text)
+        return self
 
     def _construct_df(self, text: str):
         data = load_cif_data(text)
@@ -119,6 +136,25 @@ class PandasMmcif:
             print(f"HTTP Error {e.code}")
         except URLError as e:
             print(f"URL Error {e.args}")
+        return url, txt
+
+    @staticmethod
+    def _fetch_af2(uniprot_id: str):
+        """Load MMCIF file from https://alphafold.ebi.ac.uk/."""
+        txt = None
+        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v2.cif"
+
+        try:
+            response = urlopen(url)
+            txt = response.read()
+            if sys.version_info[0] >= 3:
+                txt = txt.decode('utf-8')
+            else:
+                txt = txt.encode('ascii')
+        except HTTPError as e:
+            print('HTTP Error %s' % e.code)
+        except URLError as e:
+            print('URL Error %s' % e.args)
         return url, txt
 
     @staticmethod

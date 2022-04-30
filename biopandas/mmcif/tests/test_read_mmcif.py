@@ -28,6 +28,7 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # )
 TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
+TESTDATA_FILENAME_AF = os.path.join(os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif")
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",
@@ -80,6 +81,8 @@ with open(TESTDATA_FILENAME, "r") as f:
 with open(TESTDATA_FILENAME2, "r") as f:
     four_eiy = f.read()
 
+with open(TESTDATA_FILENAME_AF, "r") as f:
+    af2_test_struct = f.read()
 
 def test__read_pdb():
     """Test private _read_pdb"""
@@ -121,6 +124,21 @@ def test_fetch_pdb():
         ppdb.fetch_mmcif("3eiy")
         assert ppdb.mmcif_text == txt
         assert ppdb.mmcif_path == "https://files.rcsb.org/download/3eiy.cif"
+
+
+def test_fetch_af2():
+    """ Test fetch_af2"""
+
+    try:
+        ppdb = PandasMmcif()
+        url, txt = ppdb._fetch_af2("Q5VSL9")
+    except (HTTPError, ConnectionResetError):
+        url, txt = None, None
+    if txt:  # skip if AF DB down
+        txt[:100] == af2_test_struct[:100]
+        ppdb.fetch_af2("Q5VSL9")
+        assert ppdb.mmcif_text == txt
+        assert ppdb.mmcif_path == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
 
 
 def test__read_pdb_gz():
