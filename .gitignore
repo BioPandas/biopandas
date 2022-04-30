@@ -1,4 +1,7 @@
 site
+
+docs/api_subpackages/
+docs/api_modules
 docs/py-docstring-parser/
 docs/site/
 docs/sources/api_modules/

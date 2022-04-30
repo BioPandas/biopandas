@@ -2,7 +2,8 @@
 
 *split_multimol2(mol2_path)*
 
-Splits a multi-mol2 file into individual Mol2 file contents.
+Generator function that
+    splits a multi-mol2 file into individual Mol2 file contents.
 
 **Parameters**
 
