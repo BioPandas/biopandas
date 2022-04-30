@@ -25,7 +25,7 @@ pd_version = LooseVersion(pd.__version__)
 
 
 class PandasMmcif:
-    def __init__(self, use_auth: bool = True):
+    def __init__(self, use_auth: bool = True, af2_version: int = 2):
         self._df = None
         self.mmcif_text = ""
         self.header = ""
@@ -33,6 +33,7 @@ class PandasMmcif:
         self.mmcif_path = ""
         self.auth = use_auth
         self._get_dict = {}
+        self.af2_version = af2_version
 
     @property
     def df(self):
@@ -143,11 +144,10 @@ class PandasMmcif:
             print(f"URL Error {e.args}")
         return url, txt
 
-    @staticmethod
-    def _fetch_af2(uniprot_id: str):
+    def _fetch_af2(self, uniprot_id: str):
         """Load MMCIF file from https://alphafold.ebi.ac.uk/."""
         txt = None
-        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v2.cif"
+        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v{self.af2_version}.cif"
 
         try:
             response = urlopen(url)

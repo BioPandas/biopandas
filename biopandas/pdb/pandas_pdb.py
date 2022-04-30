@@ -50,13 +50,14 @@ class PandasPdb(object):
         PDB code
 
     """
-    def __init__(self):
+    def __init__(self, af2_version: int = 2):
         self._df = {}
         self.pdb_text = ''
         self.header = ''
         self.code = ''
         self._get_dict = {}
         self.pdb_path = ''
+        self.af2_version = af2_version
 
     @property
     def df(self):
@@ -328,11 +329,10 @@ class PandasPdb(object):
             print('URL Error %s' % e.args)
         return url, txt
 
-    @staticmethod
-    def _fetch_af2(uniprot_id: str):
+    def _fetch_af2(self, uniprot_id: str):
         """Load PDB file from https://alphafold.ebi.ac.uk/."""
         txt = None
-        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v2.pdb"
+        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v{self.af2_version}.pdb"
         try:
             response = urlopen(url)
             txt = response.read()
