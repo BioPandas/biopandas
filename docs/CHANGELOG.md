@@ -3,24 +3,30 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
-### 0.3.0dev0 (TBD)
+### 0.3.0 (04-06-2022)
 
 ##### Downloads
 
-- 
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.3.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz)
+
+
 
 ##### New Features
 
-- -
+- Adds support for parsing mmCIF protein structure files (via [Arian Jamasb](https://github.com/a-r-j), PR #[94](https://github.com/rasbt/biopandas/pull/94/files))
 
 ##### Changes
 
-- 
+- -
 
 ##### Bug Fixes
 
-- Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via PR #[90](https://github.com/rasbt/biopandas/pull/90/files))
-- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via PR #[96](https://github.com/rasbt/biopandas/pull/96/files)) 
+- Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via  PR #[90](https://github.com/rasbt/biopandas/pull/90/files))
+- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via [Arian Jamasb](https://github.com/a-r-j) PR #[96](https://github.com/rasbt/biopandas/pull/96/files)) 
+
+
 
 ### 0.2.9 (08-30-2021)
 
@@ -31,16 +37,16 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
-- Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR [82](https://github.com/rasbt/biopandas/pull/82/files)
-- Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR [87](https://github.com/rasbt/biopandas/pull/87/files)
+- Now also allow `.ent` and `.ent.gz` file endings for PDB files.  (via PR #[82](https://github.com/rasbt/biopandas/pull/82/files)
+- Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR #[87](https://github.com/rasbt/biopandas/pull/87/files)
 
 ##### Bug Fixes
 
-- -
+  - -
 
 ### 0.2.8 (03-30-2021)
 
@@ -51,16 +57,15 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- A `PandasPdb.read_pdb_from_list` method was added analogous to the existing `PandasMol2.read_mol2_from_list` (via PR [72](https://github.com/rasbt/biopandas/pull/72/files) by [dominiquesydow](https://github.com/dominiquesydow))
+- A `PandasPdb.read_pdb_from_list` method was added analogous to the existing `PandasMol2.read_mol2_from_list` (via PR #[72](https://github.com/rasbt/biopandas/pull/72/files) by [dominiquesydow](https://github.com/dominiquesydow))
 
 ##### Changes
 
-- `ValueError` raising and improved file format error messages for `read_pdb` and `read_mol2` functionality. (via PR [73](https://github.com/rasbt/biopandas/pull/73/files) by [dominiquesydow](https://github.com/dominiquesydow))
+- `ValueError` raising and improved file format error messages for `read_pdb` and `read_mol2` functionality. (via PR #[73](https://github.com/rasbt/biopandas/pull/73/files) by [dominiquesydow](https://github.com/dominiquesydow))
 
 ##### Bug Fixes
 
-- -
-
+  - -
 
 ### 0.2.7 (08-04-2020)
 
@@ -71,17 +76,15 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
-- -
+  - -
 
 ##### Bug Fixes
 
 - Fix Manifest file to include license file in the PyPI tar.gz file so that BioPandas can be packaged by conda-forge.
-
-
 
 ### 0.2.6 (08-03-2020)
 
@@ -92,7 +95,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
@@ -101,9 +104,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-- -
-
-
+  - -
 
 ### 0.2.5 (07-09-2019)
 
@@ -114,17 +115,15 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
-- -
+  - -
 
 ##### Bug Fixes
 
-- The `PandasPdb.amino3to1` method now also considers insertion codes when converting the amino acid codes; before, inserted amino acides were skipped. 
-
-
+- The `PandasPdb.amino3to1` method now also considers insertion codes when converting the amino acid codes; before, inserted amino acides were skipped.
 
 ### 0.2.4 (02-05-2019)
 
@@ -135,7 +134,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
@@ -143,9 +142,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-- -
-
-
+  - -
 
 ### 0.2.3 (03-29-2018)
 
@@ -156,7 +153,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
@@ -170,8 +167,6 @@ The CHANGELOG for the current development version is available at
 
 -
 
-
-
 ### 0.2.2 (06-07-2017)
 
 ##### Downloads
@@ -181,17 +176,16 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
--  Raises a meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
--  Added `PandasPdb.pdb_path` and `PandasMol2.mol2_path` attributes that store the location of the data file last read.
+- Raises a meaningful error message if attempting to overwrite the `df` attributes of `PandasMol2` and `PandasPdb` directly.
+- Added `PandasPdb.pdb_path` and `PandasMol2.mol2_path` attributes that store the location of the data file last read.
 
 ##### Bug Fixes
 
 - The `rmsd` methods of `PandasMol2` and `PandasPdb` don't return a NaN anymore if the array indices of to structures are different.
-
 
 ### 0.2.1  (2017-05-11)
 
@@ -202,20 +196,17 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- -
+  - -
 
 ##### Changes
 
 - The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now returns a pandas `DataFrame` instead of a pandas `Series` object. The returned data frame has two columns, `'chain_id'` and `'residue_name'`, where the former contains the chain ID of the amino acid and the latter contains the 1-letter amino acid code, respectively.
--  Significant speed improvements of the `distance` method of both `PandasPdb` and `PandasMol2` (now about 300 percent faster than previously).
-
+- Significant speed improvements of the `distance` method of both `PandasPdb` and `PandasMol2` (now about 300 percent faster than previously).
 
 ##### Bug Fixes
 
 - The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now handles multi-chain proteins correctly.
 - The `amino3to1` method of `biopandas.pdb.PandasPDB` objects now also works as expected if the `'ATOM'` entry DataFrame contains disordered DataFrame indices or duplicate DataFrame index values.
-
-
 
 ### 0.2.0 (2017-04-02)
 
@@ -230,7 +221,6 @@ The CHANGELOG for the current development version is available at
 - Added a `distance` method to `PandasPdb` data frames to compute the Euclidean distance between atoms and a reference point.
 - Added the `PandasMol2` class for working with Tripos MOL2 files in pandas DataFrames.
 
-
 ##### Changes
 
 - `PandasPDB` was renamed to `PandasPdb`.
@@ -238,8 +228,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-- -
-
+  - -
 
 ### 0.1.5 (2016-11-19)
 
@@ -261,9 +250,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-- -
-
-
+  - -
 
 ### 0.1.4 (2015-11-24)
 
@@ -285,8 +272,6 @@ The CHANGELOG for the current development version is available at
 
 -
 
-
-
 ### 0.1.3 (2015-11-23)
 
 ##### New Features
@@ -301,9 +286,6 @@ The CHANGELOG for the current development version is available at
 
 - Exception handling in tests if PDB goes down (which just happened).
 - Added a separate ANISOU engine to handle those records correctly.
-
-
-
 
 ### 0.1.2 (2015-11-23)
 

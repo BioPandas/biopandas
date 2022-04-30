@@ -379,11 +379,11 @@ if __name__ == "__main__":
                         default='../../biopandas/',
                         help="Path to the package's enclosing directory")
     parser.add_argument('-o1', '--output_module_api',
-                        default='../docs/sources/api_modules',
+                        default='./api_modules',
                         help=('Target directory for the module-level'
                               ' API Markdown files'))
     parser.add_argument('-o2', '--output_subpackage_api',
-                        default='../docs/sources/api_subpackages',
+                        default='./api_subpackages',
                         help=('Target directory for the'
                               'subpackage-level API Markdown files'))
     parser.add_argument('-c', '--clean',
