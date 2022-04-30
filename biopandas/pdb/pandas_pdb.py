@@ -13,12 +13,8 @@ from warnings import warn
 import numpy as np
 import pandas as pd
 
-try:
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
-
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 import warnings
 from distutils.version import LooseVersion
 

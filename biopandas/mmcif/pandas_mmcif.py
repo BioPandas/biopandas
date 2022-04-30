@@ -13,11 +13,8 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 
-try:
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
-except ImportError:
-    raise ValueError("Python 2.7 is no longer supported")
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 import warnings
 from distutils.version import LooseVersion

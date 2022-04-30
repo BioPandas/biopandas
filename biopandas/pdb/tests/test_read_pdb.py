@@ -13,11 +13,8 @@ from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
 from nose.tools import raises
 
-try:
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import HTTPError, URLError, urlopen  # Python 2.7 compatib
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
