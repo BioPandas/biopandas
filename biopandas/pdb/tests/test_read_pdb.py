@@ -116,7 +116,7 @@ def test_fetch_af2():
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct[:100]
-        ppdb.fetch_af2('Q5VSL9')
+        ppdb.fetch_pdb(uniprot_id='Q5VSL9', source="alphafold2")
         assert ppdb.pdb_text == txt
         assert ppdb.pdb_path == 'https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb'
 

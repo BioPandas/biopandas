@@ -8,19 +8,14 @@
 
 import gzip
 import sys
-from typing import Dict
+import warnings
+from distutils.version import LooseVersion
+from typing import Dict, Optional
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
-
-try:
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
-except ImportError:
-    raise ValueError("Python 2.7 is no longer supported")
-
-import warnings
-from distutils.version import LooseVersion
 
 from ..pdb.engines import amino3to1dict
 from .engines import ANISOU_DF_COLUMNS, mmcif_col_types
@@ -72,37 +67,47 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def fetch_mmcif(self, pdb_code: str):
-        """Fetches mmCIF file contents from the Protein Databank at rcsb.org.
+    def fetch_mmcif(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
+        """Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+.
 
         Parameters
         ----------
-        pdb_code : str
-            A 4-letter PDB code, e.g., "3eiy".
+        pdb_code : str, optional
+            A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB. Defaults to `None`.
+
+        uniprot_id : str, optional
+            A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
+
+        source : str
+            The source to retrieve the structure from (`"pdb"` or `"alphafold2"`). Defaults to `"pdb"`.
 
         Returns
         ---------
         self
 
         """
-        self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
-        self._df = self._construct_df(text=self.mmcif_text)
-        return self
-    
-    def fetch_af2(self, uniprot_id: str):
-        """Fetches mmCIF file contents from the EBI-DeepMind AlphaFold Structure Database at https://alphafold.ebi.ac.uk/.
+        # Sanitize input
+        invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
+        invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
+        invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
+        invalid_input_combination_2 = pdb_code is not None and source == "alphafold2"
 
-        Parameters
-        ----------
-        uniprot_id : str
-            A UniProt Identifier, e.g., "Q5VSL9".
+        if invalid_input_identifier_1 or invalid_input_identifier_2:
+            raise ValueError("Please provide either a PDB code or a UniProt ID.")
 
-        Returns
-        ---------
-        self
+        if invalid_input_combination_1 :
+            raise ValueError("Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
+        elif invalid_input_combination_2 :
+            raise ValueError("Please use a 'uniprot_id' instead of 'pdb_code' for source='alphafold2'.")
 
-        """
-        self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id)
+        if source == "pdb":
+            self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
+        elif source == "alphafold2":
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id)
+        else:
+            raise ValueError(f"Invalid source: {source}. Please use one of 'pdb' or 'alphafold2'.")
+
         self._df = self._construct_df(text=self.mmcif_text)
         return self
 

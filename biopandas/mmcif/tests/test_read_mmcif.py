@@ -136,7 +136,7 @@ def test_fetch_af2():
         url, txt = None, None
     if txt:  # skip if AF DB down
         txt[:100] == af2_test_struct[:100]
-        ppdb.fetch_af2("Q5VSL9")
+        ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2")
         assert ppdb.mmcif_text == txt
         assert ppdb.mmcif_path == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
 
