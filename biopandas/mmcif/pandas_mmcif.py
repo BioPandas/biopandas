@@ -25,7 +25,7 @@ pd_version = LooseVersion(pd.__version__)
 
 
 class PandasMmcif:
-    def __init__(self, use_auth: bool = True, af2_version: int = 2):
+    def __init__(self, use_auth: bool = True):
         self._df = None
         self.mmcif_text = ""
         self.header = ""
@@ -33,7 +33,6 @@ class PandasMmcif:
         self.mmcif_path = ""
         self.auth = use_auth
         self._get_dict = {}
-        self.af2_version = af2_version
 
     @property
     def df(self):
@@ -68,7 +67,7 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def fetch_mmcif(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
+    def fetch_mmcif(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb", af2_version: int = 2):
         """Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
 .
 
@@ -83,6 +82,8 @@ class PandasMmcif:
         source : str
             The source to retrieve the structure from (`"pdb"` or `"alphafold2"`). Defaults to `"pdb"`.
 
+        af2_version : int
+            The release version of the AlphaFold2 database to use. Defaults to `2` (latest at time of last update: 01/05/22).
         Returns
         ---------
         self
@@ -105,7 +106,7 @@ class PandasMmcif:
         if source == "pdb":
             self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
         elif source == "alphafold2":
-            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id)
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
         else:
             raise ValueError(f"Invalid source: {source}. Please use one of 'pdb' or 'alphafold2'.")
 
@@ -144,10 +145,11 @@ class PandasMmcif:
             print(f"URL Error {e.args}")
         return url, txt
 
-    def _fetch_af2(self, uniprot_id: str):
+    @staticmethod
+    def _fetch_af2(uniprot_id: str, af2_version: int = 2):
         """Load MMCIF file from https://alphafold.ebi.ac.uk/."""
         txt = None
-        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v{self.af2_version}.cif"
+        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v{af2_version}.cif"
 
         try:
             response = urlopen(url)
