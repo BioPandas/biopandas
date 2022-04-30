@@ -13,11 +13,8 @@ from biopandas.mmcif import PandasMmcif
 from biopandas.testutils import assert_raises
 from nose.tools import raises
 
-try:
-    from urllib.error import HTTPError
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import HTTPError  # Python 2.7 compatib
+from urllib.error import HTTPError
+from urllib.request import urlopen
 
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
