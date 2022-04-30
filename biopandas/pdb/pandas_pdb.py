@@ -6,22 +6,23 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import pandas as pd
-import numpy as np
-import sys
 import gzip
+import sys
 from warnings import warn
+
+import numpy as np
+import pandas as pd
+
 try:
-    from urllib.request import urlopen
     from urllib.error import HTTPError, URLError
+    from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
-from .engines import pdb_records
-from .engines import pdb_df_columns
-from .engines import amino3to1dict
+
 import warnings
 from distutils.version import LooseVersion
 
+from .engines import amino3to1dict, pdb_df_columns, pdb_records
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -124,6 +125,23 @@ class PandasPdb(object):
 
         """
         self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
+        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
+        return self
+
+    def fetch_af2(self, uniprot_id: str):
+        """Fetches PDB file contents from the EBI-DeepMind AlphaFold Structure Database at https://alphafold.ebi.ac.uk/.
+
+        Parameters
+        ----------
+        uniprot_id : str
+            A UniProt Identifier, e.g., "Q5VSL9".
+
+        Returns
+        ---------
+        self
+
+        """
+        self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id)
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
 
@@ -302,6 +320,25 @@ class PandasPdb(object):
         except URLError as e:
             print('URL Error %s' % e.args)
         return url, txt
+
+    @staticmethod
+    def _fetch_af2(uniprot_id: str):
+        """Load PDB file from https://alphafold.ebi.ac.uk/."""
+        txt = None
+        url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v2.pdb"
+        try:
+            response = urlopen(url)
+            txt = response.read()
+            if sys.version_info[0] >= 3:
+                txt = txt.decode('utf-8')
+            else:
+                txt = txt.encode('ascii')
+        except HTTPError as e:
+            print('HTTP Error %s' % e.code)
+        except URLError as e:
+            print('URL Error %s' % e.args)
+        return url, txt
+
 
     def _parse_header_code(self):
         """Extract header information and PDB code."""
