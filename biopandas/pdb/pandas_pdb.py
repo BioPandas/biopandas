@@ -16,12 +16,9 @@ from warnings import warn
 import numpy as np
 import pandas as pd
 
-try:
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatible
 
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 import warnings
 from distutils.version import LooseVersion
 
@@ -57,13 +54,14 @@ class PandasPdb(object):
         PDB code
 
     """
+
     def __init__(self):
         self._df = {}
-        self.pdb_text = ''
-        self.header = ''
-        self.code = ''
+        self.pdb_text = ""
+        self.header = ""
+        self.code = ""
         self._get_dict = {}
-        self.pdb_path = ''
+        self.pdb_path = ""
 
     @property
     def df(self):
@@ -73,9 +71,11 @@ class PandasPdb(object):
     @df.setter
     def df(self, value):
         """Assign a new value to the pandas DataFrame"""
-        raise AttributeError('Please use `PandasPdb._df = ... ` instead\n'
-                             'of `PandasPdb.df = ... ` if you are sure that\n'
-                             'you want to overwrite the `df` attribute.')
+        raise AttributeError(
+            "Please use `PandasPdb._df = ... ` instead\n"
+            "of `PandasPdb.df = ... ` if you are sure that\n"
+            "you want to overwrite the `df` attribute."
+        )
         # self._df = value
 
     def read_pdb(self, path):
@@ -109,7 +109,7 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_text = ''.join(pdb_lines)
+        self.pdb_text = "".join(pdb_lines)
         self._df = self._construct_df(pdb_lines)
         self.header, self.code = self._parse_header_code()
         return self
@@ -131,7 +131,7 @@ class PandasPdb(object):
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
 
-    def get(self, s, df=None, invert=False, records=('ATOM', 'HETATM')):
+    def get(self, s, df=None, invert=False, records=("ATOM", "HETATM")):
         """Filter PDB DataFrames by properties
 
         Parameters
@@ -161,21 +161,24 @@ class PandasPdb(object):
 
         """
         if isinstance(records, str):
-            warnings.warn('Using a string as `records` argument is '
-                          'deprecated and will not be supported in future'
-                          ' versions. Please use a tuple or'
-                          ' other iterable instead', DeprecationWarning)
+            warnings.warn(
+                "Using a string as `records` argument is "
+                "deprecated and will not be supported in future"
+                " versions. Please use a tuple or"
+                " other iterable instead",
+                DeprecationWarning,
+            )
             records = (records,)
 
         if not self._get_dict:
             self._get_dict = self._init_get_dict()
         if s not in self._get_dict.keys():
-            raise AttributeError(f's must be in {self._get_dict.keys()}')
+            raise AttributeError(f"s must be in {self._get_dict.keys()}")
         if not df:
             df = pd.concat(objs=[self.df[i] for i in records])
         return self._get_dict[s](df, invert=invert)
 
-    def impute_element(self, records=('ATOM', 'HETATM'), inplace=False):
+    def impute_element(self, records=("ATOM", "HETATM"), inplace=False):
         """Impute element_symbol from atom_name section.
 
         Parameters
@@ -201,11 +204,9 @@ class PandasPdb(object):
                 t[d] = self.df[d].copy()
 
         for sec in records:
-            t[sec]['element_symbol'] = \
-                t[sec][['atom_name', 'element_symbol']].\
-                apply(lambda x: x[0][1]
-                      if len(x[1]) == 3
-                      else x[0][0], axis=1)
+            t[sec]["element_symbol"] = t[sec][["atom_name", "element_symbol"]].apply(
+                lambda x: x[0][1] if len(x[1]) == 3 else x[0][0], axis=1
+            )
         return t
 
     @staticmethod
@@ -238,74 +239,81 @@ class PandasPdb(object):
 
         """
         if df1.shape[0] != df2.shape[0]:
-            raise AttributeError('DataFrames have unequal lengths')
+            raise AttributeError("DataFrames have unequal lengths")
         get_dict = PandasPdb._init_get_dict()
         if s:
             if s not in get_dict.keys():
-                raise AttributeError('s must be in '
-                                     '%s or None' % get_dict.keys())
+                raise AttributeError("s must be in " "%s or None" % get_dict.keys())
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
-        total = ((df1['x_coord'].values - df2['x_coord'].values)**2 +
-                 (df1['y_coord'].values - df2['y_coord'].values)**2 +
-                 (df1['z_coord'].values - df2['z_coord'].values)**2)
-        return round((total.sum() / df1.shape[0])**0.5, 4)
+        total = (
+            (df1["x_coord"].values - df2["x_coord"].values) ** 2
+            + (df1["y_coord"].values - df2["y_coord"].values) ** 2
+            + (df1["z_coord"].values - df2["z_coord"].values) ** 2
+        )
+        return round((total.sum() / df1.shape[0]) ** 0.5, 4)
 
     @staticmethod
     def _init_get_dict():
         """Initialize dictionary for filter operations."""
-        return {'main chain': PandasPdb._get_mainchain,
-                    'hydrogen': PandasPdb._get_hydrogen,
-                    'c-alpha': PandasPdb._get_calpha,
-                    'carbon': PandasPdb._get_carbon,
-                    'heavy': PandasPdb._get_heavy}
+        return {
+            "main chain": PandasPdb._get_mainchain,
+            "hydrogen": PandasPdb._get_hydrogen,
+            "c-alpha": PandasPdb._get_calpha,
+            "carbon": PandasPdb._get_carbon,
+            "heavy": PandasPdb._get_heavy,
+        }
 
     @staticmethod
     def _read_pdb(path):
         """Read PDB file from local drive."""
-        r_mode = 'r'
-        if path.endswith(('.pdb', '.ent')):
+        r_mode = "r"
+        if path.endswith((".pdb", ".ent")):
             openf = open
-        elif path.endswith(('pdb.gz', '.ent.gz')):
-            r_mode = 'rb'
+        elif path.endswith(("pdb.gz", ".ent.gz")):
+            r_mode = "rb"
             openf = gzip.open
         else:
-            allowed_formats = ", ".join(('.pdb', '.pdb.gz', '.ent', '.ent.gz'))
-            raise ValueError(f'Wrong file format; allowed file formats are {allowed_formats}')
-
+            allowed_formats = ", ".join((".pdb", ".pdb.gz", ".ent", ".ent.gz"))
+            raise ValueError(
+                f"Wrong file format; allowed file formats are {allowed_formats}"
+            )
 
         with openf(path, r_mode) as f:
             txt = f.read()
 
-        if path.endswith('.gz'):
-            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
+        if path.endswith(".gz"):
+            txt = (
+                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+            )
         return path, txt
 
     @staticmethod
     def _fetch_pdb(pdb_code):
         """Load PDB file from rcsb.org."""
         txt = None
-        url = f'https://files.rcsb.org/download/{pdb_code.lower()}.pdb'
+        url = f"https://files.rcsb.org/download/{pdb_code.lower()}.pdb"
         try:
             response = urlopen(url)
             txt = response.read()
-            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
+            txt = (
+                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+            )
         except HTTPError as e:
-            print(f'HTTP Error {e.code}')
+            print(f"HTTP Error {e.code}")
         except URLError as e:
-            print(f'URL Error {e.args}')
+            print(f"URL Error {e.args}")
         return url, txt
 
     def _parse_header_code(self):
         """Extract header information and PDB code."""
-        code, header = '', ''
-        if 'OTHERS' in self.df:
+        code, header = "", ""
+        if "OTHERS" in self.df:
 
-            header = (self.df['OTHERS'][self.df['OTHERS']['record_name'] ==
-                      'HEADER'])
+            header = self.df["OTHERS"][self.df["OTHERS"]["record_name"] == "HEADER"]
             if not header.empty:
-                header = header['entry'].values[0]
+                header = header["entry"].values[0]
                 if s := header.split():
                     code = s[-1].lower()
         return header, code
@@ -314,92 +322,97 @@ class PandasPdb(object):
     def _get_mainchain(df, invert):
         """Return only main chain atom entries from a DataFrame"""
         if invert:
-            mc = df[(df['atom_name'] != 'C') &
-                    (df['atom_name'] != 'O') &
-                    (df['atom_name'] != 'N') &
-                    (df['atom_name'] != 'CA')]
+            mc = df[
+                (df["atom_name"] != "C")
+                & (df["atom_name"] != "O")
+                & (df["atom_name"] != "N")
+                & (df["atom_name"] != "CA")
+            ]
         else:
-            mc = df[(df['atom_name'] == 'C') |
-                    (df['atom_name'] == 'O') |
-                    (df['atom_name'] == 'N') |
-                    (df['atom_name'] == 'CA')]
+            mc = df[
+                (df["atom_name"] == "C")
+                | (df["atom_name"] == "O")
+                | (df["atom_name"] == "N")
+                | (df["atom_name"] == "CA")
+            ]
         return mc
 
     @staticmethod
     def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
         if invert:
-            return df[(df['element_symbol'] != 'H')]
+            return df[(df["element_symbol"] != "H")]
         else:
-            return df[(df['element_symbol'] == 'H')]
+            return df[(df["element_symbol"] == "H")]
 
     @staticmethod
     def _get_heavy(df, invert):
         """Return only heavy atom entries from a DataFrame"""
         if invert:
-            return df[df['element_symbol'] == 'H']
+            return df[df["element_symbol"] == "H"]
         else:
-            return df[df['element_symbol'] != 'H']
+            return df[df["element_symbol"] != "H"]
 
     @staticmethod
     def _get_calpha(df, invert):
         """Return c-alpha atom entries from a DataFrame"""
         if invert:
-            return df[df['atom_name'] != 'CA']
+            return df[df["atom_name"] != "CA"]
         else:
-            return df[df['atom_name'] == 'CA']
+            return df[df["atom_name"] == "CA"]
 
     @staticmethod
     def _get_carbon(df, invert):
         """Return carbon atom entries from a DataFrame"""
         if invert:
-            return df[df['element_symbol'] != 'C']
+            return df[df["element_symbol"] != "C"]
         else:
-            return df[df['element_symbol'] == 'C']
+            return df[df["element_symbol"] == "C"]
 
     @staticmethod
     def _construct_df(pdb_lines):
         """Construct DataFrames from list of PDB lines."""
         valids = tuple(pdb_records.keys())
         line_lists = {r: [] for r in valids}
-        line_lists['OTHERS'] = []
+        line_lists["OTHERS"] = []
         for line_num, line in enumerate(pdb_lines):
             if line.strip():
                 if line.startswith(valids):
                     record = line[:6].rstrip()
-                    line_ele = ['' for _ in range(len(
-                        pdb_records[record]) + 1)]
+                    line_ele = ["" for _ in range(len(pdb_records[record]) + 1)]
                     for idx, ele in enumerate(pdb_records[record]):
-                        line_ele[idx] = (line[ele['line'][0]:ele['line'][1]]
-                                         .strip())
+                        line_ele[idx] = line[ele["line"][0] : ele["line"][1]].strip()
                     line_ele[-1] = line_num
                     line_lists[record].append(line_ele)
                 else:
-                    line_lists['OTHERS'].append([line[:6].rstrip(),
-                                                line[6:-1].rstrip(), line_num])
+                    line_lists["OTHERS"].append(
+                        [line[:6].rstrip(), line[6:-1].rstrip(), line_num]
+                    )
 
         dfs = {}
         for r in line_lists.items():
-            df = pd.DataFrame(r[1], columns=[c['id'] for c in
-                                             pdb_records[r[0]]] + ['line_idx'])
+            df = pd.DataFrame(
+                r[1], columns=[c["id"] for c in pdb_records[r[0]]] + ["line_idx"]
+            )
             for c in pdb_records[r[0]]:
                 try:
-                    df[c['id']] = df[c['id']].astype(c['type'])
+                    df[c["id"]] = df[c["id"]].astype(c["type"])
                 except ValueError:
                     # expect ValueError if float/int columns are empty strings
-                    df[c['id']] = pd.Series(np.nan, index=df.index)
+                    df[c["id"]] = pd.Series(np.nan, index=df.index)
 
             dfs[r[0]] = df
 
         # issue a warning if no atoms have been loaded
-        if len(dfs['ATOM']) == 0:
-            warnings.warn('No ATOM entries have been loaded. '
-                          'Is the input file/text in the pdb format?')
+        if len(dfs["ATOM"]) == 0:
+            warnings.warn(
+                "No ATOM entries have been loaded. "
+                "Is the input file/text in the pdb format?"
+            )
 
         return dfs
 
-    def amino3to1(self, record='ATOM',
-                  residue_col='residue_name', fillna='?'):
+    def amino3to1(self, record="ATOM", residue_col="residue_name", fillna="?"):
         """Creates 1-letter amino acid codes from DataFrame
 
         Non-canonical amino-acids are converted as follows:
@@ -429,23 +442,21 @@ class PandasPdb(object):
 
         """
         tmp = self.df[record]
-        cmp = 'placeholder'
+        cmp = "placeholder"
         indices = []
 
-        residue_number_insertion = (tmp['residue_number'].astype(str)
-                                    + tmp['insertion'])
+        residue_number_insertion = tmp["residue_number"].astype(str) + tmp["insertion"]
 
         for num, ind in zip(residue_number_insertion, np.arange(tmp.shape[0])):
             if num != cmp:
                 indices.append(ind)
             cmp = num
 
-        transl = tmp.iloc[indices][residue_col].map(
-            amino3to1dict).fillna(fillna)
+        transl = tmp.iloc[indices][residue_col].map(amino3to1dict).fillna(fillna)
 
-        return pd.concat((tmp.iloc[indices]['chain_id'], transl), axis=1)
+        return pd.concat((tmp.iloc[indices]["chain_id"], transl), axis=1)
 
-    def distance(self, xyz=(0.00, 0.00, 0.00), records=('ATOM', 'HETATM')):
+    def distance(self, xyz=(0.00, 0.00, 0.00), records=("ATOM", "HETATM")):
         """Computes Euclidean distance between atoms and a 3D point.
 
         Parameters
@@ -468,17 +479,22 @@ class PandasPdb(object):
         """
 
         if isinstance(records, str):
-            warnings.warn('Using a string as `records` argument is '
-                          'deprecated and will not be supported in future'
-                          ' versions. Please use a tuple or'
-                          ' other iterable instead', DeprecationWarning)
+            warnings.warn(
+                "Using a string as `records` argument is "
+                "deprecated and will not be supported in future"
+                " versions. Please use a tuple or"
+                " other iterable instead",
+                DeprecationWarning,
+            )
             records = (records,)
 
         df = pd.concat(objs=[self.df[i] for i in records])
 
-        return np.sqrt(np.sum(df[[
-            'x_coord', 'y_coord', 'z_coord']]
-            .subtract(xyz, axis=1)**2, axis=1))
+        return np.sqrt(
+            np.sum(
+                df[["x_coord", "y_coord", "z_coord"]].subtract(xyz, axis=1) ** 2, axis=1
+            )
+        )
 
     @staticmethod
     def distance_df(df, xyz=(0.00, 0.00, 0.00)):
@@ -500,9 +516,11 @@ class PandasPdb(object):
             distance between the atoms in the record section and `xyz`.
 
         """
-        return np.sqrt(np.sum(df[[
-            'x_coord', 'y_coord', 'z_coord']]
-            .subtract(xyz, axis=1)**2, axis=1))
+        return np.sqrt(
+            np.sum(
+                df[["x_coord", "y_coord", "z_coord"]].subtract(xyz, axis=1) ** 2, axis=1
+            )
+        )
 
     def to_pdb(self, path, records=None, gz=False, append_newline=True):
         """Write record DataFrames to a PDB file or gzipped PDB file.
@@ -526,10 +544,10 @@ class PandasPdb(object):
         """
         if gz:
             openf = gzip.open
-            w_mode = 'wt'
+            w_mode = "wt"
         else:
             openf = open
-            w_mode = 'w'
+            w_mode = "w"
         if not records:
             records = self.df.keys()
 
@@ -537,51 +555,53 @@ class PandasPdb(object):
 
         for r in dfs:
             for col in pdb_records[r]:
-                dfs[r][col['id']] = dfs[r][col['id']].apply(col['strf'])
-                dfs[r]['OUT'] = pd.Series('', index=dfs[r].index)
+                dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
+                dfs[r]["OUT"] = pd.Series("", index=dfs[r].index)
 
             for c in dfs[r].columns:
                 # fix issue where coordinates with four or more digits would
                 # cause issues because the columns become too wide
-                if c in {'x_coord', 'y_coord', 'z_coord'}:
+                if c in {"x_coord", "y_coord", "z_coord"}:
                     for idx in range(dfs[r][c].values.shape[0]):
                         if len(dfs[r][c].values[idx]) > 8:
-                            dfs[r][c].values[idx] = \
-                                str(dfs[r][c].values[idx]).strip()
-                if c in {'line_idx', 'OUT'}:
+                            dfs[r][c].values[idx] = str(dfs[r][c].values[idx]).strip()
+                if c in {"line_idx", "OUT"}:
                     pass
-                elif r in {'ATOM', 'HETATM'} and c not in pdb_df_columns:
-                    warn('Column %s is not an expected column and'
-                         ' will be skipped.' % c)
+                elif r in {"ATOM", "HETATM"} and c not in pdb_df_columns:
+                    warn(
+                        "Column %s is not an expected column and" " will be skipped." % c
+                    )
                 else:
-                    dfs[r]['OUT'] = dfs[r]['OUT'] + dfs[r][c]
+                    dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
 
-        if pd_version < LooseVersion('0.17.0'):
-            warn("You are using an old pandas version (< 0.17)"
-                 " that relies on the old sorting syntax."
-                 " Please consider updating your pandas"
-                 " installation to a more recent version.",
-                 DeprecationWarning)
-            dfs.sort(columns='line_idx', inplace=True)
+        if pd_version < LooseVersion("0.17.0"):
+            warn(
+                "You are using an old pandas version (< 0.17)"
+                " that relies on the old sorting syntax."
+                " Please consider updating your pandas"
+                " installation to a more recent version.",
+                DeprecationWarning,
+            )
+            dfs.sort(columns="line_idx", inplace=True)
 
-        elif pd_version < LooseVersion('0.23.0'):
+        elif pd_version < LooseVersion("0.23.0"):
             df = pd.concat(dfs)
 
         else:
             df = pd.concat(dfs, sort=False)
 
-        df.sort_values(by='line_idx', inplace=True)
+        df.sort_values(by="line_idx", inplace=True)
 
         with openf(path, w_mode) as f:
 
-            s = df['OUT'].tolist()
+            s = df["OUT"].tolist()
             for idx in range(len(s)):
                 if len(s[idx]) < 80:
                     s[idx] = f"{s[idx]}{' ' * (80 - len(s[idx]))}"
-            to_write = '\n'.join(s)
+            to_write = "\n".join(s)
             f.write(to_write)
             if append_newline:
-                f.write('\n')
+                f.write("\n")
 
     def parse_sse(self):
         """Parse secondary structure elements"""
@@ -590,11 +610,13 @@ class PandasPdb(object):
     def get_model_start_end(self) -> pd.DataFrame:
         """Get the start and end of the models contained in the PDB file.
 
-        Extracts model start and end line indexes based on lines labelled 'OTHERS' during parsing.
+        Extracts model start and end line indexes based
+          on lines labelled 'OTHERS' during parsing.
 
         Returns
         ---------
-        pandas.DataFrame : Pandas DataFrame object containing the start and end line indexes of the models.
+        pandas.DataFrame : Pandas DataFrame object containing
+          the start and end line indexes of the models.
         """
 
         other_records = self.df["OTHERS"]
@@ -606,27 +628,52 @@ class PandasPdb(object):
         return idxs
 
     def label_models(self):
-        """Adds a column (`"model_id"`) to the underlying DataFrames containing the model number."""
+        """Adds a column (`"model_id"`) to the underlying
+        DataFrames containing the model number."""
         idxs = self.get_model_start_end()
         # Label ATOMS
         if "ATOM" in self.df.keys():
             pdb_df = self.df["ATOM"]
             idx_map = np.piecewise(
                 np.zeros(len(pdb_df)),
-                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+                [
+                    (pdb_df.line_idx.values >= start_idx)
+                    & (pdb_df.line_idx.values <= end_idx)
+                    for start_idx, end_idx in zip(
+                        idxs.start_idx.values, idxs.end_idx.values
+                    )
+                ],
+                idxs.model_idx,
+            )
             self.df["ATOM"]["model_id"] = idx_map
         # LABEL HETATMS
         if "HETATM" in self.df.keys():
             pdb_df = self.df["HETATM"]
             idx_map = np.piecewise(
                 np.zeros(len(pdb_df)),
-                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+                [
+                    (pdb_df.line_idx.values >= start_idx)
+                    & (pdb_df.line_idx.values <= end_idx)
+                    for start_idx, end_idx in zip(
+                        idxs.start_idx.values, idxs.end_idx.values
+                    )
+                ],
+                idxs.model_idx,
+            )
             self.df["HETATM"]["model_id"] = idx_map
         if "ANISOU" in self.df.keys():
             pdb_df = self.df["ANISOU"]
             idx_map = np.piecewise(
                 np.zeros(len(pdb_df)),
-                [(pdb_df.line_idx.values >= start_idx) & (pdb_df.line_idx.values <= end_idx) for start_idx, end_idx in zip(idxs.start_idx.values, idxs.end_idx.values)], idxs.model_idx)
+                [
+                    (pdb_df.line_idx.values >= start_idx)
+                    & (pdb_df.line_idx.values <= end_idx)
+                    for start_idx, end_idx in zip(
+                        idxs.start_idx.values, idxs.end_idx.values
+                    )
+                ],
+                idxs.model_idx,
+            )
             self.df["ANISOU"]["model_id"] = idx_map
         return self
 
@@ -640,7 +687,8 @@ class PandasPdb(object):
 
         Returns
         ---------
-        pandas_pdb.PandasPdb : A new PandasPdb object containing the structure subsetted to the given model.
+        pandas_pdb.PandasPdb : A new PandasPdb object containing the
+          structure subsetted to the given model.
         """
 
         df = deepcopy(self)
@@ -649,9 +697,13 @@ class PandasPdb(object):
         if "ATOM" in df.df.keys():
             df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["model_id"] == model_index]
         if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[df.df["HETATM"]["model_id"] == model_index]
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                df.df["HETATM"]["model_id"] == model_index
+            ]
         if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[df.df["ANISOU"]["model_id"] == model_index]
+            df.df["ANISOU"] = df.df["ANISOU"].loc[
+                df.df["ANISOU"]["model_id"] == model_index
+            ]
         return df
 
     def get_models(self, model_indices: List[int]) -> PandasPdb:
@@ -664,17 +716,23 @@ class PandasPdb(object):
 
         Returns
         ---------
-        pandas_pdb.PandasPdb : A new PandasPdb object containing the structure subsetted to the given model.
+        pandas_pdb.PandasPdb : A new PandasPdb object
+          containing the structure subsetted to the given model.
         """
 
         df = deepcopy(self)
         df.label_models()
 
         if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[[x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]]
+            df.df["ATOM"] = df.df["ATOM"].loc[
+                [x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]
+            ]
         if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[[x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]]
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                [x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]
+            ]
         if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[[x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]]
+            df.df["ANISOU"] = df.df["ANISOU"].loc[
+                [x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]
+            ]
         return df
-

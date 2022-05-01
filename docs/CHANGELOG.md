@@ -3,7 +3,7 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
-### 0.3.0dev1 (TBD)
+### 0.4.0dev1 (TBD)
 
 ##### Downloads
 
@@ -11,7 +11,8 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- Adds support for extracting structures from PDB files containing multiple models  (via [Arian Jamasb](https://github.com/a-r-j), PR #[101](https://github.com/rasbt/biopandas/pull/101/files))
+- Adds support for extracting structures from PDB files containing multiple models. See the [documentation](http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/#working-with-pdbs-containing-multiple-models
+) for details.  (via [Arian Jamasb](https://github.com/a-r-j), PR #[101](https://github.com/rasbt/biopandas/pull/101/files)).
 
 ##### Changes
 
