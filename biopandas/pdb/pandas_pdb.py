@@ -108,7 +108,7 @@ class PandasPdb(object):
         return self
 
 
-    def fetch_pdb(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb", af2_version: int = 2):
+    def fetch_pdb(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
         """Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
 .
 
@@ -121,10 +121,7 @@ class PandasPdb(object):
             A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
 
         source : str
-            The source to retrieve the structure from (`"pdb"` or `"alphafold2"`). Defaults to `"pdb"`.
-
-        af2_version : int
-            The release version of the AlphaFold2 database to use. Defaults to `2` (latest at time of last update: 01/05/22).
+            The source to retrieve the structure from (`"pdb"`, `"alphafold2-v1"` or `"alphafold2-v2"` (latest)). Defaults to `"pdb"`.
 
         Returns
         ---------
@@ -135,7 +132,8 @@ class PandasPdb(object):
         invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
-        invalid_input_combination_2 = pdb_code is not None and source == "alphafold2"
+        invalid_input_combination_2 = pdb_code is not None and source in {"alphafold2-v1", "alphafold-v2"}
+
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
             raise ValueError("Please provide either a PDB code or a UniProt ID.")
@@ -143,14 +141,18 @@ class PandasPdb(object):
         if invalid_input_combination_1 :
             raise ValueError("Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
         elif invalid_input_combination_2 :
-            raise ValueError("Please use a 'uniprot_id' instead of 'pdb_code' for source='alphafold2'.")
+            raise ValueError(f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}.")
 
-        if source == "pdb":
-            self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
-        elif source == "alphafold2":
+        if source == "alphafold2-v1":
+            af2_version = 1
             self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id, af2_version)
+        if source == "alphafold2-v2":
+            af2_version = 2
+            self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id, af2_version)
+        elif source == "pdb":
+            self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
         else:
-            raise ValueError(f"Invalid source: {source}. Please use one of 'pdb' or 'alphafold2'.")
+            raise ValueError(f"Invalid source: {source}. Please use one of 'pdb' or 'alphafold2-v1' or 'alphafold2-v2'.")
 
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self

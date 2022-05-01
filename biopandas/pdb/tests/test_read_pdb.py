@@ -6,16 +6,14 @@
 
 
 import os
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
 from nose.tools import raises
-
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
-
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
 TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), 'data',
@@ -113,7 +111,7 @@ def test_fetch_af2():
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct[:100]
-        ppdb.fetch_pdb(uniprot_id='Q5VSL9', source="alphafold2")
+        ppdb.fetch_pdb(uniprot_id='Q5VSL9', source="alphafold2-v2")
         assert ppdb.pdb_text == txt
         assert ppdb.pdb_path == 'https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb'
 

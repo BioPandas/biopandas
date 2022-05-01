@@ -6,16 +6,14 @@
 
 
 import os
+from urllib.error import HTTPError
+from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
 from biopandas.mmcif import PandasMmcif
 from biopandas.testutils import assert_raises
 from nose.tools import raises
-
-from urllib.error import HTTPError
-from urllib.request import urlopen
-
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 
@@ -133,7 +131,7 @@ def test_fetch_af2():
         url, txt = None, None
     if txt:  # skip if AF DB down
         txt[:100] == af2_test_struct[:100]
-        ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2")
+        ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v2")
         assert ppdb.mmcif_text == txt
         assert ppdb.mmcif_path == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
 
