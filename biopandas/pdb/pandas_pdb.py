@@ -9,18 +9,16 @@ from __future__ import annotations
 
 import gzip
 import sys
+import warnings
 from copy import deepcopy
+from distutils.version import LooseVersion
 from typing import List
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 from warnings import warn
 
 import numpy as np
 import pandas as pd
-
-
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
-import warnings
-from distutils.version import LooseVersion
 
 from .engines import amino3to1dict, pdb_df_columns, pdb_records
 
@@ -645,7 +643,7 @@ class PandasPdb(object):
                 ],
                 idxs.model_idx,
             )
-            self.df["ATOM"]["model_id"] = idx_map
+            self.df["ATOM"]["model_id"] = idx_map.astype(int)
         # LABEL HETATMS
         if "HETATM" in self.df.keys():
             pdb_df = self.df["HETATM"]
@@ -660,7 +658,7 @@ class PandasPdb(object):
                 ],
                 idxs.model_idx,
             )
-            self.df["HETATM"]["model_id"] = idx_map
+            self.df["HETATM"]["model_id"] = idx_map.astype(int)
         if "ANISOU" in self.df.keys():
             pdb_df = self.df["ANISOU"]
             idx_map = np.piecewise(
@@ -674,7 +672,7 @@ class PandasPdb(object):
                 ],
                 idxs.model_idx,
             )
-            self.df["ANISOU"]["model_id"] = idx_map
+            self.df["ANISOU"]["model_id"] = idx_map.astype(int)
         return self
 
     def get_model(self, model_index: int) -> PandasPdb:
