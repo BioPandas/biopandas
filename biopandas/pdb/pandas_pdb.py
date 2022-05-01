@@ -623,6 +623,11 @@ class PandasPdb(object):
         ends = other_records.loc[other_records["record_name"] == "ENDMDL"]
         idxs.columns = ["record_name", "model_idx", "start_idx"]
         idxs["end_idx"] = ends.line_idx.values
+        # If structure only contains 1 model, create a dummy df mapping all lines to model_idx 1
+        if len(idxs) == 0:
+            n_lines = len(self.pdb_text.splitlines())
+            idxs = pd.DataFrame([{"record_name": "MODEL", "model_idx": 1, "start_idx": 0, "end_idx": n_lines}])
+
         return idxs
 
     def label_models(self):
