@@ -8,8 +8,7 @@ import os
 
 from biopandas.pdb import PandasPdb
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data',
-                                 '2jyf.pdb')
+TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "2jyf.pdb")
 
 
 def test_get_index_df():

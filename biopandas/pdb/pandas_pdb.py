@@ -567,7 +567,8 @@ class PandasPdb(object):
                     pass
                 elif r in {"ATOM", "HETATM"} and c not in pdb_df_columns:
                     warn(
-                        "Column %s is not an expected column and" " will be skipped." % c
+                        "Column %s is not an expected column and"
+                        " will be skipped." % c
                     )
                 else:
                     dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
@@ -626,7 +627,16 @@ class PandasPdb(object):
         # If structure only contains 1 model, create a dummy df mapping all lines to model_idx 1
         if len(idxs) == 0:
             n_lines = len(self.pdb_text.splitlines())
-            idxs = pd.DataFrame([{"record_name": "MODEL", "model_idx": 1, "start_idx": 0, "end_idx": n_lines}])
+            idxs = pd.DataFrame(
+                [
+                    {
+                        "record_name": "MODEL",
+                        "model_idx": 1,
+                        "start_idx": 0,
+                        "end_idx": n_lines,
+                    }
+                ]
+            )
 
         return idxs
 

@@ -27,27 +27,28 @@ def split_multimol2(mol2_path):
         from a gzip (.gz) file.
 
     """
-    if mol2_path.endswith('.mol2'):
+    if mol2_path.endswith(".mol2"):
         open_file = open
-        read_mode = 'r'
-    elif mol2_path.endswith('mol2.gz'):
+        read_mode = "r"
+    elif mol2_path.endswith("mol2.gz"):
         open_file = gzip.open
-        read_mode = 'rb'
+        read_mode = "rb"
     else:
-        raise ValueError('Wrong file format;'
-                         'allowed file formats are .mol2 and .mol2.gz.')
+        raise ValueError(
+            "Wrong file format;" "allowed file formats are .mol2 and .mol2.gz."
+        )
 
-    check = {'rb': b'@<TRIPOS>MOLECULE', 'r': '@<TRIPOS>MOLECULE'}
+    check = {"rb": b"@<TRIPOS>MOLECULE", "r": "@<TRIPOS>MOLECULE"}
 
     with open_file(mol2_path, read_mode) as f:
-        mol2 = ['', []]
+        mol2 = ["", []]
         while True:
             try:
                 line = next(f)
                 if line.startswith(check[read_mode]):
                     if mol2[0]:
-                        yield(mol2)
-                    mol2 = ['', []]
+                        yield (mol2)
+                    mol2 = ["", []]
                     mol2_id = next(f)
                     mol2[0] = mol2_id.rstrip()
                     mol2[1].append(line)
@@ -55,5 +56,5 @@ def split_multimol2(mol2_path):
                 else:
                     mol2[1].append(line)
             except StopIteration:
-                yield(mol2)
+                yield (mol2)
                 return
