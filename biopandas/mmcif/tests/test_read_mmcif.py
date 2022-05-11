@@ -94,7 +94,8 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are " ".cif, .cif.gz, .mmcif, .mmcif.gz"
+        "Wrong file format; allowed file formats are "
+        ".cif, .cif.gz, .mmcif, .mmcif.gz"
     )
 
     def run_code_1():
