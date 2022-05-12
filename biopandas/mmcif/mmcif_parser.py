@@ -306,7 +306,11 @@ def __dump_cat__(k, v):
                 pad = len(k2)
         pad += 3
         for k2 in v.keys():
-            output += "_%s.%s%s\n" % (k, __pad_string__(k2, pad), __dump_str__(v[k2][0]))
+            output += "_%s.%s%s\n" % (
+                k,
+                __pad_string__(k2, pad),
+                __dump_str__(v[k2][0]),
+            )
     else:
         output += "loop_\n"
         pad = []
