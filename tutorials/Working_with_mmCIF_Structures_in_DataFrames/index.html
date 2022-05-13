@@ -171,8 +171,8 @@
 
 <h1 id="working-with-mmcif-structures-in-dataframes">Working with mmCIF Structures in DataFrames</h1>
 <h2 id="loading-mmcif-files">Loading mmCIF Files</h2>
-<p>There are 3 ways to load a mmCIF structure into a <code>PandasMmcif</code> object.</p>
-<h4 id="1">1</h4>
+<p>There are several ways to load a mmCIF structure into a <code>PandasMmcif</code> object.</p>
+<h3 id="1-loading-an-mmcif-file-from-the-protein-data-bank">1 -- Loading an mmCIF file from the Protein Data Bank</h3>
 <p>MmCIF files can be directly fetched from The Protein Data Bank at <a href="http://www.rcsb.org">http://www.rcsb.org</a> via its unique 4-letter after initializing a new <a href="../api_subpackages/biopandas.mmcif"><code>PandasMmcif</code></a> object and calling the <code>fetch_mmcif</code> method:</p>
 <pre><code class="language-python">from biopandas.mmcif import PandasMmcif
 
@@ -180,18 +180,27 @@
 # and fetch the mmCIF file from rcsb.org
 pmmcif = PandasMmcif().fetch_mmcif('3eiy')
 </code></pre>
-<h4 id="2-a">2 a)</h4>
+<h3 id="2-loading-an-mmcif-file-from-the-alphafold-structure-database">2 -- Loading an mmCIF file from the AlphaFold Structure Database</h3>
+<p>(<em>New in version 0.4.0</em>)</p>
+<p>PDB files can be directly fetched from The AlphaFold Structure Database at <a href="https://alphafold.ebi.ac.uk/">https://alphafold.ebi.ac.uk/</a> via its unique <a href="https://www.uniprot.org/">UniProt</a> Identifier after initializing a new <a href="../api/biopandas.pdb#pandaspdb"><code>PandasPdb</code></a> object and calling the <a href="../api/biopandas.pdb#pandaspdbfetch_pdb"><code>fetch_af2</code></a> method:</p>
+<pre><code class="language-python">from biopandas.mmcif import PandasMmcif
+
+# Initialize a new PandasPdb object
+# and fetch the PDB file from alphafold.ebi.ac.uk
+ppdb = PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v2')
+</code></pre>
+<h3 id="3-a-loading-a-mmcif-structure-from-a-local-file">3 a) -- Loading a mmCIF structure from a local file</h3>
 <p>Alternatively, we can load mmCIF files from local directories as regular mmCIF files using <code>read_mmcif</code>:</p>
 <pre><code class="language-python">pmmcif.read_mmcif('./data/3eiy.cif')
 </code></pre>
-<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640&gt;
+<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x1058967f0&gt;
 </code></pre>
 <p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.cif</a>]</p>
-<h4 id="2-b">2 b)</h4>
+<h3 id="3-b-loading-a-mmcif-structure-from-a-local-gzipped-mmcif-file">3 b) -- Loading a mmCIF structure from a local gzipped mmCIF file</h3>
 <p>Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):</p>
 <pre><code class="language-python">pmmcif.read_mmcif('./data/3eiy.cif.gz')
 </code></pre>
-<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640&gt;
+<pre><code>&lt;biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x1058967f0&gt;
 </code></pre>
 <p>[File link: <a href="https://github.com/rasbt/biopandas/blob/main/docs/tutorials/data/3eiy.cif.gz?raw=true">3eiy.cif.gz</a>]</p>
 <p>After the file was succesfully loaded, we have access to the following attributes:</p>
@@ -309,8 +318,7 @@ PDB      3EJ2          .
 </div>
 
 <p>But more on that in the next section.</p>
-<h4 id="3">3</h4>
-<p><strong>Loading mmCif files from a Python List</strong></p>
+<h3 id="4-loading-a-mmcif-file-from-a-python-list">4 -- Loading a mmCIF file from a Python List</h3>
 <p>Mmcif files can also be loaded into a <code>PandasMmcif</code> object from a Python list:</p>
 <pre><code class="language-python">with open('./data/3eiy.cif', 'r') as f:
     three_eiy = f.read()
@@ -1037,21 +1045,21 @@ plt.xlabel('B-factor')
 plt.ylabel('count')
 plt.show()
 </code></pre>
-<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_61_0.png" /></p>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png" /></p>
 <pre><code class="language-python">pmmcif.df['ATOM']['B_iso_or_equiv'].plot(kind='line')
 plt.title('B-Factors Along the Amino Acid Chain')
 plt.xlabel('Residue Number')
 plt.ylabel('B-factor in $A^2$')
 plt.show()
 </code></pre>
-<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png" /></p>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png" /></p>
 <pre><code class="language-python">pmmcif.df['ATOM']['type_symbol'].value_counts().plot(kind='bar')
 plt.title('Distribution of Atom Types')
 plt.xlabel('elements')
 plt.ylabel('count')
 plt.show()
 </code></pre>
-<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png" /></p>
+<p><img alt="png" src="../Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_64_0.png" /></p>
 <h2 id="computing-the-root-mean-square-deviation">Computing the Root Mean Square Deviation</h2>
 <p>BioPandas also comes with certain convenience functions, for example, ...</p>
 <p>The Root-mean-square deviation (RMSD) is simply a measure of the average distance between atoms of 2 protein or ligand structures. This calculation of the Cartesian error follows the equation:</p>
@@ -1074,7 +1082,7 @@ print('RMSD: %.4f Angstrom' % r)
 </code></pre>
 <pre><code>RMSD: 2.6444 Angstrom
 </code></pre>
-<p>[File links: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_1.cif">lig_conf_1.pdb</a>, <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_2.cif">lig_conf_2.cif</a>]</p>
+<p>[File links: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_1.cif">lig_conf_1.cif</a>, <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_2.cif">lig_conf_2.cif</a>]</p>
 <pre><code class="language-python">r = PandasMmcif.rmsd(l_1.df['HETATM'], l_2.df['HETATM'], 
                      s='carbon') # carbon atoms only
 print('RMSD: %.4f Angstrom' % r)
@@ -1113,7 +1121,7 @@ print('RMSD: %.4f Angstrom' % r)
 reference_point = (9.362, 41.410, 10.542)
 distances = p_1.distance(xyz=reference_point, records=('ATOM',))
 </code></pre>
-<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.pdb</a>]</p>
+<p>[File link: <a href="https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif">3eiy.cif</a>]</p>
 <p>The distance method returns a Pandas Series object:</p>
 <pre><code class="language-python">distances.head()
 </code></pre>
@@ -1307,6 +1315,10 @@ SLEPEPWFFKNLSRKDAERQLLAPGNTHGSFLIRESESTAGSFSLSVRDFDQGEVVKHYKIRNLDNGGFYISPRITFPGL
 
 Chain ID: B
 SVSSVPTKLEVVAATPTSLLISWDAPAVTVVYYLITYGETGSPWPGGQAFEVPGSKSTATISGLKPGVDYTITVYAHRSSYGYSENPISINYRT
+</code></pre>
+<pre><code class="language-python">
+</code></pre>
+<pre><code class="language-python">
 </code></pre></div>
             </div>
         </div>
