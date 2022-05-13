@@ -5,25 +5,23 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-from biopandas.pdb import PandasPdb
 import os
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
+
 import numpy as np
 import pandas as pd
-from nose.tools import raises
+from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
+from nose.tools import raises
 
-try:
-    from urllib.request import urlopen
-    from urllib.error import HTTPError, URLError
-except ImportError:
-    from urllib2 import urlopen, HTTPError, URLError  # Python 2.7 compatib
-
-
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
-)
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb.gz")
+TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), 'data',
+                                  '4eiy_anisouchunk.pdb')
+TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), 'data',
+                                    '3eiy.pdb.gz')
+TESTDATA_FILENAME_AF = os.path.join(os.path.dirname(__file__), 'data',
+                                    'AF-Q5VSL9-F1-model_v2.pdb')
 
 ATOM_DF_COLUMNS = [
     "record_name",
@@ -79,6 +77,8 @@ with open(TESTDATA_FILENAME, "r") as f:
 with open(TESTDATA_FILENAME2, "r") as f:
     four_eiy = f.read()
 
+with open(TESTDATA_FILENAME_AF, 'r') as f:
+    af_test_struct = f.read()
 
 def test__read_pdb():
     """Test private _read_pdb"""
@@ -123,6 +123,24 @@ def test_fetch_pdb():
         ppdb.fetch_pdb("3eiy")
         assert ppdb.pdb_text == txt
         assert ppdb.pdb_path == "https://files.rcsb.org/download/3eiy.pdb"
+
+
+def test_fetch_af2():
+    """Test fetch_pdb"""
+
+    try:
+        ppdb = PandasPdb()
+        url, txt = ppdb._fetch_af2('Q5VSL9')
+    except HTTPError:
+        url, txt = None, None
+    except ConnectionResetError:
+        url, txt = None, None
+
+    if txt:  # skip if AF2 DB down
+        txt[:100] == af_test_struct[:100]
+        ppdb.fetch_pdb(uniprot_id='Q5VSL9', source="alphafold2-v2")
+        assert ppdb.pdb_text == txt
+        assert ppdb.pdb_path == 'https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb'
 
 
 def test__read_pdb_gz():
