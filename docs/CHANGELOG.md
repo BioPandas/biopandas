@@ -20,7 +20,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Changes
 
-- None
+- Instead of raising a warning when no ATOM entries are loaded, raise the warning only when neither ATOM nor HETAM entries are loaded.
 
 ##### Bug Fixes
 

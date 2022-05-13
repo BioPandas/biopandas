@@ -1,5 +1,9 @@
 site
-
+docs/tutorials/*.md
+docs/tutorials/Working_with_mmCIF_Structures_in_DataFrames_files/*
+docs/tutorials/Working_with_MOL2_Structures_in_DataFrames_files/*
+docs/tutorials/Working_with_PDB_Structures_in_DataFrames_files/*
+docs/tutorials/data/3eiy_stripped.pdb.gz
 docs/api_subpackages/
 docs/api_modules
 docs/py-docstring-parser/

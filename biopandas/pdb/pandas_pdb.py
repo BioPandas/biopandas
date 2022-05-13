@@ -456,9 +456,9 @@ class PandasPdb(object):
             dfs[r[0]] = df
 
         # issue a warning if no atoms have been loaded
-        if len(dfs["ATOM"]) == 0:
+        if (len(dfs["ATOM"]) + len(dfs["HETATM"])) == 0:
             warnings.warn(
-                "No ATOM entries have been loaded. "
+                "No ATOM/HETATM entries have been loaded. "
                 "Is the input file/text in the pdb format?"
             )
 
