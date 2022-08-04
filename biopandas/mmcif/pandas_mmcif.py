@@ -80,7 +80,8 @@ class PandasMmcif:
             A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
 
         source : str
-            The source to retrieve the structure from (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"` or `"alphafold2-v3"`). Defaults to `"pdb"`.
+            The source to retrieve the structure from 
+            (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"` or `"alphafold2-v3"`). Defaults to `"pdb"`.
 
         Returns
         ---------
@@ -91,7 +92,8 @@ class PandasMmcif:
         invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
-        invalid_input_combination_2 = pdb_code is not None and source in {"alphafold2-v1", "alphafold2-v2", "alphafold2-v3"}
+        invalid_input_combination_2 = pdb_code is not None and source in {
+            "alphafold2-v1", "alphafold2-v2", "alphafold2-v3"}
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
             raise ValueError("Please provide either a PDB code or a UniProt ID.")
@@ -113,7 +115,8 @@ class PandasMmcif:
             af2_version = 3
             self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
         else:
-            raise ValueError(f"Invalid source: {source}. Please use one of 'pdb', 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3.")
+            raise ValueError(f"Invalid source: {source}."
+                " Please use one of 'pdb', 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3.")
 
         self._df = self._construct_df(text=self.mmcif_text)
         return self
