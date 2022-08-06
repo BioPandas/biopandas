@@ -5,6 +5,19 @@ The CHANGELOG for the current development version is available at
 
 
 
+### 0.4.2 (08-4-2022)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.4.2.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.4.2.tar.gz)
+
+##### New Features
+
+- Added support for [AlphaFolds 200M+ structures](https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe) via `PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')` and `PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')`.
+
+
+
 ### 0.4.1 (05-13-2022)
 
 ##### Downloads
