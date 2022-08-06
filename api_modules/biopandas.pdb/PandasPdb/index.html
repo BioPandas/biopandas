@@ -254,13 +254,22 @@ computation.</p>
 </ul>
 <hr>
 
-<p><em>fetch_pdb(pdb_code)</em></p>
-<p>Fetches PDB file contents from the Protein Databank at rcsb.org.</p>
+<p><em>fetch_pdb(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')</em></p>
+<p>Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+    .</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>pdb_code</code> : str</p>
-<p>A 4-letter PDB code, e.g., "3eiy".</p>
+<p><code>pdb_code</code> : str, optional</p>
+<p>A 4-letter PDB code, e.g., <code>"3eiy"</code> to retrieve structures from the PDB. Defaults to <code>None</code>.</p>
+</li>
+<li>
+<p><code>uniprot_id</code> : str, optional</p>
+<p>A UniProt Identifier, e.g., <code>"Q5VSL9"</code> to retrieve structures from the AF2 database. Defaults to <code>None</code>.</p>
+</li>
+<li>
+<p><code>source</code> : str</p>
+<p>The source to retrieve the structure from (<code>"pdb"</code>, <code>"alphafold2-v1"</code> or <code>"alphafold2-v2"</code> (latest)). Defaults to <code>"pdb"</code>.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -303,6 +312,56 @@ but deprecated and will be removed in future versions.</p>
 </ul>
 <hr>
 
+<p><em>get_model(model_index: 'int') -&gt; 'PandasPdb'</em></p>
+<p>Returns a new PandasPDB object with the dataframes subset to the given model index.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>model_index</code> : int</p>
+<p>An integer representing the model index to subset to.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas_pdb.PandasPdb</code> : A new PandasPdb object containing the</p>
+<p>structure subsetted to the given model.</p>
+</li>
+</ul>
+<hr>
+
+<p><em>get_model_start_end() -&gt; 'pd.DataFrame'</em></p>
+<p>Get the start and end of the models contained in the PDB file.</p>
+<pre><code>Extracts model start and end line indexes based
+on lines labelled 'OTHERS' during parsing.
+</code></pre>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas.DataFrame</code> : Pandas DataFrame object containing</p>
+<p>the start and end line indexes of the models.</p>
+</li>
+</ul>
+<hr>
+
+<p><em>get_models(model_indices: 'List[int]') -&gt; 'PandasPdb'</em></p>
+<p>Returns a new PandasPDB object with the dataframes subset to the given model index.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>model_index</code> : int</p>
+<p>An integer representing the model index to subset to.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>pandas_pdb.PandasPdb</code> : A new PandasPdb object</p>
+<p>containing the structure subsetted to the given model.</p>
+</li>
+</ul>
+<hr>
+
 <p><em>impute_element(records=('ATOM', 'HETATM'), inplace=False)</em></p>
 <p>Impute element_symbol from atom_name section.</p>
 <p><strong>Parameters</strong></p>
@@ -320,6 +379,11 @@ PDB DataFrame otherwise.</p>
 </ul>
 <p><strong>Returns</strong></p>
 <p>DataFrame</p>
+<hr>
+
+<p><em>label_models()</em></p>
+<p>Adds a column (<code>"model_id"</code>) to the underlying
+    DataFrames containing the model number.</p>
 <hr>
 
 <p><em>parse_sse()</em></p>

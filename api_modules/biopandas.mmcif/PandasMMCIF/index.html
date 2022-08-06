@@ -226,13 +226,22 @@ computation.</p>
 </ul>
 <hr>
 
-<p><em>fetch_mmcif(pdb_code: str)</em></p>
-<p>Fetches mmCIF file contents from the Protein Databank at rcsb.org.</p>
+<p><em>fetch_mmcif(pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = 'pdb')</em></p>
+<p>Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+    .</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>pdb_code</code> : str</p>
-<p>A 4-letter PDB code, e.g., "3eiy".</p>
+<p><code>pdb_code</code> : str, optional</p>
+<p>A 4-letter PDB code, e.g., <code>"3eiy"</code> to retrieve structures from the PDB. Defaults to <code>None</code>.</p>
+</li>
+<li>
+<p><code>uniprot_id</code> : str, optional</p>
+<p>A UniProt Identifier, e.g., <code>"Q5VSL9"</code> to retrieve structures from the AF2 database. Defaults to <code>None</code>.</p>
+</li>
+<li>
+<p><code>source</code> : str</p>
+<p>The source to retrieve the structure from (<code>"pdb"</code>, <code>"alphafold2-v1"</code> or <code>"alphafold2-v2"</code>). Defaults to <code>"pdb"</code>.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
