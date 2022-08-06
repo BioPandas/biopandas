@@ -23,7 +23,12 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # )
 TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
-TESTDATA_FILENAME_AF = os.path.join(os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif")
+TESTDATA_FILENAME_AF2_V2 = os.path.join(
+    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif"
+)
+TESTDATA_FILENAME_AF2_V3 = os.path.join(
+    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v3.cif"
+)
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",
@@ -76,8 +81,12 @@ with open(TESTDATA_FILENAME, "r") as f:
 with open(TESTDATA_FILENAME2, "r") as f:
     four_eiy = f.read()
 
-with open(TESTDATA_FILENAME_AF, "r") as f:
-    af2_test_struct = f.read()
+with open(TESTDATA_FILENAME_AF2_V2, "r") as f:
+    af2_test_struct_v2 = f.read()
+
+with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
+    af2_test_struct_v3 = f.read()
+
 
 def test__read_pdb():
     """Test private _read_pdb"""
@@ -123,18 +132,36 @@ def test_fetch_pdb():
 
 
 def test_fetch_af2():
-    """ Test fetch_af2"""
-
+    """Test fetch_af2"""
+    # Test latest release
     try:
         ppdb = PandasMmcif()
-        url, txt = ppdb._fetch_af2("Q5VSL9")
+        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except (HTTPError, ConnectionResetError):
         url, txt = None, None
     if txt:  # skip if AF DB down
-        txt[:100] == af2_test_struct[:100]
+        txt[:100] == af2_test_struct_v3[:100]
+        ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v3")
+        assert ppdb.mmcif_text == txt
+        assert (
+            ppdb.mmcif_path
+            == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v3.cif"
+        )
+
+    # Test legacy release
+    try:
+        ppdb = PandasMmcif()
+        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=2)
+    except (HTTPError, ConnectionResetError):
+        url, txt = None, None
+    if txt:  # skip if AF DB down
+        txt[:100] == af2_test_struct_v2[:100]
         ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v2")
         assert ppdb.mmcif_text == txt
-        assert ppdb.mmcif_path == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
+        assert (
+            ppdb.mmcif_path
+            == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
+        )
 
 
 def test__read_pdb_gz():

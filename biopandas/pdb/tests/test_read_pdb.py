@@ -139,7 +139,7 @@ def test_fetch_af2():
     # Check latest release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9")
+        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except HTTPError:
         url, txt = None, None
     except ConnectionResetError:
@@ -157,7 +157,7 @@ def test_fetch_af2():
     # Check legacy release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9")
+        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=2)
     except HTTPError:
         url, txt = None, None
     except ConnectionResetError:
