@@ -23,7 +23,9 @@ import warnings
 from distutils.version import LooseVersion
 
 from ..pdb.engines import amino3to1dict
-from .engines import ANISOU_DF_COLUMNS, mmcif_col_types
+from ..pdb.pandas_pdb import PandasPdb
+from .engines import (ANISOU_DF_COLUMNS, MMCIF_PDB_COLUMN_MAP,
+                      MMCIF_PDB_NONEFIELDS, PDB_COLUMN_ORDER, mmcif_col_types)
 from .mmcif_parser import load_cif_data
 
 pd_version = LooseVersion(pd.__version__)
@@ -428,3 +430,30 @@ class PandasMmcif:
         # self.header, self.code = self._parse_header_code()
         self.code = self.data["entry"]["id"][0].lower()
         return self
+
+    def get_pandas_pdb(self) -> PandasPdb:
+        """Returns a PandasPdb object with the same data as the PandasMmcif object"""
+        pandaspdb = PandasPdb()
+        # for a in ["ATOM", "HETATM"]:
+        for a in self.df.keys():
+            try:
+                dfa = self.df[a]
+                # keep only those fields found in pdb
+                dfa = dfa[MMCIF_PDB_COLUMN_MAP.keys()]
+                # rename fields
+                dfa = dfa.rename(columns=MMCIF_PDB_COLUMN_MAP)
+                # add empty fields
+                for i in MMCIF_PDB_NONEFIELDS:
+                    dfa[i] = ""
+                dfa["charge"] = np.nan
+                # reorder columns to PandasPdb order
+                dfa = dfa[PDB_COLUMN_ORDER]
+                pandaspdb.df[a] = dfa
+            except KeyError:  # Some entries may not have an ANISOU
+                continue
+
+        # update line_idx
+        pandaspdb.df["ATOM"]["line_idx"] = pandaspdb.df["ATOM"].index.values
+        pandaspdb.df["HETATM"]["line_idx"] = pandaspdb.df["HETATM"].index
+
+        return pandaspdb
