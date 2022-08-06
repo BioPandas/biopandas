@@ -3,15 +3,48 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
+
+
+### 0.4.1 (05-13-2022)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.4.1.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.4.1.tar.gz)
+
+##### Changes
+
+- Remove walrus operator for Python 3.7 compatibility.
+
+
+### 0.4.0 (05-11-2022)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.4.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.4.0.tar.gz)
+
+##### New Features
+
+- Adds support for extracting structures from PDB files containing multiple models. See the [documentation](http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/#working-with-pdbs-containing-multiple-models
+) for details.  (via [Arian Jamasb](https://github.com/a-r-j), PR #[101](https://github.com/rasbt/biopandas/pull/101/files)).
+
+- Adds support for fetching mmCIF (`PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v2')`) and PDB structures (e.g., `PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source="alphafold2-v2")`)  (via [Arian Jamasb](https://github.com/a-r-j), PR #[102](https://github.com/rasbt/biopandas/pull/102/files)).
+
+##### Changes
+
+- Instead of raising a warning when no ATOM entries are loaded, raise the warning only when neither ATOM nor HETAM entries are loaded.
+
+##### Bug Fixes
+
+- None
+
 ### 0.3.0 (04-06-2022)
 
 ##### Downloads
 
-
 - [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.3.0.zip)
 - [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz)
-
-
 
 ##### New Features
 
@@ -24,9 +57,7 @@ The CHANGELOG for the current development version is available at
 ##### Bug Fixes
 
 - Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via  PR #[90](https://github.com/rasbt/biopandas/pull/90/files))
-- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via [Arian Jamasb](https://github.com/a-r-j) PR #[96](https://github.com/rasbt/biopandas/pull/96/files)) 
-
-
+- Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via [Arian Jamasb](https://github.com/a-r-j) PR #[96](https://github.com/rasbt/biopandas/pull/96/files))
 
 ### 0.2.9 (08-30-2021)
 

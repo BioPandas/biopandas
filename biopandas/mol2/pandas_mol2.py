@@ -11,15 +11,15 @@ from .mol2_io import split_multimol2
 
 
 COLUMN_NAMES = (
- 'atom_id',
- 'atom_name',
- 'x',
- 'y',
- 'z',
- 'atom_type',
- 'subst_id',
- 'subst_name',
- 'charge'
+    "atom_id",
+    "atom_name",
+    "x",
+    "y",
+    "z",
+    "atom_type",
+    "subst_id",
+    "subst_name",
+    "charge",
 )
 
 COLUMN_TYPES = (int, str, float, float, float, str, int, str, float)
@@ -44,12 +44,13 @@ class PandasMol2(object):
         Location of the MOL2 file that was read in via `read_mol2`
 
     """
+
     def __init__(self):
         self._df = None
-        self.mol2_text = ''
-        self.header = ''
-        self.code = ''
-        self.mol2_path = ''
+        self.mol2_text = ""
+        self.header = ""
+        self.code = ""
+        self.mol2_path = ""
 
     @property
     def df(self):
@@ -59,9 +60,11 @@ class PandasMol2(object):
     @df.setter
     def df(self, value):
         """Assign a new value to the pandas DataFrame"""
-        raise AttributeError('Please use `PandasMol2._df = ... ` instead\n'
-                             'of `PandasMol2.df = ... ` if you are sure that\n'
-                             'you want to overwrite the `df` attribute.')
+        raise AttributeError(
+            "Please use `PandasMol2._df = ... ` instead\n"
+            "of `PandasMol2.df = ... ` if you are sure that\n"
+            "you want to overwrite the `df` attribute."
+        )
         # self._df = value
 
     def _load_mol2(self, mol2_lines, mol2_code, columns):
@@ -76,11 +79,11 @@ class PandasMol2(object):
                 col_types.append(columns[i][1])
 
         try:
-            self.mol2_text = ''.join(mol2_lines)
+            self.mol2_text = "".join(mol2_lines)
             self.code = mol2_code
         except TypeError:
             mol2_lines = [m.decode() for m in mol2_lines]
-            self.mol2_text = ''.join(mol2_lines)
+            self.mol2_text = "".join(mol2_lines)
             self.code = mol2_code.decode()
 
         self._df = self._construct_df(mol2_lines, col_names, col_types)
@@ -163,9 +166,9 @@ class PandasMol2(object):
 
     def _construct_df(self, mol2_lines, col_names, col_types):
         """Construct DataFrames from list of PDB lines."""
-        return self._atomsection_to_pandas(self._get_atomsection(mol2_lines),
-                                           col_names=col_names,
-                                           col_types=col_types)
+        return self._atomsection_to_pandas(
+            self._get_atomsection(mol2_lines), col_names=col_names, col_types=col_types
+        )
 
     @staticmethod
     def _get_atomsection(mol2_lst):
@@ -174,26 +177,25 @@ class PandasMol2(object):
         started = False
         first_idx = None
         for idx, s in enumerate(mol2_lst):
-            if s.startswith('@<TRIPOS>ATOM'):
+            if s.startswith("@<TRIPOS>ATOM"):
                 first_idx = idx + 1
                 started = True
-            elif started and s.startswith('@<TRIPOS>'):
+            elif started and s.startswith("@<TRIPOS>"):
                 last_idx_plus1 = idx
                 break
         if first_idx is None:
             # Raise error when file contains no @<TRIPOS>ATOM
             # (i.e. file is no mol2 file)
             raise ValueError(
-                    "Structural data could not be loaded. "
-                    "Is the input file/text in the mol2 format?"
-                )
+                "Structural data could not be loaded. "
+                "Is the input file/text in the mol2 format?"
+            )
         return mol2_lst[first_idx:last_idx_plus1]
 
     @staticmethod
     def _atomsection_to_pandas(mol2_atom_lst, col_names, col_types):
 
-        df = pd.DataFrame([lst.split() for lst in mol2_atom_lst],
-                          columns=col_names)
+        df = pd.DataFrame([lst.split() for lst in mol2_atom_lst], columns=col_names)
 
         for i in range(df.shape[1]):
             df[col_names[i]] = df[col_names[i]].astype(col_types[i])
@@ -222,18 +224,20 @@ class PandasMol2(object):
 
         """
         if df1.shape[0] != df2.shape[0]:
-            raise AttributeError('DataFrames have unequal lengths')
+            raise AttributeError("DataFrames have unequal lengths")
 
         if heavy_only:
-            d1 = df1[df1['atom_type'] != 'H']
-            d2 = df2[df2['atom_type'] != 'H']
+            d1 = df1[df1["atom_type"] != "H"]
+            d2 = df2[df2["atom_type"] != "H"]
         else:
             d1, d2 = df1, df2
 
-        total = ((d1['x'].values - d2['x'].values)**2 +
-                 (d1['y'].values - d2['y'].values)**2 +
-                 (d1['z'].values - d2['z'].values)**2)
-        rmsd = round((total.sum() / df1.shape[0])**0.5, 4)
+        total = (
+            (d1["x"].values - d2["x"].values) ** 2
+            + (d1["y"].values - d2["y"].values) ** 2
+            + (d1["z"].values - d2["z"].values) ** 2
+        )
+        rmsd = round((total.sum() / df1.shape[0]) ** 0.5, 4)
         return rmsd
 
     def distance(self, xyz=(0.00, 0.00, 0.00)):
@@ -252,8 +256,9 @@ class PandasMol2(object):
             distance between the atoms in the atom section and `xyz`.
 
         """
-        return np.sqrt(np.sum(self.df[['x', 'y', 'z']]
-                       .subtract(xyz, axis=1)**2, axis=1))
+        return np.sqrt(
+            np.sum(self.df[["x", "y", "z"]].subtract(xyz, axis=1) ** 2, axis=1)
+        )
 
     @staticmethod
     def distance_df(df, xyz=(0.00, 0.00, 0.00)):
@@ -276,5 +281,4 @@ class PandasMol2(object):
 
         """
 
-        return np.sqrt(np.sum(df[['x', 'y', 'z']]
-                       .subtract(xyz, axis=1)**2, axis=1))
+        return np.sqrt(np.sum(df[["x", "y", "z"]].subtract(xyz, axis=1) ** 2, axis=1))

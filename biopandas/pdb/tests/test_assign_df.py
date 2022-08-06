@@ -9,20 +9,20 @@ from biopandas.testutils import assert_raises
 import os
 
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 
 
 def test_overwrite_df():
-    data_path = os.path.join(os.path.dirname(__file__), 'data', '3eiy.pdb')
+    data_path = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
     pdb = PandasPdb().read_pdb(data_path)
 
     def overwrite():
-        pdb.df = 'bla'
+        pdb.df = "bla"
 
-    expect = ('Please use `PandasPdb._df = ... ` instead\n'
-              'of `PandasPdb.df = ... ` if you are sure that\n'
-              'you want to overwrite the `df` attribute.')
+    expect = (
+        "Please use `PandasPdb._df = ... ` instead\n"
+        "of `PandasPdb.df = ... ` if you are sure that\n"
+        "you want to overwrite the `df` attribute."
+    )
 
-    assert_raises(AttributeError,
-                  expect,
-                  overwrite)
+    assert_raises(AttributeError, expect, overwrite)
