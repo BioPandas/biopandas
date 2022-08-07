@@ -85,7 +85,7 @@ MMCIF_PDB_COLUMN_MAP: Dict[str, str] = {
     "type_symbol": "element_symbol",
 }
 
-MMCIF_PDB_NONEFIELDS = [
+MMCIF_PDB_NONEFIELDS: List[str] = [
     "blank_1",
     "alt_loc",
     "blank_2",

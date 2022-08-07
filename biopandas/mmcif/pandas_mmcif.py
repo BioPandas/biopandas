@@ -476,8 +476,17 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def get_pandas_pdb(self) -> PandasPdb:
-        """Returns a PandasPdb object with the same data as the PandasMmcif object"""
+    def get_pandas_pdb(self, hetatom_offset: int = 0) -> PandasPdb:
+        """Returns a PandasPdb object with the same data as the PandasMmcif object.
+        
+        Attributes
+        ----------
+        hetatm_offset: int
+            Integer by which to offset hetatm numbering. This can arise due to the
+            presence of TER records in PDBs which are not found in mmCIFs.
+
+        
+        """
         pandaspdb = PandasPdb()
         # for a in ["ATOM", "HETATM"]:
         for a in self.df.keys():
@@ -500,5 +509,8 @@ class PandasMmcif:
         # update line_idx
         pandaspdb.df["ATOM"]["line_idx"] = pandaspdb.df["ATOM"].index.values
         pandaspdb.df["HETATM"]["line_idx"] = pandaspdb.df["HETATM"].index
+
+        # Update atom number
+        pandaspdb.df["HETATM"]["atom_number"] = pandaspdb.df["HETATM"]["atom_number"] + hetatom_offset
 
         return pandaspdb
