@@ -12,8 +12,10 @@ from urllib.request import urlopen
 import numpy as np
 import pandas as pd
 from biopandas.mmcif import PandasMmcif
+from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
 from nose.tools import raises
+from pandas.testing import assert_frame_equal
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 
@@ -23,7 +25,9 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # )
 TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
-TESTDATA_FILENAME_AF = os.path.join(os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif")
+TESTDATA_FILENAME_AF = os.path.join(
+    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif"
+)
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",
@@ -79,6 +83,7 @@ with open(TESTDATA_FILENAME2, "r") as f:
 with open(TESTDATA_FILENAME_AF, "r") as f:
     af2_test_struct = f.read()
 
+
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasMmcif()
@@ -123,7 +128,7 @@ def test_fetch_pdb():
 
 
 def test_fetch_af2():
-    """ Test fetch_af2"""
+    """Test fetch_af2"""
 
     try:
         ppdb = PandasMmcif()
@@ -134,7 +139,10 @@ def test_fetch_af2():
         txt[:100] == af2_test_struct[:100]
         ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v2")
         assert ppdb.mmcif_text == txt
-        assert ppdb.mmcif_path == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
+        assert (
+            ppdb.mmcif_path
+            == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.cif"
+        )
 
 
 def test__read_pdb_gz():
@@ -280,3 +288,34 @@ def test_get_df():
 
     shape = ppdb.get("carbon", records=("ATOM",)).shape
     assert shape == (857, 21), shape
+
+
+def test_mmcif_pdb_conversion():
+    """Tests conversion from mmCIF df to PDB df"""
+    # Multichain test
+    pdb = PandasPdb().fetch_pdb("4hhb")
+    mmcif = PandasMmcif().fetch_mmcif("4hhb")
+    mmcif_pdb = mmcif.get_pandas_pdb()
+
+    assert_frame_equal(
+        pdb.df["ATOM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["ATOM"].drop(columns=["line_idx"]),
+    )
+    assert_frame_equal(
+        pdb.df["HETATM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+    )
+
+    # single chain test
+    pdb = PandasPdb().fetch_pdb("3eiy")
+    mmcif = PandasMmcif().fetch_mmcif("3eiy")
+    mmcif_pdb = mmcif.get_pandas_pdb()
+
+    assert_frame_equal(
+        pdb.df["ATOM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["ATOM"].drop(columns=["line_idx"]),
+    )
+    assert_frame_equal(
+        pdb.df["HETATM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+    )

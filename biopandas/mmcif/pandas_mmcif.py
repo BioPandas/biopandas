@@ -93,26 +93,33 @@ class PandasMmcif:
         invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
-        invalid_input_combination_2 = pdb_code is not None and source in {"alphafold2-v1", "alphafold2-v2"}
+        invalid_input_combination_2 = pdb_code is not None and source in {
+            "alphafold2-v1", "alphafold2-v2"}
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
-            raise ValueError("Please provide either a PDB code or a UniProt ID.")
+            raise ValueError(
+                "Please provide either a PDB code or a UniProt ID.")
 
-        if invalid_input_combination_1 :
-            raise ValueError("Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
-        elif invalid_input_combination_2 :
-            raise ValueError(f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}.")
+        if invalid_input_combination_1:
+            raise ValueError(
+                "Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
+        elif invalid_input_combination_2:
+            raise ValueError(
+                f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}.")
 
         if source == "pdb":
             self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
         elif source == "alphafold2-v1":
             af2_version = 1
-            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(
+                uniprot_id, af2_version)
         elif source == "alphafold2-v2":
             af2_version = 2
-            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(
+                uniprot_id, af2_version)
         else:
-            raise ValueError(f"Invalid source: {source}. Please use one of 'pdb', 'alphafold2-v1' or 'alphafold-v2'.")
+            raise ValueError(
+                f"Invalid source: {source}. Please use one of 'pdb', 'alphafold2-v1' or 'alphafold-v2'.")
 
         self._df = self._construct_df(text=self.mmcif_text)
         return self
@@ -122,7 +129,8 @@ class PandasMmcif:
         data = data[list(data.keys())[0]]
         self.data = data
         df: Dict[str, pd.DataFrame] = {}
-        full_df = pd.DataFrame.from_dict(data["atom_site"], orient="index").transpose()
+        full_df = pd.DataFrame.from_dict(
+            data["atom_site"], orient="index").transpose()
         full_df = full_df.astype(mmcif_col_types, errors="ignore")
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])
@@ -141,7 +149,8 @@ class PandasMmcif:
             response = urlopen(url)
             txt = response.read()
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+                txt.decode(
+                    "utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
             )
         except HTTPError as e:
             print(f"HTTP Error {e.code}")
@@ -178,7 +187,8 @@ class PandasMmcif:
             r_mode = "rb"
             openf = gzip.open
         else:
-            allowed_formats = ", ".join((".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
+            allowed_formats = ", ".join(
+                (".cif", ".cif.gz", ".mmcif", ".mmcif.gz"))
             raise ValueError(
                 f"Wrong file format; allowed file formats are {allowed_formats}"
             )
@@ -188,7 +198,8 @@ class PandasMmcif:
 
         if path.endswith(".gz"):
             txt = (
-                txt.decode("utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
+                txt.decode(
+                    "utf-8") if sys.version_info[0] >= 3 else txt.encode("ascii")
             )
         return path, txt
 
@@ -264,7 +275,8 @@ class PandasMmcif:
     def _get_hydrogen(df, invert):
         """Return only hydrogen atom entries from a DataFrame"""
         return (
-            df[(df["type_symbol"] != "H")] if invert else df[(df["type_symbol"] == "H")]
+            df[(df["type_symbol"] != "H")] if invert else df[(
+                df["type_symbol"] == "H")]
         )
 
     @staticmethod
@@ -331,7 +343,8 @@ class PandasMmcif:
                 indices.append(ind)
             cmp = num
 
-        transl = tmp.iloc[indices][residue_col].map(amino3to1dict).fillna(fillna)
+        transl = tmp.iloc[indices][residue_col].map(
+            amino3to1dict).fillna(fillna)
 
         return pd.concat((tmp.iloc[indices][chain_col], transl), axis=1)
 
@@ -476,16 +489,17 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def get_pandas_pdb(self, hetatom_offset: int = 0) -> PandasPdb:
-        """Returns a PandasPdb object with the same data as the PandasMmcif object.
-        
+    def get_pandas_pdb(self, offset_chains: bool = True) -> PandasPdb:
+        """Returns a PandasPdb object with the same data as the PandasMmcif
+        object.
+
         Attributes
         ----------
-        hetatm_offset: int
-            Integer by which to offset hetatm numbering. This can arise due to the
-            presence of TER records in PDBs which are not found in mmCIFs.
+        offset_chains: bool
+            Whether or not to offset atom numbering based on number of chains.
+            This can arise due to the presence of TER records in PDBs which are
+            not found in mmCIFs.
 
-        
         """
         pandaspdb = PandasPdb()
         # for a in ["ATOM", "HETATM"]:
@@ -510,7 +524,12 @@ class PandasMmcif:
         pandaspdb.df["ATOM"]["line_idx"] = pandaspdb.df["ATOM"].index.values
         pandaspdb.df["HETATM"]["line_idx"] = pandaspdb.df["HETATM"].index
 
-        # Update atom number
-        pandaspdb.df["HETATM"]["atom_number"] = pandaspdb.df["HETATM"]["atom_number"] + hetatom_offset
+        # Update atom numbers
+        if offset_chains:
+            offsets = pandaspdb.df["ATOM"]["chain_id"].astype(
+                "category").cat.codes
+            pandaspdb.df["ATOM"]["atom_number"] = pandaspdb.df["ATOM"]["atom_number"] + offsets
+            hetatom_offset = offsets.max() + 1
+            pandaspdb.df["HETATM"]["atom_number"] = pandaspdb.df["HETATM"]["atom_number"] + hetatom_offset
 
         return pandaspdb
