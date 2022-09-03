@@ -24,5 +24,5 @@
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
 #
 
-__version__ = "0.4.2"
+__version__ = "0.5.0"
 __author__ = "Sebastian Raschka <mail@sebastianraschka.com>"
