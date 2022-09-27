@@ -10,6 +10,6 @@ BioPandas module for working with MMTF
 files in pandas DataFrames.
 """
 
-from .pandas_mmtf import PandasMmtf
+from .pandas_mmtf import PandasMmtf, fetch_mmtf, parse_mmtf
 
-__all__ = ["PandasMmtf"]
+__all__ = ["PandasMmtf", "fetch_mmtf", "parse_mmtf"]
