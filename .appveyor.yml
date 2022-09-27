@@ -14,9 +14,8 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=%PYTHON_VERSION% numpy scipy pandas nose
+  - conda create -q -n test-environment python=%PYTHON_VERSION% numpy scipy pandas nose python-mmtf
   - activate test-environment
-  - pip install python-mmtf
 
 test_script:
   - nosetests -s -v
