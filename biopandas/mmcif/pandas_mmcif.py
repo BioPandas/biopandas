@@ -10,7 +10,7 @@ import gzip
 import sys
 import warnings
 from distutils.version import LooseVersion
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
