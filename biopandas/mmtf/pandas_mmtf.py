@@ -46,6 +46,7 @@ class PandasMmtf:
         df = self._mmtf_to_df(self.mmtf)
         self._df["ATOM"] = df.loc[df.record_name == "ATOM"]
         self._df["HETATM"] = df.loc[df.record_name == "HETATM"]
+        return self
 
     def fetch_mmtf(self, pdb_code: str):
         self.code = pdb_code
@@ -53,6 +54,7 @@ class PandasMmtf:
         df = self._mmtf_to_df(self.mmtf)
         self._df["ATOM"] = df.loc[df.record_name == "ATOM"]
         self._df["HETATM"] = df.loc[df.record_name == "HETATM"]
+        return self
 
     @staticmethod
     def _mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
@@ -444,20 +446,24 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
             chain_indices[i] = chain_indices[i] + chain_indices[i - 1]
 
     ch_idx = 0
+    res_num = 1
     for idx, i in enumerate(mmtf_obj.group_type_list):
         res = mmtf_obj.group_list[i]
         if idx == chain_indices[ch_idx]:
             ch_idx += 1
+            res_num = 1
         record = "HETATM" if res["chemCompType"] == "NON-POLYMER" else "ATOM"
         for _ in res["atomNameList"]:
             data["residue_name"].append(res["groupName"])
-            data["residue_number"].append(mmtf_obj.group_id_list[i])
+            # data["residue_number"].append(mmtf_obj.group_id_list[i])
+            data["residue_number"].append(res_num)
             data["chain_id"].append(mmtf_obj.chain_name_list[ch_idx])
             data["record_name"].append(record)
             data["insertion"].append(mmtf_obj.ins_code_list[idx])
         data["atom_name"].append(res["atomNameList"])
         data["element_symbol"].append(res["elementList"])
         data["charge"].append(res["formalChargeList"])
+        res_num += 1
 
     for k, v in data.items():
         if k in [

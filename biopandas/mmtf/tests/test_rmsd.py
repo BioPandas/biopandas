@@ -48,8 +48,7 @@ def test_invalid_query():
 
 
 def test_protein():
-    r = PandasMmtf.rmsd(
-        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
+    r = PandasMmtf.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
     assert r == 0.4923, r
 
 
