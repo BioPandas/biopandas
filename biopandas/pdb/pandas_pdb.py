@@ -13,17 +13,16 @@ import warnings
 from copy import deepcopy
 from distutils.version import LooseVersion
 from io import StringIO
-from typing import Optional
-from typing import List
+from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 from warnings import warn
 
 import numpy as np
 import pandas as pd
+import requests
 
 from .engines import amino3to1dict, pdb_df_columns, pdb_records
-
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -115,10 +114,48 @@ class PandasPdb(object):
         self.header, self.code = self._parse_header_code()
         return self
 
+    def esmfold(self, sequence: str, out_path: Optional[str] = None, version: int = 1):
+        """Fold a protein sequence using the ESM-1b model from the ESM-1b server at
+        https://api.esmatlas.com/foldSequence/v1/pdb/.
 
-    def fetch_pdb(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
-        """Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
-.
+
+        Parameters
+        ----------
+        sequence : str
+            A protein sequence in one-letter code.
+        out_path : str, optional
+            Path to save the PDB file to. If `None`, the file is not saved. Defaults to `None`.
+
+        version : int, optional
+            The version of the ESMFold model to use. Defaults to `1`.
+
+
+        Returns
+        --------
+        self
+        """
+        URL = f"https://api.esmatlas.com/foldSequence/v{version}/pdb/"
+        headers: Dict[str, str] = {
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+
+        pdb = requests.post(URL, data=sequence, headers=headers).text
+        if out_path is not None:
+            with open(out_path, "w") as f:
+                f.write(pdb)
+
+        self.read_pdb_from_list(pdb.split("\n"))
+        return self
+
+    def fetch_pdb(
+        self,
+        pdb_code: Optional[str] = None,
+        uniprot_id: Optional[str] = None,
+        sequence: Optional[str] = None,
+        source: str = "pdb",
+    ):
+        """
+        Fetches PDB file contents from the Protein Databank at rcsb.org, AlphaFold database at https://alphafold.ebi.ac.uk/ or a predicted structure for a sequence from the ESMFold Atlas.
 
         Parameters
         ----------
@@ -128,8 +165,11 @@ class PandasPdb(object):
         uniprot_id : str, optional
             A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
 
+        sequence : str, optional
+            A protein sequence in one-letter code to retrieve a predicted structure from the ESMFold Atlas. Defaults to `None`.
+
         source : str
-            The source to retrieve the structure from 
+            The source to retrieve the structure from
             (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"`, `"alphafold2-v3"` (latest)). Defaults to `"pdb"`.
 
         Returns
@@ -137,21 +177,30 @@ class PandasPdb(object):
         self
 
         """
+        if sequence is not None:
+            return self.esmfold(sequence)
+
         # Sanitize input
         invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
         invalid_input_combination_2 = pdb_code is not None and source in {
-            "alphafold2-v1", "alphafold2-v2", "alphafold2-v3"}
-
+            "alphafold2-v1",
+            "alphafold2-v2",
+            "alphafold2-v3",
+        }
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
             raise ValueError("Please provide either a PDB code or a UniProt ID.")
 
-        if invalid_input_combination_1 :
-            raise ValueError("Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
-        elif invalid_input_combination_2 :
-            raise ValueError(f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}.")
+        if invalid_input_combination_1:
+            raise ValueError(
+                "Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'."
+            )
+        elif invalid_input_combination_2:
+            raise ValueError(
+                f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}."
+            )
 
         if source == "alphafold2-v1":
             af2_version = 1
@@ -165,8 +214,10 @@ class PandasPdb(object):
         elif source == "pdb":
             self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
         else:
-            raise ValueError(f"Invalid source: {source}."
-                " Please use one of 'pdb' or 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3'.")
+            raise ValueError(
+                f"Invalid source: {source}."
+                " Please use one of 'pdb' or 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3'."
+            )
 
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
@@ -355,15 +406,14 @@ class PandasPdb(object):
             response = urlopen(url)
             txt = response.read()
             if sys.version_info[0] >= 3:
-                txt = txt.decode('utf-8')
+                txt = txt.decode("utf-8")
             else:
-                txt = txt.encode('ascii')
+                txt = txt.encode("ascii")
         except HTTPError as e:
-            print('HTTP Error %s' % e.code)
+            print("HTTP Error %s" % e.code)
         except URLError as e:
-            print('URL Error %s' % e.args)
+            print("URL Error %s" % e.args)
         return url, txt
-
 
     def _parse_header_code(self):
         """Extract header information and PDB code."""
@@ -819,7 +869,7 @@ class PandasPdb(object):
         ------------
         records : List[str]
             List of record names to save to stream. Any of `["ATOM", "HETATM", "OTHERS"]`.
-        
+
         Returns
         --------
         io.StringIO : Filestream of PDB file.
@@ -844,8 +894,7 @@ class PandasPdb(object):
                 if c in {"x_coord", "y_coord", "z_coord"}:
                     for idx in range(dfs[r][c].values.shape[0]):
                         if len(dfs[r][c].values[idx]) > 8:
-                            dfs[r][c].values[idx] = str(
-                                dfs[r][c].values[idx]).strip()
+                            dfs[r][c].values[idx] = str(dfs[r][c].values[idx]).strip()
 
                 if c not in {"line_idx", "OUT"}:
                     dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
