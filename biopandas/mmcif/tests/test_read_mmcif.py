@@ -245,7 +245,7 @@ def test_read_pdb():
     """Test public read_pdb"""
     ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
-    assert ppdb.pdb_text == three_eiy
+    assert ppdb.mmcif_text == three_eiy
     assert ppdb.code == "3eiy", ppdb.code
     assert ppdb.mmcif_path == TESTDATA_FILENAME
 
@@ -256,7 +256,7 @@ def test_read_pdb_from_list():
     for pdb_text, code in zip([three_eiy, four_eiy], ["3eiy", "4eiy"]):
         ppdb = PandasMmcif()
         ppdb.read_mmcif_from_list(pdb_text)
-        assert ppdb.pdb_text == pdb_text
+        assert ppdb.mmcif_text == pdb_text
         assert ppdb.code == code
         assert ppdb.mmcif_path == ""
 
