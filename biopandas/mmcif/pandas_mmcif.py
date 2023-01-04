@@ -10,7 +10,7 @@ import gzip
 import sys
 import warnings
 from distutils.version import LooseVersion
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
@@ -492,7 +492,7 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def get_pandas_pdb(self, offset_chains: bool = True) -> PandasPdb:
+    def convert_to_pandas_pdb(self, offset_chains: bool = True, records: List[str] = ["ATOM", "HETATM"]) -> PandasPdb:
         """Returns a PandasPdb object with the same data as the PandasMmcif
         object.
 
@@ -502,11 +502,14 @@ class PandasMmcif:
             Whether or not to offset atom numbering based on number of chains.
             This can arise due to the presence of TER records in PDBs which are
             not found in mmCIFs.
+        records: List[str]
+            List of record types to save. Any of ["ATOM", "HETATM", "OTHERS"].
+            Defaults to ["ATOM", "HETATM"].
 
         """
         pandaspdb = PandasPdb()
-        # for a in ["ATOM", "HETATM"]:
-        for a in self.df.keys():
+
+        for a in records:
             try:
                 dfa = self.df[a]
                 # keep only those fields found in pdb
