@@ -91,7 +91,6 @@ with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af2_test_struct_v3 = f.read()
 
 
-
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasMmcif()
@@ -255,7 +254,7 @@ def test_read_pdb_from_list():
 
     for pdb_text, code in zip([three_eiy, four_eiy], ["3eiy", "4eiy"]):
         ppdb = PandasMmcif()
-        ppdb.read_mmcif_from_list(pdb_text)
+        ppdb.read_mmcif_from_list(pdb_text.split("\n"))
         assert ppdb.mmcif_text == pdb_text
         assert ppdb.code == code
         assert ppdb.mmcif_path == ""

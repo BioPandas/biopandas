@@ -20,13 +20,8 @@ import requests
 
 from ..pdb.engines import amino3to1dict
 from ..pdb.pandas_pdb import PandasPdb
-from .engines import (
-    ANISOU_DF_COLUMNS,
-    MMCIF_PDB_COLUMN_MAP,
-    MMCIF_PDB_NONEFIELDS,
-    PDB_COLUMN_ORDER,
-    mmcif_col_types,
-)
+from .engines import (ANISOU_DF_COLUMNS, MMCIF_PDB_COLUMN_MAP,
+                      MMCIF_PDB_NONEFIELDS, PDB_COLUMN_ORDER, mmcif_col_types)
 from .mmcif_parser import load_cif_data
 
 pd_version = LooseVersion(pd.__version__)
@@ -547,7 +542,7 @@ class PandasMmcif:
         self
 
         """
-        self.mmcif_text = "".join(mmcif_lines)
+        self.mmcif_text = "\n".join(mmcif_lines)
         self._df = self._construct_df("\n".join(mmcif_lines))
         # self.header, self.code = self._parse_header_code()
         self.code = self.data["entry"]["id"][0].lower()
