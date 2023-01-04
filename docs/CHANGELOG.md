@@ -4,6 +4,14 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
+### 0.5.0dev (UNRELEASED)
+
+
+##### New Features
+- Adds support for parsing [MMTF](https://mmtf.rcsb.org/) files. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
+
+- Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
+
 
 ### 0.4.2 (08-4-2022)
 
