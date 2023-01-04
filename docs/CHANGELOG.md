@@ -14,7 +14,8 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- Added a new `PandasMmcif.get_pandas_pdb()` class that converts the mmCIF file into a PDB structure. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
+- Added a new `PandasMmcif.convert_to_pandas_pdb()` class that converts the mmCIF file into a PDB structure. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
+- Added ability to write PDBs to a filestream (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
 
 
 
