@@ -20,6 +20,9 @@ p1t48 = PandasMmtf()
 p1t48.read_mmtf(TESTDATA_1t48)
 p1t49 = PandasMmtf()
 p1t49.read_mmtf(TESTDATA_1t49)
+# Subset to the first 995 atoms for consistency with PDB tests
+p1t48.df["ATOM"] = p1t48.df["ATOM"].loc[p1t48.df["ATOM"].atom_number <= 995]
+p1t49.df["ATOM"] = p1t49.df["ATOM"].loc[p1t49.df["ATOM"].atom_number <= 995]
 
 # pl1 = PandasPdb()
 # pl1.read_pdb(TESTDATA_lig1)
@@ -49,7 +52,7 @@ def test_invalid_query():
 
 def test_protein():
     r = PandasMmtf.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
-    assert r == 0.4923, r
+    assert r == 0.4785, r
 
 
 def test_rna_and_nonmatching_indices():
@@ -61,11 +64,12 @@ def test_rna_and_nonmatching_indices():
     assert r == 10.2007, r
 
 
+# Skipping ligand tests as the ligand coordinates used in PDB test are unknown
 # def test_ligand():
-#    r = PandasMmcif.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s="hydrogen", invert=True)
+#    r = PandasMmtf.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s="hydrogen", invert=True)
 #    assert r == 1.9959, r
 
 
 # def test_ligand_default():
-#    r = PandasMmcif.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s=None)
+#    r = PandasMmtf.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s=None)
 #    assert r == 2.6444, r
