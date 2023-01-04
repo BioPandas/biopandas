@@ -548,9 +548,7 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
 
-    def get_pandas_pdb(
-        self, offset_chains: bool = True, records: List[str] = ["ATOM", "HETATM"]
-    ) -> PandasPdb:
+    def convert_to_pandas_pdb(self, offset_chains: bool = True, records: List[str] = ["ATOM", "HETATM"]) -> PandasPdb:
         """Returns a PandasPdb object with the same data as the PandasMmcif
         object.
 

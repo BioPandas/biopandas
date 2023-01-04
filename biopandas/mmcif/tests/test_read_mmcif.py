@@ -317,7 +317,7 @@ def test_mmcif_pdb_conversion():
     # Multichain test
     pdb = PandasPdb().fetch_pdb("4hhb")
     mmcif = PandasMmcif().fetch_mmcif("4hhb")
-    mmcif_pdb = mmcif.get_pandas_pdb()
+    mmcif_pdb = mmcif.convert_to_pandas_pdb()
 
     assert_frame_equal(
         pdb.df["ATOM"].drop(columns=["line_idx"]),
@@ -331,7 +331,7 @@ def test_mmcif_pdb_conversion():
     # single chain test
     pdb = PandasPdb().fetch_pdb("3eiy")
     mmcif = PandasMmcif().fetch_mmcif("3eiy")
-    mmcif_pdb = mmcif.get_pandas_pdb()
+    mmcif_pdb = mmcif.convert_to_pandas_pdb()
 
     assert_frame_equal(
         pdb.df["ATOM"].drop(columns=["line_idx"]),
