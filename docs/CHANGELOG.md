@@ -4,6 +4,28 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
+### 0.5.0dev (UNRELEASED)
+
+
+##### New Features
+- Adds support for parsing [MMTF](https://mmtf.rcsb.org/) files. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
+
+- Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
+
+
+### 0.5.0 (TBD)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.0.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.0.tar.gz)
+
+##### New Features
+
+- Added a new `PandasMmcif.convert_to_pandas_pdb()` class that converts the mmCIF file into a PDB structure. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
+- Added ability to write PDBs to a filestream (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
+
+
 
 ### 0.4.2 (08-4-2022)
 
@@ -14,7 +36,8 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-- Added support for [AlphaFolds 200M+ structures](https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe) via `PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')` and `PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')`.
+- Added support for [AlphaFolds 200M+ structures](https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe) via `PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')` and `PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')`. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[102](https://github.com/rasbt/biopandas/pull/102/files))
+
 
 
 

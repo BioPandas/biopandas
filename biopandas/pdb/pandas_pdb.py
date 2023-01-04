@@ -12,6 +12,7 @@ import sys
 import warnings
 from copy import deepcopy
 from distutils.version import LooseVersion
+from io import StringIO
 from typing import Optional
 from typing import List
 from urllib.error import HTTPError, URLError
@@ -810,3 +811,54 @@ class PandasPdb(object):
                 [x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]
             ]
         return df
+
+    def to_pdb_stream(self, records: List[str] = ["ATOM", "HETATM"]) -> StringIO:
+        """Writes a PDB dataframe to a stream.
+
+        Parameters
+        ------------
+        records : List[str]
+            List of record names to save to stream. Any of `["ATOM", "HETATM", "OTHERS"]`.
+        
+        Returns
+        --------
+        io.StringIO : Filestream of PDB file.
+        """
+
+        df = self.df.copy()
+        df = pd.concat([df[a] for a in records])
+        if "model_id" in df.columns:
+            df = df.drop(columns=["model_id"])
+        df.residue_number = df.residue_number.astype(int)
+        records = [r.strip() for r in list(set(df.record_name))]
+        dfs = {r: df.loc[df.record_name == r] for r in records}
+
+        for r in dfs:
+            for col in pdb_records[r]:
+                dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
+                dfs[r]["OUT"] = pd.Series("", index=dfs[r].index)
+
+            for c in dfs[r].columns:
+                # fix issue where coordinates with four or more digits would
+                # cause issues because the columns become too wide
+                if c in {"x_coord", "y_coord", "z_coord"}:
+                    for idx in range(dfs[r][c].values.shape[0]):
+                        if len(dfs[r][c].values[idx]) > 8:
+                            dfs[r][c].values[idx] = str(
+                                dfs[r][c].values[idx]).strip()
+
+                if c not in {"line_idx", "OUT"}:
+                    dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
+
+        df = pd.concat(dfs, sort=False)
+        df.sort_values(by="line_idx", inplace=True)
+
+        output = StringIO()
+        s = df["OUT"].tolist()
+        for idx in range(len(s)):
+            if len(s[idx]) < 80:
+                s[idx] = f"{s[idx]}{' ' * (80 - len(s[idx]))}"
+        to_write = "\n".join(s)
+        output.write(to_write)
+        output.write("\n")
+        return output.seek(0)
