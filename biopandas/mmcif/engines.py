@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 mmcif_col_types: Dict[str, Any] = {
     "B_iso_or_equiv": float,
@@ -24,7 +24,7 @@ mmcif_col_types: Dict[str, Any] = {
     "type_symbol": str,
 }
 
-ANISOU_DF_COLUMNS = [
+ANISOU_DF_COLUMNS: List[str] = [
     "id",
     "type_symbol",
     "pdbx_label_atom_id",
@@ -43,4 +43,56 @@ ANISOU_DF_COLUMNS = [
     "pdbx_auth_comp_id",
     "pdbx_auth_asym_id",
     "pdbx_auth_atom_id",
+]
+
+
+PDB_COLUMN_ORDER: List[str] = [
+    "record_name",
+    "atom_number",
+    "blank_1",
+    "atom_name",
+    "alt_loc",
+    "residue_name",
+    "blank_2",
+    "chain_id",
+    "residue_number",
+    "insertion",
+    "blank_3",
+    "x_coord",
+    "y_coord",
+    "z_coord",
+    "occupancy",
+    "b_factor",
+    "blank_4",
+    "segment_id",
+    "element_symbol",
+    "charge",
+    "line_idx",
+]
+
+MMCIF_PDB_COLUMN_MAP: Dict[str, str] = {
+    "group_PDB": "record_name",
+    "id": "atom_number",
+    "auth_atom_id": "atom_name",
+    "auth_comp_id": "residue_name",
+    "auth_asym_id": "chain_id",
+    "auth_seq_id": "residue_number",
+    "Cartn_x": "x_coord",
+    "Cartn_y": "y_coord",
+    "Cartn_z": "z_coord",
+    "occupancy": "occupancy",
+    "B_iso_or_equiv": "b_factor",
+    "type_symbol": "element_symbol",
+}
+
+MMCIF_PDB_NONEFIELDS: List[str] = [
+    "blank_1",
+    "alt_loc",
+    "blank_2",
+    "insertion",
+    "blank_3",
+    "blank_4",
+    "segment_id",
+    "charge",
+    "line_idx",
 ]

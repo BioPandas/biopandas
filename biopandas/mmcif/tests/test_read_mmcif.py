@@ -12,8 +12,10 @@ from urllib.request import urlopen
 import numpy as np
 import pandas as pd
 from biopandas.mmcif import PandasMmcif
+from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
 from nose.tools import raises
+from pandas.testing import assert_frame_equal
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 
@@ -23,6 +25,7 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # )
 TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
+
 TESTDATA_FILENAME_AF2_V2 = os.path.join(
     os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.cif"
 )
@@ -86,6 +89,7 @@ with open(TESTDATA_FILENAME_AF2_V2, "r") as f:
 
 with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af2_test_struct_v3 = f.read()
+
 
 
 def test__read_pdb():
@@ -307,3 +311,34 @@ def test_get_df():
 
     shape = ppdb.get("carbon", records=("ATOM",)).shape
     assert shape == (857, 21), shape
+
+
+def test_mmcif_pdb_conversion():
+    """Tests conversion from mmCIF df to PDB df"""
+    # Multichain test
+    pdb = PandasPdb().fetch_pdb("4hhb")
+    mmcif = PandasMmcif().fetch_mmcif("4hhb")
+    mmcif_pdb = mmcif.convert_to_pandas_pdb()
+
+    assert_frame_equal(
+        pdb.df["ATOM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["ATOM"].drop(columns=["line_idx"]),
+    )
+    assert_frame_equal(
+        pdb.df["HETATM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+    )
+
+    # single chain test
+    pdb = PandasPdb().fetch_pdb("3eiy")
+    mmcif = PandasMmcif().fetch_mmcif("3eiy")
+    mmcif_pdb = mmcif.convert_to_pandas_pdb()
+
+    assert_frame_equal(
+        pdb.df["ATOM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["ATOM"].drop(columns=["line_idx"]),
+    )
+    assert_frame_equal(
+        pdb.df["HETATM"].drop(columns=["line_idx"]),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+    )
