@@ -1,3 +1,4 @@
 numpy>=1.16.2
 pandas>=0.24.2
 requests
+mmtf-python==1.1.3
