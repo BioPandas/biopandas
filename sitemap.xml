@@ -2,92 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://rasbt.github.io/biopandas/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/CHANGELOG/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/CODE_OF_CONDUCT/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/CONTRIBUTING/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/citing/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/installation/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mmcif/PandasMMCIF/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mol2/PandasMol2/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mol2/split_multimol2/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.pdb/PandasPdb/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.testutils/assert_raises/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.mmcif/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.mol2/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.pdb/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.testutils/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/tutorials/Working_with_MOL2_Structures_in_DataFrames/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/tutorials/Working_with_mmCIF_Structures_in_DataFrames/</loc>
-         <lastmod>2022-08-06</lastmod>
+         <lastmod>2023-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
