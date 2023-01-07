@@ -189,7 +189,7 @@ class PandasPdb(object):
             if source != "esmfold-v1":
                 raise ValueError(
                     f"Please provide a valid 'source'. "
-                    f"Supposed sources are: 'esmfold-v1'"
+                    f"Allowed sources are: 'esmfold-v1'"
                 )                
 
             return self.esmfold(sequence)

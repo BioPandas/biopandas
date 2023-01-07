@@ -123,7 +123,6 @@ def test__read_pdb_raises():
 
 def test_fetch_pdb():
     """Test fetch_pdb"""
-
     try:
         ppdb = PandasMmcif()
         url, txt = ppdb._fetch_mmcif("3eiy")
@@ -135,12 +134,27 @@ def test_fetch_pdb():
         assert ppdb.mmcif_text == txt
         assert ppdb.mmcif_path == "https://files.rcsb.org/download/3eiy.cif"
 
+@raises(ValueError)
+def test_fetch_input_arg_sequence_pdb():
+    ppdb = PandasMmcif()
+    ppdb.fetch_mmcif(uniprot_id="Q5VSL9", sequence="MTYGLY")
+
+@raises(ValueError)
+def test_fetch_unsopported_sequence_source_1():
+    ppdb = PandasMmcif()
+    ppdb.fetch_mmcif(sequence="MTYGLY")
+
+@raises(ValueError)
+def test_fetch_unsopported_sequence_source_2():
+    ppdb = PandasMmcif()
+    ppdb.fetch_mmcif(sequence="MTYGLY", source="abc")
+
 
 def test_read_pdb_esmfold():
     """Test retrieving a structure from ESMFold."""
     sequence = "MTYGLY"
     res_ids: Set[str] = {"A:MET:1", "A:THR:2", "A:TYR:3", "A:GLY:4", "A:LEU:5", "A:TYR:6"}
-    ppdb = PandasMmcif().fetch_mmcif(sequence=sequence)
+    ppdb = PandasMmcif().fetch_mmcif(sequence=sequence, source="esmfold-v1")
 
     df = ppdb.df["ATOM"]
 
