@@ -169,20 +169,35 @@ class PandasPdb(object):
             A protein sequence in one-letter code to retrieve a predicted structure from the ESMFold Atlas. Defaults to `None`.
 
         source : str
-            The source to retrieve the structure from
+            If a pdb_code or uniprot_id is provided, select one of the following sources:
             (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"`, `"alphafold2-v3"` (latest)). Defaults to `"pdb"`.
+            If a `sequence` is provided, select one of the following sources:
+            ("esmfold-v1").
 
         Returns
         ---------
         self
 
         """
-        if sequence is not None:
-            return self.esmfold(sequence)
+        # Process sequence inputs
+        if sequence:
+            if pdb_code or uniprot_id:
+                raise ValueError(
+                    f"Please use either a 'sequence' or "
+                    f"'pdb_code'/'uniprot_id' but not both."
+                )
+            if source != "esmfold-v1":
+                raise ValueError(
+                    f"Please provide a valid 'source'. "
+                    f"Supposed sources are: 'esmfold-v1'"
+                )                
 
-        # Sanitize input
+            return self.esmfold(sequence)
+        
+        # Sanitize input for non-sequence inputs
         invalid_input_identifier_1 = pdb_code is None and uniprot_id is None
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
+        
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
         invalid_input_combination_2 = pdb_code is not None and source in {
             "alphafold2-v1",

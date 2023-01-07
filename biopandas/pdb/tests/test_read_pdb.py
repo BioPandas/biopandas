@@ -135,7 +135,6 @@ def test_fetch_pdb():
         assert ppdb.pdb_text == txt
         assert ppdb.pdb_path == "https://files.rcsb.org/download/3eiy.pdb"
 
-
 def test_fetch_af2():
     """Test fetch_pdb"""
     # Check latest release
@@ -174,12 +173,26 @@ def test_fetch_af2():
             == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb"
         )
 
+@raises(ValueError)
+def test_fetch_input_arg_sequence_pdb():
+    ppdb = PandasPdb()
+    ppdb.fetch_pdb(uniprot_id="Q5VSL9", sequence="MTYGLY")
+
+@raises(ValueError)
+def test_fetch_unsopported_sequence_source_1():
+    ppdb = PandasPdb()
+    ppdb.fetch_pdb(sequence="MTYGLY")
+
+@raises(ValueError)
+def test_fetch_unsopported_sequence_source_2():
+    ppdb = PandasPdb()
+    ppdb.fetch_pdb(sequence="MTYGLY", source="abc")
 
 def test_read_pdb_esmfold():
     """Test retrieving a structure from ESMFold."""
     sequence = "MTYGLY"
     res_ids: Set[str] = {"A:MET:1", "A:THR:2", "A:TYR:3", "A:GLY:4", "A:LEU:5", "A:TYR:6"}
-    ppdb = PandasPdb().fetch_pdb(sequence=sequence)
+    ppdb = PandasPdb().fetch_pdb(sequence=sequence, source="esmfold-v1")
 
     df = ppdb.df["ATOM"]
 
