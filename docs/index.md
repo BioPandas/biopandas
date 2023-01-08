@@ -17,7 +17,7 @@
 
 #### Links
 
-- Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
+- Documentation: [https://BioPandas.github.io/biopandas/](https://BioPandas.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
 
