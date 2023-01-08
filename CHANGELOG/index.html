@@ -144,13 +144,23 @@
 <h1 id="release-notes">Release Notes <img alt="" src="../img/logos/3eiy_120.png" /></h1>
 <p>The CHANGELOG for the current development version is available at
 <a href="https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md">https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md</a>.</p>
+<h3 id="050dev-unreleased">0.5.0dev (UNRELEASED)</h3>
+<h5 id="new-features">New Features</h5>
+<ul>
+<li>
+<p>Adds support for parsing <a href="https://mmtf.rcsb.org/">MMTF</a> files. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</p>
+</li>
+<li>
+<p>Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</p>
+</li>
+</ul>
 <h3 id="050-tbd">0.5.0 (TBD)</h3>
 <h5 id="downloads">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.5.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.5.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features">New Features</h5>
+<h5 id="new-features_1">New Features</h5>
 <ul>
 <li>Added a new <code>PandasMmcif.convert_to_pandas_pdb()</code> class that converts the mmCIF file into a PDB structure. (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/107/files">107</a>)</li>
 <li>Added ability to write PDBs to a filestream (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/107/files">107</a>)</li>
@@ -161,7 +171,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.2.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.2.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_1">New Features</h5>
+<h5 id="new-features_2">New Features</h5>
 <ul>
 <li>Added support for <a href="https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe">AlphaFolds 200M+ structures</a> via <code>PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')</code> and <code>PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')</code>. (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/102/files">102</a>)</li>
 </ul>
@@ -181,7 +191,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_2">New Features</h5>
+<h5 id="new-features_3">New Features</h5>
 <ul>
 <li>
 <p>Adds support for extracting structures from PDB files containing multiple models. See the <a href="http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/#working-with-pdbs-containing-multiple-models">documentation</a> for details.  (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/101/files">101</a>).</p>
@@ -204,7 +214,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.3.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_3">New Features</h5>
+<h5 id="new-features_4">New Features</h5>
 <ul>
 <li>Adds support for parsing mmCIF protein structure files (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/94/files">94</a>)</li>
 </ul>
@@ -223,7 +233,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.9.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.9.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_4">New Features</h5>
+<h5 id="new-features_5">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -242,7 +252,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.8.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.8.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_5">New Features</h5>
+<h5 id="new-features_6">New Features</h5>
 <ul>
 <li>A <code>PandasPdb.read_pdb_from_list</code> method was added analogous to the existing <code>PandasMol2.read_mol2_from_list</code> (via PR #<a href="https://github.com/rasbt/biopandas/pull/72/files">72</a> by <a href="https://github.com/dominiquesydow">dominiquesydow</a>)</li>
 </ul>
@@ -260,7 +270,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.7.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.7.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_6">New Features</h5>
+<h5 id="new-features_7">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -278,7 +288,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.6.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.6.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_7">New Features</h5>
+<h5 id="new-features_8">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -297,7 +307,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.5.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.5.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_8">New Features</h5>
+<h5 id="new-features_9">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -315,7 +325,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.4.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.4.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_9">New Features</h5>
+<h5 id="new-features_10">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -333,7 +343,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.3.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.3.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_10">New Features</h5>
+<h5 id="new-features_11">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -353,7 +363,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.2.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.2.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_11">New Features</h5>
+<h5 id="new-features_12">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -372,7 +382,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_12">New Features</h5>
+<h5 id="new-features_13">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -392,7 +402,7 @@
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_13">New Features</h5>
+<h5 id="new-features_14">New Features</h5>
 <ul>
 <li>Added an <code>amino3to1</code> method to <code>PandasPdb</code> data frames to convert 3-amino acid letter codes to 1-letter codes.</li>
 <li>Added a <code>distance</code> method to <code>PandasPdb</code> data frames to compute the Euclidean distance between atoms and a reference point.</li>
@@ -413,7 +423,7 @@
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_14">New Features</h5>
+<h5 id="new-features_15">New Features</h5>
 <ul>
 <li>Added an <code>impute_element</code> method to <code>PandasPDB</code> objects to infer the Element Symbol from the Atom Name column.</li>
 <li>Added two new selection types for <code>PandasPDB</code> ATOM and HETATM coordinate sections: <code>'heavy'</code> and <code>'carbon'</code>.</li>
@@ -434,7 +444,7 @@
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_15">New Features</h5>
+<h5 id="new-features_16">New Features</h5>
 <p>-</p>
 <h5 id="changes_14">Changes</h5>
 <ul>
@@ -444,7 +454,7 @@
 <h5 id="bug-fixes_13">Bug Fixes</h5>
 <p>-</p>
 <h3 id="013-2015-11-23">0.1.3 (2015-11-23)</h3>
-<h5 id="new-features_16">New Features</h5>
+<h5 id="new-features_17">New Features</h5>
 <p>-</p>
 <h5 id="changes_15">Changes</h5>
 <p>-</p>
