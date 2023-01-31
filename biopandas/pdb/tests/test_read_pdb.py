@@ -6,14 +6,16 @@
 
 
 import os
+from typing import Set
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
+from nose.tools import raises
+
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
@@ -171,6 +173,19 @@ def test_fetch_af2():
             ppdb.pdb_path
             == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb"
         )
+
+
+def test_read_pdb_esmfold():
+    """Test retrieving a structure from ESMFold."""
+    sequence = "MTYGLY"
+    res_ids: Set[str] = {"A:MET:1", "A:THR:2", "A:TYR:3", "A:GLY:4", "A:LEU:5", "A:TYR:6"}
+    ppdb = PandasPdb().fetch_pdb(sequence=sequence)
+
+    df = ppdb.df["ATOM"]
+
+    folded_struct_residue_ids = set(list(df.chain_id + ":" + df.residue_name + ":" + df.residue_number.astype(str)))
+
+    assert folded_struct_residue_ids == res_ids, "Residue IDs do not match"
 
 
 def test__read_pdb_gz():

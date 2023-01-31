@@ -6,16 +6,18 @@
 
 
 import os
+from typing import Set
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
+from nose.tools import raises
+from pandas.testing import assert_frame_equal
+
 from biopandas.mmcif import PandasMmcif
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
-from pandas.testing import assert_frame_equal
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 
@@ -91,7 +93,6 @@ with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af2_test_struct_v3 = f.read()
 
 
-
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasMmcif()
@@ -133,6 +134,19 @@ def test_fetch_pdb():
         ppdb.fetch_mmcif("3eiy")
         assert ppdb.mmcif_text == txt
         assert ppdb.mmcif_path == "https://files.rcsb.org/download/3eiy.cif"
+
+
+def test_read_pdb_esmfold():
+    """Test retrieving a structure from ESMFold."""
+    sequence = "MTYGLY"
+    res_ids: Set[str] = {"A:MET:1", "A:THR:2", "A:TYR:3", "A:GLY:4", "A:LEU:5", "A:TYR:6"}
+    ppdb = PandasMmcif().fetch_mmcif(sequence=sequence)
+
+    df = ppdb.df["ATOM"]
+
+    folded_struct_residue_ids = set(list(df.label_asym_id + ":" + df.label_comp_id + ":" + df.label_seq_id.astype(str)))
+
+    assert folded_struct_residue_ids == res_ids, "Residue IDs do not match"
 
 
 def test_fetch_af2():
@@ -245,7 +259,7 @@ def test_read_pdb():
     """Test public read_pdb"""
     ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
-    assert ppdb.pdb_text == three_eiy
+    assert ppdb.mmcif_text == three_eiy
     assert ppdb.code == "3eiy", ppdb.code
     assert ppdb.mmcif_path == TESTDATA_FILENAME
 
@@ -255,8 +269,8 @@ def test_read_pdb_from_list():
 
     for pdb_text, code in zip([three_eiy, four_eiy], ["3eiy", "4eiy"]):
         ppdb = PandasMmcif()
-        ppdb.read_mmcif_from_list(pdb_text)
-        assert ppdb.pdb_text == pdb_text
+        ppdb.read_mmcif_from_list(pdb_text.split("\n"))
+        assert ppdb.mmcif_text == pdb_text
         assert ppdb.code == code
         assert ppdb.mmcif_path == ""
 
