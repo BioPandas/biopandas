@@ -4,6 +4,21 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
+### 0.5.1 (26-03-2023)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.1.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.1.tar.gz)
+
+##### Bug Fixes
+
+- Fix the `return` statement in `PandasPdb.to_pdb_stream()` to return `output` instead of `output.seek(0)`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Change the `records` default argument in `PandasPdb.to_pdb_stream()` to be immutable. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Fix some typos and general style issues. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Fix link for "How to contribute" in `README.md`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+
+
 ### 0.5.0dev (UNRELEASED)
 
 

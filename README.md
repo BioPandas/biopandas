@@ -18,7 +18,7 @@
 - Documentation: [https://BioPandas.github.io/biopandas/](https://BioPandas.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
-- How to contribute: [https://BioPandas.github.io/biopandas//contributing/](https://BioPandas.github.io/biopandas/contributing/)
+- How to contribute: [https://biopandas.github.io/biopandas/CONTRIBUTING/](https://biopandas.github.io/biopandas/CONTRIBUTING/)
 - Changelog: [./docs/sources/CHANGELOG.md](./docs/sources/CHANGELOG.md)
 
 <br>
