@@ -864,3 +864,29 @@ class PandasPdb(object):
         output.write("\n")
         output.seek(0)
         return output
+
+    @staticmethod
+    def gyradius(df: pd.DataFrame) -> float:
+        """Compute the Radius of Gyration of a molecule
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            DataFrame with ATOM entries
+
+        Returns
+        ---------
+        rg : float
+            Radius of Gyration of df in Angstrom
+
+            """
+        # could be made as a class variable if it will be needed elsewhere
+        atomic_masses = {"C": 12.0107, "O": 15.9994, "N": 14.0067, "S": 32.065}
+
+        coords = df[["x_coord", "y_coord", "z_coord"]].to_numpy()
+        masses = df["element_symbol"].map(lambda atom: atomic_masses.get(atom, 0)).to_numpy()
+        total_mass = masses.sum()
+        center_of_mass = (masses[:, None] * coords).sum(axis=0) / total_mass
+        distances = np.linalg.norm(coords - center_of_mass, axis=1)
+        rg = np.sqrt((distances ** 2 * masses).sum() / total_mass)
+        return round(rg, 4)

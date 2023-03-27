@@ -4,6 +4,17 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
+### 0.5.2 (27-03-2023)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.2.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.2.tar.gz)
+
+##### New Features
+
+- Adds a staticmethod `PandasPdb.gyradius` to calculate the radius of gyration of a molecule (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[117](https://github.com/rasbt/biopandas/pull/117/files))
+
 ### 0.5.1 (26-03-2023)
 
 ##### Downloads
