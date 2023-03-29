@@ -1,4 +1,3 @@
-
 ![Logo](./img/logos/logo_size_1.png)
 
 **Working with molecular structures in pandas DataFrames**
@@ -6,22 +5,24 @@
 
 [![Continuous Integration](https://travis-ci.org/rasbt/biopandas.svg?branch=master)](https://travis-ci.org/rasbt/biopandas)
 [![PyPI Version](https://img.shields.io/pypi/v/biopandas.svg)](https://pypi.python.org/pypi/biopandas/)
-[![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/rasbt/biopandas/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-new%20BSD-blue.svg)](https://github.com/biopandas/biopandas/blob/master/LICENSE)
 ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00279/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00279)
-[![Discuss](https://img.shields.io/badge/discuss-github-blue.svg)](https://github.com/rasbt/biopandas/discussions)
+[![Discuss](https://img.shields.io/badge/discuss-github-blue.svg)](https://github.com/biopandas/biopandas/discussions)
 
 <br>
 
 <hr>
 
+
 #### Links
 
-- Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
-- Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
+- Documentation: [http://biopandas.github.io/biopandas/](http://biopandas.github.io/biopandas/)
+- Source code repository: [https://github.com/biopandas/biopandas](https://github.com/biopandas/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
 
 <hr>
+
 
 #### About  
 
@@ -35,6 +36,7 @@ So, why don't we take pandas to the structural biology world? Working with molec
 
 
 <hr>
+
 
 #### Examples
 

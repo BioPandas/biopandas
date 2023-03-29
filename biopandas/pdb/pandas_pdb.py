@@ -66,7 +66,7 @@ class PandasPdb(object):
 
     @property
     def df(self):
-        """Acccess dictionary of pandas DataFrames for PDB record sections."""
+        """Access dictionary of pandas DataFrames for PDB record sections."""
         return self._df
 
     @df.setter
@@ -115,22 +115,25 @@ class PandasPdb(object):
         self.header, self.code = self._parse_header_code()
         return self
 
-
     def fetch_pdb(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
-        """Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+        """Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database
+        at https://alphafold.ebi.ac.uk/.
 .
 
         Parameters
         ----------
         pdb_code : str, optional
-            A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB. Defaults to `None`.
+            A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB.
+            Defaults to `None`.
 
         uniprot_id : str, optional
-            A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
+            A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database.
+            Defaults to `None`.
 
         source : str
             The source to retrieve the structure from 
-            (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"`, `"alphafold2-v3"` (latest)). Defaults to `"pdb"`.
+            (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"`, `"alphafold2-v3"` (latest)).
+            Defaults to `"pdb"`.
 
         Returns
         ---------
@@ -144,13 +147,12 @@ class PandasPdb(object):
         invalid_input_combination_2 = pdb_code is not None and source in {
             "alphafold2-v1", "alphafold2-v2", "alphafold2-v3"}
 
-
         if invalid_input_identifier_1 or invalid_input_identifier_2:
             raise ValueError("Please provide either a PDB code or a UniProt ID.")
 
-        if invalid_input_combination_1 :
+        if invalid_input_combination_1:
             raise ValueError("Please use a 'pdb_code' instead of 'uniprot_id' for source='pdb'.")
-        elif invalid_input_combination_2 :
+        elif invalid_input_combination_2:
             raise ValueError(f"Please use a 'uniprot_id' instead of 'pdb_code' for source={source}.")
 
         if source == "alphafold2-v1":
@@ -364,7 +366,6 @@ class PandasPdb(object):
             print('URL Error %s' % e.args)
         return url, txt
 
-
     def _parse_header_code(self):
         """Extract header information and PDB code."""
         code, header = "", ""
@@ -441,7 +442,7 @@ class PandasPdb(object):
                     record = line[:6].rstrip()
                     line_ele = ["" for _ in range(len(pdb_records[record]) + 1)]
                     for idx, ele in enumerate(pdb_records[record]):
-                        line_ele[idx] = line[ele["line"][0] : ele["line"][1]].strip()
+                        line_ele[idx] = line[ele["line"][0]: ele["line"][1]].strip()
                     line_ele[-1] = line_num
                     line_lists[record].append(line_ele)
                 else:
@@ -486,7 +487,7 @@ class PandasPdb(object):
         Parameters
         ----------
         record : str, default: 'ATOM'
-            Specfies the record DataFrame.
+            Specifies the record DataFrame.
         residue_col : str,  default: 'residue_name'
             Column in `record` DataFrame to look for 3-letter amino acid
             codes for the conversion.
@@ -786,8 +787,8 @@ class PandasPdb(object):
 
         Parameters
         ----------
-        model_index : int
-            An integer representing the model index to subset to.
+        model_indices : List[int]
+            A list representing the model indexes to subset to.
 
         Returns
         ---------
@@ -812,14 +813,14 @@ class PandasPdb(object):
             ]
         return df
 
-    def to_pdb_stream(self, records: List[str] = ["ATOM", "HETATM"]) -> StringIO:
+    def to_pdb_stream(self, records: tuple[str] = ("ATOM", "HETATM")) -> StringIO:
         """Writes a PDB dataframe to a stream.
 
         Parameters
         ------------
-        records : List[str]
-            List of record names to save to stream. Any of `["ATOM", "HETATM", "OTHERS"]`.
-        
+        records : iterable, default: ('ATOM', 'HETATM')
+            Iterable of record names to save to stream. Any of `["ATOM", "HETATM", "OTHERS"]`.
+
         Returns
         --------
         io.StringIO : Filestream of PDB file.
@@ -861,4 +862,5 @@ class PandasPdb(object):
         to_write = "\n".join(s)
         output.write(to_write)
         output.write("\n")
-        return output.seek(0)
+        output.seek(0)
+        return output

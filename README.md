@@ -15,10 +15,10 @@
 <hr>
 
 ## Links
-- Documentation: [http://rasbt.github.io/biopandas/](http://rasbt.github.io/biopandas/)
+- Documentation: [https://BioPandas.github.io/biopandas/](https://BioPandas.github.io/biopandas/)
 - Source code repository: [https://github.com/rasbt/biopandas](https://github.com/rasbt/biopandas)
 - PyPI: [https://pypi.python.org/pypi/biopandas](https://pypi.python.org/pypi/biopandas)
-- How to contribute: [http://rasbt.github.io/biopandas/contributing/](http://rasbt.github.io/biopandas/contributing/)
+- How to contribute: [https://biopandas.github.io/biopandas/CONTRIBUTING/](https://biopandas.github.io/biopandas/CONTRIBUTING/)
 - Changelog: [./docs/sources/CHANGELOG.md](./docs/sources/CHANGELOG.md)
 
 <br>
@@ -81,7 +81,7 @@ RMSD: 2.6444 Angstrom
 - [Pandas](http://pandas.pydata.org) >= 0.19.1
 
 
-For more information, please see [http://rasbt.github.io/biopandas/installation/](http://rasbt.github.io/biopandas/installation/).
+For more information, please see [https://BioPandas.github.io/biopandas/installation/](https://BioPandas.github.io/biopandas/installation/).
 
 <br><br>
 <br><br>
