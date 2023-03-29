@@ -4,31 +4,6 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
-### 0.5.2 (27-03-2023)
-
-##### Downloads
-
-- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.2.zip)
-- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.2.tar.gz)
-
-##### New Features
-
-- Adds a staticmethod `PandasPdb.gyradius` to calculate the radius of gyration of a molecule (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[117](https://github.com/rasbt/biopandas/pull/117/files))
-
-### 0.5.1 (26-03-2023)
-
-##### Downloads
-
-- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.1.zip)
-- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.1.tar.gz)
-
-##### Bug Fixes
-
-- Fix the `return` statement in `PandasPdb.to_pdb_stream()` to return `output` instead of `output.seek(0)`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
-- Change the `records` default argument in `PandasPdb.to_pdb_stream()` to be immutable. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
-- Fix some typos and general style issues. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
-- Fix link for "How to contribute" in `README.md`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
-
 
 ### 0.5.0dev (UNRELEASED)
 
@@ -51,6 +26,32 @@ The CHANGELOG for the current development version is available at
 - Added a new `PandasMmcif.convert_to_pandas_pdb()` class that converts the mmCIF file into a PDB structure. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
 - Added ability to write PDBs to a filestream (Via [Arian Jamasb](https://github.com/a-r-j), PR #[107](https://github.com/rasbt/biopandas/pull/107/files))
 
+
+### 0.4.4 (27-03-2023)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.2.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.2.tar.gz)
+
+##### New Features
+
+- Adds a method `PandasPdb.gyradius` to calculate the radius of gyration of a molecule (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[117](https://github.com/rasbt/biopandas/pull/117/files))
+
+
+### 0.4.3 (26-03-2023)
+
+##### Downloads
+
+- [Source code (zip)](https://github.com/rasbt/biopandas/archive/v0.5.1.zip)
+- [Source code (tar.gz)](https://github.com/rasbt/biopandas/archive/v0.5.1.tar.gz)
+
+##### Bug Fixes
+
+- Fix the `return` statement in `PandasPdb.to_pdb_stream()` to return `output` instead of `output.seek(0)`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Change the `records` default argument in `PandasPdb.to_pdb_stream()` to be immutable. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Fix some typos and general style issues. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
+- Fix link for "How to contribute" in `README.md`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
 
 
 ### 0.4.2 (08-4-2022)
