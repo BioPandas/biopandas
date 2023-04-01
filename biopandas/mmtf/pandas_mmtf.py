@@ -406,6 +406,9 @@ class PandasMmtf(object):
         path : str
             A valid output path for the mmtf file
 
+        records: tuple(str):
+            A tuple of records to write. Defaults to ("ATOM". "HETATM")
+
         """
         df = pd.concat(objs=[self.df[i] for i in records])
         return write_mmtf(df, path)
@@ -609,6 +612,15 @@ def _seq1(seq, charmap: Dict[str, str], undef_code="X"):
 
 
 def write_mmtf(df: pd.DataFrame, file_path: str):
+    """Writes a biopandas dataframe to an MMTF file.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to write
+    file_path : str, default: '?'
+        Path to output file.
+    """
     count_models, count_chains, count_groups, count_atoms = 0, 0, 0, 0
     # Check if the input is a valid BioPandas DataFrame
     if not isinstance(df, pd.DataFrame):
