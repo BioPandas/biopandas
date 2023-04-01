@@ -22,6 +22,7 @@ import pandas as pd
 from looseversion import LooseVersion
 
 from .engines import amino3to1dict, pdb_df_columns, pdb_records
+from biopandas.constants import ATOMIC_MASSES
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -900,12 +901,8 @@ class PandasPdb(object):
         else:
             df = self.df[records[0]]
 
-        # could be made as a class variable if it will be needed elsewhere
-        # if more atoms are added, expected values in some unit tests need to be updated
-        atomic_masses = {"C": 12.0107, "O": 15.9994, "N": 14.0067, "S": 32.065}
-
         coords = df[["x_coord", "y_coord", "z_coord"]].to_numpy()
-        masses = df["element_symbol"].map(lambda atom: atomic_masses.get(atom, 0)).to_numpy()
+        masses = df["element_symbol"].map(lambda atom: ATOMIC_MASSES.get(atom, 0)).to_numpy()
         total_mass = masses.sum()
         center_of_mass = (masses[:, None] * coords).sum(axis=0) / total_mass
         distances = np.linalg.norm(coords - center_of_mass, axis=1)
