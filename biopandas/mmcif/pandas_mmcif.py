@@ -9,13 +9,13 @@
 import gzip
 import sys
 import warnings
-from distutils.version import LooseVersion
 from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import numpy as np
 import pandas as pd
+from looseversion import LooseVersion
 
 from ..pdb.engines import amino3to1dict
 from ..pdb.pandas_pdb import PandasPdb
@@ -170,14 +170,11 @@ class PandasMmcif:
         try:
             response = urlopen(url)
             txt = response.read()
-            if sys.version_info[0] >= 3:
-                txt = txt.decode('utf-8')
-            else:
-                txt = txt.encode('ascii')
+            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
         except HTTPError as e:
-            print('HTTP Error %s' % e.code)
+            print(f'HTTP Error {e.code}')
         except URLError as e:
-            print('URL Error %s' % e.args)
+            print(f'URL Error {e.args}')
         return url, txt
 
     @staticmethod

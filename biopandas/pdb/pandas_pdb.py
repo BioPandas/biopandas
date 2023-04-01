@@ -11,19 +11,17 @@ import gzip
 import sys
 import warnings
 from copy import deepcopy
-from distutils.version import LooseVersion
 from io import StringIO
-from typing import Optional
-from typing import List
+from typing import List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 from warnings import warn
 
 import numpy as np
 import pandas as pd
+from looseversion import LooseVersion
 
 from .engines import amino3to1dict, pdb_df_columns, pdb_records
-
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -288,7 +286,7 @@ class PandasPdb(object):
         get_dict = PandasPdb._init_get_dict()
         if s:
             if s not in get_dict.keys():
-                raise AttributeError("s must be in " "%s or None" % get_dict.keys())
+                raise AttributeError(f"s must be in {get_dict.keys()} or None")
             df1 = get_dict[s](df1, invert=invert)
             df2 = get_dict[s](df2, invert=invert)
 
@@ -359,14 +357,11 @@ class PandasPdb(object):
         try:
             response = urlopen(url)
             txt = response.read()
-            if sys.version_info[0] >= 3:
-                txt = txt.decode('utf-8')
-            else:
-                txt = txt.encode('ascii')
+            txt = txt.decode('utf-8') if sys.version_info[0] >= 3 else txt.encode('ascii')
         except HTTPError as e:
-            print('HTTP Error %s' % e.code)
+            print(f'HTTP Error {e.code}')
         except URLError as e:
-            print('URL Error %s' % e.args)
+            print(f'URL Error {e.args}')
         return url, txt
 
     def _parse_header_code(self):
@@ -689,7 +684,7 @@ class PandasPdb(object):
         idxs = other_records.loc[other_records["record_name"] == "MODEL"]
         ends = other_records.loc[other_records["record_name"] == "ENDMDL"]
         idxs.columns = ["record_name", "model_idx", "start_idx"]
-        idxs["end_idx"] = ends.line_idx.values
+        idxs.loc[:, "end_idx"] = ends.line_idx.values
         # If structure only contains 1 model, create a dummy df mapping all lines to model_idx 1
         if len(idxs) == 0:
             n_lines = len(self.pdb_text.splitlines())
