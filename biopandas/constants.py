@@ -1,5 +1,7 @@
 from typing import Dict
 
+ATOMIC_MASSES: Dict[str, float] = {"C": 12.0107, "O": 15.9994, "N": 14.0067, "S": 32.065}
+
 protein_letters_3to1_extended: Dict[str, str] = {
     "A5N": "N", "A8E": "V", "A9D": "S", "AA3": "A", "AA4": "A", "AAR": "R",
     "ABA": "A", "ACL": "R", "AEA": "C", "AEI": "D", "AFA": "N", "AGM": "R",

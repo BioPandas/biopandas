@@ -22,6 +22,7 @@ import pandas as pd
 from looseversion import LooseVersion
 
 from .engines import amino3to1dict, pdb_df_columns, pdb_records
+from biopandas.constants import ATOMIC_MASSES
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -166,7 +167,7 @@ class PandasPdb(object):
             self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
         else:
             raise ValueError(f"Invalid source: {source}."
-                " Please use one of 'pdb' or 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3'.")
+                             " Please use one of 'pdb' or 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3'.")
 
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         return self
@@ -250,7 +251,7 @@ class PandasPdb(object):
         return t
 
     @staticmethod
-    def rmsd(df1, df2, s=None, invert=False):
+    def rmsd(df1, df2, s=None, invert=False, decimals=4):
         """Compute the Root Mean Square Deviation between molecules.
 
         Parameters
@@ -272,6 +273,9 @@ class PandasPdb(object):
             `s='hydrogen', invert=True` computes the RMSD based on all
             but hydrogen atoms.
 
+        decimals : int, default: 4
+            Specifies the number of decimal places to round the final value to.
+
         Returns
         ---------
         rmsd : float
@@ -292,7 +296,7 @@ class PandasPdb(object):
             + (df1["y_coord"].values - df2["y_coord"].values) ** 2
             + (df1["z_coord"].values - df2["z_coord"].values) ** 2
         )
-        return round((total.sum() / df1.shape[0]) ** 0.5, 4)
+        return round((total.sum() / df1.shape[0]) ** 0.5, decimals)
 
     @staticmethod
     def _init_get_dict():
@@ -859,3 +863,48 @@ class PandasPdb(object):
         output.write("\n")
         output.seek(0)
         return output
+
+    def gyradius(self, records: tuple[str] = ("ATOM",),  decimals: int = 4) -> float:
+        """Compute the Radius of Gyration of a molecule
+
+        Parameters
+        ----------
+        records : iterable, default: ("ATOM",)
+            Records from PandasPdb object for which to calculate the radius of gyration.
+            Any of `("ATOM", "HETATM")`.
+
+        decimals : int, default: 4
+            Specifies the number of decimal places to round the final value to.
+
+        Returns
+        ---------
+        rg : float
+            Radius of Gyration of df in Angstrom
+
+            """
+        if isinstance(records, str):
+            warnings.warn(
+                "Using a string as `records` argument is "
+                "deprecated and will not be supported in future "
+                "versions. Please use a tuple or "
+                "other iterable instead",
+                DeprecationWarning,
+            )
+            records = (records,)
+
+        if len(records) > 1:
+            df = pd.concat(objs=[self.df[record][["x_coord",
+                                                  "y_coord",
+                                                  "z_coord",
+                                                  "element_symbol"]]
+                                 for record in records])
+        else:
+            df = self.df[records[0]]
+
+        coords = df[["x_coord", "y_coord", "z_coord"]].to_numpy()
+        masses = df["element_symbol"].map(lambda atom: ATOMIC_MASSES.get(atom, 0)).to_numpy()
+        total_mass = masses.sum()
+        center_of_mass = (masses[:, None] * coords).sum(axis=0) / total_mass
+        distances = np.linalg.norm(coords - center_of_mass, axis=1)
+        rg = np.sqrt((distances**2 * masses).sum() / total_mass)
+        return round(rg, decimals)
