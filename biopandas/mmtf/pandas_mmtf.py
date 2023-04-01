@@ -1,14 +1,16 @@
 """Class for working with MMTF files."""
+from __future__ import annotations
 
+import copy
 import gzip
 import warnings
-from distutils.version import LooseVersion
 from string import ascii_uppercase
 from typing import Any, Dict, List, Union
 from warnings import warn
 
 import numpy as np
 import pandas as pd
+from looseversion import LooseVersion
 from mmtf import MMTFDecoder, MMTFEncoder, fetch, parse
 
 from biopandas.constants import protein_letters_3to1_extended
@@ -18,7 +20,7 @@ from ..pdb.engines import amino3to1dict, pdb_df_columns, pdb_records
 pd_version = LooseVersion(pd.__version__)
 
 
-class PandasMmtf:
+class PandasMmtf(object):
     def __init__(self):
         self._df: Dict[str, pd.DataFrame] = {}
         self.mmtf = ""
@@ -395,7 +397,7 @@ class PandasMmtf:
     def parse_sse(self):
         """Parse secondary structure elements"""
         raise NotImplementedError
-    
+
     def to_mmtf(self, path, records = ("ATOM", "HETATM")):
         """Write record DataFrames to an MMTF file.
 
@@ -407,6 +409,68 @@ class PandasMmtf:
         """
         df = pd.concat(objs=[self.df[i] for i in records])
         return write_mmtf(df, path)
+
+
+    def get_model(self, model_index: int) -> PandasMmtf:
+        """Returns a new PandasPDB object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_index : int
+            An integer representing the model index to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasPdb : A new PandasPdb object containing the
+            structure subsetted to the given model.
+        """
+
+        df = copy.deepcopy(self)
+
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["model_id"] == model_index]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                df.df["HETATM"]["model_id"] == model_index
+            ]
+        if "ANISOU" in df.df.keys():
+            df.df["ANISOU"] = df.df["ANISOU"].loc[
+                df.df["ANISOU"]["model_id"] == model_index
+            ]
+        return df
+
+    def get_models(self, model_indices: List[int]) -> PandasMmtf:
+        """Returns a new PandasMmtf object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_indices : List[int]
+            A list representing the model indexes to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasMmtf : A new PandasPdb object
+            containing the structure subsetted to the given model.
+        """
+
+        df = copy.deepcopy(self)
+
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[
+                [x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]
+            ]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                [x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]
+            ]
+        if "ANISOU" in df.df.keys():
+            df.df["ANISOU"] = df.df["ANISOU"].loc[
+                [x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]
+            ]
+        return df
+
 
 
 def fetch_mmtf(pdb_code: str) -> pd.DataFrame:
@@ -450,6 +514,7 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
         "occupancy": mmtf_obj.occupancy_list,
         "chain_id": [],
         "atom_number": mmtf_obj.atom_id_list,
+        "model_id": [],
     }
 
     chain_indices = mmtf_obj.groups_per_chain
@@ -459,7 +524,8 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
             continue
         else:
             chain_indices[i] = chain_indices[i] + chain_indices[i - 1]
-
+    model_indices = mmtf_obj.chains_per_model
+    model_indices = [sum(model_indices[:i+1]) for i in range(len(model_indices))]
     ch_idx = 0
     for idx, i in enumerate(mmtf_obj.group_type_list):
         res = mmtf_obj.group_list[i]
@@ -471,6 +537,7 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
             data["residue_name"].append(res["groupName"])
             data["residue_number"].append(mmtf_obj.group_id_list[idx])
             data["chain_id"].append(mmtf_obj.chain_name_list[ch_idx])
+            data["model_id"].append(int(np.argwhere(np.array(model_indices)>ch_idx)[0]) + 1)
             data["record_name"].append(record)
             data["insertion"].append(mmtf_obj.ins_code_list[idx])
         data["atom_name"].append(res["atomNameList"])
@@ -489,12 +556,13 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
             "occupancy",
             "record_name",
             "insertion",
-            "atom_number"
+            "atom_number",
+            "model_id"
         ]:
             continue
         data[k] = [i for sublist in v for i in sublist]
 
-    return pd.DataFrame.from_dict(data).sort_values(by="atom_number")
+    return pd.DataFrame.from_dict(data).sort_values(by=["model_id", "atom_number"])
 
 def _seq1(seq, charmap: Dict[str, str], undef_code="X"):
     """Convert protein sequence from three-letter to one-letter code.
@@ -568,96 +636,123 @@ def write_mmtf(df: pd.DataFrame, file_path: str):
         experimental_methods=None,
     )
 
-    node_ids = df.chain_id + ":" + df.residue_name + ":" + df.residue_number.astype(str) + ":" + df.insertion.astype(str)
+    node_ids = df.model_id.astype(str) + ":" + df.chain_id + ":" + df.residue_name + ":" + df.residue_number.astype(str) + ":" + df.insertion.astype(str)
     df["residue_id"] = node_ids
-
-    encoder.set_model_info(model_id=0, chain_count=0)
-    chains = df.chain_id.unique()
 
     # Tracks values to replace them at the end
     chains_per_model = []
     groups_per_chain = []
 
-    for chain_id in chains:
-        seqs = []
-        seq = ""
-        prev_res_type = ""
-        prev_resname = ""
-        first_chain = True
-        chain_df = df[df.chain_id == chain_id]
-        residues = chain_df.residue_id.unique()
-        for residue_id in residues:
-            count_groups += 1
-            residue_df = chain_df[chain_df.residue_id == residue_id]
-            if all(residue_df.record_name == "ATOM"):
-                residue_type = "ATOM"
-                entity_type = "polymer"
-            elif all(residue_df.residue_name == "HOH"):
-                residue_type = "HETATM"
-                entity_type = "water"
-            else:
-                residue_type = "HETATM"
-                entity_type = "non-polymer"
+    # Iterate over each model
+    for model_idx, model in enumerate(df.model_id.unique()):
+        # Subset the DataFrame to the current model
+        # Ang get the chains
+        model_df = df.loc[df.model_id == model]
+        chains = model_df.chain_id.unique()
 
-            resname = residue_df.residue_name.iloc[0]
-
-            if residue_type != prev_res_type or (
-                    residue_type == "HETATM" and resname != prev_resname
-                ):
-                encoder.set_entity_info(
-                    chain_indices=[count_chains],
-                    sequence="",
-                    description="",
-                    entity_type=entity_type,
-                )
-                encoder.set_chain_info(
-                    chain_id=chain_id,
-                    chain_name="\x00" if len(chain_id.strip()) == 0 else chain_id,
-                    num_groups=0,
-                )
-                if count_chains > 0:
-                    groups_per_chain.append(count_groups - sum(groups_per_chain) -1)
-                if not first_chain:
-                    seqs.append(seq)
-                first_chain = False
-                count_chains += 1
-                seq=""
-            if entity_type == "polymer":
-                seq += _seq1(residue_df.residue_name.unique()[0], charmap=protein_letters_3to1_extended)
-            prev_res_type = residue_type
-            prev_resname = resname
-            group_type = "NON-POLYMER" if residue_type == "HETATM" else "L-PEPTIDE LINKING"
-            encoder.set_group_info(
-                group_name=residue_df.residue_name.unique()[0],
-                group_number=int(residue_df.residue_number.unique()[0]),
-                insertion_code="\x00" if residue_df.insertion.unique()[0] == "" else residue_df.insertion.unique()[0],
-                group_type=group_type,
-                atom_count=len(residue_df),
-                bond_count=0,
-                single_letter_code=_seq1(df.residue_name.unique()[0], charmap=protein_letters_3to1_extended),
-                sequence_index=len(seq) - 1 if entity_type == "polymer" else -1,
-                secondary_structure_type=-1
+        count_models += 1
+        # Set the model info
+        encoder.set_model_info(
+            #model_id=model_idx, # According to mmtf-python this is meaningless
+            model_id=model_idx, # According to mmtf-python this is meaningless
+            chain_count=0 # Set to 0 here and changed later
             )
-            for row in residue_df.itertuples():
-                count_atoms += 1
-                encoder.set_atom_info(
-                    atom_name=row.atom_name,
-                    serial_number=row.atom_number,
-                    alternative_location_id="\x00" if row.alt_loc == " " else row.alt_loc,
-                    x=row.x_coord,
-                    y=row.y_coord,
-                    z=row.z_coord,
-                    occupancy=row.occupancy,
-                    temperature_factor=row.b_factor,
-                    element=row.element_symbol,
-                    charge=0 if row.charge == "" else int(row.charge),
-                )
-        seqs.append(seq)
-        start_ind = len(encoder.entity_list) - len(seqs)
-        for i, seq in enumerate(seqs):
-            encoder.entity_list[start_ind + i]["sequence"] = seq
-        chains_per_model.append(count_chains - sum(chains_per_model))
+        # Iterate over chains in model
+        for chain_id in chains:
+            seqs = []
+            seq = ""
+            prev_res_type = ""
+            prev_resname = ""
+            first_chain = True
 
+            # Subset the dataframe to the current chain
+            chain_df = model_df[model_df.chain_id == chain_id]
+
+            # Iterate over residues in chain
+            residues = chain_df.residue_id.unique()
+            for residue_id in residues:
+                count_groups += 1
+                # Subset the dataframe to the current residue
+                residue_df = chain_df.loc[chain_df.residue_id == residue_id]
+                # Get residue and entity types
+                if all(residue_df.record_name == "ATOM"):
+                    residue_type = "ATOM"
+                    entity_type = "polymer"
+                elif all(residue_df.residue_name == "HOH"):
+                    residue_type = "HETATM"
+                    entity_type = "water"
+                else:
+                    residue_type = "HETATM"
+                    entity_type = "non-polymer"
+                # Get the 3-letter residue name
+                resname = residue_df.residue_name.iloc[0]
+
+                # Check if the molecule changes within the chain
+                # This will always increment for the first residue in a
+                #  chain due to the starting values above
+                # Checking for similar entities is non-trivial from the
+                #  structure object so we treat each molecule as a separate
+                #  entity
+                if residue_type != prev_res_type or (
+                        residue_type == "HETATM" and resname != prev_resname
+                    ):
+                    encoder.set_entity_info(
+                        chain_indices=[count_chains],
+                        sequence="", # Set to empty here and changed later
+                        description="",
+                        entity_type=entity_type,
+                    )
+                    encoder.set_chain_info(
+                        chain_id=chain_id,
+                        chain_name="\x00" if len(chain_id.strip()) == 0 else chain_id,
+                        num_groups=0, # Set to 0 here and changed later
+                    )
+                    if count_chains > 0:
+                        groups_per_chain.append(count_groups - sum(groups_per_chain) -1)
+                    if not first_chain:
+                        seqs.append(seq)
+                    first_chain = False
+                    count_chains += 1
+                    seq=""
+
+                if entity_type == "polymer":
+                    seq += _seq1(residue_df.residue_name.unique()[0], charmap=protein_letters_3to1_extended)
+
+                prev_res_type = residue_type
+                prev_resname = resname
+
+                group_type = "NON-POLYMER" if residue_type == "HETATM" else "L-PEPTIDE LINKING"
+                encoder.set_group_info(
+                    group_name=residue_df.residue_name.unique()[0],
+                    group_number=int(residue_df.residue_number.unique()[0]),
+                    insertion_code="\x00" if residue_df.insertion.unique()[0] == "" else residue_df.insertion.unique()[0],
+                    group_type=group_type, # Hack to ensure we can re-parse.
+                    atom_count=len(residue_df),
+                    bond_count=0,
+                    single_letter_code=_seq1(df.residue_name.unique()[0], charmap=protein_letters_3to1_extended),
+                    sequence_index=len(seq) - 1 if entity_type == "polymer" else -1,
+                    secondary_structure_type=-1
+                )
+                for row in residue_df.itertuples():
+                    count_atoms += 1
+                    encoder.set_atom_info(
+                        atom_name=row.atom_name,
+                        serial_number=row.atom_number,
+                        alternative_location_id="\x00" if row.alt_loc == " " else row.alt_loc,
+                        x=row.x_coord,
+                        y=row.y_coord,
+                        z=row.z_coord,
+                        occupancy=row.occupancy,
+                        temperature_factor=row.b_factor,
+                        element=row.element_symbol,
+                        charge=0 if row.charge == "" else int(row.charge),
+                    )
+            seqs.append(seq)
+            start_ind = len(encoder.entity_list) - len(seqs)
+            for i, seq in enumerate(seqs):
+                encoder.entity_list[start_ind + i]["sequence"] = seq
+
+        chains_per_model.append(count_chains - sum(chains_per_model))
     groups_per_chain.append(count_groups - sum(groups_per_chain))
 
     encoder.chains_per_model = chains_per_model
