@@ -145,38 +145,30 @@
 <p>The CHANGELOG for the current development version is available at
 <a href="https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md">https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md</a>.</p>
 <h3 id="050dev-unreleased">0.5.0dev (UNRELEASED)</h3>
-<h5 id="new-features">New Features</h5>
-<ul>
-<li>
-<p>Adds support for parsing <a href="https://mmtf.rcsb.org/">MMTF</a> files. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</p>
-</li>
-<li>
-<p>Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</p>
-</li>
-</ul>
-<h3 id="050-tbd">0.5.0 (TBD)</h3>
 <h5 id="downloads">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.5.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.5.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_1">New Features</h5>
+<h5 id="new-features">New Features</h5>
 <ul>
 <li>Added a new <code>PandasMmcif.convert_to_pandas_pdb()</code> class that converts the mmCIF file into a PDB structure. (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/107/files">107</a>)</li>
 <li>Added ability to write PDBs to a filestream (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/107/files">107</a>)</li>
-</ul>
-<h3 id="042-08-4-2022">0.4.2 (08-4-2022)</h3>
-<h5 id="downloads_1">Downloads</h5>
-<ul>
-<li><a href="https://github.com/rasbt/biopandas/archive/v0.4.2.zip">Source code (zip)</a></li>
-<li><a href="https://github.com/rasbt/biopandas/archive/v0.4.2.tar.gz">Source code (tar.gz)</a></li>
-</ul>
-<h5 id="new-features_2">New Features</h5>
-<ul>
+<li>Adds a method <code>PandasPdb.gyradius</code> to calculate the radius of gyration of a molecule (via <a href="https://github.com/github.com/goniochromatic/">goniochromatic</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/117/files">117</a>)</li>
+<li>Adds MMTF export &amp; improves MMTF parsing robustness (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/119/files">119</a>)</li>
+<li>Adds support for parsing <a href="https://mmtf.rcsb.org/">MMTF</a> files. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</li>
+<li>Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/111/files">111</a>)</li>
 <li>Added support for <a href="https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe">AlphaFolds 200M+ structures</a> via <code>PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')</code> and <code>PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')</code>. (Via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/102/files">102</a>)</li>
 </ul>
+<h5 id="bug-fixes">Bug Fixes</h5>
+<ul>
+<li>Fix the <code>return</code> statement in <code>PandasPdb.to_pdb_stream()</code> to return <code>output</code> instead of <code>output.seek(0)</code>. (via <a href="https://github.com/github.com/goniochromatic/">goniochromatic</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/116/files">116</a>)</li>
+<li>Change the <code>records</code> default argument in <code>PandasPdb.to_pdb_stream()</code> to be immutable. (via <a href="https://github.com/github.com/goniochromatic/">goniochromatic</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/116/files">116</a>)</li>
+<li>Fix some typos and general style issues. (via <a href="https://github.com/github.com/goniochromatic/">goniochromatic</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/116/files">116</a>)</li>
+<li>Fix link for "How to contribute" in <code>README.md</code>. (via <a href="https://github.com/github.com/goniochromatic/">goniochromatic</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/116/files">116</a>)</li>
+</ul>
 <h3 id="041-05-13-2022">0.4.1 (05-13-2022)</h3>
-<h5 id="downloads_2">Downloads</h5>
+<h5 id="downloads_1">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.1.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.1.tar.gz">Source code (tar.gz)</a></li>
@@ -186,12 +178,12 @@
 <li>Remove walrus operator for Python 3.7 compatibility.</li>
 </ul>
 <h3 id="040-05-11-2022">0.4.0 (05-11-2022)</h3>
-<h5 id="downloads_3">Downloads</h5>
+<h5 id="downloads_2">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.4.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_3">New Features</h5>
+<h5 id="new-features_1">New Features</h5>
 <ul>
 <li>
 <p>Adds support for extracting structures from PDB files containing multiple models. See the <a href="http://rasbt.github.io/biopandas/tutorials/Working_with_PDB_Structures_in_DataFrames/#working-with-pdbs-containing-multiple-models">documentation</a> for details.  (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/101/files">101</a>).</p>
@@ -204,17 +196,17 @@
 <ul>
 <li>Instead of raising a warning when no ATOM entries are loaded, raise the warning only when neither ATOM nor HETAM entries are loaded.</li>
 </ul>
-<h5 id="bug-fixes">Bug Fixes</h5>
+<h5 id="bug-fixes_1">Bug Fixes</h5>
 <ul>
 <li>None</li>
 </ul>
 <h3 id="030-04-06-2022">0.3.0 (04-06-2022)</h3>
-<h5 id="downloads_4">Downloads</h5>
+<h5 id="downloads_3">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.3.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.3.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_4">New Features</h5>
+<h5 id="new-features_2">New Features</h5>
 <ul>
 <li>Adds support for parsing mmCIF protein structure files (via <a href="https://github.com/a-r-j">Arian Jamasb</a>, PR #<a href="https://github.com/rasbt/biopandas/pull/94/files">94</a>)</li>
 </ul>
@@ -222,18 +214,18 @@
 <ul>
 <li>-</li>
 </ul>
-<h5 id="bug-fixes_1">Bug Fixes</h5>
+<h5 id="bug-fixes_2">Bug Fixes</h5>
 <ul>
 <li>Fixes a bug where coordinates with more than 4 digits before the decimal point caused a column shift when saving a PDB file. (via  PR #<a href="https://github.com/rasbt/biopandas/pull/90/files">90</a>)</li>
 <li>Fixes a bug where the invert parameter in get_carbon was selecting the wrong case. (via <a href="https://github.com/a-r-j">Arian Jamasb</a> PR #<a href="https://github.com/rasbt/biopandas/pull/96/files">96</a>)</li>
 </ul>
 <h3 id="029-08-30-2021">0.2.9 (08-30-2021)</h3>
-<h5 id="downloads_5">Downloads</h5>
+<h5 id="downloads_4">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.9.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.9.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_5">New Features</h5>
+<h5 id="new-features_3">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -242,17 +234,17 @@
 <li>Now also allow <code>.ent</code> and <code>.ent.gz</code> file endings for PDB files.  (via PR #<a href="https://github.com/rasbt/biopandas/pull/82/files">82</a></li>
 <li>Added Python 3.8 and 3.9 to setup.py in order to support these versions via conda-forge. (via PR #<a href="https://github.com/rasbt/biopandas/pull/87/files">87</a></li>
 </ul>
-<h5 id="bug-fixes_2">Bug Fixes</h5>
+<h5 id="bug-fixes_3">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="028-03-30-2021">0.2.8 (03-30-2021)</h3>
-<h5 id="downloads_6">Downloads</h5>
+<h5 id="downloads_5">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.8.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.8.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_6">New Features</h5>
+<h5 id="new-features_4">New Features</h5>
 <ul>
 <li>A <code>PandasPdb.read_pdb_from_list</code> method was added analogous to the existing <code>PandasMol2.read_mol2_from_list</code> (via PR #<a href="https://github.com/rasbt/biopandas/pull/72/files">72</a> by <a href="https://github.com/dominiquesydow">dominiquesydow</a>)</li>
 </ul>
@@ -260,17 +252,17 @@
 <ul>
 <li><code>ValueError</code> raising and improved file format error messages for <code>read_pdb</code> and <code>read_mol2</code> functionality. (via PR #<a href="https://github.com/rasbt/biopandas/pull/73/files">73</a> by <a href="https://github.com/dominiquesydow">dominiquesydow</a>)</li>
 </ul>
-<h5 id="bug-fixes_3">Bug Fixes</h5>
+<h5 id="bug-fixes_4">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="027-08-04-2020">0.2.7 (08-04-2020)</h3>
-<h5 id="downloads_7">Downloads</h5>
+<h5 id="downloads_6">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.7.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.7.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_7">New Features</h5>
+<h5 id="new-features_5">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -278,17 +270,17 @@
 <ul>
 <li>-</li>
 </ul>
-<h5 id="bug-fixes_4">Bug Fixes</h5>
+<h5 id="bug-fixes_5">Bug Fixes</h5>
 <ul>
 <li>Fix Manifest file to include license file in the PyPI tar.gz file so that BioPandas can be packaged by conda-forge.</li>
 </ul>
 <h3 id="026-08-03-2020">0.2.6 (08-03-2020)</h3>
-<h5 id="downloads_8">Downloads</h5>
+<h5 id="downloads_7">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.6.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.6.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_8">New Features</h5>
+<h5 id="new-features_6">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -297,17 +289,17 @@
 <li>Uses more modern <code>https</code> queries for the RCSB server via the <code>fetch_pdb</code> function.</li>
 <li>Updates the documentation (incl. a code of conduct)</li>
 </ul>
-<h5 id="bug-fixes_5">Bug Fixes</h5>
+<h5 id="bug-fixes_6">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="025-07-09-2019">0.2.5 (07-09-2019)</h3>
-<h5 id="downloads_9">Downloads</h5>
+<h5 id="downloads_8">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.5.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.5.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_9">New Features</h5>
+<h5 id="new-features_7">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -315,17 +307,17 @@
 <ul>
 <li>-</li>
 </ul>
-<h5 id="bug-fixes_6">Bug Fixes</h5>
+<h5 id="bug-fixes_7">Bug Fixes</h5>
 <ul>
 <li>The <code>PandasPdb.amino3to1</code> method now also considers insertion codes when converting the amino acid codes; before, inserted amino acides were skipped.</li>
 </ul>
 <h3 id="024-02-05-2019">0.2.4 (02-05-2019)</h3>
-<h5 id="downloads_10">Downloads</h5>
+<h5 id="downloads_9">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.4.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.4.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_10">New Features</h5>
+<h5 id="new-features_8">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -333,17 +325,17 @@
 <ul>
 <li>Minor adjustments to support to address deprecation warnings in pandas &gt;= 23.0</li>
 </ul>
-<h5 id="bug-fixes_7">Bug Fixes</h5>
+<h5 id="bug-fixes_8">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="023-03-29-2018">0.2.3 (03-29-2018)</h3>
-<h5 id="downloads_11">Downloads</h5>
+<h5 id="downloads_10">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.3.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.3.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_11">New Features</h5>
+<h5 id="new-features_9">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -355,15 +347,15 @@
 <li><code>PandasPdb.get(...)</code> now supports external data frames and lets the user specify the record section to be considered (e.g., <code>records=('ATOM', 'HETATM')</code> to include both protein and ligand in a query. Now also defaults to <code>records=('ATOM', 'HETATM')</code> for concistency with the impute method.</li>
 <li>The <code>section</code> parameter of <code>PandasPdb.impute_element(...)</code> was renamed to <code>records</code> for API consistency.</li>
 </ul>
-<h5 id="bug-fixes_8">Bug Fixes</h5>
+<h5 id="bug-fixes_9">Bug Fixes</h5>
 <p>-</p>
 <h3 id="022-06-07-2017">0.2.2 (06-07-2017)</h3>
-<h5 id="downloads_12">Downloads</h5>
+<h5 id="downloads_11">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.2.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.2.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_12">New Features</h5>
+<h5 id="new-features_10">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -372,17 +364,17 @@
 <li>Raises a meaningful error message if attempting to overwrite the <code>df</code> attributes of <code>PandasMol2</code> and <code>PandasPdb</code> directly.</li>
 <li>Added <code>PandasPdb.pdb_path</code> and <code>PandasMol2.mol2_path</code> attributes that store the location of the data file last read.</li>
 </ul>
-<h5 id="bug-fixes_9">Bug Fixes</h5>
+<h5 id="bug-fixes_10">Bug Fixes</h5>
 <ul>
 <li>The <code>rmsd</code> methods of <code>PandasMol2</code> and <code>PandasPdb</code> don't return a NaN anymore if the array indices of to structures are different.</li>
 </ul>
 <h3 id="021-2017-05-11">0.2.1  (2017-05-11)</h3>
-<h5 id="downloads_13">Downloads</h5>
+<h5 id="downloads_12">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.1.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_13">New Features</h5>
+<h5 id="new-features_11">New Features</h5>
 <ul>
 <li>-</li>
 </ul>
@@ -391,18 +383,18 @@
 <li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now returns a pandas <code>DataFrame</code> instead of a pandas <code>Series</code> object. The returned data frame has two columns, <code>'chain_id'</code> and <code>'residue_name'</code>, where the former contains the chain ID of the amino acid and the latter contains the 1-letter amino acid code, respectively.</li>
 <li>Significant speed improvements of the <code>distance</code> method of both <code>PandasPdb</code> and <code>PandasMol2</code> (now about 300 percent faster than previously).</li>
 </ul>
-<h5 id="bug-fixes_10">Bug Fixes</h5>
+<h5 id="bug-fixes_11">Bug Fixes</h5>
 <ul>
 <li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now handles multi-chain proteins correctly.</li>
 <li>The <code>amino3to1</code> method of <code>biopandas.pdb.PandasPDB</code> objects now also works as expected if the <code>'ATOM'</code> entry DataFrame contains disordered DataFrame indices or duplicate DataFrame index values.</li>
 </ul>
 <h3 id="020-2017-04-02">0.2.0 (2017-04-02)</h3>
-<h5 id="downloads_14">Downloads</h5>
+<h5 id="downloads_13">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.zip">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/archive/v0.2.0.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_14">New Features</h5>
+<h5 id="new-features_12">New Features</h5>
 <ul>
 <li>Added an <code>amino3to1</code> method to <code>PandasPdb</code> data frames to convert 3-amino acid letter codes to 1-letter codes.</li>
 <li>Added a <code>distance</code> method to <code>PandasPdb</code> data frames to compute the Euclidean distance between atoms and a reference point.</li>
@@ -413,17 +405,17 @@
 <li><code>PandasPDB</code> was renamed to <code>PandasPdb</code>.</li>
 <li>Raises a warning if <code>PandasPdb</code> is written to PDB and ATOM and HETAM section contains unexpected columns; these columns will now be skipped.</li>
 </ul>
-<h5 id="bug-fixes_11">Bug Fixes</h5>
+<h5 id="bug-fixes_12">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="015-2016-11-19">0.1.5 (2016-11-19)</h3>
-<h5 id="downloads_15">Downloads</h5>
+<h5 id="downloads_14">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.5.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_15">New Features</h5>
+<h5 id="new-features_13">New Features</h5>
 <ul>
 <li>Added an <code>impute_element</code> method to <code>PandasPDB</code> objects to infer the Element Symbol from the Atom Name column.</li>
 <li>Added two new selection types for <code>PandasPDB</code> ATOM and HETATM coordinate sections: <code>'heavy'</code> and <code>'carbon'</code>.</li>
@@ -434,31 +426,31 @@
 <li>The <code>'hydrogen'</code> atom selection in <code>PandasPDB</code> methods is now based on the element type instead of the atom name.</li>
 <li>By default, the RMSD is now computed on all atoms unless a specific selection is defined.</li>
 </ul>
-<h5 id="bug-fixes_12">Bug Fixes</h5>
+<h5 id="bug-fixes_13">Bug Fixes</h5>
 <ul>
 <li>-</li>
 </ul>
 <h3 id="014-2015-11-24">0.1.4 (2015-11-24)</h3>
-<h5 id="downloads_16">Downloads</h5>
+<h5 id="downloads_15">Downloads</h5>
 <ul>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4">Source code (zip)</a></li>
 <li><a href="https://github.com/rasbt/biopandas/releases/tag/v0.1.4.tar.gz">Source code (tar.gz)</a></li>
 </ul>
-<h5 id="new-features_16">New Features</h5>
+<h5 id="new-features_14">New Features</h5>
 <p>-</p>
 <h5 id="changes_14">Changes</h5>
 <ul>
 <li>Needed to bump the version number due to a bug in the PyPI setup.py script.</li>
 <li>Support for the old pandas sorting syntax (<code>DataFrame.sort</code> vs <code>DataFrame.sort_values</code>) incl. DeprecationWarning.</li>
 </ul>
-<h5 id="bug-fixes_13">Bug Fixes</h5>
+<h5 id="bug-fixes_14">Bug Fixes</h5>
 <p>-</p>
 <h3 id="013-2015-11-23">0.1.3 (2015-11-23)</h3>
-<h5 id="new-features_17">New Features</h5>
+<h5 id="new-features_15">New Features</h5>
 <p>-</p>
 <h5 id="changes_15">Changes</h5>
 <p>-</p>
-<h5 id="bug-fixes_14">Bug Fixes</h5>
+<h5 id="bug-fixes_15">Bug Fixes</h5>
 <ul>
 <li>Exception handling in tests if PDB goes down (which just happened).</li>
 <li>Added a separate ANISOU engine to handle those records correctly.</li>
