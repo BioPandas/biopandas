@@ -4,20 +4,20 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Biopandas is a python package for working with molecular structures in pandas DataFrames.">
-        <meta name="author" content="Sebastian Raschka">
-        <link rel="canonical" href="http://rasbt.github.io/biopandas/">
-        <link rel="shortcut icon" href="favicon.ico">
         
-        <title>BioPandas</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/font-awesome.min.css" rel="stylesheet">
-        <link href="css/base.css" rel="stylesheet">
+        <meta name="author" content="Sebastian Raschka">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/api_modules/biopandas.mmtf/parse_mmtf/">
+        <link rel="shortcut icon" href="../../../favicon.ico">
+        
+        <title>Parse mmtf - BioPandas</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
-        <link href="extra.css" rel="stylesheet">
+        <link href="../../../extra.css" rel="stylesheet">
 
-        <script src="js/jquery-1.10.2.min.js" defer></script>
-        <script src="js/bootstrap.min.js" defer></script>
+        <script src="../../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
         <script>
@@ -31,10 +31,10 @@
         </script> 
     </head>
 
-    <body class="homepage">
+    <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">BioPandas</a>
+                <a class="navbar-brand" href="../../..">BioPandas</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -49,15 +49,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="tutorials/Working_with_PDB_Structures_in_DataFrames/" class="dropdown-item">Working with PDB Structures in DataFrames</a>
+    <a href="../../../tutorials/Working_with_PDB_Structures_in_DataFrames/" class="dropdown-item">Working with PDB Structures in DataFrames</a>
 </li>
                                     
 <li>
-    <a href="tutorials/Working_with_mmCIF_Structures_in_DataFrames/" class="dropdown-item">Working with mmCIF Structures in DataFrames</a>
+    <a href="../../../tutorials/Working_with_mmCIF_Structures_in_DataFrames/" class="dropdown-item">Working with mmCIF Structures in DataFrames</a>
 </li>
                                     
 <li>
-    <a href="tutorials/Working_with_MOL2_Structures_in_DataFrames/" class="dropdown-item">Working with MOL2 Structures in DataFrames</a>
+    <a href="../../../tutorials/Working_with_MOL2_Structures_in_DataFrames/" class="dropdown-item">Working with MOL2 Structures in DataFrames</a>
 </li>
                                 </ul>
                             </li>
@@ -66,32 +66,32 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="api_subpackages/biopandas.pdb/" class="dropdown-item">biopandas.pdb</a>
+    <a href="../../../api_subpackages/biopandas.pdb/" class="dropdown-item">biopandas.pdb</a>
 </li>
                                     
 <li>
-    <a href="api_subpackages/biopandas.mmcif/" class="dropdown-item">biopandas.mmcif</a>
+    <a href="../../../api_subpackages/biopandas.mmcif/" class="dropdown-item">biopandas.mmcif</a>
 </li>
                                     
 <li>
-    <a href="api_subpackages/biopandas.mol2/" class="dropdown-item">biopandas.mol2</a>
+    <a href="../../../api_subpackages/biopandas.mol2/" class="dropdown-item">biopandas.mol2</a>
 </li>
                                 </ul>
                             </li>
                             <li class="navitem">
-                                <a href="CHANGELOG/" class="nav-link">Changelog</a>
+                                <a href="../../../CHANGELOG/" class="nav-link">Changelog</a>
                             </li>
                             <li class="navitem">
-                                <a href="installation/" class="nav-link">Install</a>
+                                <a href="../../../installation/" class="nav-link">Install</a>
                             </li>
                             <li class="navitem">
                                 <a href="https://github.com/rasbt/biopandas/discussions" class="nav-link">Discuss</a>
                             </li>
                             <li class="navitem">
-                                <a href="CONTRIBUTING/" class="nav-link">Contribute</a>
+                                <a href="../../../CONTRIBUTING/" class="nav-link">Contribute</a>
                             </li>
                             <li class="navitem">
-                                <a href="citing/" class="nav-link">Cite</a>
+                                <a href="../../../citing/" class="nav-link">Cite</a>
                             </li>
                         </ul>
 
@@ -102,7 +102,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/index.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/api_modules/biopandas.mmtf/parse_mmtf.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -122,94 +122,22 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            
-            
-            
+            <li class="nav-item" data-level="2"><a href="#parse_mmtf" class="nav-link">parse_mmtf</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p><img alt="Logo" src="img/logos/logo_size_1.png" /></p>
-<p><strong>Working with molecular structures in pandas DataFrames</strong></p>
-<p><a href="https://travis-ci.org/rasbt/biopandas"><img alt="Continuous Integration" src="https://travis-ci.org/rasbt/biopandas.svg?branch=master" /></a>
-<a href="https://pypi.python.org/pypi/biopandas/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/biopandas.svg" /></a>
-<a href="https://github.com/biopandas/biopandas/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-new%20BSD-blue.svg" /></a>
-<img alt="Python 3" src="https://img.shields.io/badge/python-3-blue.svg" />
-<a href="http://joss.theoj.org/papers/10.21105/joss.00279"><img alt="JOSS" src="http://joss.theoj.org/papers/10.21105/joss.00279/status.svg" /></a>
-<a href="https://github.com/biopandas/biopandas/discussions"><img alt="Discuss" src="https://img.shields.io/badge/discuss-github-blue.svg" /></a></p>
-<p><br></p>
-<hr>
-
-<h4 id="links">Links</h4>
-<ul>
-<li>Documentation: <a href="http://biopandas.github.io/biopandas/">http://biopandas.github.io/biopandas/</a></li>
-<li>Source code repository: <a href="https://github.com/biopandas/biopandas">https://github.com/biopandas/biopandas</a></li>
-<li>PyPI: <a href="https://pypi.python.org/pypi/biopandas">https://pypi.python.org/pypi/biopandas</a></li>
-</ul>
-<hr>
-
-<h4 id="about">About</h4>
-<p>If you are a computational biologist, chances are that you cursed one too many times about protein structure files. Yes, I am talking about ye Goode Olde Protein Data Bank format, aka "PDB files." Nothing against PDB, it's a neatly structured format (if deployed correctly); yet, it is a bit cumbersome to work with PDB files in "modern" programming languages -- I am pretty sure we all agree on this.</p>
-<p>As machine learning and "data science" person, I fell in love with <a href="http://pandas.pydata.org">pandas</a> DataFrames for handling just about everything that can be loaded into memory.<br />
-So, why don't we take pandas to the structural biology world? Working with molecular structures of biological macromolecules (from PDB and MOL2 files) in pandas DataFrames is what BioPandas is all about!</p>
-<hr>
-
-<h4 id="examples">Examples</h4>
-<p><img alt="3eiy" src="img/index/3eiy.png" /></p>
-<pre><code class="language-python"># Initialize a new PandasPdb object
-# and fetch the PDB file from rcsb.org
-&gt;&gt;&gt; from biopandas.pdb import PandasPdb
-&gt;&gt;&gt; ppdb = PandasPdb().fetch_pdb('3eiy')
-&gt;&gt;&gt; ppdb.df['ATOM'].head()
-</code></pre>
-<p><img alt="3eiy head" src="img/index/3eiy_head.png" /></p>
-<p><br></p>
-<p><img alt="3eiy head" src="img/index/ligand_rmsd.png" /></p>
-<pre><code class="language-python"># Load structures from your drive and compute the
-# Root Mean Square Deviation
-&gt;&gt;&gt; from biopandas.pdb import PandasPdb
-&gt;&gt;&gt; pl1 = PandasPdb().read_pdb('./docking_pose_1.pdb')
-&gt;&gt;&gt; pl2 = PandasPdb().read_pdb('./docking_pose_2.pdb')
-&gt;&gt;&gt; r = PandasPdb.rmsd(pl1.df['HETATM'], pl2.df['HETATM'])
-&gt;&gt;&gt; print('RMSD: %.4f Angstrom' % r)
-RMSD: 2.6444 Angstrom
-</code></pre>
-<p><br></p>
-<pre><code class="language-python"># Producing quick summary plots
-&gt;&gt;&gt; import matplotlib.pyplot as plt
-&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='hist')
-&gt;&gt;&gt; plt.title('Distribution of B-Factors')
-&gt;&gt;&gt; plt.xlabel('B-factor')
-&gt;&gt;&gt; plt.ylabel('count')
-&gt;&gt;&gt; plt.show()
-</code></pre>
-<p><img alt="" src="img/index/bfactor_hist.png" /></p>
-<p><br></p>
-<pre><code class="language-python">&gt;&gt;&gt; ppdb.df['ATOM']['b_factor'].plot(kind='line')
-&gt;&gt;&gt; plt.title('B-Factors Along the Amino Acid Chain')
-&gt;&gt;&gt; plt.xlabel('Residue Number')
-&gt;&gt;&gt; plt.ylabel('B-factor in $A^2$')
-&gt;&gt;&gt; plt.show()
-</code></pre>
-<p><img alt="" src="img/index/bfactor_trace.png" /></p>
-<h3 id="cite-as">Cite as</h3>
-<p>If you use BioPandas as part of your workflow in a scientific publication, please consider citing the BioPandas repository with the following DOI:</p>
-<ul>
-<li>Sebastian Raschka. Biopandas: Working with molecular structures in pandas dataframes. <em>The Journal of Open Source Software</em>, 2(14), jun 2017. doi: 10.21105/joss.00279. URL http://dx.doi.org/10.21105/joss.00279.</li>
-</ul>
-<pre><code>@article{raschkas2017biopandas,
-  doi = {10.21105/joss.00279},
-  url = {http://dx.doi.org/10.21105/joss.00279},
-  year  = {2017},
-  month = {jun},
-  publisher = {The Open Journal},
-  volume = {2},
-  number = {14},
-  author = {Sebastian Raschka},
-  title = {BioPandas: Working with molecular structures in pandas DataFrames},
-  journal = {The Journal of Open Source Software}
-}
+<h2 id="parse_mmtf">parse_mmtf</h2>
+<p><em>parse_mmtf(file_path: 'str') -&gt; 'pd.DataFrame'</em></p>
+<p>Parses an MMTF file from disk and returns a pandas DataFrame.</p>
+<pre><code>:param file_path: Path to mmtf file.
+:type file_path: str
+:return: Dataframe of protein structure.
+:rtype: pd.DataFrame
 </code></pre></div>
             </div>
         </div>
@@ -220,13 +148,13 @@ RMSD: 2.6444 Angstrom
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = ".",
+            var base_url = "../../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js" defer></script>
+        <script src="../../../js/base.js" defer></script>
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" defer></script>
-        <script src="mathjaxhelper.js" defer></script>
-        <script src="search/main.js" defer></script>
+        <script src="../../../mathjaxhelper.js" defer></script>
+        <script src="../../../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -291,8 +219,3 @@ RMSD: 2.6444 Angstrom
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.4.2
-Build Date UTC : 2023-04-03 17:04:36.060249+00:00
--->

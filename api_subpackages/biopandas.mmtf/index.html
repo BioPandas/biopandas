@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Sebastian Raschka">
-        <link rel="canonical" href="http://rasbt.github.io/biopandas/api_subpackages/biopandas.pdb/">
+        <link rel="canonical" href="http://rasbt.github.io/biopandas/api_subpackages/biopandas.mmtf/">
         <link rel="shortcut icon" href="../../favicon.ico">
         
-        <title>biopandas.pdb - BioPandas</title>
+        <title>Biopandas.mmtf - BioPandas</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -61,12 +61,12 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="./" class="dropdown-item active">biopandas.pdb</a>
+    <a href="../biopandas.pdb/" class="dropdown-item">biopandas.pdb</a>
 </li>
                                     
 <li>
@@ -102,17 +102,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../../tutorials/Working_with_MOL2_Structures_in_DataFrames/" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="../biopandas.mmcif/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/api_subpackages/biopandas.pdb.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/rasbt/biopandas/edit/master/docs/api_subpackages/biopandas.mmtf.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -132,7 +122,17 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="2"><a href="#pandaspdb" class="nav-link">PandasPdb</a>
+            <li class="nav-item" data-level="2"><a href="#parse_mmtf" class="nav-link">parse_mmtf</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#pandasmmtf" class="nav-link">PandasMmtf</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#fetch_mmtf" class="nav-link">fetch_mmtf</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -142,37 +142,17 @@
                     <div class="col-md-9" role="main">
 
 <p>biopandas version: 0.5.0dev</p>
-<h2 id="pandaspdb">PandasPdb</h2>
-<p><em>PandasPdb()</em></p>
-<p>Object for working with Protein Databank structure files.</p>
-<p><strong>Attributes</strong></p>
-<ul>
-<li>
-<p><code>df</code> : dict</p>
-<p>Dictionary storing pandas DataFrames for PDB record sections.
-The dictionary keys are {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'}
-where 'OTHERS' contains all entries that are not parsed as
-'ATOM', 'HETATM', or 'ANISOU'.</p>
-</li>
-<li>
-<p><code>pdb_text</code> : str</p>
-<p>PDB file contents in raw text format.</p>
-</li>
-<li>
-<p><code>pdb_path</code> : str</p>
-<p>Location of the PDB file that was read in via <code>read_pdb</code>
-or URL of the page where the PDB content was fetched from
-if <code>fetch_pdb</code> was called.</p>
-</li>
-<li>
-<p><code>header</code> : str</p>
-<p>PDB file description.</p>
-</li>
-<li>
-<p><code>code</code> : str</p>
-<p>PDB code</p>
-</li>
-</ul>
+<h2 id="parse_mmtf">parse_mmtf</h2>
+<p><em>parse_mmtf(file_path: 'str') -&gt; 'pd.DataFrame'</em></p>
+<p>Parses an MMTF file from disk and returns a pandas DataFrame.</p>
+<pre><code>:param file_path: Path to mmtf file.
+:type file_path: str
+:return: Dataframe of protein structure.
+:rtype: pd.DataFrame
+</code></pre>
+<h2 id="pandasmmtf">PandasMmtf</h2>
+<p><em>PandasMmtf()</em></p>
+<p>None</p>
 <h3 id="methods">Methods</h3>
 <hr>
 
@@ -190,7 +170,7 @@ MSE (selenomethionine) =&gt; M
 <ul>
 <li>
 <p><code>record</code> : str, default: 'ATOM'</p>
-<p>Specifies the record DataFrame.</p>
+<p>Specfies the record DataFrame.</p>
 </li>
 <li>
 <p><code>residue_col</code> : str,  default: 'residue_name'</p>
@@ -246,8 +226,8 @@ but deprecated and will be removed in future versions.</p>
 <ul>
 <li>
 <p><code>df</code> : DataFrame</p>
-<p>DataFrame containing entries in the <code>PandasPdb.df['ATOM']</code>
-or <code>PandasPdb.df['HETATM']</code> format for the
+<p>DataFrame containing entries in the <code>PandasMmtf.df['ATOM']</code>
+or <code>PandasMmtf.df['HETATM']</code> format for the
 the distance computation to the <code>xyz</code> reference coordinates.</p>
 </li>
 <li>
@@ -265,71 +245,13 @@ computation.</p>
 </ul>
 <hr>
 
-<p><em>fetch_pdb(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')</em></p>
-<p>Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database
-    at https://alphafold.ebi.ac.uk/.
-    .</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>pdb_code</code> : str, optional</p>
-<p>A 4-letter PDB code, e.g., <code>"3eiy"</code> to retrieve structures from the PDB.
-Defaults to <code>None</code>.</p>
-</li>
-<li>
-<p><code>uniprot_id</code> : str, optional</p>
-<p>A UniProt Identifier, e.g., <code>"Q5VSL9"</code> to retrieve structures from the AF2 database.
-Defaults to <code>None</code>.</p>
-</li>
-<li>
-<p><code>source</code> : str</p>
-<p>The source to retrieve the structure from
-(<code>"pdb"</code>, <code>"alphafold2-v1"</code>, <code>"alphafold2-v2"</code>, <code>"alphafold2-v3"</code> (latest)).
-Defaults to <code>"pdb"</code>.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<p>self</p>
+<p><em>fetch_mmtf(pdb_code: 'str')</em></p>
+<p>None</p>
 <hr>
 
-<p><em>get(s, df=None, invert=False, records=('ATOM', 'HETATM'))</em></p>
-<p>Filter PDB DataFrames by properties</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>s</code> : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}</p>
-<p>String to specify which entries to return.</p>
-</li>
-<li>
-<p><code>df</code> : pandas.DataFrame, default: None</p>
-<p>Optional DataFrame to perform the filter operation on.
-If df=None, filters on self.df['ATOM'].</p>
-</li>
-<li>
-<p><code>invert</code> : bool, default: True</p>
-<p>Inverts the search query. For example if s='hydrogen' and
-invert=True, all but hydrogen entries are returned.</p>
-</li>
-<li>
-<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
-<p>Specify which record sections to consider. For example, to consider
-both protein and ligand atoms, set <code>records=('ATOM', 'HETATM')</code>.
-This setting is ignored if <code>df</code> is not set to None.
-For downward compatibility, a string argument is still supported
-but deprecated and will be removed in future versions.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li>
-<p><code>df</code> : pandas.DataFrame</p>
-<p>Returns a DataFrame view on the filtered entries.</p>
-</li>
-</ul>
-<hr>
-
-<p><em>get_model(model_index: 'int') -&gt; 'PandasPdb'</em></p>
-<p>Returns a new PandasPDB object with the dataframes subset to the given model index.</p>
+<p><em>get_model(model_index: 'int') -&gt; 'PandasMmtf'</em></p>
+<p>Returns a new PandasPDB object with the dataframes subset to the
+    given model index.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
@@ -346,22 +268,9 @@ but deprecated and will be removed in future versions.</p>
 </ul>
 <hr>
 
-<p><em>get_model_start_end() -&gt; 'pd.DataFrame'</em></p>
-<p>Get the start and end of the models contained in the PDB file.</p>
-<pre><code>Extracts model start and end line indexes based
-on lines labelled 'OTHERS' during parsing.
-</code></pre>
-<p><strong>Returns</strong></p>
-<ul>
-<li>
-<p><code>pandas.DataFrame</code> : Pandas DataFrame object containing</p>
-<p>the start and end line indexes of the models.</p>
-</li>
-</ul>
-<hr>
-
-<p><em>get_models(model_indices: 'List[int]') -&gt; 'PandasPdb'</em></p>
-<p>Returns a new PandasPDB object with the dataframes subset to the given model index.</p>
+<p><em>get_models(model_indices: 'List[int]') -&gt; 'PandasMmtf'</em></p>
+<p>Returns a new PandasMmtf object with the dataframes subset to the
+    given model index.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
@@ -372,31 +281,8 @@ on lines labelled 'OTHERS' during parsing.
 <p><strong>Returns</strong></p>
 <ul>
 <li>
-<p><code>pandas_pdb.PandasPdb</code> : A new PandasPdb object</p>
+<p><code>pandas_pdb.PandasMmtf</code> : A new PandasPdb object</p>
 <p>containing the structure subsetted to the given model.</p>
-</li>
-</ul>
-<hr>
-
-<p><em>gyradius(records: 'tuple[str]' = ('ATOM',), decimals: 'int' = 4) -&gt; 'float'</em></p>
-<p>Compute the Radius of Gyration of a molecule</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>records</code> : iterable, default: ("ATOM",)</p>
-<p>Records from PandasPdb object for which to calculate the radius of gyration.
-Any of <code>("ATOM", "HETATM")</code>.</p>
-</li>
-<li>
-<p><code>decimals</code> : int, default: 4</p>
-<p>Specifies the number of decimal places to round the final value to.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li>
-<p><code>rg</code> : float</p>
-<p>Radius of Gyration of df in Angstrom</p>
 </li>
 </ul>
 <hr>
@@ -413,49 +299,22 @@ imputed.</p>
 <li>
 <p><code>inplace</code> : bool, (default: False</p>
 <p>Performs the operation in-place if True and returns a copy of the
-PDB DataFrame otherwise.</p>
+MMTF DataFrame otherwise.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
 <p>DataFrame</p>
 <hr>
 
-<p><em>label_models()</em></p>
-<p>Adds a column (<code>"model_id"</code>) to the underlying
-    DataFrames containing the model number.</p>
-<hr>
-
 <p><em>parse_sse()</em></p>
 <p>Parse secondary structure elements</p>
 <hr>
 
-<p><em>read_pdb(path)</em></p>
-<p>Read PDB files (unzipped or gzipped) from local drive</p>
-<p><strong>Attributes</strong></p>
-<ul>
-<li>
-<p><code>path</code> : str</p>
-<p>Path to the PDB file in .pdb format or gzipped format (.pdb.gz).</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<p>self</p>
+<p><em>read_mmtf(filename: 'str')</em></p>
+<p>None</p>
 <hr>
 
-<p><em>read_pdb_from_list(pdb_lines)</em></p>
-<p>Reads PDB file from a list into DataFrames</p>
-<p><strong>Attributes</strong></p>
-<ul>
-<li>
-<p><code>pdb_lines</code> : list</p>
-<p>A list of lines containing the pdb file contents.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<p>self</p>
-<hr>
-
-<p><em>rmsd(df1, df2, s=None, invert=False, decimals=4)</em></p>
+<p><em>rmsd(df1, df2, s=None, invert=False)</em></p>
 <p>Compute the Root Mean Square Deviation between molecules.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -480,16 +339,25 @@ all atoms for comparison.</p>
 <code>s='hydrogen', invert=True</code> computes the RMSD based on all
 but hydrogen atoms.</p>
 </li>
-<li>
-<p><code>decimals</code> : int, default: 4</p>
-<p>Specifies the number of decimal places to round the final value to.</p>
-</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li>
 <p><code>rmsd</code> : float</p>
 <p>Root Mean Square Deviation between df1 and df2</p>
+</li>
+</ul>
+<hr>
+
+<p><em>to_mmtf(path, records=('ATOM', 'HETATM'))</em></p>
+<p>Write record DataFrames to an MMTF file.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>path</code> : str</p>
+<p>A valid output path for the mmtf file</p>
+<p>records: tuple(str):
+A tuple of records to write. Defaults to ("ATOM". "HETATM")</p>
 </li>
 </ul>
 <hr>
@@ -517,26 +385,19 @@ Writes all lines to PDB if <code>records=None</code>.</p>
 <p>Appends a new line at the end of the PDB file if True</p>
 </li>
 </ul>
-<hr>
-
-<p><em>to_pdb_stream(records: 'tuple[str]' = ('ATOM', 'HETATM')) -&gt; 'StringIO'</em></p>
-<p>Writes a PDB dataframe to a stream.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li>
-<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
-<p>Iterable of record names to save to stream. Any of <code>["ATOM", "HETATM", "OTHERS"]</code>.</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li><code>io.StringIO</code> : Filestream of PDB file.</li>
-</ul>
 <h3 id="properties">Properties</h3>
 <hr>
 
 <p><em>df</em></p>
-<p>Access dictionary of pandas DataFrames for PDB record sections.</p></div>
+<p>Access dictionary of pandas DataFrames for MMTF record sections.</p>
+<h2 id="fetch_mmtf">fetch_mmtf</h2>
+<p><em>fetch_mmtf(pdb_code: 'str') -&gt; 'pd.DataFrame'</em></p>
+<p>Returns a dataframe from a PDB code.</p>
+<pre><code>:param pdb_code: 4-letter PDB accession code
+:type pdb_code: str
+:return: Dataframe of protein structure
+:rtype: pd.DataFrame
+</code></pre></div>
             </div>
         </div>
 

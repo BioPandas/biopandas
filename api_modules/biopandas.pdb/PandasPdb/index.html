@@ -179,7 +179,7 @@ MSE (selenomethionine) =&gt; M
 <ul>
 <li>
 <p><code>record</code> : str, default: 'ATOM'</p>
-<p>Specfies the record DataFrame.</p>
+<p>Specifies the record DataFrame.</p>
 </li>
 <li>
 <p><code>residue_col</code> : str,  default: 'residue_name'</p>
@@ -255,21 +255,26 @@ computation.</p>
 <hr>
 
 <p><em>fetch_pdb(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')</em></p>
-<p>Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+<p>Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database
+    at https://alphafold.ebi.ac.uk/.
     .</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
 <p><code>pdb_code</code> : str, optional</p>
-<p>A 4-letter PDB code, e.g., <code>"3eiy"</code> to retrieve structures from the PDB. Defaults to <code>None</code>.</p>
+<p>A 4-letter PDB code, e.g., <code>"3eiy"</code> to retrieve structures from the PDB.
+Defaults to <code>None</code>.</p>
 </li>
 <li>
 <p><code>uniprot_id</code> : str, optional</p>
-<p>A UniProt Identifier, e.g., <code>"Q5VSL9"</code> to retrieve structures from the AF2 database. Defaults to <code>None</code>.</p>
+<p>A UniProt Identifier, e.g., <code>"Q5VSL9"</code> to retrieve structures from the AF2 database.
+Defaults to <code>None</code>.</p>
 </li>
 <li>
 <p><code>source</code> : str</p>
-<p>The source to retrieve the structure from (<code>"pdb"</code>, <code>"alphafold2-v1"</code> or <code>"alphafold2-v2"</code> (latest)). Defaults to <code>"pdb"</code>.</p>
+<p>The source to retrieve the structure from
+(<code>"pdb"</code>, <code>"alphafold2-v1"</code>, <code>"alphafold2-v2"</code>, <code>"alphafold2-v3"</code> (latest)).
+Defaults to <code>"pdb"</code>.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -349,8 +354,8 @@ on lines labelled 'OTHERS' during parsing.
 <p><strong>Parameters</strong></p>
 <ul>
 <li>
-<p><code>model_index</code> : int</p>
-<p>An integer representing the model index to subset to.</p>
+<p><code>model_indices</code> : List[int]</p>
+<p>A list representing the model indexes to subset to.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -358,6 +363,29 @@ on lines labelled 'OTHERS' during parsing.
 <li>
 <p><code>pandas_pdb.PandasPdb</code> : A new PandasPdb object</p>
 <p>containing the structure subsetted to the given model.</p>
+</li>
+</ul>
+<hr>
+
+<p><em>gyradius(records: 'tuple[str]' = ('ATOM',), decimals: 'int' = 4) -&gt; 'float'</em></p>
+<p>Compute the Radius of Gyration of a molecule</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>records</code> : iterable, default: ("ATOM",)</p>
+<p>Records from PandasPdb object for which to calculate the radius of gyration.
+Any of <code>("ATOM", "HETATM")</code>.</p>
+</li>
+<li>
+<p><code>decimals</code> : int, default: 4</p>
+<p>Specifies the number of decimal places to round the final value to.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>
+<p><code>rg</code> : float</p>
+<p>Radius of Gyration of df in Angstrom</p>
 </li>
 </ul>
 <hr>
@@ -416,7 +444,7 @@ PDB DataFrame otherwise.</p>
 <p>self</p>
 <hr>
 
-<p><em>rmsd(df1, df2, s=None, invert=False)</em></p>
+<p><em>rmsd(df1, df2, s=None, invert=False, decimals=4)</em></p>
 <p>Compute the Root Mean Square Deviation between molecules.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -440,6 +468,10 @@ all atoms for comparison.</p>
 <p>Inverts the string query if true. For example, the setting
 <code>s='hydrogen', invert=True</code> computes the RMSD based on all
 but hydrogen atoms.</p>
+</li>
+<li>
+<p><code>decimals</code> : int, default: 4</p>
+<p>Specifies the number of decimal places to round the final value to.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>
@@ -474,11 +506,26 @@ Writes all lines to PDB if <code>records=None</code>.</p>
 <p>Appends a new line at the end of the PDB file if True</p>
 </li>
 </ul>
+<hr>
+
+<p><em>to_pdb_stream(records: 'tuple[str]' = ('ATOM', 'HETATM')) -&gt; 'StringIO'</em></p>
+<p>Writes a PDB dataframe to a stream.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li>
+<p><code>records</code> : iterable, default: ('ATOM', 'HETATM')</p>
+<p>Iterable of record names to save to stream. Any of <code>["ATOM", "HETATM", "OTHERS"]</code>.</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>io.StringIO</code> : Filestream of PDB file.</li>
+</ul>
 <h3 id="properties">Properties</h3>
 <hr>
 
 <p><em>df</em></p>
-<p>Acccess dictionary of pandas DataFrames for PDB record sections.</p></div>
+<p>Access dictionary of pandas DataFrames for PDB record sections.</p></div>
             </div>
         </div>
 

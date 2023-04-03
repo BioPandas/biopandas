@@ -141,7 +141,7 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>biopandas version: 0.4.1</p>
+<p>biopandas version: 0.5.0dev</p>
 <h2 id="pandasmmcif">PandasMmcif</h2>
 <p><em>PandasMmcif(use_auth: bool = True)</em></p>
 <p>None</p>
@@ -183,6 +183,19 @@ the chain ID of the amino acid and the latter
 contains the 1-letter amino acid code, respectively.</p>
 </li>
 </ul>
+<hr>
+
+<p><em>convert_to_pandas_pdb(offset_chains: bool = True, records: List[str] = ['ATOM', 'HETATM']) -&gt; biopandas.pdb.pandas_pdb.PandasPdb</em></p>
+<p>Returns a PandasPdb object with the same data as the PandasMmcif
+    object.</p>
+<p><strong>Attributes</strong></p>
+<p>offset_chains: bool
+    Whether or not to offset atom numbering based on number of chains.
+    This can arise due to the presence of TER records in PDBs which are
+    not found in mmCIFs.
+    records: List[str]
+    List of record types to save. Any of ["ATOM", "HETATM", "OTHERS"].
+    Defaults to ["ATOM", "HETATM"].</p>
 <hr>
 
 <p><em>distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))</em></p>
@@ -252,7 +265,8 @@ computation.</p>
 </li>
 <li>
 <p><code>source</code> : str</p>
-<p>The source to retrieve the structure from (<code>"pdb"</code>, <code>"alphafold2-v1"</code> or <code>"alphafold2-v2"</code>). Defaults to <code>"pdb"</code>.</p>
+<p>The source to retrieve the structure from
+(<code>"pdb"</code>, <code>"alphafold2-v1"</code>, <code>"alphafold2-v2"</code> or <code>"alphafold2-v3"</code>). Defaults to <code>"pdb"</code>.</p>
 </li>
 </ul>
 <p><strong>Returns</strong></p>

@@ -36,6 +36,21 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mmtf/PandasMmtf/</loc>
+         <lastmod>2023-04-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mmtf/fetch_mmtf/</loc>
+         <lastmod>2023-04-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mmtf/parse_mmtf/</loc>
+         <lastmod>2023-04-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>http://rasbt.github.io/biopandas/api_modules/biopandas.mol2/PandasMol2/</loc>
          <lastmod>2023-04-03</lastmod>
          <changefreq>daily</changefreq>
@@ -57,6 +72,11 @@
     </url>
     <url>
          <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.mmcif/</loc>
+         <lastmod>2023-04-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://rasbt.github.io/biopandas/api_subpackages/biopandas.mmtf/</loc>
          <lastmod>2023-04-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
