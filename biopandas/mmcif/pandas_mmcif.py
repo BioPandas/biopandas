@@ -83,7 +83,7 @@ class PandasMmcif:
 
         source : str
             The source to retrieve the structure from 
-            (`"pdb"`, `"alphafold2-v1"`, `"alphafold2-v2"` or `"alphafold2-v3"`). Defaults to `"pdb"`.
+            (`"pdb"`, `"alphafold2-v3"` or `"alphafold2-v4"`). Defaults to `"pdb"`.
 
         Returns
         ---------
@@ -95,7 +95,7 @@ class PandasMmcif:
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
         invalid_input_combination_2 = pdb_code is not None and source in {
-            "alphafold2-v1", "alphafold2-v2", "alphafold2-v3"}
+            "alphafold2-v3", "alphafold2-v4"}
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
             raise ValueError(
@@ -110,19 +110,15 @@ class PandasMmcif:
 
         if source == "pdb":
             self.mmcif_path, self.mmcif_text = self._fetch_mmcif(pdb_code)
-        elif source == "alphafold2-v1":
-            af2_version = 1
-            self.mmcif_path, self.mmcif_text = self._fetch_af2(
-                uniprot_id, af2_version)
-        elif source == "alphafold2-v2":
-            af2_version = 2
-            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
         elif source == "alphafold2-v3":
             af2_version = 3
             self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
+        elif source == "alphafold2-v4":
+            af2_version = 4
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(uniprot_id, af2_version)
         else:
             raise ValueError(f"Invalid source: {source}."
-                " Please use one of 'pdb', 'alphafold2-v1', 'alphafold2-v2' or 'alphafold2-v3.")
+                " Please use one of 'pdb', 'alphafold2-v3' or 'alphafold2-v4'.")
 
         self._df = self._construct_df(text=self.mmcif_text)
         return self
