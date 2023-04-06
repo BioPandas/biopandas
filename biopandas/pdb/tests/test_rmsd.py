@@ -69,3 +69,8 @@ def test_ligand():
 def test_ligand_default():
     r = PandasPdb.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s=None)
     assert r == 2.6444, r
+
+
+def test_decimals():
+    r = PandasPdb.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], decimals=3)
+    assert r == 0.738, r
