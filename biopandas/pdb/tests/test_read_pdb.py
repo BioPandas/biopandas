@@ -82,8 +82,8 @@ with open(TESTDATA_FILENAME, "r") as f:
 with open(TESTDATA_FILENAME2, "r") as f:
     four_eiy = f.read()
 
-with open(TESTDATA_FILENAME_AF2_V2, "r") as f:
-    af_test_struct_v2 = f.read()
+with open(TESTDATA_FILENAME_AF2_V4, "r") as f:
+    af_test_struct_v4 = f.read()
 
 with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af_test_struct_v3 = f.read()
