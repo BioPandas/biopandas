@@ -20,8 +20,8 @@ TESTDATA_FILENAME2 = os.path.join(
     os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
 )
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb.gz")
-TESTDATA_FILENAME_AF2_V2 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v2.pdb"
+TESTDATA_FILENAME_AF2_V4 = os.path.join(
+    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.pdb"
 )
 
 TESTDATA_FILENAME_AF2_V3 = os.path.join(
@@ -82,8 +82,8 @@ with open(TESTDATA_FILENAME, "r") as f:
 with open(TESTDATA_FILENAME2, "r") as f:
     four_eiy = f.read()
 
-with open(TESTDATA_FILENAME_AF2_V2, "r") as f:
-    af_test_struct_v2 = f.read()
+with open(TESTDATA_FILENAME_AF2_V4, "r") as f:
+    af_test_struct_v4 = f.read()
 
 with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af_test_struct_v3 = f.read()
@@ -139,6 +139,24 @@ def test_fetch_af2():
     # Check latest release
     try:
         ppdb = PandasPdb()
+        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
+    except HTTPError:
+        url, txt = None, None
+    except ConnectionResetError:
+        url, txt = None, None
+
+    if txt:  # skip if AF2 DB down
+        txt[:100] == af_test_struct_v4[:100]
+        ppdb.fetch_pdb(uniprot_id="Q5VSL9", source="alphafold2-v4")
+        assert ppdb.pdb_text == txt
+        assert (
+            ppdb.pdb_path
+            == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v4.pdb"
+        )
+
+    # Check legacy release
+    try:
+        ppdb = PandasPdb()
         url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except HTTPError:
         url, txt = None, None
@@ -152,24 +170,6 @@ def test_fetch_af2():
         assert (
             ppdb.pdb_path
             == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v3.pdb"
-        )
-
-    # Check legacy release
-    try:
-        ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=2)
-    except HTTPError:
-        url, txt = None, None
-    except ConnectionResetError:
-        url, txt = None, None
-
-    if txt:  # skip if AF2 DB down
-        txt[:100] == af_test_struct_v2[:100]
-        ppdb.fetch_pdb(uniprot_id="Q5VSL9", source="alphafold2-v2")
-        assert ppdb.pdb_text == txt
-        assert (
-            ppdb.pdb_path
-            == "https://alphafold.ebi.ac.uk/files/AF-Q5VSL9-F1-model_v2.pdb"
         )
 
 
