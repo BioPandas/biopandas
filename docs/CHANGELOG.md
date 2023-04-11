@@ -4,7 +4,12 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
-### 0.5.0dev (UNRELEASED)
+### 0.5.0dev1 (11/4/2023)
+
+- Adds supprt for reading Gzipped MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
+
+
+### 0.5.0dev0 (3/4/2023)
 
 ##### Downloads
 
