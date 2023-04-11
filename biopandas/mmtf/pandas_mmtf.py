@@ -11,7 +11,7 @@ from warnings import warn
 import numpy as np
 import pandas as pd
 from looseversion import LooseVersion
-from mmtf import MMTFDecoder, MMTFEncoder, fetch, parse
+from mmtf import MMTFDecoder, MMTFEncoder, fetch, parse, parse_gzip
 
 from biopandas.constants import protein_letters_3to1_extended
 
@@ -45,7 +45,10 @@ class PandasMmtf(object):
         # self._df = value
 
     def read_mmtf(self, filename: str):
-        self.mmtf = parse(filename)
+        if filename.endswith(".gz"):
+            self.mmtf = parse_gzip(filename)
+        else:
+            self.mmtf = parse(filename)
         self.mmtf_path = filename
         df = self._mmtf_to_df(self.mmtf)
         self._df["ATOM"] = df.loc[df.record_name == "ATOM"]
@@ -496,7 +499,10 @@ def parse_mmtf(file_path: str) -> pd.DataFrame:
     :return: Dataframe of protein structure.
     :rtype: pd.DataFrame
     """
-    df = parse(file_path)
+    if file_path.endswith(".gz"):
+        df = parse_gzip(file_path)
+    else:
+        df = parse(file_path)
     return mmtf_to_df(df)
 
 
