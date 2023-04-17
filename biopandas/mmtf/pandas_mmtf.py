@@ -499,10 +499,7 @@ def parse_mmtf(file_path: str) -> pd.DataFrame:
     :return: Dataframe of protein structure.
     :rtype: pd.DataFrame
     """
-    if file_path.endswith(".gz"):
-        df = parse_gzip(file_path)
-    else:
-        df = parse(file_path)
+    df = parse_gzip(file_path) if file_path.endswith(".gz") else parse(file_path)
     return mmtf_to_df(df)
 
 
@@ -557,7 +554,7 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
         for _ in res["atomNameList"]:
             data["residue_name"].append(res["groupName"])
             data["residue_number"].append(mmtf_obj.group_id_list[idx])
-            data["chain_id"].append(mmtf_obj.chain_name_list[ch_idx])
+            data["chain_id"].append([mmtf_obj.chain_name_list[ch_idx]])
             data["model_id"].append(int(np.argwhere(np.array(model_indices)>ch_idx)[0]) + 1)
             data["record_name"].append(record)
             data["insertion"].append(mmtf_obj.ins_code_list[idx])
@@ -583,9 +580,13 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
             continue
         data[k] = [i for sublist in v for i in sublist]
 
-    return pd.DataFrame.from_dict(data).sort_values(by=["model_id", "atom_number"])
+    df = pd.DataFrame.from_dict(data).sort_values(by=["model_id", "atom_number"])
+    df.alt_loc = df.alt_loc.str.replace("\x00", "")
+    df.insertion = df.insertion.str.replace("\x00", "")
+    return df
 
 def _seq1(seq, charmap: Dict[str, str], undef_code="X"):
+    # sourcery skip: dict-assign-update-to-union
     """Convert protein sequence from three-letter to one-letter code.
     The single required input argument 'seq' should be a protein sequence
     using three-letter codes, either as a Python string or as a Seq or
@@ -668,7 +669,6 @@ def write_mmtf(df: pd.DataFrame, file_path: str):
 
     node_ids = df.model_id.astype(str) + ":" + df.chain_id + ":" + df.residue_name + ":" + df.residue_number.astype(str) + ":" + df.insertion.astype(str)
     df["residue_id"] = node_ids
-
     # Tracks values to replace them at the end
     chains_per_model = []
     groups_per_chain = []
@@ -768,7 +768,7 @@ def write_mmtf(df: pd.DataFrame, file_path: str):
                     encoder.set_atom_info(
                         atom_name=row.atom_name,
                         serial_number=row.atom_number,
-                        alternative_location_id="\x00" if row.alt_loc == " " else row.alt_loc,
+                        alternative_location_id="\x00" if row.alt_loc == "" else row.alt_loc,
                         x=row.x_coord,
                         y=row.y_coord,
                         z=row.z_coord,
