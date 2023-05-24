@@ -42,7 +42,7 @@ class PandasPdb(object):
     pdb_text : str
         PDB file contents in raw text format.
 
-    pdb_path : str
+    pdb_path : Union[str, os.PathLike]
         Location of the PDB file that was read in via `read_pdb`
         or URL of the page where the PDB content was fetched from
         if `fetch_pdb` was called.
