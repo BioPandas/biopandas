@@ -55,7 +55,7 @@ class PandasMmcif:
 
         Attributes
         ----------
-        path : str
+        path : Union[str, os.PathLike]
             Path to the MMCIF file in .cif format or gzipped format (.cif.gz).
 
         Returns
@@ -63,7 +63,7 @@ class PandasMmcif:
         self
 
         """
-        self.mmcif_path, self.pdb_text = self._read_mmcif(path=path)
+        self.mmcif_path, self.pdb_text = self._read_mmcif(path=str(path))
         self._df = self._construct_df(text=self.pdb_text)
         # self.header, self.code = self._parse_header_code() #TODO: implement
         self.code = self.data["entry"]["id"][0].lower()
