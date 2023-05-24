@@ -39,3 +39,6 @@ def test_get_models():
     # Note: No way to preserve model ID as far as I can tell
     assert_frame_equal(df.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True), written.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True))
     assert_frame_equal(df.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True), written.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True))
+
+    # Clean
+    os.remove("test.mmtf")
