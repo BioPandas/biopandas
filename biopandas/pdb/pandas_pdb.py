@@ -91,7 +91,7 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_path, self.pdb_text = self._read_pdb(path=path)
+        self.pdb_path, self.pdb_text = self._read_pdb(path=str(path))
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         self.header, self.code = self._parse_header_code()
         return self
