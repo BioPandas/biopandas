@@ -4,9 +4,10 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
-### 0.5.0dev1 (11/4/2023)
+### 0.5.0dev1 (24/5/2023)
 
-- Adds supprt for reading Gzipped MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
+- Adds support for pathlib. (Via [Anton Bushuiev](https://github.com/anton-bushuiev), PR #[128](https://github.com/BioPandas/biopandas/pull/128))
+- Adds support for reading Gzipped MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Improves reliability of parsing polymer/non-polymer entities in MMTF parsing. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Improves reliability of parsing multicharacter chain IDs from MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Replaces null terminator chars in parsed MMTF dataframe with the empty string. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))

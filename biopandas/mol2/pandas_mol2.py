@@ -96,7 +96,7 @@ class PandasMol2(object):
 
         Attributes
         ----------
-        path : str
+        path : Union[str, os.PathLike]
             Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)
 
         columns : dict or None (default: None)
@@ -118,7 +118,7 @@ class PandasMol2(object):
         self
 
         """
-        mol2_code, mol2_lines = next(split_multimol2(path))
+        mol2_code, mol2_lines = next(split_multimol2(str(path)))
         self._load_mol2(mol2_lines, mol2_code, columns)
         self.mol2_path = path
         return self

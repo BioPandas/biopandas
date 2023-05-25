@@ -8,6 +8,7 @@
 import os
 from urllib.error import HTTPError
 from urllib.request import urlopen
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -259,6 +260,15 @@ def test_read_pdb_from_list():
         assert ppdb.pdb_text == pdb_text
         assert ppdb.code == code
         assert ppdb.mmcif_path == ""
+
+
+def test_read_pdb_with_pathlib():
+    """Test public read_pdb with pathlib.Path object as input"""
+    ppdb = PandasMmcif()
+    ppdb.read_mmcif(Path(TESTDATA_FILENAME))
+    assert ppdb.pdb_text == three_eiy
+    assert ppdb.code == "3eiy", ppdb.code
+    assert ppdb.mmcif_path == TESTDATA_FILENAME
 
 
 # Again, not sure how ANISOU are handled, so skipping
