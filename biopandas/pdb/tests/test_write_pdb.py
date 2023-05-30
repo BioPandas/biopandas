@@ -14,6 +14,9 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
     os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
 )
+TESTDATA_FILENAME3 = os.path.join(
+    os.path.dirname(__file__), "data", "5mtn_multichain.pdb"
+)
 OUTFILE = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb")
 OUTFILE_GZ = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb.gz")
 
@@ -71,3 +74,60 @@ def test_anisou():
         f1 = f.read()
     os.remove(OUTFILE)
     assert f1 == four_eiy
+
+
+def test_add_remark():
+    """Test adding a REMARK entry."""
+    # Add remark
+    code = 3
+    remark = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    n_atoms = len(ppdb.df['ATOM'])
+    ppdb.add_remark(code, remark)
+    ppdb.to_pdb(path=OUTFILE)
+
+    # Test modified file contains remarks
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    expected_substr = (
+        "REMARK   3  OTHER REFINEMENT REMARKS: HYDROGENS HAVE BEEN ADDED IN THE RIDING   \n"
+        "REMARK   3  POSITIONS                                                           \n"
+        "REMARK   3 THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80      \n"
+        "REMARK   3 CHARACTERS LONG.                                                     \n"
+        "REMARK   4                                                                      \n"
+    )
+    assert expected_substr in f1
+
+    # Test number of atoms remained the same
+    ppdb = PandasPdb()
+    ppdb.read_pdb(OUTFILE)
+    os.remove(OUTFILE)
+    assert len(ppdb.df['ATOM']) == n_atoms
+
+
+def test_introduce_remark():
+    """Test introducing a REMARK entry to the file with no remarks."""
+    # Add remark
+    code = 3
+    remark = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME3)
+    n_atoms = len(ppdb.df['ATOM'])
+    ppdb.add_remark(code, remark)
+    ppdb.to_pdb(path=OUTFILE)
+
+    # Test modified file starts with new remark
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    expected_prefix = (
+        "REMARK   3 THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80      \n"
+        "REMARK   3 CHARACTERS LONG.                                                     \n"
+    )
+    assert f1.startswith(expected_prefix)
+
+    # Test number of atoms remained the same
+    ppdb = PandasPdb()
+    ppdb.read_pdb(OUTFILE)
+    os.remove(OUTFILE)
+    assert len(ppdb.df['ATOM']) == n_atoms
