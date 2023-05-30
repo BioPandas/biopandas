@@ -281,7 +281,7 @@ class PandasPdb(object):
         record_types = list(filter(lambda x: x in self.df, ['ATOM', 'HETATM', 'ANISOU']))
         remarks = df_others[df_others['record_name'] == 'REMARK']['entry']
 
-        # Find index and row index where to insert the remark to preserve remark code order
+        # Find index and line_idx where to insert the remark to preserve remark code order
         if len(remarks):
             remark_codes = remarks.apply(lambda x: x.split(maxsplit=1)[0]).astype(int)
             insertion_idx = remark_codes.index[remark_codes.searchsorted(code, side='right')]
@@ -308,7 +308,7 @@ class PandasPdb(object):
             if not insertion_line_idx > df_records['line_idx'].max():
                 df_records['line_idx'] += len(lines)
 
-        # Put remark into data frame
+        # Put remark into 'OTHERS' data frame
         df_remark = {
             idx: ['REMARK', line, line_idx]
             for idx, line, line_idx in zip(
