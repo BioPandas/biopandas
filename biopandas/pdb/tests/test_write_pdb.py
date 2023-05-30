@@ -111,18 +111,19 @@ def test_introduce_remark():
     # Add remark
     code = 3
     remark = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    indent = 1
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME3)
     n_atoms = len(ppdb.df['ATOM'])
-    ppdb.add_remark(code, remark)
+    ppdb.add_remark(code, remark, indent)
     ppdb.to_pdb(path=OUTFILE)
 
     # Test modified file starts with new remark
     with open(OUTFILE, "r") as f:
         f1 = f.read()
     expected_prefix = (
-        "REMARK   3 THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80      \n"
-        "REMARK   3 CHARACTERS LONG.                                                     \n"
+        "REMARK   3  THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80     \n"
+        "REMARK   3  CHARACTERS LONG.                                                    \n"
     )
     assert f1.startswith(expected_prefix)
 
