@@ -253,7 +253,8 @@ class PandasPdb(object):
 
         The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
         `n` it will be added after all remarks with codes less or equal to `n`. If the object does
-        not store any remarks the remark will be the first entry in the resulting PDB file.
+        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or 
+        ANISOU records.
 
         Parameters
         ----------
@@ -272,16 +273,22 @@ class PandasPdb(object):
         Nothing
 
         """
-        # Find index and row index where to insert the remark to preserve remark code order
-        df_others = self.df['OTHERS']
+        # Prepare info from self
+        if 'OTHERS' in self.df:
+            df_others = self.df['OTHERS']
+        else:
+            df_others = pd.DataFrame(columns=['record_name', 'entry', 'line_idx'])
+        record_types = list(filter(lambda x: x in self.df, ['ATOM', 'HETATM', 'ANISOU']))
         remarks = df_others[df_others['record_name'] == 'REMARK']['entry']
+
+        # Find index and row index where to insert the remark to preserve remark code order
         if len(remarks):
             remark_codes = remarks.apply(lambda x: x.split(maxsplit=1)[0]).astype(int)
             insertion_idx = remark_codes.index[remark_codes.searchsorted(code, side='right')]
             insertion_line_idx = df_others.loc[insertion_idx]['line_idx']
         else:
             insertion_idx = 0
-            insertion_line_idx = 0
+            insertion_line_idx = min([self.df[r]['line_idx'].min() for r in record_types])
 
         # Wrap remark to fit into 80 characters per line and add indentation
         lines = textwrap.wrap(text, 80 - (11 + indent))
@@ -296,7 +303,7 @@ class PandasPdb(object):
         index[index >= insertion_idx] += len(lines)
         df_others.index = index
         # Shift all other record types that follow inserted remark
-        for records in ['ATOM', 'HETATM', 'ANISOU']:
+        for records in record_types:
             df_records = self.df[records]
             if not insertion_line_idx > df_records['line_idx'].max():
                 df_records['line_idx'] += len(lines)
