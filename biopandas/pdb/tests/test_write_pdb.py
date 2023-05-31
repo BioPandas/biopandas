@@ -80,11 +80,15 @@ def test_add_remark():
     """Test adding a REMARK entry."""
     # Add remark
     code = 3
-    remark = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    remark1 = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    remark2 = ''
+    remark3 = 'THIS IS A NEXT MULTI-LINE INDENTED REMARK\n FOLLOWING THE BLANK REMARK.'
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
     n_atoms = len(ppdb.df['ATOM'])
-    ppdb.add_remark(code, remark)
+    ppdb.add_remark(code, remark1)
+    ppdb.add_remark(code, remark2)
+    ppdb.add_remark(code, remark3, 5)
     ppdb.to_pdb(path=OUTFILE)
 
     # Test modified file contains remarks
@@ -95,6 +99,9 @@ def test_add_remark():
         "REMARK   3  POSITIONS                                                           \n"
         "REMARK   3 THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80      \n"
         "REMARK   3 CHARACTERS LONG.                                                     \n"
+        "REMARK   3                                                                      \n"
+        "REMARK   3      THIS IS A NEXT MULTI-LINE INDENTED REMARK                       \n"
+        "REMARK   3      FOLLOWING THE BLANK REMARK.                                     \n"
         "REMARK   4                                                                      \n"
     )
     assert expected_substr in f1
