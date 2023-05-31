@@ -263,7 +263,8 @@ class PandasPdb(object):
 
         text : str
             The text of the remark. If the text does not fit into a single line it will be wrapped
-            into multiple lines of REMARK entries.
+            into multiple lines of REMARK entries. Likewise, if the text contains new line 
+            characters it will be split accordingly.
         
         indent : int, default: 0
             Number of white spaces inserted before the text of the remark.
@@ -291,7 +292,8 @@ class PandasPdb(object):
             insertion_line_idx = min([self.df[r]['line_idx'].min() for r in record_types])
 
         # Wrap remark to fit into 80 characters per line and add indentation
-        lines = textwrap.wrap(text, 80 - (11 + indent))
+        wrapper = textwrap.TextWrapper(width=80 - (11 + indent))
+        lines = sum([wrapper.wrap(l.strip()) or [' '] for l in text.split('\n')], start=[])
         lines = list(map(lambda x: f'{code:4} ' +  indent*' ' + x, lines))
 
         # Shift data frame indices and row indices to create space for the remark
