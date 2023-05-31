@@ -248,7 +248,7 @@ class PandasPdb(object):
             )
         return t
     
-    def add_remark(self, code, text, indent=0):
+    def add_remark(self, code, text='', indent=0):
         """Add custom REMARK entry.
 
         The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
@@ -285,9 +285,14 @@ class PandasPdb(object):
         # Find index and line_idx where to insert the remark to preserve remark code order
         if len(remarks):
             remark_codes = remarks.apply(lambda x: x.split(maxsplit=1)[0]).astype(int)
-            insertion_idx = remark_codes.index[remark_codes.searchsorted(code, side='right')]
-            insertion_line_idx = df_others.loc[insertion_idx]['line_idx']
-        else:
+            insertion_pos = remark_codes.searchsorted(code, side='right')
+            if insertion_pos < len(remark_codes):  # Remark in the middle
+                insertion_idx = remark_codes.index[insertion_pos]
+                insertion_line_idx = df_others.loc[insertion_idx]['line_idx']
+            else:  # Last remark
+                insertion_idx = len(remark_codes)
+                insertion_line_idx = df_others['line_idx'].iloc[-1] + 1
+        else:  # First remark
             insertion_idx = 0
             insertion_line_idx = min([self.df[r]['line_idx'].min() for r in record_types])
 
