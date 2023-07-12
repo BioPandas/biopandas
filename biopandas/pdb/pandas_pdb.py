@@ -679,7 +679,7 @@ class PandasPdb(object):
 
         other_records = self.df["OTHERS"]
 
-        idxs = other_records.loc[other_records["record_name"] == "MODEL"]
+        idxs = other_records.loc[other_records["record_name"] == "MODEL"].copy()
         ends = other_records.loc[other_records["record_name"] == "ENDMDL"]
         idxs.columns = ["record_name", "model_idx", "start_idx"]
         idxs.loc[:, "end_idx"] = ends.line_idx.values
