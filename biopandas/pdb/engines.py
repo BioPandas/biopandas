@@ -116,7 +116,7 @@ pdb_atomdict = [
         "id": "b_factor",
         "line": [60, 66],
         "type": float,
-        "strf": lambda x: ("%+6.2f" % x).replace("+", " "),
+        "strf": lambda x: ("%+6.2f" % x).replace("+", " ") if len(str(int(x))) < 3 else ("%+6.2f" % x).replace("+", ""),
     },
     {"id": "blank_4", "line": [66, 72], "type": str, "strf": lambda x: "%-7s" % x},
     {"id": "segment_id", "line": [72, 76], "type": str, "strf": lambda x: "%-3s" % x},
