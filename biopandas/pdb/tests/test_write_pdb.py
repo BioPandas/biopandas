@@ -71,3 +71,14 @@ def test_anisou():
         f1 = f.read()
     os.remove(OUTFILE)
     assert f1 == four_eiy
+
+
+def test_b_factor_shift():
+    """Test b_factor shifting one white space when saving the fetched pdb."""
+    ppdb = PandasPdb()
+    ppdb.fetch_pdb("2e28")
+    ppdb.to_pdb(path=OUTFILE, records=None)
+    tmp_df = ppdb.read_pdb(path=OUTFILE).df['ATOM']
+    os.remove(OUTFILE)
+    assert tmp_df[tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == '')].empty
+    assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == '')].empty
