@@ -34,6 +34,7 @@ setup(name='biopandas',
                     },
       include_package_data=True,
       install_requires=install_reqs,
+      extras_require={'test': ['pytest', 'pytest-cov'],}
       license='BSD 3-Clause',
       platforms='any',
       classifiers=[
