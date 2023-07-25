@@ -611,7 +611,7 @@ class PandasPdb(object):
         dfs = {r: self.df[r].copy() for r in records if not self.df[r].empty}
 
         # Drop unexpected columns
-        dfs = {k: v[[pdb_df_columns]] for k, v in dfs.items() if k in {"ATOM", "HETATM"}}
+        dfs = {k: v[list(pdb_df_columns)] for k, v in dfs.items() if k in {"ATOM", "HETATM"}}
 
         for r in dfs:
             for col in pdb_records[r]:
