@@ -612,7 +612,7 @@ class PandasPdb(object):
 
         # Drop unexpected columns
         for k, v in dfs.items():
-            if k in {"ATOM", "HETATM"}}:
+            if k in {"ATOM", "HETATM"}:
                 overlap_columns = set(pdb_df_columns).intersection(set(df.columns))
                 dfs[k] = v[list(overlap_columns)]
 
