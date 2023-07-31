@@ -6,6 +6,7 @@ The CHANGELOG for the current development version is available at
 
 ### 0.5.0dev1 (24/5/2023)
 
+- B_factor shifting one white space issue fix. (Via [Zehra Sarica](https://github.com/zehraacarsarica), PR #[134](https://github.com/BioPandas/biopandas/pull/134))
 - Adds support for pathlib. (Via [Anton Bushuiev](https://github.com/anton-bushuiev), PR #[128](https://github.com/BioPandas/biopandas/pull/128))
 - Adds support for reading Gzipped MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Improves reliability of parsing polymer/non-polymer entities in MMTF parsing. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
