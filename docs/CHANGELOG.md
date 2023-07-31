@@ -4,8 +4,8 @@ The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
 
-### 0.5.0dev1 (24/5/2023)
-
+### 0.5.0dev1 (31/7/2023)
+- Implement add_remark for PandasPdb, (Via [Anton Bushuiev](https://github.com/anton-bushuiev) PR #[129](https://github.com/BioPandas/biopandas/pull/129))
 - B_factor shifting one white space issue fix. (Via [Zehra Sarica](https://github.com/zehraacarsarica), PR #[134](https://github.com/BioPandas/biopandas/pull/134))
 - Adds support for pathlib. (Via [Anton Bushuiev](https://github.com/anton-bushuiev), PR #[128](https://github.com/BioPandas/biopandas/pull/128))
 - Adds support for reading Gzipped MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
