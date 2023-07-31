@@ -638,6 +638,11 @@ class PandasPdb(object):
                 else:
                     dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
 
+        if "line_idx" in dfs.columns:
+                sort_column = "line_idx"
+            else:
+                sort_column = "atom_number"
+
         if pd_version < LooseVersion("0.17.0"):
             warn(
                 "You are using an old pandas version (< 0.17)"
@@ -646,7 +651,7 @@ class PandasPdb(object):
                 " installation to a more recent version.",
                 DeprecationWarning,
             )
-            dfs.sort(columns="line_idx", inplace=True)
+            dfs.sort(columns=sort_column, inplace=True)
 
         elif pd_version < LooseVersion("0.23.0"):
             df = pd.concat(dfs)
@@ -654,7 +659,7 @@ class PandasPdb(object):
         else:
             df = pd.concat(dfs, sort=False)
 
-        df.sort_values(by="line_idx", inplace=True)
+        df.sort_values(by=sort_column, inplace=True)
 
         with openf(path, w_mode) as f:
 
