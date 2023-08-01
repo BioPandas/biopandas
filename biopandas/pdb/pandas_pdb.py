@@ -10,6 +10,7 @@ from __future__ import annotations
 import gzip
 import sys
 import warnings
+import textwrap
 from copy import deepcopy
 from io import StringIO
 from typing import List, Optional
@@ -42,7 +43,7 @@ class PandasPdb(object):
     pdb_text : str
         PDB file contents in raw text format.
 
-    pdb_path : str
+    pdb_path : Union[str, os.PathLike]
         Location of the PDB file that was read in via `read_pdb`
         or URL of the page where the PDB content was fetched from
         if `fetch_pdb` was called.
@@ -91,7 +92,7 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_path, self.pdb_text = self._read_pdb(path=path)
+        self.pdb_path, self.pdb_text = self._read_pdb(path=str(path))
         self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         self.header, self.code = self._parse_header_code()
         return self
@@ -225,7 +226,7 @@ class PandasPdb(object):
             Coordinate sections for which the element symbols should be
             imputed.
 
-        inplace : bool, (default: False
+        inplace : bool, default: False
             Performs the operation in-place if True and returns a copy of the
             PDB DataFrame otherwise.
 
@@ -246,6 +247,85 @@ class PandasPdb(object):
                 lambda x: x[0][1] if len(x[1]) == 3 else x[0][0], axis=1
             )
         return t
+    
+    def add_remark(self, code, text='', indent=0):
+        """Add custom REMARK entry.
+
+        The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
+        `n` it will be added after all remarks with codes less or equal to `n`. If the object does
+        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or 
+        ANISOU records.
+
+        Parameters
+        ----------
+        code : int
+            REMARK code according to PDB standards.
+
+        text : str
+            The text of the remark. If the text does not fit into a single line it will be wrapped
+            into multiple lines of REMARK entries. Likewise, if the text contains new line 
+            characters it will be split accordingly.
+        
+        indent : int, default: 0
+            Number of white spaces inserted before the text of the remark.
+
+        Returns
+        ---------
+        Nothing
+
+        """
+        # Prepare info from self
+        if 'OTHERS' in self.df:
+            df_others = self.df['OTHERS']
+        else:
+            df_others = pd.DataFrame(columns=['record_name', 'entry', 'line_idx'])
+        record_types = list(filter(lambda x: x in self.df, ['ATOM', 'HETATM', 'ANISOU']))
+        remarks = df_others[df_others['record_name'] == 'REMARK']['entry']
+
+        # Find index and line_idx where to insert the remark to preserve remark code order
+        if len(remarks):
+            remark_codes = remarks.apply(lambda x: x.split(maxsplit=1)[0]).astype(int)
+            insertion_pos = remark_codes.searchsorted(code, side='right')
+            if insertion_pos < len(remark_codes):  # Remark in the middle
+                insertion_idx = remark_codes.index[insertion_pos]
+                insertion_line_idx = df_others.loc[insertion_idx]['line_idx']
+            else:  # Last remark
+                insertion_idx = len(remark_codes)
+                insertion_line_idx = df_others['line_idx'].iloc[-1] + 1
+        else:  # First remark
+            insertion_idx = 0
+            insertion_line_idx = min([self.df[r]['line_idx'].min() for r in record_types])
+
+        # Wrap remark to fit into 80 characters per line and add indentation
+        wrapper = textwrap.TextWrapper(width=80 - (11 + indent))
+        lines = sum([wrapper.wrap(l.strip()) or [' '] for l in text.split('\n')], [])
+        lines = list(map(lambda x: f'{code:4} ' +  indent*' ' + x, lines))
+
+        # Shift data frame indices and row indices to create space for the remark
+        # Create space in OTHERS
+        line_idx = df_others['line_idx'].copy()
+        line_idx[line_idx >= insertion_line_idx] += len(lines)
+        df_others['line_idx'] = line_idx
+        index = pd.Series(df_others.index.copy())
+        index[index >= insertion_idx] += len(lines)
+        df_others.index = index
+        # Shift all other record types that follow inserted remark
+        for records in record_types:
+            df_records = self.df[records]
+            if not insertion_line_idx > df_records['line_idx'].max():
+                df_records['line_idx'] += len(lines)
+
+        # Put remark into 'OTHERS' data frame
+        df_remark = {
+            idx: ['REMARK', line, line_idx]
+            for idx, line, line_idx in zip(
+                range(insertion_idx, insertion_idx + len(lines)),
+                lines,
+                range(insertion_line_idx, insertion_line_idx + len(lines)),
+            )
+        }
+        df_remark = pd.DataFrame.from_dict(df_remark, orient='index', columns=df_others.columns)
+        self.df['OTHERS'] = pd.concat([df_others, df_remark]).sort_index()
 
     @staticmethod
     def rmsd(df1, df2, s=None, invert=False, decimals=4):
@@ -668,7 +748,7 @@ class PandasPdb(object):
 
         other_records = self.df["OTHERS"]
 
-        idxs = other_records.loc[other_records["record_name"] == "MODEL"]
+        idxs = other_records.loc[other_records["record_name"] == "MODEL"].copy()
         ends = other_records.loc[other_records["record_name"] == "ENDMDL"]
         idxs.columns = ["record_name", "model_idx", "start_idx"]
         idxs.loc[:, "end_idx"] = ends.line_idx.values

@@ -1,6 +1,7 @@
 """Class for working with MMTF files."""
 from __future__ import annotations
 
+import os
 import copy
 import gzip
 import warnings
@@ -44,7 +45,8 @@ class PandasMmtf(object):
         )
         # self._df = value
 
-    def read_mmtf(self, filename: str):
+    def read_mmtf(self, filename: Union[str, os.PathLike]):
+        filename = str(filename)
         if filename.endswith(".gz"):
             self.mmtf = parse_gzip(filename)
         else:
