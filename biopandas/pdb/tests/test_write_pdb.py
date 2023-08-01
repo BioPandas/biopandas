@@ -71,3 +71,14 @@ def test_anisou():
         f1 = f.read()
     os.remove(OUTFILE)
     assert f1 == four_eiy
+
+def test_write_with_model_id():
+    """Test writing a dataframe with a model ID column added."""
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    df.label_models()
+    ppdb.to_pdb(path=OUTFILE, records=None)
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    asser f1 == f2
