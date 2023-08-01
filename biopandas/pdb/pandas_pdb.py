@@ -610,12 +610,6 @@ class PandasPdb(object):
 
         dfs = {r: self.df[r].copy() for r in records if not self.df[r].empty}
 
-        # Drop unexpected columns
-        for k, v in dfs.items():
-            if k in {"ATOM", "HETATM"}:
-                overlap_columns = set(pdb_df_columns).intersection(set(v.columns))
-                dfs[k] = v[list(overlap_columns)]
-
         for r in dfs:
             for col in pdb_records[r]:
                 dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
@@ -628,7 +622,7 @@ class PandasPdb(object):
                     for idx in range(dfs[r][c].values.shape[0]):
                         if len(dfs[r][c].values[idx]) > 8:
                             dfs[r][c].values[idx] = str(dfs[r][c].values[idx]).strip()
-                if c in {"line_idx", "OUT"}:
+                if c in {"line_idx", "OUT", "model_id"}:
                     pass
                 elif r in {"ATOM", "HETATM"} and c not in pdb_df_columns:
                     warn(
@@ -643,12 +637,7 @@ class PandasPdb(object):
         else:
             df = pd.concat(dfs, sort=False)
 
-        if "line_idx" in df.columns:
-            sort_column = "line_idx"
-        else:
-            sort_column = "atom_number"
-
-        df.sort_values(by=sort_column, inplace=True)
+        df.sort_values(by="line_idx", inplace=True)
 
         with openf(path, w_mode) as f:
 
