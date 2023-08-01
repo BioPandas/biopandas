@@ -638,13 +638,12 @@ class PandasPdb(object):
                 else:
                     dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
 
-        
         if pd_version < LooseVersion("0.23.0"):
             df = pd.concat(dfs)
         else:
             df = pd.concat(dfs, sort=False)
 
-        if "line_idx" in dfs.columns:
+        if "line_idx" in df.columns:
             sort_column = "line_idx"
         else:
             sort_column = "atom_number"
