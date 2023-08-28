@@ -541,6 +541,8 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
         for chain in i["chainIndexList"]:
             entity_types[chain] = i["type"]
 
+    ch_idx_iter = iter(sorted(list(entity_types.keys())))
+    ch_idx = next(ch_idx_iter)
     for idx, i in enumerate(mmtf_obj.group_type_list):
         res = mmtf_obj.group_list[i]
         #record = "HETATM" if res["chemCompType"] == "NON-POLYMER" else "ATOM"
@@ -550,12 +552,14 @@ def mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
         #    else "HETATM"
         #)
         if idx == chain_indices[ch_idx]:
-            ch_idx += 1
+            #ch_idx += 1
+            ch_idx = next(ch_idx_iter)
         record = "ATOM" if entity_types[ch_idx] == "polymer" else "HETATM"
 
         for _ in res["atomNameList"]:
             data["residue_name"].append(res["groupName"])
             data["residue_number"].append(mmtf_obj.group_id_list[idx])
+            #data["chain_id"].append([mmtf_obj.chain_name_list[ch_idx]])
             data["chain_id"].append([mmtf_obj.chain_name_list[ch_idx]])
             data["model_id"].append(int(np.argwhere(np.array(model_indices)>ch_idx)[0]) + 1)
             data["record_name"].append(record)
