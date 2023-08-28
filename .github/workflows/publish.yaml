@@ -4,11 +4,51 @@
 name: Publish BioPandas to PyPI / GitHub
 
 on:
-  push:
-    tags:
-      - "v*"
+  pull_request:
+    branches: [ main ]
+
 jobs:
+  test-style:
+    name: Run style tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        cache: 'pip'
+
+    - name: Install package dependencies for testing
+      run: pip install [test]
+
+    - name: Run all the pytest tests
+      run: flake8 ./biopandas
+
+  test-pytest:
+    name: Run pytest tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        cache: 'pip'
+
+    - name: Install package dependencies for testing
+      run: pip install .[test]
+
+    - name: Run all the pytest tests
+      run: pytest ./biopandas -sv
+
   build-n-publish:
+    needs: [test-pytest,test-style] # only runs if tests are passing
+    if: startsWith(github.ref, 'refs/tags/v')  # Check if the tag starts with 'v'
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
 
@@ -41,7 +81,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           draft: false
-          prerelease: false
+          prerelease: true
 
       - name: Get Asset name
         run: |
