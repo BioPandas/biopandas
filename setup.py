@@ -54,7 +54,7 @@ setup(name='biopandas',
       ],
       long_description_content_type='text/markdown',
       long_description="""
-Biopandas is a python package for working with molecular structures
+Biopandas is a Python package for working with molecular structures
 in pandas DataFrames.
 
 
