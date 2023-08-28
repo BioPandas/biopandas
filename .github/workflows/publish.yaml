@@ -22,7 +22,7 @@ jobs:
         cache: 'pip'
 
     - name: Install package dependencies for testing
-      run: pip install [test]
+      run: pip install .[test]
 
     - name: Run all the pytest tests
       run: flake8 ./biopandas
