@@ -34,7 +34,7 @@ setup(name='biopandas',
                     },
       include_package_data=True,
       install_requires=install_reqs,
-      extras_require={'test': ['pytest', 'pytest-cov','flake8'],},
+      extras_require={'test': ['pytest', 'pytest-cov','flake8', 'nose'],},
       license='BSD 3-Clause',
       platforms='any',
       classifiers=[
@@ -54,7 +54,7 @@ setup(name='biopandas',
       ],
       long_description_content_type='text/markdown',
       long_description="""
-Biopandas is a python package for working with molecular structures
+Biopandas is a Python package for working with molecular structures
 in pandas DataFrames.
 
 
