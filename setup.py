@@ -51,6 +51,7 @@ setup(name='biopandas',
              'Programming Language :: Python :: 3.9',
              'Topic :: Scientific/Engineering',
       ],
+      long_description_content_type='text/markdown',
       long_description="""
 Biopandas is a python package for working with molecular structures
 in pandas DataFrames.
@@ -68,4 +69,5 @@ This project is hosted at https://github.com/rasbt/biopandas
 
 The documentation can be found at http://rasbt.github.io/biopandas/
 
-""")
+"""
+)
