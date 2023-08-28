@@ -47,7 +47,7 @@ jobs:
       run: pytest ./biopandas -sv
 
   build-n-publish:
-    needs: [test-pytest,test-style] # only runs if tests are passing
+    needs: [test-pytest] # only runs if tests are passing
     if: startsWith(github.ref, 'refs/tags/v')  # Check if the tag starts with 'v'
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
