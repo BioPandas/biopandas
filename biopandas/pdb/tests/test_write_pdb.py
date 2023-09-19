@@ -75,6 +75,18 @@ def test_anisou():
     os.remove(OUTFILE)
     assert f1 == four_eiy
 
+    
+def test_write_with_model_id():
+    """Test writing a dataframe with a model ID column added."""
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    df.label_models()
+    ppdb.to_pdb(path=OUTFILE, records=None)
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    assert f1 == f2
+
 
 def test_add_remark():
     """Test adding a REMARK entry."""
@@ -150,4 +162,3 @@ def test_b_factor_shift():
     os.remove(OUTFILE)
     assert tmp_df[tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == '')].empty
     assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == '')].empty
-

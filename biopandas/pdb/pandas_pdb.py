@@ -702,7 +702,7 @@ class PandasPdb(object):
                     for idx in range(dfs[r][c].values.shape[0]):
                         if len(dfs[r][c].values[idx]) > 8:
                             dfs[r][c].values[idx] = str(dfs[r][c].values[idx]).strip()
-                if c in {"line_idx", "OUT"}:
+                if c in {"line_idx", "OUT", "model_id"}:
                     pass
                 elif r in {"ATOM", "HETATM"} and c not in pdb_df_columns:
                     warn(
@@ -712,19 +712,8 @@ class PandasPdb(object):
                 else:
                     dfs[r]["OUT"] = dfs[r]["OUT"] + dfs[r][c]
 
-        if pd_version < LooseVersion("0.17.0"):
-            warn(
-                "You are using an old pandas version (< 0.17)"
-                " that relies on the old sorting syntax."
-                " Please consider updating your pandas"
-                " installation to a more recent version.",
-                DeprecationWarning,
-            )
-            dfs.sort(columns="line_idx", inplace=True)
-
-        elif pd_version < LooseVersion("0.23.0"):
+        if pd_version < LooseVersion("0.23.0"):
             df = pd.concat(dfs)
-
         else:
             df = pd.concat(dfs, sort=False)
 
