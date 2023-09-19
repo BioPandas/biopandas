@@ -17,6 +17,7 @@ def test_read_mol2():
 
     data_path_1 = os.path.join(this_dir, "data", "40_mol2_files.mol2")
     data_path_2 = os.path.join(this_dir, "data", "40_mol2_files.mol2.gz")
+    data_path_3 = os.path.join(this_dir, "data", "empty_line.mol2")
 
     for data_path in (data_path_1, data_path_2):
         pdmol = PandasMol2().read_mol2(data_path)
@@ -37,6 +38,9 @@ def test_read_mol2():
         assert expect == list(pdmol.df.columns)
         assert len(pdmol.mol2_text) == 6469
         assert pdmol.mol2_path == data_path
+
+    pdmol = PandasMol2().read_mol2(data_path_3)
+    assert pdmol.df.shape == (59, 9)
 
 
 def test_read_mol2_from_list():

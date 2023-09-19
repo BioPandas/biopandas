@@ -180,7 +180,7 @@ class PandasMol2(object):
             if s.startswith("@<TRIPOS>ATOM"):
                 first_idx = idx + 1
                 started = True
-            elif started and s.startswith("@<TRIPOS>"):
+            elif started and (s.startswith("@<TRIPOS>") or not s.strip()):
                 last_idx_plus1 = idx
                 break
         if first_idx is None:
