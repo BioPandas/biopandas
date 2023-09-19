@@ -1,4 +1,5 @@
 # Release Notes ![](img/logos/3eiy_120.png)
+-   Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
 
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
