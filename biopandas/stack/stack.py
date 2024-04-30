@@ -19,7 +19,7 @@ class PandasPdbStack:
     def __init__(self):
         self.pdbs = {}
 
-    def add_pdb(self, source: Union[str, Dict[str, List[str]]], method='auto', key=None):
+    def add_pdb(self, source: Union[str, Dict[str, List[str]]], key=None):
         """Adds a single PDB to the stack with automatic or explicit keying.
         :param source: a string which defines a filename, a PDB or UniProt ID or a dictionary with lists of strings.
         :param method: a method to process the source. Auto will automatically determine the source type and processes accordingly.
@@ -28,36 +28,28 @@ class PandasPdbStack:
         """
         if isinstance(source, str):
             # Construct the key from the filename (strip directory and extension)
-            if method == 'auto':
-                if source.endswith(('.pdb', '.ent', '.pdb.gz', '.ent.gz')):
-                    if os.path.exists(source):
-                        self.read_pdb(source, key=key)
-                    else:
-                        raise FileNotFoundError(f"File {source} not found.")
-                elif source.endswith(('.cif', 'cif.gz')):
-                    if os.path.exists(source):
-                        self.read_mmcif(source, key=key)
-                    else:
-                        raise FileNotFoundError(f"File {source} not found.")
-                elif 'ATOM' in source or 'HETATM' in source:
-                    self.read_pdb_from_list(source, key)
-                elif len(source) in [4, 8] and source.isalnum():  # Simplistic check for PDB ID, also handles new format
-                    self.fetch_pdb(key, pdb_id=source)
-                elif len(source) in [6, 10] and source.isalnum():
-                    self.fetch_pdb(key, uniprot_id=source)
+            if source.endswith(('.pdb', '.ent', '.pdb.gz', '.ent.gz')):
+                if os.path.exists(source):
+                    self.read_pdb(source, key=key)
                 else:
-                    raise ValueError("Unrecognized file format or PDB or UniProt ID.")
-            elif method in ['read_pdb', 'fetch_pdb']:
-                getattr(self, method)(source, key)
+                    raise FileNotFoundError(f"File {source} not found.")
+            elif source.endswith(('.cif', 'cif.gz')):
+                if os.path.exists(source):
+                    self.read_mmcif(source, key=key)
+                else:
+                    raise FileNotFoundError(f"File {source} not found.")
+            elif 'ATOM' in source or 'HETATM' in source:
+                self.read_pdb_from_list(source, key)
+            elif len(source) in [4, 8] and source.isalnum():  # Simplistic check for PDB ID, also handles new format
+                self.fetch_pdb(key, pdb_id=source)
+            elif len(source) in [6, 10] and source.isalnum():
+                self.fetch_pdb(key, uniprot_id=source)
             else:
-                raise ValueError(f"Unsupported method: {method}.")
-        elif isinstance(source, list):
-            # Expecting {key: list_of_lines}
-            self.read_pdb_from_list(source, key)
+                raise ValueError("Unrecognized file format or PDB or UniProt ID.")
         else:
             raise TypeError("Source must be a string or a dictionary with lists of strings.")
 
-    def add_pdbs(self, sources: List[Union[str, List[str], Dict[str, List[str]]]], method='auto'):
+    def add_pdbs(self, sources: List[Union[str, List[str], Dict[str, List[str]]]]):
         """Adds multiple PDBs to the BioPandas collection from a list of sources.
         :param sources: a list of multiple PDB files or PDB/UniProt ID-s, that needs to be processed the input types can be mixed.
         :param method: a method to process the sources.
@@ -66,7 +58,7 @@ class PandasPdbStack:
         """
         if not isinstance(sources, dict):
             for source in sources:
-                self.add_pdb(source, method)
+                self.add_pdb(source)
         else:
             for key, source in sources.items():
                 self.add_pdb(source, key=key)
@@ -187,5 +179,8 @@ class PandasPdbStack:
 
         :return: None
         """
+        if not os.path.exists(outdir):
+            os.makedirs(outdir, exist_ok=True)
+
         for key, pdb in self.pdbs.items():
             pdb.to_pdb(os.path.join(outdir, f"{key}.pdb"))

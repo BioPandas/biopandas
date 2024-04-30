@@ -9,6 +9,7 @@ import os
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 
+# Helper functions for testing
 def filter_by_chain(pdb, chain):
     # Example function for applying filtering
     pdb.df['ATOM'] = pdb.df['ATOM'].query('chain_id==@chain')

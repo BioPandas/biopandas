@@ -5,6 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 from biopandas.stack.stack import PandasPdbStack
+from nose.tools import assert_raises
 import os
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
@@ -44,6 +45,7 @@ def test_add_pdb_gz():
 def test_add_multiple_pdbs():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME_AF2_V4, TESTDATA_FILENAME_AF2_V3])
+    print(stack.pdbs)
     assert len(stack.pdbs.keys()) == 3
     assert '3eiy' in stack.pdbs
     assert 'AF-Q5VSL9-F1-model_v4' in stack.pdbs
@@ -114,3 +116,27 @@ def test_add_to_key():
     assert len(stack.pdbs.keys()) == 2
     assert '3eiy' in stack.pdbs
     assert '1ycr' in stack.pdbs
+
+def test_add_pdb_nonexistent():
+    stack = PandasPdbStack()
+    assert_raises(FileNotFoundError, stack.add_pdb, 'nonexistent.pdb')
+
+def test_add_mmcifnonexistent():
+    stack = PandasPdbStack()
+    assert_raises(FileNotFoundError, stack.add_pdbs, ['nonexistent.cif'])
+
+def test_add_random_id ():
+    stack = PandasPdbStack()
+    assert_raises(ValueError, stack.add_pdb, 'AGDHK')
+
+def test_wrong_input():
+    stack = PandasPdbStack()
+    assert_raises(TypeError, stack.add_pdb, 1234)
+
+def test_fetch_pdb_uniprot_id():
+    stack = PandasPdbStack()
+    assert_raises(ValueError, stack.fetch_pdb, uniprot_id='Q5VSL9', pdb_id='1YCR')
+
+def test_fetch_no_id():
+    stack = PandasPdbStack()
+    assert_raises(ValueError, stack.fetch_pdb)

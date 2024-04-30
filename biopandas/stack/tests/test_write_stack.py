@@ -37,3 +37,24 @@ def test_write_pdb():
         assert f1 == f2
 
         os.remove(outfile)
+
+def test_write_pdb_no_dir_exists():
+    stack = PandasPdbStack()
+    stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME2,
+                   TESTDATA_FILENAME_AF2_V4])
+    stack.write_entries("test_dir")
+
+    for key, pdb in stack.pdbs.items():
+        outfile = f'test_dir/{key}.pdb'
+        infile = f'data/{key}.pdb'
+        assert os.path.exists(f'test_dir/{key}.pdb')
+        print(infile, outfile)
+        with open(infile, "r") as f:
+            f1 = f.read().replace('\r\n', '\n').rstrip('\n')
+        with open(outfile, "r") as f:
+            f2 = f.read().replace('\r\n', '\n').rstrip('\n')
+        assert f1 == f2
+
+        os.remove(outfile)
+
+    os.rmdir("test_dir")
