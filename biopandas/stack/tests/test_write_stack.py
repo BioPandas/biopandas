@@ -4,7 +4,7 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.stack.stack import PandasPdbStack
+from biopandas.stack import PandasPdbStack
 import os
 import difflib
 
