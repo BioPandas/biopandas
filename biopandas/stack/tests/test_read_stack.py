@@ -45,7 +45,6 @@ def test_add_pdb_gz():
 def test_add_multiple_pdbs():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME_AF2_V4, TESTDATA_FILENAME_AF2_V3])
-    print(stack.pdbs)
     assert len(stack.pdbs.keys()) == 3
     assert '3eiy' in stack.pdbs
     assert 'AF-Q5VSL9-F1-model_v4' in stack.pdbs

@@ -6,16 +6,24 @@
 
 from biopandas.stack.stack import PandasPdbStack
 import os
+from nose.tools import assert_raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 
+TESTDATA_FILENAME3 = os.path.join(
+    os.path.dirname(__file__), "data", "1ycr.pdb"
+)
+TESTDATA_FILENAME4 = os.path.join(
+    os.path.dirname(__file__), "data", "2d7t.pdb"
+)
+
 # Helper functions for testing
-def filter_by_chain(pdb, chain):
+def filter_by_chain(key, pdb, chain):
     # Example function for applying filtering
     pdb.df['ATOM'] = pdb.df['ATOM'].query('chain_id==@chain')
     return pdb
 
-def calculate_chain_lengths(pdb):
+def calculate_chain_lengths(key, pdb):
     # Assuming `pdb` is a PandasPdb object
     lengths = {}
     for ch in pdb.df['ATOM']['chain_id'].unique():
@@ -80,3 +88,30 @@ def test_update_entry_nonexistent():
     assert len(stack.pdbs) == 4
     assert '1YCR' in stack.pdbs
     assert '1A2B' in stack.pdbs
+
+def test_tmalign_inside_multiple_chains():
+    ppdb_stack = PandasPdbStack()
+    ppdb_stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME3, TESTDATA_FILENAME4])
+
+    assert_raises(ValueError, ppdb_stack.tmalign_inside)
+
+
+def filter_by_chains(key, pdb, chains):
+    # Example function for applying filtering
+    chain = chains[key]
+    pdb.df['ATOM'] = pdb.df['ATOM'].query('chain_id==@chain')
+    return pdb
+def test_tmalign_inside_multiple_chains():
+    stack = PandasPdbStack()
+    stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME3, TESTDATA_FILENAME4])
+    stack.add_pdb(TESTDATA_FILENAME3, '1ycr_copy')
+
+    args = {'chains': {'1ycr': 'A', '2d7t': 'H', '3eiy': 'A', '1ycr_copy': 'A'}}
+    filtered_stack = stack.apply_filter(filter_by_chains, keep_null=False, **args)
+    chains_lens_filtered = filtered_stack.apply_calculation(calculate_chain_lengths)
+    assert len(filtered_stack.pdbs) == 4
+    transformed_structures, tm_scores = filtered_stack.tmalign_inside()
+
+    assert tm_scores['3eiy'] == 0.37341
+    assert tm_scores['2d7t'] == 0.33733
+    assert tm_scores['1ycr_copy'] == 1

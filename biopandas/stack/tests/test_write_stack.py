@@ -29,7 +29,6 @@ def test_write_pdb():
     for key, pdb in stack.pdbs.items():
         outfile = os.path.join(base_dir, f'{key}.pdb')
         infile = os.path.join(base_dir, 'data', f'{key}.pdb')
-        print(infile, outfile)
         assert os.path.exists(outfile)
         with open(infile, "r") as f:
             f1 = f.read().replace('\r\n', '\n').rstrip('\n')

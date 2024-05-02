@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from biopandas.pdb import PandasPdb
 from biopandas.mmcif import PandasMmcif
-import gzip
+from biopandas.align import TMAlign
 from typing import List, Union, Dict, Callable
 import os
 from copy import deepcopy
@@ -121,24 +121,24 @@ class PandasPdbStack:
         pdb.read_pdb_from_list(pdb_lines)
         self.pdbs[key] = pdb
 
-    def apply_filter(self, filter_func: Callable[[PandasPdb], PandasPdb], keep_null=True, **kwargs):
+    def apply_filter(self, filter_func: Callable, keep_null=True, **kwargs):
         """Applies a filter across all PDBs in the stack and returns a new stack with the filtered PDBs.
+        Mandatory inputs for the filter function are the key and the PandasPdb object.
         :param filter_func: a function that processes a pandaspdb objects and returns a modified pandaspdb object.
         :param keep_null: a boolean to modify whether to keep empty structures.
 
         :return: a new stack with the filtered PDBs.
         """
-        arguments = kwargs
         new_stack = PandasPdbStack()
         for key, pdb in self.pdbs.items():
             # Apply the filter function which should return a modified PandasPdb object, not just a DataFrame
             new_pdb = deepcopy(pdb)
-            filtered_pdb = filter_func(new_pdb, **arguments)  # Ensure that filter_func modifies and returns the entire PandasPdb object
+            filtered_pdb = filter_func(key=key, pdb=new_pdb, **kwargs)  # Ensure that filter_func modifies and returns the entire PandasPdb object
             if keep_null or len(filtered_pdb.df['ATOM']) > 0:
                 new_stack.pdbs[key] = filtered_pdb
         return new_stack
 
-    def apply_calculation(self, calculation_func: Callable[[PandasPdb], PandasPdb]):
+    def apply_calculation(self, calculation_func: Callable):
         """Applies a calculation across all PDBs in the stack and returns a dictionary with the calculated values.
         :param calculation_func: a function that processes a pandaspdb objects and returns objects (values, arrays or dictionaries, etc.)
 
@@ -147,7 +147,7 @@ class PandasPdbStack:
         dict_of_values = {}
         for key, pdb in self.pdbs.items():
             # Apply the calculation function which should return a modified PandasPdb object, not just a DataFrame
-            value = calculation_func(pdb) # Ensure that calculation_func modifies and returns the entire PandasPdb object
+            value = calculation_func(key, pdb) # Ensure that calculation_func modifies and returns the entire PandasPdb object
             dict_of_values[key] = value
         return dict_of_values
 
@@ -184,3 +184,30 @@ class PandasPdbStack:
 
         for key, pdb in self.pdbs.items():
             pdb.to_pdb(os.path.join(outdir, f"{key}.pdb"))
+
+    def tmalign_inside(self):
+      """For doing TMalign inside a stack, with one of its entries
+      :param pdbs: PandasPdbStack with the structures to align. All of them must have only one chain!
+
+      :return: matrix_file_path, tm_score
+      """
+
+      # verify that no structure has more than one chain
+      for pdb in self.pdbs.values():
+          if pdb.df['ATOM']['chain_id'].nunique() > 1:
+              raise ValueError("All structures must have only one chain!")
+
+      # get one structure from the stack - this will be the target. sort by alphabet
+      target_pdb_id = sorted(self.pdbs.keys())[0]
+
+      target_pdb = self.pdbs[target_pdb_id]
+      target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
+
+      mobile_pdbs = PandasPdbStack()
+      mobile_pdbs.pdbs = {pdb_id: pdb for pdb_id, pdb in self.pdbs.items() if pdb_id != target_pdb_id}
+
+      # get all the chain ID-s in a dictionary
+      mobile_chains = {pdb_id: pdb.df['ATOM']['chain_id'].unique()[0] for pdb_id, pdb in self.pdbs.items()}
+      print(mobile_pdbs, target_chain_id, mobile_chains)
+      tmalign = TMAlign()
+      return tmalign.tmalign_to(target_pdb, mobile_pdbs, target_chain_id, mobile_chains)
