@@ -110,7 +110,7 @@ def test_process_structure_for_tmalign_not_perfect():
 
     assert tm_score == 0.07349
 
-def test_tmalign_too_stack_chains_exist():
+def test_tmalign_to_stack_chains_exist():
     tmalign = TMAlign()
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
@@ -125,7 +125,7 @@ def test_tmalign_too_stack_chains_exist():
     assert tm_scores['2d7t'] == 0.24401
     assert tm_scores['3eiy'] == 1
 
-def test_tmalign_too_stack_chains_missing():
+def test_tmalign_to_stack_chains_missing():
     tmalign = TMAlign()
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
@@ -135,7 +135,7 @@ def test_tmalign_too_stack_chains_missing():
 
     assert_raises(ValueError, tmalign.tmalign_to, ppdb, ppdb_stack, 'A', {'2jyf': 'A', '2d7t': 'H'})
 
-def test_tmalign_too_stack_chains_not_exist():
+def test_tmalign_to_stack_chains_not_exist():
     tmalign = TMAlign()
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
