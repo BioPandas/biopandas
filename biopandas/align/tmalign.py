@@ -93,7 +93,7 @@ class TMAlign(Align):
                 mobile_atoms = self.filter_and_validate_chain(mobiles, mobile_chains)
                 transformed_mobile, tm_score = self.process_structure_for_tmalign(target_file, mobile_atoms)
                 return transformed_mobile, tm_score
-            elif type(mobiles).__qualname__  is 'PandasPdbStack':
+            elif type(mobiles).__qualname__ == 'PandasPdbStack':
                 for key, pdb in mobiles.pdbs.items():
                     selected_chain = mobile_chains[key] if isinstance(mobile_chains, dict) and key in mobile_chains else mobile_chains
                     mobile_atoms = self.filter_and_validate_chain(pdb, selected_chain)
