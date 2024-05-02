@@ -3,7 +3,6 @@ import subprocess
 import numpy as np
 from copy import deepcopy
 from biopandas.pdb import PandasPdb
-from biopandas.stack.stack import PandasPdbStack
 from biopandas.align.align import Align
 import os
 
