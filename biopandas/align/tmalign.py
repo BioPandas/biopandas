@@ -76,7 +76,7 @@ class TMAlign(Align):
         return transformed_mobile, tm_score
 
 
-    def tmalign_to(self, target, mobiles, target_chain, mobile_chains):
+    def tmalign_to(self, target:PandasPdb, mobiles: PandasPdb, target_chain: str, mobile_chains: [str, dict]):
         """Run TMalign and transform the mobile structure(s) while extracting TM-scores, specifying chains to align.
         :param target: the target structure to align to, a PandasPdb object.
         :param mobiles: the structure(s) to align, either a PandasPdb object or a PandasPdbStack.
@@ -93,7 +93,7 @@ class TMAlign(Align):
                 mobile_atoms = self.filter_and_validate_chain(mobiles, mobile_chains)
                 transformed_mobile, tm_score = self.process_structure_for_tmalign(target_file, mobile_atoms)
                 return transformed_mobile, tm_score
-            elif isinstance(mobiles, PandasPdbStack):
+            elif type(mobiles).__qualname__  is 'PandasPdbStack':
                 for key, pdb in mobiles.pdbs.items():
                     selected_chain = mobile_chains[key] if isinstance(mobile_chains, dict) and key in mobile_chains else mobile_chains
                     mobile_atoms = self.filter_and_validate_chain(pdb, selected_chain)
