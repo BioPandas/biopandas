@@ -208,6 +208,5 @@ class PandasPdbStack:
 
       # get all the chain ID-s in a dictionary
       mobile_chains = {pdb_id: pdb.df['ATOM']['chain_id'].unique()[0] for pdb_id, pdb in self.pdbs.items()}
-      print(mobile_pdbs, target_chain_id, mobile_chains)
       tmalign = TMAlign()
       return tmalign.tmalign_to(target_pdb, mobile_pdbs, target_chain_id, mobile_chains)
