@@ -73,6 +73,10 @@ class TMAlign(Align):
             coords = mobile_pdb.df['ATOM'][['x_coord', 'y_coord', 'z_coord']].values
             transformed_coords = self.transform(coords, matrix, translation)
             transformed_mobile.df['ATOM'][['x_coord', 'y_coord', 'z_coord']] = transformed_coords
+
+        # clean up
+        os.remove(matrix_file_path)
+
         return transformed_mobile, tm_score
 
 
@@ -104,7 +108,7 @@ class TMAlign(Align):
             else:
                 raise ValueError("Input must be a PandasPdb object or a PandasPdbStack not {type(mobiles)}.")
 
-    def run_tmalign(self, target, mobile):
+    def run_tmalign(self, target, mobile, matrix_file_path=None):
         """Function to execute TMalign with a rotation matrix output for one target-mobile pair.
         :param target: the structure to align to, a filepath
         :param mobile: the structure to align, a filepath
@@ -117,7 +121,12 @@ class TMAlign(Align):
         if not os.path.exists(mobile):
             raise FileNotFoundError(f"Mobile structure not found at {mobile}.")
 
-        matrix_file_path = tempfile.mktemp(suffix='.txt')
+        if matrix_file_path is None:
+            matrix_file_path = tempfile.mktemp(suffix='.txt')
+        else:
+            base_dir = os.path.dirname(matrix_file_path)
+            if not os.path.exists(base_dir):
+                os.makedirs(base_dir, exist_ok=True)
         command = [self.tmalign_path, target, mobile, '-m', matrix_file_path]
         result = subprocess.run(command, capture_output=True, text=True)
 
