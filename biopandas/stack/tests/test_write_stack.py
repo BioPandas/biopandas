@@ -23,13 +23,14 @@ def test_write_pdb():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME2,
                    TESTDATA_FILENAME_AF2_V4])
-    stack.write_entries(".")
+    base_dir = os.path.dirname(__file__)
+    stack.write_entries(base_dir)
 
     for key, pdb in stack.pdbs.items():
-        outfile = f'{key}.pdb'
-        infile = f'data/{key}.pdb'
-        assert os.path.exists(f'{key}.pdb')
+        outfile = os.path.join(base_dir, f'{key}.pdb')
+        infile = os.path.join(base_dir, 'data', f'{key}.pdb')
         print(infile, outfile)
+        assert os.path.exists(outfile)
         with open(infile, "r") as f:
             f1 = f.read().replace('\r\n', '\n').rstrip('\n')
         with open(outfile, "r") as f:
@@ -42,13 +43,15 @@ def test_write_pdb_no_dir_exists():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME2,
                    TESTDATA_FILENAME_AF2_V4])
-    stack.write_entries("test_dir")
+    base_dir = os.path.dirname(__file__)
+    test_dir = os.path.join(base_dir, "test_dir")
+    stack.write_entries(test_dir)
 
     for key, pdb in stack.pdbs.items():
-        outfile = f'test_dir/{key}.pdb'
-        infile = f'data/{key}.pdb'
-        assert os.path.exists(f'test_dir/{key}.pdb')
-        print(infile, outfile)
+        outfile = os.path.join(test_dir, f'{key}.pdb')
+        infile = os.path.join(base_dir, 'data', f'{key}.pdb')
+        assert os.path.exists(outfile)
+
         with open(infile, "r") as f:
             f1 = f.read().replace('\r\n', '\n').rstrip('\n')
         with open(outfile, "r") as f:
@@ -57,4 +60,4 @@ def test_write_pdb_no_dir_exists():
 
         os.remove(outfile)
 
-    os.rmdir("test_dir")
+    os.rmdir(test_dir)
