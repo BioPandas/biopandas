@@ -185,7 +185,7 @@ class PandasPdbStack:
         for key, pdb in self.pdbs.items():
             pdb.to_pdb(os.path.join(outdir, f"{key}.pdb"))
 
-    def tmalign_inside(self):
+    def tmalign_inside(self, target: str=None):
       """For doing TMalign inside a stack, with one of its entries
       :param pdbs: PandasPdbStack with the structures to align. All of them must have only one chain!
 
@@ -197,8 +197,15 @@ class PandasPdbStack:
           if pdb.df['ATOM']['chain_id'].nunique() > 1:
               raise ValueError("All structures must have only one chain!")
 
-      # get one structure from the stack - this will be the target. sort by alphabet
-      target_pdb_id = sorted(self.pdbs.keys())[0]
+      # if target is provided, check if it is in the stack and use it as the target
+      if target:
+          if target not in self.pdbs:
+              raise ValueError("Target not found in the stack!")
+          else:
+              target_pdb_id = target
+      else:
+          # get one structure from the stack - this will be the target. sort by alphabet
+          target_pdb_id = sorted(self.pdbs.keys())[0]
 
       target_pdb = self.pdbs[target_pdb_id]
       target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]

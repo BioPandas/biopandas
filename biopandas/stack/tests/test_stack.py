@@ -116,3 +116,18 @@ def test_tmalign_inside_multiple_chains():
     assert tm_scores['3eiy'] == 0.37341
     assert tm_scores['2d7t'] == 0.33733
     assert tm_scores['1ycr_copy'] == 1
+
+def test_tmalign_inside_multiple_chains_specific_target():
+    stack = PandasPdbStack()
+    stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME3, TESTDATA_FILENAME4])
+    stack.add_pdb(TESTDATA_FILENAME, '3eiy_copy')
+
+    args = {'chains': {'1ycr': 'A', '2d7t': 'H', '3eiy': 'A', '3eiy_copy': 'A'}}
+    filtered_stack = stack.apply_filter(filter_by_chains, keep_null=False, **args)
+    chains_lens_filtered = filtered_stack.apply_calculation(calculate_chain_lengths)
+    assert len(filtered_stack.pdbs) == 4
+    transformed_structures, tm_scores = filtered_stack.tmalign_inside('3eiy')
+
+    assert tm_scores['1ycr'] == 0.23483
+    assert tm_scores['2d7t'] == 0.24401
+    assert tm_scores['3eiy_copy'] == 1
