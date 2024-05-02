@@ -101,6 +101,7 @@ def filter_by_chains(key, pdb, chains):
     chain = chains[key]
     pdb.df['ATOM'] = pdb.df['ATOM'].query('chain_id==@chain')
     return pdb
+
 def test_tmalign_inside_multiple_chains():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME3, TESTDATA_FILENAME4])
