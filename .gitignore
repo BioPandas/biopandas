@@ -35,3 +35,5 @@ doc/_build
 *ENV
 .DS_store
 .idea
+/biopandas/align/USalign.exe
+/biopandas/align/USalign
