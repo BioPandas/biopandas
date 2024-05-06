@@ -4,12 +4,15 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPdb
-from biopandas.stack.stack import PandasPdbStack
-from biopandas.align import TMAlign
 import os
 import sys
+
+import numpy as np
 from nose.tools import assert_raises
+
+from biopandas.align import TMAlign, Align
+from biopandas.pdb import PandasPdb
+from biopandas.stack.stack import PandasPdbStack
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
@@ -61,6 +64,7 @@ def test_parse_tmalign_rotation_matrix():
     matrix, translation = tmalign.parse_tmalign_rotation_matrix(
         os.path.join(os.path.dirname(__file__), "data", "tmalign_output.txt")
     )
+    print("\n", matrix)
     assert matrix.shape == (3, 3)
     assert translation.shape == (3,)
     assert matrix[0, 0] == 0.9999934600
@@ -93,12 +97,26 @@ def test_process_structure_for_tmalign_perfect():
     ppdb2 = PandasPdb()
     ppdb2.read_pdb(TESTDATA_FILENAME)
 
+    # apply random rotation
+    random_rotation = np.array([[0.5, -0.866, 0],
+                                [0.866, 0.5, 0],
+                                [0, 0, 1]])
+
+    random_translation = np.array([1, 2, 3])
+
+    align = Align()
+    coords_mobile = ppdb.df['ATOM'][ppdb.df['ATOM']['chain_id'] == 'A'][['x_coord', 'y_coord', 'z_coord']].values
+    transformed_coords = align.transform(coords_mobile, random_rotation, random_translation)
+    ppdb2.df['ATOM'][['x_coord', 'y_coord', 'z_coord']] = transformed_coords
+
     target_file = tmalign.write_pdb_to_temp_file(ppdb)
-    transformed_mobile, tm_score = tmalign.process_structure_for_tmalign(target_file, ppdb2)
+    transformed_mobile, tm_score = tmalign.process_structure_for_tmalign(target_file, ppdb2, 'A')
+    coords_transformed = transformed_mobile.df['ATOM'][['x_coord', 'y_coord', 'z_coord']].values
 
     assert tm_score == 1
+    assert np.allclose(coords_transformed, coords_mobile, atol=1e-3)
 
-def test_process_structure_for_tmalign_not_perfect():
+def test_process_structure_for_tmalign_protein_rna():
     tmalign = TMAlign()
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
@@ -106,9 +124,9 @@ def test_process_structure_for_tmalign_not_perfect():
     ppdb2.read_pdb(TESTDATA_FILENAME3)
 
     target_file = tmalign.write_pdb_to_temp_file(ppdb)
-    transformed_mobile, tm_score = tmalign.process_structure_for_tmalign(target_file, ppdb2)
+    transformed_mobile, tm_score = tmalign.process_structure_for_tmalign(target_file, ppdb2, 'B')
 
-    assert tm_score == 0.07349
+    assert tm_score == 0.16383
 
 def test_tmalign_to_stack_chains_exist():
     tmalign = TMAlign()
@@ -121,8 +139,8 @@ def test_tmalign_to_stack_chains_exist():
     transformed_structures, tm_scores = tmalign.tmalign_to(ppdb, ppdb_stack,
                                                            'A',
                                                            {'2jyf': 'A', '2d7t': 'H', '3eiy': 'A'})
-    assert tm_scores['2jyf'] == 0.07349
-    assert tm_scores['2d7t'] == 0.24401
+    assert tm_scores['2jyf'] == 0.16382
+    assert tm_scores['2d7t'] == 0.32871
     assert tm_scores['3eiy'] == 1
 
 def test_tmalign_to_stack_chains_missing():
@@ -153,7 +171,7 @@ def test_tmalign_to_one():
     ppdb2.read_pdb(TESTDATA_FILENAME3)
 
     transformed_structures, tm_score = tmalign.tmalign_to(ppdb, ppdb2, 'A', 'A')
-    assert tm_score == 0.07349
+    assert tm_score == 0.16382
 
 def test_tmalign_chain_missing():
     tmalign = TMAlign()
@@ -173,3 +191,39 @@ def test_tmalign_to_wrong_input():
     ppdb2.read_pdb(TESTDATA_FILENAME3)
 
     assert_raises(ValueError, tmalign.tmalign_to, ppdb, 'random_string', 'A', 'A')
+
+def test_tmalign_in_stack():
+    tmalign = TMAlign()
+
+    ppdb_stack = PandasPdbStack()
+    ppdb_stack.add_pdbs(['1ycr', '2d7t', '3eiy', '4LWV'])
+
+    chains = {'1ycr': 'A', '2d7t': 'H', '3eiy': 'A', '4LWV': 'A'}
+
+    target_pdb_id, transformed_structures, tm_scores = tmalign.tmalign_in_stack(ppdb_stack, chains)
+
+    assert tm_scores == {'2d7t': 0.27812, '3eiy': 0.23483, '4LWV': 0.92383}
+    assert target_pdb_id == '1ycr'
+
+def test_tmalign_in_stack_define_target():
+    tmalign = TMAlign()
+
+    ppdb_stack = PandasPdbStack()
+    ppdb_stack.add_pdbs(['1ycr', '2d7t', '3eiy', '4LWV'])
+
+    chains = {'1ycr': 'A', '2d7t': 'H', '3eiy': 'A', '4LWV': 'A'}
+
+    target_pdb_id, transformed_structures, tm_scores = tmalign.tmalign_in_stack(ppdb_stack, chains, target='2d7t')
+
+    assert tm_scores == {'1ycr': 0.33733, '3eiy': 0.24401, '4LWV': 0.30331}
+    assert target_pdb_id == '2d7t'
+
+def test_tmalign_in_stack_define_target_not_exist():
+    tmalign = TMAlign()
+
+    ppdb_stack = PandasPdbStack()
+    ppdb_stack.add_pdbs(['1ycr', '2d7t', '3eiy', '4LWV'])
+
+    chains = {'1ycr': 'A', '2d7t': 'H', '3eiy': 'A', '4LWV': 'A'}
+
+    assert_raises(ValueError, tmalign.tmalign_in_stack, ppdb_stack, chains, target='random')

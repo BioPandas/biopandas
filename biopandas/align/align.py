@@ -6,9 +6,11 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import numpy as np
 import tempfile
 from copy import deepcopy
+
+import numpy as np
+
 
 class Align():
     def __init__(self):

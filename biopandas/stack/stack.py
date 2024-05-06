@@ -7,12 +7,12 @@
 # Code Repository: https://github.com/rasbt/biopandas
 from __future__ import annotations
 
-from biopandas.pdb import PandasPdb
-from biopandas.mmcif import PandasMmcif
-from biopandas.align import TMAlign
-from typing import List, Union, Dict, Callable
 import os
 from copy import deepcopy
+from typing import List, Union, Dict, Callable
+
+from biopandas.mmcif import PandasMmcif
+from biopandas.pdb import PandasPdb
 
 
 class PandasPdbStack:
@@ -63,9 +63,10 @@ class PandasPdbStack:
             for key, source in sources.items():
                 self.add_pdb(source, key=key)
 
-    def read_pdb(self, file_path: str, key=None):
+    def read_pdb(self, file_path: str, key: str=None):
         """Reads PDB file from disk or URL.
         :param file_path: the path to the PDB file. Reads the file and assigns it to the key of the filename.
+        :param key: the key to associate the PDB with.
 
         :return: None
         """
@@ -75,9 +76,10 @@ class PandasPdbStack:
         pdb.read_pdb(file_path)
         self.pdbs[key] = pdb
 
-    def read_mmcif(self, file_path: str, key=None):
+    def read_mmcif(self, file_path: str, key: str=None):
         """Reads mmCIF file from disk or URL.
         :param file_path: the path to the mmCIF file. Reads the file and assigns it to the key of the filename.
+        :param key: the key to associate the PDB with.
 
         :return: None
         """
@@ -87,7 +89,7 @@ class PandasPdbStack:
         mmcif.read_mmcif(file_path)
         self.pdbs[key] = mmcif.convert_to_pandas_pdb()
 
-    def fetch_pdb(self, key=None, pdb_id=None, uniprot_id=None):
+    def fetch_pdb(self, key: str=None, pdb_id: str=None, uniprot_id: str=None):
         """Fetches a PDB file from the RCSB PDB  repository or AF2 database and assigns it to the keyof the same ID.
         :param pdb_id: the PDB ID to fetch.
         :param uniprot_id: the UniProt ID to fetch from the AF2 database.
@@ -110,7 +112,7 @@ class PandasPdbStack:
             raise ValueError("PDB or UniProt ID must be provided.")
         self.pdbs[key] = pdb
 
-    def read_pdb_from_list(self, pdb_lines: List[str], key):
+    def read_pdb_from_list(self, pdb_lines: List[str], key: str):
         """Reads PDB data from a list of lines and assigns it to the specified key.
         :param pdb_lines: a list of PDB lines.
         :param key: a key to associate the PDB with.
@@ -121,7 +123,7 @@ class PandasPdbStack:
         pdb.read_pdb_from_list(pdb_lines)
         self.pdbs[key] = pdb
 
-    def apply_filter(self, filter_func: Callable, keep_null=True, **kwargs):
+    def apply_filter(self, filter_func: Callable, keep_null=True, **kwargs) -> PandasPdbStack:
         """Applies a filter across all PDBs in the stack and returns a new stack with the filtered PDBs.
         Mandatory inputs for the filter function are the key and the PandasPdb object.
         :param filter_func: a function that processes a pandaspdb objects and returns a modified pandaspdb object.
@@ -138,7 +140,7 @@ class PandasPdbStack:
                 new_stack.pdbs[key] = filtered_pdb
         return new_stack
 
-    def apply_calculation(self, calculation_func: Callable):
+    def apply_calculation(self, calculation_func: Callable) -> dict:
         """Applies a calculation across all PDBs in the stack and returns a dictionary with the calculated values.
         :param calculation_func: a function that processes a pandaspdb objects and returns objects (values, arrays or dictionaries, etc.)
 
@@ -151,7 +153,7 @@ class PandasPdbStack:
             dict_of_values[key] = value
         return dict_of_values
 
-    def delete_entry(self, key):
+    def delete_entry(self, key: str) -> None:
         """Deletes a PDB entry from the stack.
         :param key: the key of the PDB entry to delete.
 
@@ -160,7 +162,7 @@ class PandasPdbStack:
         if key in self.pdbs:
             del self.pdbs[key]
 
-    def update_entry(self, key, new_pdb):
+    def update_entry(self, key: str, new_pdb: Union[str, Dict[str, List[str]]]) -> None:
         """Updates a PDB entry in the stack.
         :param key: the key of the PDB entry to update.
         :param new_pdb: the new PandasPdb object to associate with the key.
@@ -172,7 +174,7 @@ class PandasPdbStack:
         self.add_pdb(new_pdb, key=key)
 
 
-    def write_entries(self, outdir):
+    def write_entries(self, outdir: str) -> None:
         """Writes all PDB entries in the stack to a directory.
         Since there is no pdb to mmcif conversion in biopandas, the output will be in PDB format.
         :param outdir: the directory to write the PDB files to.
@@ -184,36 +186,3 @@ class PandasPdbStack:
 
         for key, pdb in self.pdbs.items():
             pdb.to_pdb(os.path.join(outdir, f"{key}.pdb"))
-
-    def tmalign_inside(self, target: str=None):
-      """For doing TMalign inside a stack, with one of its entries
-      :param pdbs: PandasPdbStack with the structures to align. All of them must have only one chain!
-
-      :return: matrix_file_path, tm_score
-      """
-
-      # verify that no structure has more than one chain
-      for pdb in self.pdbs.values():
-          if pdb.df['ATOM']['chain_id'].nunique() > 1:
-              raise ValueError("All structures must have only one chain!")
-
-      # if target is provided, check if it is in the stack and use it as the target
-      if target:
-          if target not in self.pdbs:
-              raise ValueError("Target not found in the stack!")
-          else:
-              target_pdb_id = target
-      else:
-          # get one structure from the stack - this will be the target. sort by alphabet
-          target_pdb_id = sorted(self.pdbs.keys())[0]
-
-      target_pdb = self.pdbs[target_pdb_id]
-      target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
-
-      mobile_pdbs = PandasPdbStack()
-      mobile_pdbs.pdbs = {pdb_id: pdb for pdb_id, pdb in self.pdbs.items() if pdb_id != target_pdb_id}
-
-      # get all the chain ID-s in a dictionary
-      mobile_chains = {pdb_id: pdb.df['ATOM']['chain_id'].unique()[0] for pdb_id, pdb in self.pdbs.items()}
-      tmalign = TMAlign()
-      return tmalign.tmalign_to(target_pdb, mobile_pdbs, target_chain_id, mobile_chains)
