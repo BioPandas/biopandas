@@ -29,6 +29,7 @@ install_reqs.append('setuptools')
 class TmAlignInstall(install):
     def run(self):
         install.run(self)
+        print('Installing TMalign compiled code')
         target_folder = os.path.join(PROJECT_ROOT, 'biopandas', 'align')
         os.makedirs(target_folder, exist_ok=True)  # Ensure the subfolder exists
         # download the TMalign compiled code
@@ -57,6 +58,7 @@ class TmAlignInstall(install):
             zip_ref.extractall(selected_file.replace(".zip", ""))
 
         # Mv the compiled code to the target folder. It is either USalign or USalign.exe on windows
+        print(PROJECT_ROOT, os_name, selected_file.replace(".zip", ""), target_folder)
         target_folder = os.path.join(PROJECT_ROOT, 'biopandas', 'align')
         unzipped_path = f'{selected_file.replace(".zip", "")}/USalign/'
         if os_name == 'win32':
@@ -78,7 +80,9 @@ setup(name='biopandas',
       packages=find_packages(),
       package_data={'': ['LICENSE.txt',
                          'README.md',
-                         'requirements.txt']
+                         'requirements.txt',
+                         'USalign.exe',
+                         'USalign']
                     },
       include_package_data=True,
       install_requires=install_reqs,
