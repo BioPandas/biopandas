@@ -19,7 +19,7 @@ Object for working with Protein Databank structure files.
     PDB file contents in raw text format.
 
 
-- `pdb_path` : str
+- `pdb_path` : Union[str, os.PathLike]
 
     Location of the PDB file that was read in via `read_pdb`
     or URL of the page where the PDB content was fetched from
@@ -39,6 +39,39 @@ Object for working with Protein Databank structure files.
 
 <hr>
 
+*add_remark(code, text='', indent=0)*
+
+Add custom REMARK entry.
+
+    The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
+    `n` it will be added after all remarks with codes less or equal to `n`. If the object does
+    not store any remarks the remark will be inserted right before the first of ATOM, HETATM or
+    ANISOU records.
+
+**Parameters**
+
+- `code` : int
+
+    REMARK code according to PDB standards.
+
+
+- `text` : str
+
+    The text of the remark. If the text does not fit into a single line it will be wrapped
+    into multiple lines of REMARK entries. Likewise, if the text contains new line
+    characters it will be split accordingly.
+
+
+- `indent` : int, default: 0
+
+    Number of white spaces inserted before the text of the remark.
+
+**Returns**
+
+Nothing
+
+<hr>
+
 *amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
 
 Creates 1-letter amino acid codes from DataFrame
@@ -55,7 +88,7 @@ Creates 1-letter amino acid codes from DataFrame
 
 - `record` : str, default: 'ATOM'
 
-    Specfies the record DataFrame.
+    Specifies the record DataFrame.
 
 - `residue_col` : str,  default: 'residue_name'
 
@@ -128,19 +161,37 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
-*fetch_pdb(pdb_code)*
+*fetch_pdb(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')*
 
-Fetches PDB file contents from the Protein Databank at rcsb.org.
+Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database
+    at https://alphafold.ebi.ac.uk/.
+    .
 
 **Parameters**
 
-- `pdb_code` : str
+- `pdb_code` : str, optional
 
-    A 4-letter PDB code, e.g., "3eiy".
+    A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB.
+    Defaults to `None`.
+
+
+- `uniprot_id` : str, optional
+
+    A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database.
+    Defaults to `None`.
+
+
+- `source` : str
+
+    The source to retrieve the structure from
+    (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)).
+    Defaults to `"pdb"`.
 
 **Returns**
 
 self
+
+
 
 <hr>
 
@@ -183,6 +234,83 @@ Filter PDB DataFrames by properties
 
 <hr>
 
+*get_model(model_index: 'int') -> 'PandasPdb'*
+
+Returns a new PandasPDB object with the dataframes subset to the given model index.
+
+**Parameters**
+
+- `model_index` : int
+
+    An integer representing the model index to subset to.
+
+**Returns**
+
+- `pandas_pdb.PandasPdb` : A new PandasPdb object containing the
+
+    structure subsetted to the given model.
+
+<hr>
+
+*get_model_start_end() -> 'pd.DataFrame'*
+
+Get the start and end of the models contained in the PDB file.
+
+    Extracts model start and end line indexes based
+    on lines labelled 'OTHERS' during parsing.
+
+**Returns**
+
+- `pandas.DataFrame` : Pandas DataFrame object containing
+
+    the start and end line indexes of the models.
+
+<hr>
+
+*get_models(model_indices: 'List[int]') -> 'PandasPdb'*
+
+Returns a new PandasPDB object with the dataframes subset to the given model index.
+
+**Parameters**
+
+- `model_indices` : List[int]
+
+    A list representing the model indexes to subset to.
+
+**Returns**
+
+- `pandas_pdb.PandasPdb` : A new PandasPdb object
+
+    containing the structure subsetted to the given model.
+
+<hr>
+
+*gyradius(records: 'tuple[str]' = ('ATOM',), decimals: 'int' = 4) -> 'float'*
+
+Compute the Radius of Gyration of a molecule
+
+**Parameters**
+
+- `records` : iterable, default: ("ATOM",)
+
+    Records from PandasPdb object for which to calculate the radius of gyration.
+    Any of `("ATOM", "HETATM")`.
+
+
+- `decimals` : int, default: 4
+
+    Specifies the number of decimal places to round the final value to.
+
+**Returns**
+
+- `rg` : float
+
+    Radius of Gyration of df in Angstrom
+
+
+
+<hr>
+
 *impute_element(records=('ATOM', 'HETATM'), inplace=False)*
 
 Impute element_symbol from atom_name section.
@@ -195,7 +323,7 @@ Impute element_symbol from atom_name section.
     imputed.
 
 
-- `inplace` : bool, (default: False
+- `inplace` : bool, default: False
 
     Performs the operation in-place if True and returns a copy of the
     PDB DataFrame otherwise.
@@ -203,6 +331,13 @@ Impute element_symbol from atom_name section.
 **Returns**
 
 DataFrame
+
+<hr>
+
+*label_models()*
+
+Adds a column (`"model_id"`) to the underlying
+    DataFrames containing the model number.
 
 <hr>
 
@@ -244,7 +379,7 @@ self
 
 <hr>
 
-*rmsd(df1, df2, s=None, invert=False)*
+*rmsd(df1, df2, s=None, invert=False, decimals=4)*
 
 Compute the Root Mean Square Deviation between molecules.
 
@@ -273,6 +408,11 @@ Compute the Root Mean Square Deviation between molecules.
     Inverts the string query if true. For example, the setting
     `s='hydrogen', invert=True` computes the RMSD based on all
     but hydrogen atoms.
+
+
+- `decimals` : int, default: 4
+
+    Specifies the number of decimal places to round the final value to.
 
 **Returns**
 
@@ -309,11 +449,28 @@ Write record DataFrames to a PDB file or gzipped PDB file.
 
     Appends a new line at the end of the PDB file if True
 
+<hr>
+
+*to_pdb_stream(records: 'tuple[str]' = ('ATOM', 'HETATM')) -> 'StringIO'*
+
+Writes a PDB dataframe to a stream.
+
+**Parameters**
+
+- `records` : iterable, default: ('ATOM', 'HETATM')
+
+    Iterable of record names to save to stream. Any of `["ATOM", "HETATM", "OTHERS"]`.
+
+**Returns**
+
+- `io.StringIO` : Filestream of PDB file.
+
+
 ### Properties
 
 <hr>
 
 *df*
 
-Acccess dictionary of pandas DataFrames for PDB record sections.
+Access dictionary of pandas DataFrames for PDB record sections.
 

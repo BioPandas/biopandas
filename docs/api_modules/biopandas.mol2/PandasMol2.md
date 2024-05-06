@@ -83,7 +83,7 @@ Reads Mol2 files (unzipped or gzipped) from local drive
 
 **Attributes**
 
-- `path` : str
+- `path` : Union[str, os.PathLike]
 
     Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)
 
