@@ -5,9 +5,10 @@
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
-
+from __future__ import annotations
 import gzip
 import sys
+import copy
 import warnings
 from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
@@ -68,6 +69,58 @@ class PandasMmcif:
         # self.header, self.code = self._parse_header_code() #TODO: implement
         self.code = self.data["entry"]["id"][0].lower()
         return self
+    
+    def get_model(self, model_index: int) -> PandasMmcif:
+        """Returns a new PandasMmcif object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_index : int
+            An integer representing the model index to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasPdb : A new PandasMMcif object containing the
+            structure subsetted to the given model.
+        """
+
+        df = copy.deepcopy(self)
+        breakpoint()
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["pdbx_PDB_model_num"] == model_index]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                df.df["HETATM"]["pdbx_PDB_model_num"] == model_index
+            ]
+        return df
+
+    def get_models(self, model_indices: List[int]) -> PandasMmcif:
+        """Returns a new PandasMmcif object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_indices : List[int]
+            A list representing the model indexes to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasMmtf : A new PandasMmcif object
+            containing the structure subsetted to the given model.
+        """
+
+        df = copy.deepcopy(self)
+
+        if "ATOM" in df.df.keys():
+            df.df["ATOM"] = df.df["ATOM"].loc[
+                [x in model_indices for x in df.df["ATOM"]["pdbx_PDB_model_num"].tolist()]
+            ]
+        if "HETATM" in df.df.keys():
+            df.df["HETATM"] = df.df["HETATM"].loc[
+                [x in model_indices for x in df.df["HETATM"]["pdbx_PDB_model_num"].tolist()]
+            ]
+        return df
 
     def fetch_mmcif(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
         """Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.

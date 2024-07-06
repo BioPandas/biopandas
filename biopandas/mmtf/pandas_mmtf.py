@@ -420,7 +420,7 @@ class PandasMmtf(object):
 
 
     def get_model(self, model_index: int) -> PandasMmtf:
-        """Returns a new PandasPDB object with the dataframes subset to the
+        """Returns a new PandasMmtf object with the dataframes subset to the
         given model index.
 
         Parameters
@@ -430,7 +430,7 @@ class PandasMmtf(object):
 
         Returns
         ---------
-        pandas_pdb.PandasPdb : A new PandasPdb object containing the
+        pandas_mmtf.PandasMmtf : A new PandasMmtf object containing the
             structure subsetted to the given model.
         """
 
@@ -459,7 +459,7 @@ class PandasMmtf(object):
 
         Returns
         ---------
-        pandas_pdb.PandasMmtf : A new PandasPdb object
+        pandas_mmtf.PandasMmtf : A new PandasMmtf object
             containing the structure subsetted to the given model.
         """
 
