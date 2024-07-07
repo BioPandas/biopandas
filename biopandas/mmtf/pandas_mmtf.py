@@ -58,12 +58,7 @@ class PandasMmtf(object):
         return self
 
     def fetch_mmtf(self, pdb_code: str):
-        self.code = pdb_code
-        self.mmtf = fetch(pdb_code)
-        df = self._mmtf_to_df(self.mmtf)
-        self._df["ATOM"] = df.loc[df.record_name == "ATOM"]
-        self._df["HETATM"] = df.loc[df.record_name == "HETATM"]
-        return self
+        raise DeprecationWarning("PDB No longer serves MMTF files.")
 
     @staticmethod
     def _mmtf_to_df(mmtf_obj: MMTFDecoder) -> pd.DataFrame:
