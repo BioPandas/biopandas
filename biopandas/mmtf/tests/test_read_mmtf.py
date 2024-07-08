@@ -4,7 +4,7 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import pytest
+import unittest
 import os
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
@@ -42,7 +42,7 @@ ATOM_DF_COLUMNS = [
     #"charge",
 ]
 
-@pytest.mark.skip(reason="PDB No longer serves MMTF files.")
+@unittest.skip(reason="PDB No longer serves MMTF files.")
 def test_fetch_pdb():
     """Test fetch_pdb"""
     ppdb = PandasMmtf()
