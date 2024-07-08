@@ -299,7 +299,7 @@ class PandasPdb(object):
         # Wrap remark to fit into 80 characters per line and add indentation
         wrapper = textwrap.TextWrapper(width=80 - (11 + indent))
         lines = sum([wrapper.wrap(line.strip()) or [' '] for line in text.split('\n')], [])
-        lines = list(map(lambda x: f'{code:4} ' +  indent*' ' + x, lines))
+        lines = list(map(lambda x: f'{code:4} ' + indent*' ' + x, lines))
 
         # Shift data frame indices and row indices to create space for the remark
         # Create space in OTHERS
