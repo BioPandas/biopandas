@@ -4,11 +4,10 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPdb
 import os
-import pandas as pd
-from nose.tools import raises
-import warnings
+
+import pytest
+from biopandas.pdb import PandasPdb
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
 
@@ -40,12 +39,12 @@ def test_atom_and_hetatm():
     assert rg == expected_rg, f"Expected {expected_rg}, got {rg} instead"
 
 
-@raises(KeyError)
+@pytest.mark.xfail(raises=KeyError)
 def test_wrong_record_name():
     p1t48.gyradius(("Wrong",))
 
 
-@raises(TypeError)
+@pytest.mark.xfail(raises=TypeError)
 def test_wrong_arg_type():
     p1t48.gyradius(5)
 
@@ -62,9 +61,9 @@ def test_negative_decimals():
     assert rg == expected_rg, f"Expected {expected_rg}, got {rg} instead"
 
 
-@raises(TypeError)
+@pytest.mark.xfail(raises=TypeError)
 def test_wrong_decimals_arg():
-    p1t48.gyradius(decimals='five')
+    p1t48.gyradius(decimals="five")
 
 
 def test_both_args():

@@ -32,12 +32,12 @@ conda info -a
 # Configure the conda environment and put it in the path using the
 # provided versions
 if [[ "$LATEST" == "true" ]]; then
-    conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
+    conda create -n testenv --yes python=$PYTHON_VERSION pip pytest \
         numpy scipy pandas
 else
-    conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
+    conda create -n testenv --yes python=$PYTHON_VERSION pip pytest \
         numpy=$NUMPY_VERSION scipy=$SCIPY_VERSION \
-	    pandas=$PANDAS_VERSION 
+	    pandas=$PANDAS_VERSION
 fi
 
 conda init bash

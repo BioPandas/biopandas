@@ -4,13 +4,16 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
+import os
+
 import numpy as np
 from biopandas.pdb import PandasPdb
-import os
 
 
 def test_defaults():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
+    TESTDATA_1t48 = os.path.join(
+        os.path.dirname(__file__), "data", "1t48_995.pdb"
+    )
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     expect_res = [
@@ -146,7 +149,9 @@ def test_defaults():
 
 
 def test_sameindex():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
+    TESTDATA_1t48 = os.path.join(
+        os.path.dirname(__file__), "data", "1t48_995.pdb"
+    )
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     print(p1t48)
@@ -482,8 +487,12 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["chain_id"].values)
 
-    got_res_a = list(transl.loc[transl["chain_id"] == "A", "residue_name"].values)
-    got_res_b = list(transl.loc[transl["chain_id"] == "B", "residue_name"].values)
+    got_res_a = list(
+        transl.loc[transl["chain_id"] == "A", "residue_name"].values
+    )
+    got_res_b = list(
+        transl.loc[transl["chain_id"] == "B", "residue_name"].values
+    )
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a
