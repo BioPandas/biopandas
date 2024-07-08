@@ -23,7 +23,7 @@ class LoopMMCIF:
 
     def add_name(self, name):
         cat_name = (
-            type(name) == str and partition_string(name, ".") or ["", "", ""]
+            isinstance(name, str) and partition_string(name, ".") or ["", "", ""]
         )
         if cat_name[1]:
             if cat_name[0] not in self.parser_obj.current_target[-2]:
@@ -228,7 +228,7 @@ def __cif_float_range__(inp):
     try:
         pos = inp.index("-", 1)
         return (__CIFFloat__(inp[:pos]), __CIFFloat__(inp[pos + 1 :]))
-    except:
+    except Exception:
         return (__CIFFloat__(inp),)
 
 
@@ -236,7 +236,7 @@ def __cif_int_range__(inp):
     try:
         pos = inp.index("-", 1)
         return (__CIFInt__(inp[:pos]), __CIFInt__(inp[pos + 1 :]))
-    except:
+    except Exception:
         return (__CIFInt__(inp),)
 
 
@@ -248,12 +248,12 @@ def __load_cif_dic__(dic_file, force=False):
         if force:
             throw
         dic = json.loads(open(jsf).read())
-    except:
+    except Exception:
         parser = CIFParser()
         parser.parse(open(dic_file))
         json.dump(parser.data, open(jsf_dic, "w"))
         for k, v in parser.data["data_mmcif_pdbx.dic"].items():
-            if type(v) != dict or "item_type" not in v:
+            if not isinstance(v, dict) or "item_type" not in v:
                 continue
             name = partition_string(k[6:], ".")
             if name[0] not in dic:
@@ -294,7 +294,7 @@ __CIF_STR_NL_CHECK__ = re.compile(r"[\n]")
 def __dump_str__(inp):
     if inp is None:
         return "?"
-    if type(inp) is not str:
+    if not isinstance(inp, str):
         return str(inp)
     if re.search(__CIF_STR_NL_CHECK__, inp) is not None:
         return "\n;%s\n;" % inp
@@ -365,7 +365,7 @@ def __dump_part__(jso):
 
 def load_cif_data(data, do_clean=True, do_type=True):
     parser = CIFParser()
-    if type(data) == str:
+    if isinstance(data, str):
         parser.parse_string(data)
     else:
         parser.parse(data)  # fileobj
