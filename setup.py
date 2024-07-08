@@ -1,6 +1,11 @@
 import io
 import os
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import urllib.request
+import shutil
+import sys
+import zipfile
 
 VERSION = None
 with io.open(
@@ -21,6 +26,51 @@ with open(REQUIREMENTS_FILE) as f:
 
 install_reqs.append('setuptools')
 
+class TmAlignInstall(install):
+    def run(self):
+        install.run(self)
+        print('Installing TMalign compiled code')
+        target_folder = os.path.join(PROJECT_ROOT, 'biopandas', 'align')
+        os.makedirs(target_folder, exist_ok=True)  # Ensure the subfolder exists
+        # download the TMalign compiled code
+        # Define the file names for each OS
+        files = {
+            'win32': 'USalignWin64.zip',
+            'linux': 'USalignLinux64.zip',
+            'darwin': 'USalignMac.zip'
+        }
+
+        # Detect the OS and architecture
+        os_name = sys.platform
+
+        # Select the appropriate file based on the OS
+        if os_name in files:
+            selected_file = files[os_name]
+        else:
+            raise Exception('Unsupported OS')
+
+        # Download the file
+        url = f'https://zhanggroup.org/US-align/bin/module/{selected_file}'
+        urllib.request.urlretrieve(url, selected_file)
+
+        # unzip the file
+        with zipfile.ZipFile(selected_file, "r") as zip_ref:
+            zip_ref.extractall(selected_file.replace(".zip", ""))
+
+        # Mv the compiled code to the target folder. It is either USalign or USalign.exe on windows
+        print(PROJECT_ROOT, os_name, selected_file.replace(".zip", ""), target_folder)
+        target_folder = os.path.join(PROJECT_ROOT, 'biopandas', 'align')
+        unzipped_path = f'{selected_file.replace(".zip", "")}/USalign/'
+        if os_name == 'win32':
+            os.replace(os.path.join(unzipped_path, 'USalign.exe'), os.path.join(target_folder, 'USalign.exe'))
+        else:
+            # on linux and mac
+            os.replace(os.path.join(unzipped_path, 'USalign'), os.path.join(target_folder, 'USalign'))
+
+        # Remove the downloaded and the unzipped files (everything starting with USalign)
+        shutil.rmtree(selected_file.replace(".zip", ""))
+        os.remove(selected_file)
+
 setup(name='biopandas',
       version=VERSION,
       description='Machine Learning Library Extensions',
@@ -30,7 +80,9 @@ setup(name='biopandas',
       packages=find_packages(),
       package_data={'': ['LICENSE.txt',
                          'README.md',
-                         'requirements.txt']
+                         'requirements.txt',
+                         'USalign.exe',
+                         'USalign']
                     },
       include_package_data=True,
       install_requires=install_reqs,
@@ -52,6 +104,7 @@ setup(name='biopandas',
              'Programming Language :: Python :: 3.9',
              'Topic :: Scientific/Engineering',
       ],
+      cmdclass={'install': TmAlignInstall}, # for handling TMalign compilation
       long_description_content_type='text/markdown',
       long_description="""
 Biopandas is a Python package for working with molecular structures

@@ -1,4 +1,4 @@
-biopandas version: 0.3.0
+biopandas version: 0.6.0dev
 ## PandasMol2
 
 *PandasMol2()*
@@ -84,7 +84,7 @@ Reads Mol2 files (unzipped or gzipped) from local drive
 
 **Attributes**
 
-- `path` : str
+- `path` : Union[str, os.PathLike]
 
     Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)
 

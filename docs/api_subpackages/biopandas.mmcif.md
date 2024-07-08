@@ -1,4 +1,4 @@
-biopandas version: 0.3.0
+biopandas version: 0.6.0dev
 ## PandasMmcif
 
 *PandasMmcif(use_auth: bool = True)*
@@ -43,6 +43,23 @@ Creates 1-letter amino acid codes from DataFrame
     `'chain_id'` and `'residue_name'`, where the former contains
     the chain ID of the amino acid and the latter
     contains the 1-letter amino acid code, respectively.
+
+<hr>
+
+*convert_to_pandas_pdb(offset_chains: bool = True, records: List[str] = ['ATOM', 'HETATM']) -> biopandas.pdb.pandas_pdb.PandasPdb*
+
+Returns a PandasPdb object with the same data as the PandasMmcif
+    object.
+
+**Attributes**
+
+offset_chains: bool
+    Whether or not to offset atom numbering based on number of chains.
+    This can arise due to the presence of TER records in PDBs which are
+    not found in mmCIFs.
+    records: List[str]
+    List of record types to save. Any of ["ATOM", "HETATM", "OTHERS"].
+    Defaults to ["ATOM", "HETATM"].
 
 <hr>
 
@@ -98,19 +115,33 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
-*fetch_mmcif(pdb_code: str)*
+*fetch_mmcif(pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = 'pdb')*
 
-Fetches mmCIF file contents from the Protein Databank at rcsb.org.
+Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
+    .
 
 **Parameters**
 
-- `pdb_code` : str
+- `pdb_code` : str, optional
 
-    A 4-letter PDB code, e.g., "3eiy".
+    A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB. Defaults to `None`.
+
+
+- `uniprot_id` : str, optional
+
+    A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
+
+
+- `source` : str
+
+    The source to retrieve the structure from
+    (`"pdb"`, `"alphafold2-v3"` or `"alphafold2-v4"`). Defaults to `"pdb"`.
 
 **Returns**
 
 self
+
+
 
 <hr>
 
@@ -159,7 +190,7 @@ Read MMCIF files (unzipped or gzipped) from local drive
 
 **Attributes**
 
-- `path` : str
+- `path` : Union[str, os.PathLike]
 
     Path to the MMCIF file in .cif format or gzipped format (.cif.gz).
 

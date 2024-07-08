@@ -1,6 +1,18 @@
-## PandasMmcif
+biopandas version: 0.6.0dev
+## fetch_mmtf
 
-*PandasMmcif(use_auth: bool = True)*
+*fetch_mmtf(pdb_code: 'str') -> 'pd.DataFrame'*
+
+Returns a dataframe from a PDB code.
+
+    :param pdb_code: 4-letter PDB accession code
+    :type pdb_code: str
+    :return: Dataframe of protein structure
+    :rtype: pd.DataFrame
+
+## PandasMmtf
+
+*PandasMmtf()*
 
 None
 
@@ -8,7 +20,7 @@ None
 
 <hr>
 
-*amino3to1(record: str = 'ATOM', residue_col: str = 'auth_comp_id', residue_number_col: str = 'auth_seq_id', chain_col: str = 'auth_asym_id', fillna: str = '?')*
+*amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
 
 Creates 1-letter amino acid codes from DataFrame
 
@@ -42,23 +54,6 @@ Creates 1-letter amino acid codes from DataFrame
     `'chain_id'` and `'residue_name'`, where the former contains
     the chain ID of the amino acid and the latter
     contains the 1-letter amino acid code, respectively.
-
-<hr>
-
-*convert_to_pandas_pdb(offset_chains: bool = True, records: List[str] = ['ATOM', 'HETATM']) -> biopandas.pdb.pandas_pdb.PandasPdb*
-
-Returns a PandasPdb object with the same data as the PandasMmcif
-    object.
-
-**Attributes**
-
-offset_chains: bool
-    Whether or not to offset atom numbering based on number of chains.
-    This can arise due to the presence of TER records in PDBs which are
-    not found in mmCIFs.
-    records: List[str]
-    List of record types to save. Any of ["ATOM", "HETATM", "OTHERS"].
-    Defaults to ["ATOM", "HETATM"].
 
 <hr>
 
@@ -97,8 +92,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 - `df` : DataFrame
 
-    DataFrame containing entries in the `PandasPdb.df['ATOM']`
-    or `PandasPdb.df['HETATM']` format for the
+    DataFrame containing entries in the `PandasMmtf.df['ATOM']`
+    or `PandasMmtf.df['HETATM']` format for the
     the distance computation to the `xyz` reference coordinates.
 
 - `xyz` : tuple, default: (0.00, 0.00, 0.00)
@@ -114,104 +109,82 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
-*fetch_mmcif(pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = 'pdb')*
+*fetch_mmtf(pdb_code: 'str')*
 
-Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
-    .
-
-**Parameters**
-
-- `pdb_code` : str, optional
-
-    A 4-letter PDB code, e.g., `"3eiy"` to retrieve structures from the PDB. Defaults to `None`.
-
-
-- `uniprot_id` : str, optional
-
-    A UniProt Identifier, e.g., `"Q5VSL9"` to retrieve structures from the AF2 database. Defaults to `None`.
-
-
-- `source` : str
-
-    The source to retrieve the structure from
-    (`"pdb"`, `"alphafold2-v3"` or `"alphafold2-v4"`). Defaults to `"pdb"`.
-
-**Returns**
-
-self
-
-
+None
 
 <hr>
 
-*get(s, df=None, invert=False, records=('ATOM', 'HETATM'))*
+*get_model(model_index: 'int') -> 'PandasMmtf'*
 
-Filter PDB DataFrames by properties
+Returns a new PandasPDB object with the dataframes subset to the
+    given model index.
 
 **Parameters**
 
-- `s` : str  in {'main chain', 'hydrogen', 'c-alpha', 'heavy'}
+- `model_index` : int
 
-    String to specify which entries to return.
+    An integer representing the model index to subset to.
 
+**Returns**
 
-- `df` : pandas.DataFrame, default: None
+- `pandas_pdb.PandasPdb` : A new PandasPdb object containing the
 
-    Optional DataFrame to perform the filter operation on.
-    If df=None, filters on self.df['ATOM'].
+    structure subsetted to the given model.
 
+<hr>
 
-- `invert` : bool, default: True
+*get_models(model_indices: 'List[int]') -> 'PandasMmtf'*
 
-    Inverts the search query. For example if s='hydrogen' and
-    invert=True, all but hydrogen entries are returned.
+Returns a new PandasMmtf object with the dataframes subset to the
+    given model index.
 
+**Parameters**
+
+- `model_indices` : List[int]
+
+    A list representing the model indexes to subset to.
+
+**Returns**
+
+- `pandas_pdb.PandasMmtf` : A new PandasPdb object
+
+    containing the structure subsetted to the given model.
+
+<hr>
+
+*impute_element(records=('ATOM', 'HETATM'), inplace=False)*
+
+Impute element_symbol from atom_name section.
+
+**Parameters**
 
 - `records` : iterable, default: ('ATOM', 'HETATM')
 
-    Specify which record sections to consider. For example, to consider
-    both protein and ligand atoms, set `records=('ATOM', 'HETATM')`.
-    This setting is ignored if `df` is not set to None.
-    For downward compatibility, a string argument is still supported
-    but deprecated and will be removed in future versions.
+    Coordinate sections for which the element symbols should be
+    imputed.
+
+
+- `inplace` : bool, (default: False
+
+    Performs the operation in-place if True and returns a copy of the
+    MMTF DataFrame otherwise.
 
 **Returns**
 
-- `df` : pandas.DataFrame
-
-    Returns a DataFrame view on the filtered entries.
+DataFrame
 
 <hr>
 
-*read_mmcif(path)*
+*parse_sse()*
 
-Read MMCIF files (unzipped or gzipped) from local drive
-
-**Attributes**
-
-- `path` : Union[str, os.PathLike]
-
-    Path to the MMCIF file in .cif format or gzipped format (.cif.gz).
-
-**Returns**
-
-self
+Parse secondary structure elements
 
 <hr>
 
-*read_mmcif_from_list(mmcif_lines)*
+*read_mmtf(filename: 'Union[str, os.PathLike]')*
 
-Reads mmCIF file from a list into DataFrames
-
-**Attributes**
-
-- `pdb_lines` : list
-
-    A list of lines containing the mmCIF file contents.
-
-**Returns**
-
-self
+None
 
 <hr>
 
@@ -251,11 +224,66 @@ Compute the Root Mean Square Deviation between molecules.
 
     Root Mean Square Deviation between df1 and df2
 
+<hr>
+
+*to_mmtf(path, records=('ATOM', 'HETATM'))*
+
+Write record DataFrames to an MMTF file.
+
+**Parameters**
+
+- `path` : str
+
+    A valid output path for the mmtf file
+
+    records: tuple(str):
+    A tuple of records to write. Defaults to ("ATOM". "HETATM")
+
+<hr>
+
+*to_pdb(path, records=None, gz=False, append_newline=True)*
+
+Write record DataFrames to a PDB file or gzipped PDB file.
+
+**Parameters**
+
+- `path` : str
+
+    A valid output path for the pdb file
+
+
+- `records` : iterable, default: None
+
+    A list of PDB record sections in
+    {'ATOM', 'HETATM', 'ANISOU', 'OTHERS'} that are to be written.
+    Writes all lines to PDB if `records=None`.
+
+
+- `gz` : bool, default: False
+
+    Writes a gzipped PDB file if True.
+
+
+- `append_newline` : bool, default: True
+
+    Appends a new line at the end of the PDB file if True
+
 ### Properties
 
 <hr>
 
 *df*
 
-Acccess dictionary of pandas DataFrames for PDB record sections.
+Access dictionary of pandas DataFrames for MMTF record sections.
+
+## parse_mmtf
+
+*parse_mmtf(file_path: 'str') -> 'pd.DataFrame'*
+
+Parses an MMTF file from disk and returns a pandas DataFrame.
+
+    :param file_path: Path to mmtf file.
+    :type file_path: str
+    :return: Dataframe of protein structure.
+    :rtype: pd.DataFrame
 

@@ -4,6 +4,8 @@ docs/tutorials/Working_with_mmCIF_Structures_in_DataFrames_files/*
 docs/tutorials/Working_with_MOL2_Structures_in_DataFrames_files/*
 docs/tutorials/Working_with_PDB_Structures_in_DataFrames_files/*
 docs/tutorials/data/3eiy_stripped.pdb.gz
+docs/tutorials/data/*output/
+docs/tutorials/data/aligned_structures/
 docs/api_subpackages/
 docs/api_modules
 docs/py-docstring-parser/
@@ -35,3 +37,5 @@ doc/_build
 *ENV
 .DS_store
 .idea
+/biopandas/align/USalign.exe
+/biopandas/align/USalign
