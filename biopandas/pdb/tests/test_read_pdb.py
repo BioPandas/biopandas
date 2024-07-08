@@ -268,7 +268,7 @@ def test_anisou_input_handling():
     assert ppdb.code == "4eiy", ppdb.code
 
 
-@pytest.mark.xfail(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_get_exceptions():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
