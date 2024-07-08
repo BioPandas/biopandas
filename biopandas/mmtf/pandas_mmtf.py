@@ -655,7 +655,7 @@ def _seq1(seq, charmap: Dict[str, str], undef_code="X"):
     onecode = {k.upper(): v for k, v in charmap.items()}
     # add the given termination codon code and custom maps
     onecode.update((k.upper(), v) for k, v in charmap.items())
-    seqlist = [seq[3 * i : 3 * (i + 1)] for i in range(len(seq) // 3)]
+    seqlist = [seq[3 * i:3 * (i + 1)] for i in range(len(seq) // 3)]
     return "".join(onecode.get(aa.upper(), undef_code) for aa in seqlist)
 
 
