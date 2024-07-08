@@ -38,12 +38,12 @@ def test_atom_and_hetatm():
     assert rg == expected_rg, f"Expected {expected_rg}, got {rg} instead"
 
 
-@pytest.mark.xfail(KeyError)
+@pytest.mark.xfail(raises=KeyError)
 def test_wrong_record_name():
     p1t48.gyradius(("Wrong",))
 
 
-@pytest.mark.xfail(TypeError)
+@pytest.mark.xfail(raises=TypeError)
 def test_wrong_arg_type():
     p1t48.gyradius(5)
 
@@ -60,7 +60,7 @@ def test_negative_decimals():
     assert rg == expected_rg, f"Expected {expected_rg}, got {rg} instead"
 
 
-@pytest.mark.xfail(TypeError)
+@pytest.mark.xfail(raises=TypeError)
 def test_wrong_decimals_arg():
     p1t48.gyradius(decimals='five')
 

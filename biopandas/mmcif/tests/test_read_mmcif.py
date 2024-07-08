@@ -280,7 +280,7 @@ def test_read_pdb_with_pathlib():
 #    assert ppdb.code == "4eiy", ppdb.code
 
 
-@pytest.mark.xfail(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_get_exceptions():
     ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)

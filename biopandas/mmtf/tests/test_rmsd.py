@@ -36,17 +36,17 @@ def test_equal():
     assert r == 0.000, r
 
 
-@pytest.mark.xfail(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_wrong_arg():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
 
-@pytest.mark.xfail(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_incompatible():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s=None)
 
 
-@pytest.mark.xfail(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_invalid_query():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
