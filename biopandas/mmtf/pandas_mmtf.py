@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import os
 import copy
 import gzip
-import os
 import warnings
 from string import ascii_uppercase
 from typing import Any, Dict, List, Union
@@ -12,10 +12,10 @@ from warnings import warn
 
 import numpy as np
 import pandas as pd
-from biopandas.constants import protein_letters_3to1_extended
 from looseversion import LooseVersion
-
 from mmtf import MMTFDecoder, MMTFEncoder, fetch, parse, parse_gzip
+
+from biopandas.constants import protein_letters_3to1_extended
 
 from ..pdb.engines import amino3to1dict, pdb_df_columns, pdb_records
 
