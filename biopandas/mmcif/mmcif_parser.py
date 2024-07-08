@@ -22,19 +22,28 @@ class LoopMMCIF:
         self.names_defined = False
 
     def add_name(self, name):
-        cat_name = type(name) == str and partition_string(name, ".") or ["", "", ""]
+        cat_name = (
+            type(name) == str and partition_string(name, ".") or ["", "", ""]
+        )
         if cat_name[1]:
             if cat_name[0] not in self.parser_obj.current_target[-2]:
                 self.parser_obj.current_target[-2][cat_name[0]] = {}
-            if cat_name[2] not in self.parser_obj.current_target[-2][cat_name[0]]:
-                self.parser_obj.current_target[-2][cat_name[0]][cat_name[2]] = []
+            if (
+                cat_name[2]
+                not in self.parser_obj.current_target[-2][cat_name[0]]
+            ):
+                self.parser_obj.current_target[-2][cat_name[0]][
+                    cat_name[2]
+                ] = []
             self.ref_list.append(
                 self.parser_obj.current_target[-2][cat_name[0]][cat_name[2]]
             )
         else:
             if cat_name[0] not in self.parser_obj.current_target[-2]:
                 self.parser_obj.current_target[-2][cat_name[0]] = []
-            self.ref_list.append(self.parser_obj.current_target[-2][cat_name[0]])
+            self.ref_list.append(
+                self.parser_obj.current_target[-2][cat_name[0]]
+            )
         self.length = len(self.ref_list)
 
     def push_value(self, value):
@@ -289,7 +298,9 @@ def __dump_str__(inp):
         return str(inp)
     if re.search(__CIF_STR_NL_CHECK__, inp) is not None:
         return "\n;%s\n;" % inp
-    return "'%s'" % inp if re.search(__CIF_STR_CHECK__, inp) is not None else inp
+    return (
+        "'%s'" % inp if re.search(__CIF_STR_CHECK__, inp) is not None else inp
+    )
 
 
 def __pad_string__(inp, flength):

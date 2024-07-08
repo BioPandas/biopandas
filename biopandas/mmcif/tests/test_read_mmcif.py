@@ -6,11 +6,11 @@
 
 
 import os
-import pytest
-from urllib.error import HTTPError
 from pathlib import Path
+from urllib.error import HTTPError
 
 import pandas as pd
+import pytest
 from biopandas.mmcif import PandasMmcif
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
@@ -22,8 +22,12 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # TESTDATA_FILENAME2 = os.path.join(
 #    os.path.dirname(__file__), "data", "4eiy_anisouchunk.cif"
 # )
-TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
+TESTDATA_FILENAME2 = os.path.join(
+    os.path.dirname(__file__), "data", "4eiy.cif"
+)
+TESTDATA_FILENAME_GZ = os.path.join(
+    os.path.dirname(__file__), "data", "3eiy.cif.gz"
+)
 
 TESTDATA_FILENAME_AF2_V4 = os.path.join(
     os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.cif"
@@ -88,7 +92,6 @@ with open(TESTDATA_FILENAME_AF2_V4, "r") as f:
 
 with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af2_test_struct_v3 = f.read()
-
 
 
 def test__read_pdb():
@@ -334,7 +337,9 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )
 
     # single chain test
@@ -348,5 +353,7 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )

@@ -5,8 +5,8 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 import os
-import pytest
 
+import pytest
 from biopandas.mmcif import PandasMmcif
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
@@ -48,7 +48,9 @@ def test_invalid_query():
 
 
 def test_protein():
-    r = PandasMmcif.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
+    r = PandasMmcif.rmsd(
+        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False
+    )
     assert r == 0.4923, r
 
 
