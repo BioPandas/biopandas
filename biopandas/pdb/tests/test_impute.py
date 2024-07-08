@@ -5,8 +5,9 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-from biopandas.pdb import PandasPdb
 import os
+
+from biopandas.pdb import PandasPdb
 
 TESTDATA_FILENAME = os.path.join(
     os.path.dirname(__file__), "data", "3eiy_stripped_no_ele.pdb"

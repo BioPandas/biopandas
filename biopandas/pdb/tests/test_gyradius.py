@@ -4,9 +4,10 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPdb
 import os
+
 import pytest
+from biopandas.pdb import PandasPdb
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
 
@@ -62,7 +63,7 @@ def test_negative_decimals():
 
 @pytest.mark.xfail(raises=TypeError)
 def test_wrong_decimals_arg():
-    p1t48.gyradius(decimals='five')
+    p1t48.gyradius(decimals="five")
 
 
 def test_both_args():
