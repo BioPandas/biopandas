@@ -438,21 +438,21 @@ class PandasMmtf(object):
             structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
+        biopandas_structure = copy.deepcopy(self)
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[
-                df.df["ATOM"]["model_id"] == model_index
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[
+                biopandas_structure.df["ATOM"]["model_id"] == model_index
             ]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                df.df["HETATM"]["model_id"] == model_index
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
+                biopandas_structure.df["HETATM"]["model_id"] == model_index
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
-                df.df["ANISOU"]["model_id"] == model_index
+        if "ANISOU" in biopandas_structure.df.keys():
+            biopandas_structure.df["ANISOU"] = biopandas_structure.df["ANISOU"].loc[
+                biopandas_structure.df["ANISOU"]["model_id"] == model_index
             ]
-        return df
+        return biopandas_structure
 
     def get_models(self, model_indices: List[int]) -> PandasMmtf:
         """Returns a new PandasMmtf object with the dataframes subset to the
@@ -469,30 +469,30 @@ class PandasMmtf(object):
             containing the structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
+        biopandas_structure = copy.deepcopy(self)
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[
                 [
                     x in model_indices
-                    for x in df.df["ATOM"]["model_id"].tolist()
+                    for x in biopandas_structure.df["ATOM"]["model_id"].tolist()
                 ]
             ]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
                 [
                     x in model_indices
-                    for x in df.df["HETATM"]["model_id"].tolist()
+                    for x in biopandas_structure.df["HETATM"]["model_id"].tolist()
                 ]
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
+        if "ANISOU" in biopandas_structure.df.keys():
+            biopandas_structure.df["ANISOU"] = biopandas_structure.df["ANISOU"].loc[
                 [
                     x in model_indices
-                    for x in df.df["ANISOU"]["model_id"].tolist()
+                    for x in biopandas_structure.df["ANISOU"]["model_id"].tolist()
                 ]
             ]
-        return df
+        return biopandas_structure
 
 
 def fetch_mmtf(pdb_code: str) -> pd.DataFrame:
