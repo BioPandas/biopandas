@@ -131,7 +131,7 @@ class PandasPdb(object):
             Defaults to `None`.
 
         source : str
-            The source to retrieve the structure from 
+            The source to retrieve the structure from
             (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)).
             Defaults to `"pdb"`.
 
