@@ -4,10 +4,13 @@
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
 
-### 0.5.0dev2 (2/5/2024)
+
+### 0.5.1dev1 (UNRELEASED)
 - Adds support for constructing a collection of PDB files and perform actions on them (Via [Julia K. Varga](https://github.com/gezmi)
 - Adds the possibility of performing alignments, translation and rotation on the structure, via an extendable Align class (Via [Julia K. Varga](https://github.com/gezmi)
 - TMAlign is installed alongside the package to perform the alignments (Via [Julia K. Varga](https://github.com/gezmi)
+- Dev: switched testing framework entirely to pytest. Drops nose dependency due to version conflicts with Python 3.12 (`nose`) and 3.8 (`nose`)
+
 
 ### 0.5.0dev1 (31/7/2023)
 - Implement add_remark for PandasPdb, (Via [Anton Bushuiev](https://github.com/anton-bushuiev) PR #[129](https://github.com/BioPandas/biopandas/pull/129))

@@ -86,7 +86,7 @@ setup(name='biopandas',
                     },
       include_package_data=True,
       install_requires=install_reqs,
-      extras_require={'test': ['pytest', 'pytest-cov','flake8', 'nose'],},
+      extras_require={'test': ['pytest', 'pytest-cov','flake8'],},
       license='BSD 3-Clause',
       platforms='any',
       classifiers=[
