@@ -10,6 +10,11 @@ from biopandas.mmcif import PandasMmcif
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "2jyf.cif.gz")
 
+def test_label_models():
+    df = PandasMmcif().read_mmcif(TESTDATA_FILENAME)
+    df.label_models()
+    assert "model_id" in df.df["ATOM"].columns
+    
 def test_get_model():
     df = PandasMmcif().read_mmcif(TESTDATA_FILENAME)
     MODEL_INDEX = 1

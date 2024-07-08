@@ -70,6 +70,15 @@ class PandasMmcif:
         self.code = self.data["entry"]["id"][0].lower()
         return self
     
+    def label_models(self):
+        """Adds a column ("model_id") to the underlying
+        DataFrames containing the model number."""
+        if "ATOM" in self.df.keys():
+            self.df["ATOM"]["model_id"] = self.df["ATOM"]["pdbx_PDB_model_num"]
+        if "HETATM" in self.df.keys():
+            self.df["HETATM"]["model_id"] = self.df["HETATM"]["pdbx_PDB_model_num"]
+        return self
+    
     def get_model(self, model_index: int) -> PandasMmcif:
         """Returns a new PandasMmcif object with the dataframes subset to the
         given model index.
