@@ -227,7 +227,7 @@ class __CIFInt__(int):
 def __cif_float_range__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFFloat__(inp[:pos]), __CIFFloat__(inp[pos + 1 :]))
+        return (__CIFFloat__(inp[:pos]), __CIFFloat__(inp[pos + 1:]))
     except Exception:
         return (__CIFFloat__(inp),)
 
@@ -235,7 +235,7 @@ def __cif_float_range__(inp):
 def __cif_int_range__(inp):
     try:
         pos = inp.index("-", 1)
-        return (__CIFInt__(inp[:pos]), __CIFInt__(inp[pos + 1 :]))
+        return (__CIFInt__(inp[:pos]), __CIFInt__(inp[pos + 1:]))
     except Exception:
         return (__CIFInt__(inp),)
 
