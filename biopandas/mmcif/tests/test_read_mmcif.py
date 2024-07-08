@@ -6,16 +6,14 @@
 
 
 import os
+import pytest
 from urllib.error import HTTPError
-from urllib.request import urlopen
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 from biopandas.mmcif import PandasMmcif
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
 from pandas.testing import assert_frame_equal
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
@@ -282,7 +280,7 @@ def test_read_pdb_with_pathlib():
 #    assert ppdb.code == "4eiy", ppdb.code
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_get_exceptions():
     ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)

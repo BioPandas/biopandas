@@ -5,9 +5,9 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 import os
+import pytest
 
 from biopandas.mmcif import PandasMmcif
-from nose.tools import raises
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
 TESTDATA_1t49 = os.path.join(os.path.dirname(__file__), "data", "1t49.cif")
@@ -32,17 +32,17 @@ def test_equal():
     assert r == 0.000, r
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_wrong_arg():
     PandasMmcif.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_incompatible():
     PandasMmcif.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s=None)
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_invalid_query():
     PandasMmcif.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 

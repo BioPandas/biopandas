@@ -6,16 +6,11 @@
 
 import unittest
 import os
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
 
-import numpy as np
 import pandas as pd
-from nose.tools import raises
 
 from biopandas.mmtf import PandasMmtf
 from biopandas.pdb import PandasPdb
-from biopandas.testutils import assert_raises
 
 MMTF_TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.mmtf")
 MMTF_TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.mmtf.gz")

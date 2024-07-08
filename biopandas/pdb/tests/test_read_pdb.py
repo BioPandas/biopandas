@@ -6,14 +6,13 @@
 
 
 import os
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
+import pytest
+from urllib.error import HTTPError
 
 import numpy as np
 import pandas as pd
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
@@ -269,7 +268,7 @@ def test_anisou_input_handling():
     assert ppdb.code == "4eiy", ppdb.code
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_get_exceptions():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)

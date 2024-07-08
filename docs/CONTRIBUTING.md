@@ -6,22 +6,21 @@ I would be very happy about any kind of contributions that help to improve and e
 
 If this is your first contribution, please review the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-
 ### Quick Contributor Checklist
 
 This is a quick checklist about the different steps of a typical contribution to biopandas and
 other open source projects. Consider copying this list to a local text file (or the issue tracker)
 and checking off items as you go.
 
-1. [ ]  Open a new "issue" on GitHub to discuss the new feature / bug fix  
+1. [ ]  Open a new "issue" on GitHub to discuss the new feature / bug fix
 2. [ ]  Fork the biopandas repository from GitHub (if not already done earlier)
-3. [ ]  Create and checkout a new topic branch   
-4. [ ]  Implement new feature or apply the bug-fix  
-5. [ ]  Add appropriate unit test functions  
-6. [ ]  Run `nosetests -sv` and make sure that all unit tests pass  
-7. [ ]  Check/improve the test coverage by running `nosetests --with-coverage`
-8. [ ]  Add a note about the change to the `./docs/sources/CHANGELOG.md` file  
-9. [ ]  Modify documentation in the appropriate location under `biopandas/docs/sources/`  
+3. [ ]  Create and checkout a new topic branch
+4. [ ]  Implement new feature or apply the bug-fix
+5. [ ]  Add appropriate unit test functions
+6. [ ]  Run `pytest -sv` and make sure that all unit tests pass
+7. [ ]  Check/improve the test coverage by running `pytest --with-coverage`
+8. [ ]  Add a note about the change to the `./docs/sources/CHANGELOG.md` file
+9. [ ]  Modify documentation in the appropriate location under `biopandas/docs/sources/`
 10. [ ]  Push the topic branch to the server and create a pull request
 11. [ ]  Check the Travis-CI build passed at [https://travis-ci.org/rasbt/biopandas](https://travis-ci.org/rasbt/biopandas)
 12. [ ]  Check/improve the unit test coverage at [https://coveralls.io/github/rasbt/biopandas](https://coveralls.io/github/rasbt/biopandas)
@@ -154,11 +153,11 @@ $ git checkout <new_feature>
 Adding/modifying the unit tests and check if they pass:
 
 ```bash
-$ nosetests -sv
+$ pytest -sv
 ```
 
 ```bash
-$ nosetests --with-coverage
+$ pytest --with-coverage
 ```
 
 #### 4. Documenting the changes

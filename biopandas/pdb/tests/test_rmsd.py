@@ -6,8 +6,7 @@
 
 from biopandas.pdb import PandasPdb
 import os
-from nose.tools import raises
-
+import pytest
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
 TESTDATA_1t49 = os.path.join(os.path.dirname(__file__), "data", "1t49_995.pdb")
@@ -32,17 +31,17 @@ def test_equal():
     assert r == 0.000, r
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_wrong_arg():
     PandasPdb.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_incompatible():
     PandasPdb.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s=None)
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(AttributeError)
 def test_invalid_query():
     PandasPdb.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
