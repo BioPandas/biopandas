@@ -6,7 +6,6 @@ import os
 import copy
 import gzip
 import warnings
-from string import ascii_uppercase
 from typing import Any, Dict, List, Union
 from warnings import warn
 
