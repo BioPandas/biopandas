@@ -14,8 +14,8 @@ python -c "import scipy; print('scipy %s' % scipy.__version__)"
 python -c "import pandas; print('pandas %s' % pandas.__version__)"
 
 if [[ "$COVERAGE" == "true" ]]; then
-    nosetests -s -v --with-coverage --cover-package=biopandas
+    pytest -s -v --with-coverage --cover-package=biopandas
 else
-    nosetests -s -v biopandas
+    pytest -s -v biopandas
 fi
 #make test-doc test-sphinxext

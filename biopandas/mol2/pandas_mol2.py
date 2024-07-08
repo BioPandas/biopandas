@@ -1,14 +1,15 @@
 """ Class for working with Tripos MOL2 files"""
+
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import pandas as pd
 import numpy as np
-from .mol2_io import split_multimol2
+import pandas as pd
 
+from .mol2_io import split_multimol2
 
 COLUMN_NAMES = (
     "atom_id",
@@ -167,7 +168,9 @@ class PandasMol2(object):
     def _construct_df(self, mol2_lines, col_names, col_types):
         """Construct DataFrames from list of PDB lines."""
         return self._atomsection_to_pandas(
-            self._get_atomsection(mol2_lines), col_names=col_names, col_types=col_types
+            self._get_atomsection(mol2_lines),
+            col_names=col_names,
+            col_types=col_types,
         )
 
     @staticmethod
@@ -195,7 +198,9 @@ class PandasMol2(object):
     @staticmethod
     def _atomsection_to_pandas(mol2_atom_lst, col_names, col_types):
 
-        df = pd.DataFrame([lst.split() for lst in mol2_atom_lst], columns=col_names)
+        df = pd.DataFrame(
+            [lst.split() for lst in mol2_atom_lst], columns=col_names
+        )
 
         for i in range(df.shape[1]):
             df[col_names[i]] = df[col_names[i]].astype(col_types[i])
@@ -281,4 +286,6 @@ class PandasMol2(object):
 
         """
 
-        return np.sqrt(np.sum(df[["x", "y", "z"]].subtract(xyz, axis=1) ** 2, axis=1))
+        return np.sqrt(
+            np.sum(df[["x", "y", "z"]].subtract(xyz, axis=1) ** 2, axis=1)
+        )

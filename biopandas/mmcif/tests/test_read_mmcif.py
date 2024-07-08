@@ -6,16 +6,14 @@
 
 
 import os
-from urllib.error import HTTPError
-from urllib.request import urlopen
 from pathlib import Path
+from urllib.error import HTTPError
 
-import numpy as np
 import pandas as pd
+import pytest
 from biopandas.mmcif import PandasMmcif
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
 from pandas.testing import assert_frame_equal
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
@@ -24,8 +22,12 @@ TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 # TESTDATA_FILENAME2 = os.path.join(
 #    os.path.dirname(__file__), "data", "4eiy_anisouchunk.cif"
 # )
-TESTDATA_FILENAME2 = os.path.join(os.path.dirname(__file__), "data", "4eiy.cif")
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
+TESTDATA_FILENAME2 = os.path.join(
+    os.path.dirname(__file__), "data", "4eiy.cif"
+)
+TESTDATA_FILENAME_GZ = os.path.join(
+    os.path.dirname(__file__), "data", "3eiy.cif.gz"
+)
 
 TESTDATA_FILENAME_AF2_V4 = os.path.join(
     os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.cif"
@@ -92,11 +94,10 @@ with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
     af2_test_struct_v3 = f.read()
 
 
-
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasMmcif()
-    path, txt = ppdb._read_mmcif(TESTDATA_FILENAME)
+    _, txt = ppdb._read_mmcif(TESTDATA_FILENAME)
     print(txt)
     assert txt == three_eiy
 
@@ -126,9 +127,9 @@ def test_fetch_pdb():
 
     try:
         ppdb = PandasMmcif()
-        url, txt = ppdb._fetch_mmcif("3eiy")
+        _, txt = ppdb._fetch_mmcif("3eiy")
     except (HTTPError, ConnectionResetError):
-        url, txt = None, None
+        _, txt = None, None
     if txt:  # skip if PDB down
         txt[:100] == three_eiy[:100]
         ppdb.fetch_mmcif("3eiy")
@@ -141,9 +142,9 @@ def test_fetch_af2():
     # Test latest release
     try:
         ppdb = PandasMmcif()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
     except (HTTPError, ConnectionResetError):
-        url, txt = None, None
+        _, txt = None, None
     if txt:  # skip if AF DB down
         txt[:100] == af2_test_struct_v4[:100]
         ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v4")
@@ -156,9 +157,9 @@ def test_fetch_af2():
     # Test legacy release
     try:
         ppdb = PandasMmcif()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except (HTTPError, ConnectionResetError):
-        url, txt = None, None
+        _, txt = None, None
     if txt:  # skip if AF DB down
         txt[:100] == af2_test_struct_v3[:100]
         ppdb.fetch_mmcif(uniprot_id="Q5VSL9", source="alphafold2-v3")
@@ -172,7 +173,7 @@ def test_fetch_af2():
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasMmcif()
-    path, txt = ppdb._read_mmcif(TESTDATA_FILENAME_GZ)
+    _, txt = ppdb._read_mmcif(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
@@ -282,7 +283,7 @@ def test_read_pdb_with_pathlib():
 #    assert ppdb.code == "4eiy", ppdb.code
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_get_exceptions():
     ppdb = PandasMmcif()
     ppdb.read_mmcif(TESTDATA_FILENAME)
@@ -336,7 +337,9 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )
 
     # single chain test
@@ -350,5 +353,7 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )
