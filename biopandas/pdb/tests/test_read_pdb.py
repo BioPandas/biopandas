@@ -123,11 +123,11 @@ def test_fetch_pdb():
 
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_pdb("3eiy")
+        _, txt = ppdb._fetch_pdb("3eiy")
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if PDB down
         txt[:100] == three_eiy[:100]
@@ -141,11 +141,11 @@ def test_fetch_af2():
     # Check latest release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct_v4[:100]
@@ -159,11 +159,11 @@ def test_fetch_af2():
     # Check legacy release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct_v3[:100]
@@ -178,7 +178,7 @@ def test_fetch_af2():
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasPdb()
-    path, txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
+    _, txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
