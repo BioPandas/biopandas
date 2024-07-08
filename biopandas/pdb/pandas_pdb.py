@@ -247,13 +247,13 @@ class PandasPdb(object):
                 lambda x: x[0][1] if len(x[1]) == 3 else x[0][0], axis=1
             )
         return t
-    
+
     def add_remark(self, code, text='', indent=0):
         """Add custom REMARK entry.
 
         The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
         `n` it will be added after all remarks with codes less or equal to `n`. If the object does
-        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or 
+        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or
         ANISOU records.
 
         Parameters
@@ -263,9 +263,9 @@ class PandasPdb(object):
 
         text : str
             The text of the remark. If the text does not fit into a single line it will be wrapped
-            into multiple lines of REMARK entries. Likewise, if the text contains new line 
+            into multiple lines of REMARK entries. Likewise, if the text contains new line
             characters it will be split accordingly.
-        
+
         indent : int, default: 0
             Number of white spaces inserted before the text of the remark.
 
