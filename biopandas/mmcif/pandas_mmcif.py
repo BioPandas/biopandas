@@ -85,15 +85,14 @@ class PandasMmcif:
             structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
-        breakpoint()
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["pdbx_PDB_model_num"] == model_index]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                df.df["HETATM"]["pdbx_PDB_model_num"] == model_index
+        atomic_df = copy.deepcopy(self)
+        if "ATOM" in atomic_df.df.keys():
+            atomic_df.df["ATOM"] = atomic_df.df["ATOM"].loc[atomic_df.df["ATOM"]["pdbx_PDB_model_num"] == model_index]
+        if "HETATM" in atomic_df.df.keys():
+            atomic_df.df["HETATM"] = atomic_df.df["HETATM"].loc[
+                atomic_df.df["HETATM"]["pdbx_PDB_model_num"] == model_index
             ]
-        return df
+        return atomic_df
 
     def get_models(self, model_indices: List[int]) -> PandasMmcif:
         """Returns a new PandasMmcif object with the dataframes subset to the
@@ -110,17 +109,17 @@ class PandasMmcif:
             containing the structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
+        atomic_df = copy.deepcopy(self)
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[
-                [x in model_indices for x in df.df["ATOM"]["pdbx_PDB_model_num"].tolist()]
+        if "ATOM" in atomic_df.df.keys():
+            atomic_df.df["ATOM"] = atomic_df.df["ATOM"].loc[
+                [x in model_indices for x in atomic_df.df["ATOM"]["pdbx_PDB_model_num"].tolist()]
             ]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                [x in model_indices for x in df.df["HETATM"]["pdbx_PDB_model_num"].tolist()]
+        if "HETATM" in atomic_df.df.keys():
+            atomic_df.df["HETATM"] = atomic_df.df["HETATM"].loc[
+                [x in model_indices for x in atomic_df.df["HETATM"]["pdbx_PDB_model_num"].tolist()]
             ]
-        return df
+        return atomic_df
 
     def fetch_mmcif(self, pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = "pdb"):
         """Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.

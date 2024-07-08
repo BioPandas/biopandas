@@ -434,19 +434,19 @@ class PandasMmtf(object):
             structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
+        atomic_df = copy.deepcopy(self)
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["model_id"] == model_index]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                df.df["HETATM"]["model_id"] == model_index
+        if "ATOM" in atomic_df.df.keys():
+            atomic_df.df["ATOM"] = atomic_df.df["ATOM"].loc[atomic_df.df["ATOM"]["model_id"] == model_index]
+        if "HETATM" in atomic_df.df.keys():
+            atomic_df.df["HETATM"] = atomic_df.df["HETATM"].loc[
+                atomic_df.df["HETATM"]["model_id"] == model_index
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
-                df.df["ANISOU"]["model_id"] == model_index
+        if "ANISOU" in atomic_df.df.keys():
+            atomic_df.df["ANISOU"] = atomic_df.df["ANISOU"].loc[
+                atomic_df.df["ANISOU"]["model_id"] == model_index
             ]
-        return df
+        return atomic_df
 
     def get_models(self, model_indices: List[int]) -> PandasMmtf:
         """Returns a new PandasMmtf object with the dataframes subset to the
@@ -463,21 +463,21 @@ class PandasMmtf(object):
             containing the structure subsetted to the given model.
         """
 
-        df = copy.deepcopy(self)
+        atomic_df = copy.deepcopy(self)
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[
-                [x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]
+        if "ATOM" in atomic_df.df.keys():
+            atomic_df.df["ATOM"] = atomic_df.df["ATOM"].loc[
+                [x in model_indices for x in atomic_df.df["ATOM"]["model_id"].tolist()]
             ]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                [x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]
+        if "HETATM" in atomic_df.df.keys():
+            atomic_df.df["HETATM"] = atomic_df.df["HETATM"].loc[
+                [x in model_indices for x in atomic_df.df["HETATM"]["model_id"].tolist()]
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
-                [x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]
+        if "ANISOU" in atomic_df.df.keys():
+            atomic_df.df["ANISOU"] = atomic_df.df["ANISOU"].loc[
+                [x in model_indices for x in atomic_df.df["ANISOU"]["model_id"].tolist()]
             ]
-        return df
+        return atomic_df
 
 
 
