@@ -5,7 +5,7 @@ name: Publish BioPandas to PyPI / GitHub
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test-style:
@@ -13,42 +13,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-        cache: 'pip'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+          cache: "pip"
 
-    - name: Install package dependencies for testing
-      run: pip install .[test]
+      - name: Install package dependencies for testing
+        run: pip install .[test]
 
-    - name: Run all the pytest tests
-      run: flake8 ./biopandas
+      - name: Run all the pytest tests
+        run: flake8 ./biopandas
 
   test-pytest:
     name: Run pytest tests
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-        cache: 'pip'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+          cache: "pip"
 
-    - name: Install package dependencies for testing
-      run: pip install .[test]
+      - name: Install package dependencies for testing
+        run: pip install .[test]
 
-    - name: Run all the pytest tests
-      run: pytest ./biopandas -sv
+      - name: Run all the pytest tests
+        run: pytest -sv
 
   build-n-publish:
     needs: [test-pytest] # only runs if tests are passing
-    if: startsWith(github.ref, 'refs/tags/v')  # Check if the tag starts with 'v'
+    if: startsWith(github.ref, 'refs/tags/v') # Check if the tag starts with 'v'
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
 
