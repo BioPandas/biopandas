@@ -4,16 +4,18 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 
 import numpy as np
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
+
+TEST_DATA = pkg_resources.files(tests.pdb.data)
 
 
 def test_defaults():
-    TESTDATA_1t48 = os.path.join(
-        os.path.dirname(__file__), "data", "1t48_995.pdb"
-    )
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     expect_res = [
@@ -149,9 +151,7 @@ def test_defaults():
 
 
 def test_sameindex():
-    TESTDATA_1t48 = os.path.join(
-        os.path.dirname(__file__), "data", "1t48_995.pdb"
-    )
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
     print(p1t48)
@@ -290,9 +290,7 @@ def test_sameindex():
 
 
 def test_multichain():
-    TESTDATA_5mtn = os.path.join(
-        os.path.dirname(__file__), "data", "5mtn_multichain.pdb"
-    )
+    TESTDATA_5mtn = str(TEST_DATA.joinpath("5mtn_multichain.pdb"))
     mtn = PandasPdb()
     mtn.read_pdb(TESTDATA_5mtn)
     expect_res_a = [
@@ -487,12 +485,8 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["chain_id"].values)
 
-    got_res_a = list(
-        transl.loc[transl["chain_id"] == "A", "residue_name"].values
-    )
-    got_res_b = list(
-        transl.loc[transl["chain_id"] == "B", "residue_name"].values
-    )
+    got_res_a = list(transl.loc[transl["chain_id"] == "A", "residue_name"].values)
+    got_res_b = list(transl.loc[transl["chain_id"] == "B", "residue_name"].values)
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a
@@ -500,8 +494,7 @@ def test_multichain():
 
 
 def test_pdb_with_insertion_codes():
-
-    PDB_2D7T_PATH = os.path.join(os.path.dirname(__file__), "data", "2d7t.pdb")
+    PDB_2D7T_PATH = str(TEST_DATA.joinpath("2d7t.pdb"))
 
     ppdb = PandasPdb().read_pdb(PDB_2D7T_PATH)
     sequence = ppdb.amino3to1()

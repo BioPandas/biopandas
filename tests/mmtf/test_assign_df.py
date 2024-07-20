@@ -4,24 +4,26 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 
-from biopandas.mmcif import PandasMmcif
-from biopandas.testutils import assert_raises
+import tests.mmtf.data
+from biopandas.mmtf import PandasMmtf
+from tests.testutils import assert_raises
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
+TEST_DATA = pkg_resources.files(tests.mmtf.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.mmtf"))
 
 
 def test_overwrite_df():
-    data_path = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
-    pdb = PandasMmcif().read_mmcif(data_path)
+    pdb = PandasMmtf().read_mmtf(TESTDATA_FILENAME)
 
     def overwrite():
         pdb.df = "bla"
 
     expect = (
-        "Please use `PandasMmcif._df = ... ` instead\n"
-        "of `PandasMmcif.df = ... ` if you are sure that\n"
+        "Please use `PandasMmtf._df = ... ` instead\n"
+        "of `PandasMmtf.df = ... ` if you are sure that\n"
         "you want to overwrite the `df` attribute."
     )
 

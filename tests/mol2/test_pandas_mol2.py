@@ -1,4 +1,4 @@
-""" Utility function for reading Tripos MOL2 files from files"""
+"""Utility function for reading Tripos MOL2 files from files"""
 
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
@@ -6,20 +6,20 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 
+import tests.mol2.data
 from biopandas.mol2 import PandasMol2
 from biopandas.mol2.mol2_io import split_multimol2
-from biopandas.testutils import assert_raises
+from tests.testutils import assert_raises
 
-this_dir = os.path.dirname(os.path.realpath(__file__))
+TEST_DATA = pkg_resources.files(tests.mol2.data)
 
 
 def test_read_mol2():
-
-    data_path_1 = os.path.join(this_dir, "data", "40_mol2_files.mol2")
-    data_path_2 = os.path.join(this_dir, "data", "40_mol2_files.mol2.gz")
-    data_path_3 = os.path.join(this_dir, "data", "empty_line.mol2")
+    data_path_1 = str(TEST_DATA.joinpath("40_mol2_files.mol2"))
+    data_path_2 = str(TEST_DATA.joinpath("40_mol2_files.mol2.gz"))
+    data_path_3 = str(TEST_DATA.joinpath("empty_line.mol2"))
 
     for data_path in (data_path_1, data_path_2):
         pdmol = PandasMol2().read_mol2(data_path)
@@ -46,20 +46,17 @@ def test_read_mol2():
 
 
 def test_read_mol2_from_list():
-
-    data_path = os.path.join(this_dir, "data", "40_mol2_files.mol2")
+    data_path = str(TEST_DATA.joinpath("40_mol2_files.mol2"))
     mol2 = next(split_multimol2(data_path))
 
-    pdmol = PandasMol2().read_mol2_from_list(
-        mol2_lines=mol2[1], mol2_code=mol2[0]
-    )
+    pdmol = PandasMol2().read_mol2_from_list(mol2_lines=mol2[1], mol2_code=mol2[0])
     assert pdmol.df.shape == (65, 9)
     assert pdmol.code == "ZINC38611810"
 
 
 def test_rmsd():
-    data_path_1 = os.path.join(this_dir, "data", "1b5e_1.mol2")
-    data_path_2 = os.path.join(this_dir, "data", "1b5e_2.mol2")
+    data_path_1 = str(TEST_DATA.joinpath("1b5e_1.mol2"))
+    data_path_2 = str(TEST_DATA.joinpath("1b5e_2.mol2"))
 
     pdmol_1 = PandasMol2().read_mol2(data_path_1)
     pdmol_2 = PandasMol2().read_mol2(data_path_2)
@@ -69,14 +66,14 @@ def test_rmsd():
 
 
 def test_distance():
-    data_path = os.path.join(this_dir, "data", "1b5e_1.mol2")
+    data_path = str(TEST_DATA.joinpath("1b5e_1.mol2"))
 
     pdmol = PandasMol2().read_mol2(data_path)
     assert round(pdmol.distance().values[0], 3) == 31.185
 
 
 def test_distance_external_df():
-    data_path = os.path.join(this_dir, "data", "1b5e_1.mol2")
+    data_path = str(TEST_DATA.joinpath("1b5e_1.mol2"))
 
     pdmol = PandasMol2().read_mol2(data_path)
     new_df = pdmol.df.iloc[1:, :].copy()
@@ -84,7 +81,7 @@ def test_distance_external_df():
 
 
 def test_overwrite_df():
-    data_path = os.path.join(this_dir, "data", "1b5e_1.mol2")
+    data_path = str(TEST_DATA.joinpath("1b5e_1.mol2"))
     pdmol = PandasMol2().read_mol2(data_path)
 
     def overwrite():

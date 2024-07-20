@@ -4,21 +4,22 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
+import importlib.resources as pkg_resources
 import os
 import warnings
 
 import pandas as pd
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
-)
-TESTDATA_FILENAME3 = os.path.join(
-    os.path.dirname(__file__), "data", "5mtn_multichain.pdb"
-)
-OUTFILE = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb")
-OUTFILE_GZ = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb.gz")
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.pdb"))
+TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy_anisouchunk.pdb"))
+TESTDATA_FILENAME3 = str(TEST_DATA.joinpath("5mtn_multichain.pdb"))
+OUTFILE = str(TEST_DATA.joinpath("tmp.pdb"))
+OUTFILE_GZ = str(TEST_DATA.joinpath("tmp.pdb.gz"))
 
 hetatm = ""
 with open(TESTDATA_FILENAME, "r") as f:
@@ -45,9 +46,7 @@ def test_defaults():
 def test_nonexpected_column():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    ppdb.df["HETATM"]["test"] = pd.Series(
-        "test", index=ppdb.df["HETATM"].index
-    )
+    ppdb.df["HETATM"]["test"] = pd.Series("test", index=ppdb.df["HETATM"].index)
     with warnings.catch_warnings(record=True) as w:
         ppdb.to_pdb(path=OUTFILE, records=["HETATM"])
     with open(OUTFILE, "r") as f:
@@ -153,6 +152,4 @@ def test_b_factor_shift():
     assert tmp_df[
         tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == "")
     ].empty
-    assert not tmp_df[
-        tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")
-    ].empty
+    assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")].empty

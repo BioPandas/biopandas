@@ -4,32 +4,24 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 import unittest
 
 import pandas as pd
+
+import tests.mmtf.data
+import tests.pdb.data
 from biopandas.mmtf import PandasMmtf
 from biopandas.pdb import PandasPdb
 
-MMTF_TESTDATA_FILENAME = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.mmtf"
-)
-MMTF_TESTDATA_FILENAME_GZ = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.mmtf.gz"
-)
+TEST_DATA = pkg_resources.files(tests.mmtf.data)
+PDB_TEST_DATA = pkg_resources.files(tests.pdb.data)
 
-PDB_TESTDATA_FILENAME = os.path.join(
-    os.path.dirname(__file__), "..", "..", "pdb", "tests", "data", "3eiy.pdb"
-)
-PDB_TESTDATA_FILENAME_GZ = os.path.join(
-    os.path.dirname(__file__),
-    "..",
-    "..",
-    "pdb",
-    "tests",
-    "data",
-    "3eiy.pdb.gz",
-)
+MMTF_TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.mmtf"))
+MMTF_TESTDATA_FILENAME_GZ = str(TEST_DATA.joinpath("3eiy.mmtf.gz"))
+
+PDB_TESTDATA_FILENAME = str(PDB_TEST_DATA.joinpath("3eiy.pdb"))
+PDB_TESTDATA_FILENAME_GZ = str(PDB_TEST_DATA.joinpath("3eiy.pdb.gz"))
 
 
 ATOM_DF_COLUMNS = [

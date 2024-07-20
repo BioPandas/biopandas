@@ -4,11 +4,14 @@
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
-import os
+import importlib.resources as pkg_resources
 
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "2jyf.pdb")
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("2jyf.pdb"))
 
 
 def test_get_index_df():

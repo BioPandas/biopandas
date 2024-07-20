@@ -4,17 +4,21 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 
 import pytest
+
+import tests.mmtf.data
 from biopandas.mmtf import PandasMmtf
 
-TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.mmtf")
-TESTDATA_1t49 = os.path.join(os.path.dirname(__file__), "data", "1t49.mmtf")
-# TESTDATA_lig1 = os.path.join(os.path.dirname(__file__), "data", "lig_conf_1.pdb")
-# TESTDATA_lig2 = os.path.join(os.path.dirname(__file__), "data", "lig_conf_2.pdb")
+TEST_DATA = pkg_resources.files(tests.mmtf.data)
 
-TESTDATA_rna = os.path.join(os.path.dirname(__file__), "data", "1ehz.mmtf")
+TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.mmtf"))
+TESTDATA_1t49 = str(TEST_DATA.joinpath("1t49.mmtf"))
+# TESTDATA_lig1 = str(TEST_DATA.joinpath("lig_conf_1.pdb"))
+# TESTDATA_lig2 = str(TEST_DATA.joinpath("lig_conf_2.pdb"))
+
+TESTDATA_rna = str(TEST_DATA.joinpath("1ehz.mmtf"))
 
 p1t48 = PandasMmtf()
 p1t48.read_mmtf(TESTDATA_1t48)
@@ -51,9 +55,7 @@ def test_invalid_query():
 
 
 def test_protein():
-    r = PandasMmtf.rmsd(
-        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False
-    )
+    r = PandasMmtf.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
     assert r == 0.4785, r
 
 

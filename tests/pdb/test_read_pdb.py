@@ -5,29 +5,26 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
+import importlib.resources as pkg_resources
 import os
 from urllib.error import HTTPError
 
 import numpy as np
 import pandas as pd
 import pytest
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
-from biopandas.testutils import assert_raises
+from tests.testutils import assert_raises
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
-)
-TESTDATA_FILENAME_GZ = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.pdb.gz"
-)
-TESTDATA_FILENAME_AF2_V4 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.pdb"
-)
+TEST_DATA = pkg_resources.files(tests.pdb.data)
 
-TESTDATA_FILENAME_AF2_V3 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v3.pdb"
-)
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.pdb"))
+TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy_anisouchunk.pdb"))
+TESTDATA_FILENAME_GZ = str(TEST_DATA.joinpath("3eiy.pdb.gz"))
+TESTDATA_FILENAME_AF2_V4 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v4.pdb"))
+
+TESTDATA_FILENAME_AF2_V3 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v3.pdb"))
 
 ATOM_DF_COLUMNS = [
     "record_name",
@@ -103,8 +100,7 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are "
-        ".pdb, .pdb.gz, .ent, .ent.gz"
+        "Wrong file format; allowed file formats are " ".pdb, .pdb.gz, .ent, .ent.gz"
     )
 
     def run_code_1():

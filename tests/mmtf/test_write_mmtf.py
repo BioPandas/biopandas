@@ -2,8 +2,9 @@ import os
 import unittest
 
 import pandas as pd
-from biopandas.mmtf.pandas_mmtf import PandasMmtf, write_mmtf
 from pandas.testing import assert_frame_equal
+
+from biopandas.mmtf.pandas_mmtf import PandasMmtf, write_mmtf
 
 
 @unittest.skip(reason="PDB No longer serves MMTF files.")

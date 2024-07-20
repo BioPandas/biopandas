@@ -4,17 +4,21 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import importlib.resources as pkg_resources
 
 import pytest
+
+import tests.mmcif.data
 from biopandas.mmcif import PandasMmcif
 
-TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
-TESTDATA_1t49 = os.path.join(os.path.dirname(__file__), "data", "1t49.cif")
-# TESTDATA_lig1 = os.path.join(os.path.dirname(__file__), "data", "lig_conf_1.pdb")
-# TESTDATA_lig2 = os.path.join(os.path.dirname(__file__), "data", "lig_conf_2.pdb")
+TEST_DATA = pkg_resources.files(tests.mmcif.data)
 
-TESTDATA_rna = os.path.join(os.path.dirname(__file__), "data", "1ehz.cif")
+TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
+TESTDATA_1t49 = str(TEST_DATA.joinpath("1t49.cif"))
+# TESTDATA_lig1 = str(TEST_DATA.joinpath("lig_conf_1.pdb"))
+# TESTDATA_lig2 = str(TEST_DATA.joinpath("lig_conf_2.pdb"))
+
+TESTDATA_rna = str(TEST_DATA.joinpath("1ehz.cif"))
 
 p1t48 = PandasMmcif()
 p1t48.read_mmcif(TESTDATA_1t48)
@@ -48,9 +52,7 @@ def test_invalid_query():
 
 
 def test_protein():
-    r = PandasMmcif.rmsd(
-        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False
-    )
+    r = PandasMmcif.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
     assert r == 0.4923, r
 
 
