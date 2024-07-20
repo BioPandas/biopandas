@@ -57,7 +57,9 @@ def test_invalid_query():
 
 
 def test_protein():
-    r = PandasPdb.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
+    r = PandasPdb.rmsd(
+        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False
+    )
     assert r == 0.4785, r
 
 
@@ -71,7 +73,9 @@ def test_rna_and_nonmatching_indices():
 
 
 def test_ligand():
-    r = PandasPdb.rmsd(pl1.df["HETATM"], pl2.df["HETATM"], s="hydrogen", invert=True)
+    r = PandasPdb.rmsd(
+        pl1.df["HETATM"], pl2.df["HETATM"], s="hydrogen", invert=True
+    )
     assert r == 1.9959, r
 
 

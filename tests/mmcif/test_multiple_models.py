@@ -29,7 +29,10 @@ def test_get_model():
     biopandas_structure = PandasMmcif().read_mmcif(TESTDATA_FILENAME)
     MODEL_INDEX = 1
     new_biopandas_structure = biopandas_structure.get_model(MODEL_INDEX)
-    assert new_biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"].all() == MODEL_INDEX
+    assert (
+        new_biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"].all()
+        == MODEL_INDEX
+    )
 
 
 def test_get_models():
@@ -38,5 +41,6 @@ def test_get_models():
 
     new_biopandas_structure = biopandas_structure.get_models(MODEL_INDICES)
     assert (
-        new_biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"].all() in MODEL_INDICES
+        new_biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"].all()
+        in MODEL_INDICES
     )

@@ -27,7 +27,9 @@ def test_split_multimol2():
 
 
 def test_split_multimol2_wrong_format():
-    expect = "Wrong file format;" "allowed file formats are .mol2 and .mol2.gz."
+    expect = (
+        "Wrong file format;" "allowed file formats are .mol2 and .mol2.gz."
+    )
 
     def run_code():
         next(split_multimol2("40_mol2_files.pdb"))

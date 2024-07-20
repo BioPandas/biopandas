@@ -490,8 +490,12 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["chain_id"].values)
 
-    got_res_a = list(transl.loc[transl["chain_id"] == "A", "residue_name"].values)
-    got_res_b = list(transl.loc[transl["chain_id"] == "B", "residue_name"].values)
+    got_res_a = list(
+        transl.loc[transl["chain_id"] == "A", "residue_name"].values
+    )
+    got_res_b = list(
+        transl.loc[transl["chain_id"] == "B", "residue_name"].values
+    )
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a

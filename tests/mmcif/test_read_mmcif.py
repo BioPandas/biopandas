@@ -336,7 +336,9 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )
 
     # single chain test
@@ -350,5 +352,7 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
+        mmcif_pdb.df["HETATM"]
+        .drop(columns=["line_idx"])
+        .reset_index(drop=True),
     )

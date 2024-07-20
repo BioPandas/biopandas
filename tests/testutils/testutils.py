@@ -15,7 +15,8 @@ def assertMultiLineEqual(first, second, preserve_newline=True, msg=None):
     if first != second:
         message = "".join(
             difflib.ndiff(
-                first.splitlines(preserve_newline), second.splitlines(preserve_newline)
+                first.splitlines(preserve_newline),
+                second.splitlines(preserve_newline),
             )
         )
         if msg:

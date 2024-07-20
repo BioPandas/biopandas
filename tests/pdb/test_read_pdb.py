@@ -11,7 +11,6 @@ if sys.version_info >= (3, 9):
     import importlib.resources as pkg_resources
 else:
     import importlib_resources as pkg_resources
-import os
 from urllib.error import HTTPError
 
 import numpy as np
@@ -105,7 +104,8 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are " ".pdb, .pdb.gz, .ent, .ent.gz"
+        "Wrong file format; allowed file formats are "
+        ".pdb, .pdb.gz, .ent, .ent.gz"
     )
 
     def run_code_1():

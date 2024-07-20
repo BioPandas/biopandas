@@ -54,7 +54,9 @@ def test_read_mol2_from_list():
     data_path = str(TEST_DATA.joinpath("40_mol2_files.mol2"))
     mol2 = next(split_multimol2(data_path))
 
-    pdmol = PandasMol2().read_mol2_from_list(mol2_lines=mol2[1], mol2_code=mol2[0])
+    pdmol = PandasMol2().read_mol2_from_list(
+        mol2_lines=mol2[1], mol2_code=mol2[0]
+    )
     assert pdmol.df.shape == (65, 9)
     assert pdmol.code == "ZINC38611810"
 

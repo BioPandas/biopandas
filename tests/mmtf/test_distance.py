@@ -55,5 +55,7 @@ def test_use_external_df():
     new_df = p1t48.df["ATOM"].iloc[:-1, :].copy()
     dist = PandasMmtf.distance_df(df=new_df, xyz=(70.785, 15.477, 23.359))
 
-    expect = pd.Series([2.533259, 1.520502, 0.000000, 1.257597], index=[12, 13, 14, 15])
+    expect = pd.Series(
+        [2.533259, 1.520502, 0.000000, 1.257597], index=[12, 13, 14, 15]
+    )
     assert dist[dist < 3].all() == expect.all()

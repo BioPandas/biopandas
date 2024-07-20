@@ -51,7 +51,9 @@ def test_defaults():
 def test_nonexpected_column():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    ppdb.df["HETATM"]["test"] = pd.Series("test", index=ppdb.df["HETATM"].index)
+    ppdb.df["HETATM"]["test"] = pd.Series(
+        "test", index=ppdb.df["HETATM"].index
+    )
     with warnings.catch_warnings(record=True) as w:
         ppdb.to_pdb(path=OUTFILE, records=["HETATM"])
     with open(OUTFILE, "r") as f:
@@ -157,4 +159,6 @@ def test_b_factor_shift():
     assert tmp_df[
         tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == "")
     ].empty
-    assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")].empty
+    assert not tmp_df[
+        tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")
+    ].empty
