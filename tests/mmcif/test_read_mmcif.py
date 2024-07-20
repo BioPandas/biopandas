@@ -5,7 +5,12 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-import importlib.resources as pkg_resources
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 from pathlib import Path
 from urllib.error import HTTPError
 

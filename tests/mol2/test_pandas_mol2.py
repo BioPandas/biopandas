@@ -6,7 +6,12 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import importlib.resources as pkg_resources
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 
 import tests.mol2.data
 from biopandas.mol2 import PandasMol2
