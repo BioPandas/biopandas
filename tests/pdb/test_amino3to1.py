@@ -1,19 +1,28 @@
 # BioPandas
-# Author: Arian Jamasb <arian@jamasb.io>, Sebastian Raschka <mail@sebastianraschka.com>
+# Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 
 import numpy as np
-from biopandas.mmcif import PandasMmcif
+
+import tests.pdb.data
+from biopandas.pdb import PandasPdb
+
+TEST_DATA = pkg_resources.files(tests.pdb.data)
 
 
 def test_defaults():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
-    p1t48 = PandasMmcif()
-    p1t48.read_mmcif(TESTDATA_1t48)
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
+    p1t48 = PandasPdb()
+    p1t48.read_pdb(TESTDATA_1t48)
     expect_res = [
         "M",
         "E",
@@ -135,183 +144,22 @@ def test_defaults():
         "S",
         "L",
         "K",
-        "C",
-        "A",
-        "Q",
-        "Y",
-        "W",
-        "P",
-        "Q",
-        "K",
-        "E",
-        "E",
-        "K",
-        "E",
-        "M",
-        "I",
-        "F",
-        "E",
-        "D",
-        "T",
-        "N",
-        "L",
-        "K",
-        "L",
-        "T",
-        "L",
-        "I",
-        "S",
-        "E",
-        "D",
-        "I",
-        "K",
-        "S",
-        "Y",
-        "Y",
-        "T",
-        "V",
-        "R",
-        "Q",
-        "L",
-        "E",
-        "L",
-        "E",
-        "N",
-        "L",
-        "T",
-        "T",
-        "Q",
-        "E",
-        "T",
-        "R",
-        "E",
-        "I",
-        "L",
-        "H",
-        "F",
-        "H",
-        "Y",
-        "T",
-        "T",
-        "W",
-        "P",
-        "D",
-        "F",
-        "G",
-        "V",
-        "P",
-        "E",
-        "S",
-        "P",
-        "A",
-        "S",
-        "F",
-        "L",
-        "N",
-        "F",
-        "L",
-        "F",
-        "K",
-        "V",
-        "R",
-        "E",
-        "S",
-        "G",
-        "S",
-        "L",
-        "S",
-        "P",
-        "E",
-        "H",
-        "G",
-        "P",
-        "V",
-        "V",
-        "V",
-        "H",
-        "C",
-        "S",
-        "A",
-        "G",
-        "I",
-        "G",
-        "R",
-        "S",
-        "G",
-        "T",
-        "F",
-        "C",
-        "L",
-        "A",
-        "D",
-        "T",
-        "C",
-        "L",
-        "L",
-        "L",
-        "M",
-        "D",
-        "K",
-        "R",
-        "K",
-        "D",
-        "P",
-        "S",
-        "S",
-        "V",
-        "D",
-        "I",
-        "K",
-        "K",
-        "V",
-        "L",
-        "L",
-        "E",
-        "M",
-        "R",
-        "K",
-        "F",
-        "R",
-        "M",
-        "G",
-        "L",
-        "I",
-        "Q",
-        "T",
-        "A",
-        "D",
-        "Q",
-        "L",
-        "R",
-        "F",
-        "S",
-        "Y",
-        "L",
-        "A",
-        "V",
-        "I",
-        "E",
-        "G",
-        "A",
-        "K",
-        "F",
-        "I",
-        "M",
     ]
 
     transl = p1t48.amino3to1()
     expect_chain = ["A" for _ in range(transl.shape[0])]
-    got_chain = list(transl["auth_asym_id"].values)
-    got_res = list(transl["auth_comp_id"].values)
+    got_chain = list(transl["chain_id"].values)
+    got_res = list(transl["residue_name"].values)
 
     assert expect_chain == got_chain
     assert expect_res == got_res
 
 
 def test_sameindex():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
-    p1t48 = PandasMmcif()
-    p1t48.read_mmcif(TESTDATA_1t48)
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
+    p1t48 = PandasPdb()
+    p1t48.read_pdb(TESTDATA_1t48)
+    print(p1t48)
     p1t48.df["ATOM"].index = np.zeros(p1t48.df["ATOM"].shape[0], dtype=int)
 
     expect_res = [
@@ -435,184 +283,21 @@ def test_sameindex():
         "S",
         "L",
         "K",
-        "C",
-        "A",
-        "Q",
-        "Y",
-        "W",
-        "P",
-        "Q",
-        "K",
-        "E",
-        "E",
-        "K",
-        "E",
-        "M",
-        "I",
-        "F",
-        "E",
-        "D",
-        "T",
-        "N",
-        "L",
-        "K",
-        "L",
-        "T",
-        "L",
-        "I",
-        "S",
-        "E",
-        "D",
-        "I",
-        "K",
-        "S",
-        "Y",
-        "Y",
-        "T",
-        "V",
-        "R",
-        "Q",
-        "L",
-        "E",
-        "L",
-        "E",
-        "N",
-        "L",
-        "T",
-        "T",
-        "Q",
-        "E",
-        "T",
-        "R",
-        "E",
-        "I",
-        "L",
-        "H",
-        "F",
-        "H",
-        "Y",
-        "T",
-        "T",
-        "W",
-        "P",
-        "D",
-        "F",
-        "G",
-        "V",
-        "P",
-        "E",
-        "S",
-        "P",
-        "A",
-        "S",
-        "F",
-        "L",
-        "N",
-        "F",
-        "L",
-        "F",
-        "K",
-        "V",
-        "R",
-        "E",
-        "S",
-        "G",
-        "S",
-        "L",
-        "S",
-        "P",
-        "E",
-        "H",
-        "G",
-        "P",
-        "V",
-        "V",
-        "V",
-        "H",
-        "C",
-        "S",
-        "A",
-        "G",
-        "I",
-        "G",
-        "R",
-        "S",
-        "G",
-        "T",
-        "F",
-        "C",
-        "L",
-        "A",
-        "D",
-        "T",
-        "C",
-        "L",
-        "L",
-        "L",
-        "M",
-        "D",
-        "K",
-        "R",
-        "K",
-        "D",
-        "P",
-        "S",
-        "S",
-        "V",
-        "D",
-        "I",
-        "K",
-        "K",
-        "V",
-        "L",
-        "L",
-        "E",
-        "M",
-        "R",
-        "K",
-        "F",
-        "R",
-        "M",
-        "G",
-        "L",
-        "I",
-        "Q",
-        "T",
-        "A",
-        "D",
-        "Q",
-        "L",
-        "R",
-        "F",
-        "S",
-        "Y",
-        "L",
-        "A",
-        "V",
-        "I",
-        "E",
-        "G",
-        "A",
-        "K",
-        "F",
-        "I",
-        "M",
     ]
+
     transl = p1t48.amino3to1()
     expect_chain = ["A" for _ in range(transl.shape[0])]
-    got_chain = list(transl["auth_asym_id"].values)
-    got_res = list(transl["auth_comp_id"].values)
+    got_chain = list(transl["chain_id"].values)
+    got_res = list(transl["residue_name"].values)
 
     assert expect_chain == got_chain
     assert expect_res == got_res
 
 
 def test_multichain():
-    TESTDATA_5mtn = os.path.join(
-        os.path.dirname(__file__), "data", "5mtn_multichain.cif"
-    )
-    mtn = PandasMmcif()
-    mtn.read_mmcif(TESTDATA_5mtn)
+    TESTDATA_5mtn = str(TEST_DATA.joinpath("5mtn_multichain.pdb"))
+    mtn = PandasPdb()
+    mtn.read_pdb(TESTDATA_5mtn)
     expect_res_a = [
         "S",
         "L",
@@ -803,13 +488,13 @@ def test_multichain():
     transl = mtn.amino3to1()
 
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
-    got_chain = list(transl["auth_asym_id"].values)
+    got_chain = list(transl["chain_id"].values)
 
     got_res_a = list(
-        transl.loc[transl["auth_asym_id"] == "A", "auth_comp_id"].values
+        transl.loc[transl["chain_id"] == "A", "residue_name"].values
     )
     got_res_b = list(
-        transl.loc[transl["auth_asym_id"] == "B", "auth_comp_id"].values
+        transl.loc[transl["chain_id"] == "B", "residue_name"].values
     )
 
     assert expect_chain == got_chain
@@ -818,8 +503,8 @@ def test_multichain():
 
 
 def test_pdb_with_insertion_codes():
-    PDB_2D7T_PATH = os.path.join(os.path.dirname(__file__), "data", "2d7t.cif")
+    PDB_2D7T_PATH = str(TEST_DATA.joinpath("2d7t.pdb"))
 
-    ppdb = PandasMmcif().read_mmcif(PDB_2D7T_PATH)
+    ppdb = PandasPdb().read_pdb(PDB_2D7T_PATH)
     sequence = ppdb.amino3to1()
-    assert "".join(sequence[50:60]["auth_comp_id"].values) == "INPKSGDTNY"
+    assert "".join(sequence[50:60]["residue_name"].values) == "INPKSGDTNY"

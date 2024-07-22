@@ -4,14 +4,23 @@
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
+
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 import os
 
-from biopandas.mmtf import PandasMmtf
 from pandas.testing import assert_frame_equal
 
-TESTDATA_FILENAME = os.path.join(
-    os.path.dirname(__file__), "data", "2jyf.mmtf"
-)
+import tests.mmtf.data
+from biopandas.mmtf import PandasMmtf
+
+TEST_DATA = pkg_resources.files(tests.mmtf.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("2jyf.mmtf"))
 
 
 def test_label_models():

@@ -4,14 +4,23 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 
 import pandas as pd
+
+import tests.mmcif.data
 from biopandas.mmcif import PandasMmcif
+
+TEST_DATA = pkg_resources.files(tests.mmcif.data)
 
 
 def test_equal():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
 
     p1t48 = PandasMmcif()
     p1t48.read_mmcif(TESTDATA_1t48)
@@ -25,7 +34,7 @@ def test_equal():
 
 
 def test_deprecated_str_arg():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
 
     p1t48 = PandasMmcif()
     p1t48.read_mmcif(TESTDATA_1t48)
@@ -39,7 +48,7 @@ def test_deprecated_str_arg():
 
 
 def test_use_external_df():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.cif")
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
 
     p1t48 = PandasMmcif()
     p1t48.read_mmcif(TESTDATA_1t48)

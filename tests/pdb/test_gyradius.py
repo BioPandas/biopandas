@@ -4,12 +4,22 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 
 import pytest
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
 
-TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48_995.pdb")
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
 
 p1t48 = PandasPdb()
 p1t48.read_pdb(TESTDATA_1t48)

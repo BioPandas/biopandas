@@ -5,36 +5,35 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-import os
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 from pathlib import Path
 from urllib.error import HTTPError
 
 import pandas as pd
 import pytest
-from biopandas.mmcif import PandasMmcif
-from biopandas.pdb import PandasPdb
-from biopandas.testutils import assert_raises
 from pandas.testing import assert_frame_equal
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
+import tests.mmcif.data
+from biopandas.mmcif import PandasMmcif
+from biopandas.pdb import PandasPdb
+from tests.testutils import assert_raises
+
+TEST_DATA = pkg_resources.files(tests.mmcif.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.cif"))
 
 # Not clear on how ANISOU records are handled in mmCIF files so skipping
-# TESTDATA_FILENAME2 = os.path.join(
-#    os.path.dirname(__file__), "data", "4eiy_anisouchunk.cif"
-# )
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy.cif"
-)
-TESTDATA_FILENAME_GZ = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.cif.gz"
-)
+# TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy_anisouchunk.cif"))
+TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy.cif"))
+TESTDATA_FILENAME_GZ = str(TEST_DATA.joinpath("3eiy.cif.gz"))
 
-TESTDATA_FILENAME_AF2_V4 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.cif"
-)
-TESTDATA_FILENAME_AF2_V3 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v3.cif"
-)
+TESTDATA_FILENAME_AF2_V4 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v4.cif"))
+TESTDATA_FILENAME_AF2_V3 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v3.cif"))
 
 ATOM_DF_COLUMNS = [
     "B_iso_or_equiv",

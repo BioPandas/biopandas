@@ -4,19 +4,24 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import sys
 
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
+
+import tests.mmtf.data
 from biopandas.mmtf import PandasMmtf
-from biopandas.testutils import assert_raises
+from tests.testutils import assert_raises
 
-TESTDATA_FILENAME = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy.mmtf"
-)
+TEST_DATA = pkg_resources.files(tests.mmtf.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.mmtf"))
 
 
 def test_overwrite_df():
-    data_path = os.path.join(os.path.dirname(__file__), "data", "3eiy.mmtf")
-    pdb = PandasMmtf().read_mmtf(data_path)
+    pdb = PandasMmtf().read_mmtf(TESTDATA_FILENAME)
 
     def overwrite():
         pdb.df = "bla"

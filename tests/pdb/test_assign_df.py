@@ -4,17 +4,24 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import sys
 
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
-from biopandas.testutils import assert_raises
+from tests.testutils import assert_raises
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.pdb"))
 
 
 def test_overwrite_df():
-    data_path = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
-    pdb = PandasPdb().read_pdb(data_path)
+    pdb = PandasPdb().read_pdb(TESTDATA_FILENAME)
 
     def overwrite():
         pdb.df = "bla"

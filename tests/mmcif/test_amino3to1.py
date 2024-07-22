@@ -4,18 +4,25 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-import os
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 
 import numpy as np
-from biopandas.mmtf import PandasMmtf
+
+import tests.mmcif.data
+from biopandas.mmcif import PandasMmcif
+
+TEST_DATA = pkg_resources.files(tests.mmcif.data)
 
 
 def test_defaults():
-    TESTDATA_1t48 = os.path.join(
-        os.path.dirname(__file__), "data", "1t48.mmtf"
-    )
-    p1t48 = PandasMmtf()
-    p1t48.read_mmtf(TESTDATA_1t48)
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
+    p1t48 = PandasMmcif()
+    p1t48.read_mmcif(TESTDATA_1t48)
     expect_res = [
         "M",
         "E",
@@ -299,33 +306,21 @@ def test_defaults():
         "F",
         "I",
         "M",
-        "G",
-        "Q",
-        "W",
-        "K",
-        "E",
-        "L",
-        "S",
-        "H",
-        "E",
-        "D",
     ]
 
     transl = p1t48.amino3to1()
     expect_chain = ["A" for _ in range(transl.shape[0])]
-    got_chain = list(transl["chain_id"].values)
-    got_res = list(transl["residue_name"].values)
+    got_chain = list(transl["auth_asym_id"].values)
+    got_res = list(transl["auth_comp_id"].values)
 
     assert expect_chain == got_chain
     assert expect_res == got_res
 
 
 def test_sameindex():
-    TESTDATA_1t48 = os.path.join(
-        os.path.dirname(__file__), "data", "1t48.mmtf"
-    )
-    p1t48 = PandasMmtf()
-    p1t48.read_mmtf(TESTDATA_1t48)
+    TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48.cif"))
+    p1t48 = PandasMmcif()
+    p1t48.read_mmcif(TESTDATA_1t48)
     p1t48.df["ATOM"].index = np.zeros(p1t48.df["ATOM"].shape[0], dtype=int)
 
     expect_res = [
@@ -611,32 +606,20 @@ def test_sameindex():
         "F",
         "I",
         "M",
-        "G",
-        "Q",
-        "W",
-        "K",
-        "E",
-        "L",
-        "S",
-        "H",
-        "E",
-        "D",
     ]
     transl = p1t48.amino3to1()
     expect_chain = ["A" for _ in range(transl.shape[0])]
-    got_chain = list(transl["chain_id"].values)
-    got_res = list(transl["residue_name"].values)
+    got_chain = list(transl["auth_asym_id"].values)
+    got_res = list(transl["auth_comp_id"].values)
 
     assert expect_chain == got_chain
     assert expect_res == got_res
 
 
 def test_multichain():
-    TESTDATA_5mtn = os.path.join(
-        os.path.dirname(__file__), "data", "5mtn.mmtf"
-    )
-    mtn = PandasMmtf()
-    mtn.read_mmtf(TESTDATA_5mtn)
+    TESTDATA_5mtn = str(TEST_DATA.joinpath("5mtn_multichain.cif"))
+    mtn = PandasMmcif()
+    mtn.read_mmcif(TESTDATA_5mtn)
     expect_res_a = [
         "S",
         "L",
@@ -827,13 +810,13 @@ def test_multichain():
     transl = mtn.amino3to1()
 
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
-    got_chain = list(transl["chain_id"].values)
+    got_chain = list(transl["auth_asym_id"].values)
 
     got_res_a = list(
-        transl.loc[transl["chain_id"] == "A", "residue_name"].values
+        transl.loc[transl["auth_asym_id"] == "A", "auth_comp_id"].values
     )
     got_res_b = list(
-        transl.loc[transl["chain_id"] == "B", "residue_name"].values
+        transl.loc[transl["auth_asym_id"] == "B", "auth_comp_id"].values
     )
 
     assert expect_chain == got_chain
@@ -842,10 +825,8 @@ def test_multichain():
 
 
 def test_pdb_with_insertion_codes():
-    PDB_2D7T_PATH = os.path.join(
-        os.path.dirname(__file__), "data", "2d7t.mmtf"
-    )
+    PDB_2D7T_PATH = str(TEST_DATA.joinpath("2d7t.cif"))
 
-    ppdb = PandasMmtf().read_mmtf(PDB_2D7T_PATH)
+    ppdb = PandasMmcif().read_mmcif(PDB_2D7T_PATH)
     sequence = ppdb.amino3to1()
-    assert "".join(sequence[50:60]["residue_name"].values) == "INPKSGDTNY"
+    assert "".join(sequence[50:60]["auth_comp_id"].values) == "INPKSGDTNY"

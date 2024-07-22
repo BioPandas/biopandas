@@ -5,13 +5,20 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 
-import os
+import sys
 
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
 
-TESTDATA_FILENAME = os.path.join(
-    os.path.dirname(__file__), "data", "3eiy_stripped_no_ele.pdb"
-)
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy_stripped_no_ele.pdb"))
 
 ppdb = PandasPdb()
 ppdb.read_pdb(TESTDATA_FILENAME)

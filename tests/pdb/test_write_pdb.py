@@ -4,21 +4,27 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
+import sys
+
+if sys.version_info >= (3, 9):
+    import importlib.resources as pkg_resources
+else:
+    import importlib_resources as pkg_resources
 import os
 import warnings
 
 import pandas as pd
+
+import tests.pdb.data
 from biopandas.pdb import PandasPdb
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
-TESTDATA_FILENAME2 = os.path.join(
-    os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
-)
-TESTDATA_FILENAME3 = os.path.join(
-    os.path.dirname(__file__), "data", "5mtn_multichain.pdb"
-)
-OUTFILE = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb")
-OUTFILE_GZ = os.path.join(os.path.dirname(__file__), "data", "tmp.pdb.gz")
+TEST_DATA = pkg_resources.files(tests.pdb.data)
+
+TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.pdb"))
+TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy_anisouchunk.pdb"))
+TESTDATA_FILENAME3 = str(TEST_DATA.joinpath("5mtn_multichain.pdb"))
+OUTFILE = str(TEST_DATA.joinpath("tmp.pdb"))
+OUTFILE_GZ = str(TEST_DATA.joinpath("tmp.pdb.gz"))
 
 hetatm = ""
 with open(TESTDATA_FILENAME, "r") as f:

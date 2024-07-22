@@ -8,6 +8,7 @@ The CHANGELOG for the current development version is available at
 
 - Feature: added method to `PandasMmcif` that allow to select by model ids. PR #[145](https://github.com/BioPandas/biopandas/pull/145))
 - Dev: switched testing framework entirely to pytest. Drops nose dependency due to version conflicts with Python 3.12 (`nose`) and 3.8 (`nose`) PR #[146](https://github.com/BioPandas/biopandas/pull/146))
+-  Avoid inclusion of test scripts and test data in the PyPI release of the Biopandas library. PR #[148](https://github.com/BioPandas/biopandas/pull/148). Addresses issue [#147](https://github.com/BioPandas/biopandas/issues/147)
 
 
 ### 0.5.0dev1 (31/7/2023)
