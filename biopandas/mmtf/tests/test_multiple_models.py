@@ -6,11 +6,12 @@
 # Code Repository: https://github.com/rasbt/biopandas
 import os
 
+from biopandas.mmtf import PandasMmtf
 from pandas.testing import assert_frame_equal
 
-from biopandas.mmtf import PandasMmtf
-
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "2jyf.mmtf")
+TESTDATA_FILENAME = os.path.join(
+    os.path.dirname(__file__), "data", "2jyf.mmtf"
+)
 
 
 def test_label_models():
@@ -37,8 +38,14 @@ def test_get_models():
     written = PandasMmtf().read_mmtf("test.mmtf")
 
     # Note: No way to preserve model ID as far as I can tell
-    assert_frame_equal(df.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True), written.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True))
-    assert_frame_equal(df.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True), written.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True))
+    assert_frame_equal(
+        df.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True),
+        written.df["ATOM"].drop("model_id", axis=1).reset_index(drop=True),
+    )
+    assert_frame_equal(
+        df.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True),
+        written.df["HETATM"].drop("model_id", axis=1).reset_index(drop=True),
+    )
 
     # Clean
     os.remove("test.mmtf")

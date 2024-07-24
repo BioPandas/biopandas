@@ -1,4 +1,5 @@
 """ Utility function for reading Tripos MOL2 files from files"""
+
 # BioPandas
 # Author: Sebastian Raschka <mail@sebastianraschka.com>
 # License: BSD 3 clause
@@ -6,6 +7,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 import os
+
 from biopandas.mol2 import PandasMol2
 from biopandas.mol2.mol2_io import split_multimol2
 from biopandas.testutils import assert_raises
@@ -17,6 +19,7 @@ def test_read_mol2():
 
     data_path_1 = os.path.join(this_dir, "data", "40_mol2_files.mol2")
     data_path_2 = os.path.join(this_dir, "data", "40_mol2_files.mol2.gz")
+    data_path_3 = os.path.join(this_dir, "data", "empty_line.mol2")
 
     for data_path in (data_path_1, data_path_2):
         pdmol = PandasMol2().read_mol2(data_path)
@@ -38,13 +41,18 @@ def test_read_mol2():
         assert len(pdmol.mol2_text) == 6469
         assert pdmol.mol2_path == data_path
 
+    pdmol = PandasMol2().read_mol2(data_path_3)
+    assert pdmol.df.shape == (59, 9)
+
 
 def test_read_mol2_from_list():
 
     data_path = os.path.join(this_dir, "data", "40_mol2_files.mol2")
     mol2 = next(split_multimol2(data_path))
 
-    pdmol = PandasMol2().read_mol2_from_list(mol2_lines=mol2[1], mol2_code=mol2[0])
+    pdmol = PandasMol2().read_mol2_from_list(
+        mol2_lines=mol2[1], mol2_code=mol2[0]
+    )
     assert pdmol.df.shape == (65, 9)
     assert pdmol.code == "ZINC38611810"
 

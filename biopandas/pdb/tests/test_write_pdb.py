@@ -4,11 +4,12 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPdb
-import warnings
-import pandas as pd
 import os
+import warnings
 
+import pandas as pd
+
+from biopandas.pdb import PandasPdb
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
@@ -45,7 +46,9 @@ def test_defaults():
 def test_nonexpected_column():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    ppdb.df["HETATM"]["test"] = pd.Series("test", index=ppdb.df["HETATM"].index)
+    ppdb.df["HETATM"]["test"] = pd.Series(
+        "test", index=ppdb.df["HETATM"].index
+    )
     with warnings.catch_warnings(record=True) as w:
         ppdb.to_pdb(path=OUTFILE, records=["HETATM"])
     with open(OUTFILE, "r") as f:
@@ -92,12 +95,12 @@ def test_add_remark():
     """Test adding a REMARK entry."""
     # Add remark
     code = 3
-    remark1 = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
-    remark2 = ''
-    remark3 = 'THIS IS A NEXT MULTI-LINE INDENTED REMARK\n FOLLOWING THE BLANK REMARK.'
+    remark1 = "THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG."
+    remark2 = ""
+    remark3 = "THIS IS A NEXT MULTI-LINE INDENTED REMARK\n FOLLOWING THE BLANK REMARK."
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    n_atoms = len(ppdb.df['ATOM'])
+    n_atoms = len(ppdb.df["ATOM"])
     ppdb.add_remark(code, remark1)
     ppdb.add_remark(code, remark2)
     ppdb.add_remark(code, remark3, 5)
@@ -122,18 +125,18 @@ def test_add_remark():
     ppdb = PandasPdb()
     ppdb.read_pdb(OUTFILE)
     os.remove(OUTFILE)
-    assert len(ppdb.df['ATOM']) == n_atoms
+    assert len(ppdb.df["ATOM"]) == n_atoms
 
 
 def test_introduce_remark():
     """Test introducing a REMARK entry to the file with no remarks."""
     # Add remark
     code = 3
-    remark = 'THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG.'
+    remark = "THIS IS A HIGHLY IMPORTANT FREE-TEXT REMARK WHICH IS EXACTLY 80 CHARACTERS LONG."
     indent = 1
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME3)
-    n_atoms = len(ppdb.df['ATOM'])
+    n_atoms = len(ppdb.df["ATOM"])
     ppdb.add_remark(code, remark, indent)
     ppdb.to_pdb(path=OUTFILE)
 
@@ -150,15 +153,19 @@ def test_introduce_remark():
     ppdb = PandasPdb()
     ppdb.read_pdb(OUTFILE)
     os.remove(OUTFILE)
-    assert len(ppdb.df['ATOM']) == n_atoms
+    assert len(ppdb.df["ATOM"]) == n_atoms
 
-    
+
 def test_b_factor_shift():
     """Test b_factor shifting one white space when saving the fetched pdb."""
     ppdb = PandasPdb()
     ppdb.fetch_pdb("2e28")
     ppdb.to_pdb(path=OUTFILE, records=None)
-    tmp_df = ppdb.read_pdb(path=OUTFILE).df['ATOM']
+    tmp_df = ppdb.read_pdb(path=OUTFILE).df["ATOM"]
     os.remove(OUTFILE)
-    assert tmp_df[tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == '')].empty
-    assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == '')].empty
+    assert tmp_df[
+        tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == "")
+    ].empty
+    assert not tmp_df[
+        tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")
+    ].empty

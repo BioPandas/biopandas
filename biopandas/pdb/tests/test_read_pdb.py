@@ -6,20 +6,21 @@
 
 
 import os
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
+from urllib.error import HTTPError
 
 import numpy as np
 import pandas as pd
+import pytest
 from biopandas.pdb import PandasPdb
 from biopandas.testutils import assert_raises
-from nose.tools import raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 TESTDATA_FILENAME2 = os.path.join(
     os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
 )
-TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb.gz")
+TESTDATA_FILENAME_GZ = os.path.join(
+    os.path.dirname(__file__), "data", "3eiy.pdb.gz"
+)
 TESTDATA_FILENAME_AF2_V4 = os.path.join(
     os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.pdb"
 )
@@ -102,7 +103,8 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are " ".pdb, .pdb.gz, .ent, .ent.gz"
+        "Wrong file format; allowed file formats are "
+        ".pdb, .pdb.gz, .ent, .ent.gz"
     )
 
     def run_code_1():
@@ -121,11 +123,11 @@ def test_fetch_pdb():
 
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_pdb("3eiy")
+        _, txt = ppdb._fetch_pdb("3eiy")
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if PDB down
         txt[:100] == three_eiy[:100]
@@ -139,11 +141,11 @@ def test_fetch_af2():
     # Check latest release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=4)
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct_v4[:100]
@@ -157,11 +159,11 @@ def test_fetch_af2():
     # Check legacy release
     try:
         ppdb = PandasPdb()
-        url, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
+        _, txt = ppdb._fetch_af2("Q5VSL9", af2_version=3)
     except HTTPError:
-        url, txt = None, None
+        _, txt = None, None
     except ConnectionResetError:
-        url, txt = None, None
+        _, txt = None, None
 
     if txt:  # skip if AF2 DB down
         txt[:100] == af_test_struct_v3[:100]
@@ -176,7 +178,7 @@ def test_fetch_af2():
 def test__read_pdb_gz():
     """Test public _read_pdb with gzip files"""
     ppdb = PandasPdb()
-    path, txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
+    _, txt = ppdb._read_pdb(TESTDATA_FILENAME_GZ)
     assert txt == three_eiy
 
 
@@ -269,7 +271,7 @@ def test_anisou_input_handling():
     assert ppdb.code == "4eiy", ppdb.code
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_get_exceptions():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)

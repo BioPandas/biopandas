@@ -1,7 +1,13 @@
 # Release Notes ![](img/logos/3eiy_120.png)
+-   Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
 
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
+
+### 0.5.1dev1 (UNRELEASED)
+
+- Feature: added method to `PandasMmcif` that allow to select by model ids. PR #[145](https://github.com/BioPandas/biopandas/pull/145))
+- Dev: switched testing framework entirely to pytest. Drops nose dependency due to version conflicts with Python 3.12 (`nose`) and 3.8 (`nose`) PR #[146](https://github.com/BioPandas/biopandas/pull/146))
 
 
 ### 0.5.0dev1 (31/7/2023)

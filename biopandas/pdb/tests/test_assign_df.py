@@ -4,10 +4,10 @@
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
 
-from biopandas.pdb import PandasPdb
-from biopandas.testutils import assert_raises
 import os
 
+from biopandas.pdb import PandasPdb
+from biopandas.testutils import assert_raises
 
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb")
 

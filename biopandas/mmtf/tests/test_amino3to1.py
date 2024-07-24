@@ -11,7 +11,9 @@ from biopandas.mmtf import PandasMmtf
 
 
 def test_defaults():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.mmtf")
+    TESTDATA_1t48 = os.path.join(
+        os.path.dirname(__file__), "data", "1t48.mmtf"
+    )
     p1t48 = PandasMmtf()
     p1t48.read_mmtf(TESTDATA_1t48)
     expect_res = [
@@ -319,7 +321,9 @@ def test_defaults():
 
 
 def test_sameindex():
-    TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.mmtf")
+    TESTDATA_1t48 = os.path.join(
+        os.path.dirname(__file__), "data", "1t48.mmtf"
+    )
     p1t48 = PandasMmtf()
     p1t48.read_mmtf(TESTDATA_1t48)
     p1t48.df["ATOM"].index = np.zeros(p1t48.df["ATOM"].shape[0], dtype=int)
@@ -628,7 +632,9 @@ def test_sameindex():
 
 
 def test_multichain():
-    TESTDATA_5mtn = os.path.join(os.path.dirname(__file__), "data", "5mtn.mmtf")
+    TESTDATA_5mtn = os.path.join(
+        os.path.dirname(__file__), "data", "5mtn.mmtf"
+    )
     mtn = PandasMmtf()
     mtn.read_mmtf(TESTDATA_5mtn)
     expect_res_a = [
@@ -823,8 +829,12 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["chain_id"].values)
 
-    got_res_a = list(transl.loc[transl["chain_id"] == "A", "residue_name"].values)
-    got_res_b = list(transl.loc[transl["chain_id"] == "B", "residue_name"].values)
+    got_res_a = list(
+        transl.loc[transl["chain_id"] == "A", "residue_name"].values
+    )
+    got_res_b = list(
+        transl.loc[transl["chain_id"] == "B", "residue_name"].values
+    )
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a
@@ -832,7 +842,9 @@ def test_multichain():
 
 
 def test_pdb_with_insertion_codes():
-    PDB_2D7T_PATH = os.path.join(os.path.dirname(__file__), "data", "2d7t.mmtf")
+    PDB_2D7T_PATH = os.path.join(
+        os.path.dirname(__file__), "data", "2d7t.mmtf"
+    )
 
     ppdb = PandasMmtf().read_mmtf(PDB_2D7T_PATH)
     sequence = ppdb.amino3to1()

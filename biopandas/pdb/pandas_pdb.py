@@ -131,7 +131,7 @@ class PandasPdb(object):
             Defaults to `None`.
 
         source : str
-            The source to retrieve the structure from 
+            The source to retrieve the structure from
             (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)).
             Defaults to `"pdb"`.
 
@@ -247,13 +247,13 @@ class PandasPdb(object):
                 lambda x: x[0][1] if len(x[1]) == 3 else x[0][0], axis=1
             )
         return t
-    
+
     def add_remark(self, code, text='', indent=0):
         """Add custom REMARK entry.
 
         The remark will be inserted to preserve the ordering of REMARK codes, i.e. if the code is
         `n` it will be added after all remarks with codes less or equal to `n`. If the object does
-        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or 
+        not store any remarks the remark will be inserted right before the first of ATOM, HETATM or
         ANISOU records.
 
         Parameters
@@ -263,9 +263,9 @@ class PandasPdb(object):
 
         text : str
             The text of the remark. If the text does not fit into a single line it will be wrapped
-            into multiple lines of REMARK entries. Likewise, if the text contains new line 
+            into multiple lines of REMARK entries. Likewise, if the text contains new line
             characters it will be split accordingly.
-        
+
         indent : int, default: 0
             Number of white spaces inserted before the text of the remark.
 
@@ -298,8 +298,8 @@ class PandasPdb(object):
 
         # Wrap remark to fit into 80 characters per line and add indentation
         wrapper = textwrap.TextWrapper(width=80 - (11 + indent))
-        lines = sum([wrapper.wrap(l.strip()) or [' '] for l in text.split('\n')], [])
-        lines = list(map(lambda x: f'{code:4} ' +  indent*' ' + x, lines))
+        lines = sum([wrapper.wrap(line.strip()) or [' '] for line in text.split('\n')], [])
+        lines = list(map(lambda x: f'{code:4} ' + indent*' ' + x, lines))
 
         # Shift data frame indices and row indices to create space for the remark
         # Create space in OTHERS
@@ -832,20 +832,20 @@ class PandasPdb(object):
           structure subsetted to the given model.
         """
 
-        df = deepcopy(self)
-        df.label_models()
+        biopandas_structure = deepcopy(self)
+        biopandas_structure.label_models()
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[df.df["ATOM"]["model_id"] == model_index]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                df.df["HETATM"]["model_id"] == model_index
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[biopandas_structure.df["ATOM"]["model_id"] == model_index]
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
+                biopandas_structure.df["HETATM"]["model_id"] == model_index
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
-                df.df["ANISOU"]["model_id"] == model_index
+        if "ANISOU" in biopandas_structure.df.keys():
+            biopandas_structure.df["ANISOU"] = biopandas_structure.df["ANISOU"].loc[
+                biopandas_structure.df["ANISOU"]["model_id"] == model_index
             ]
-        return df
+        return biopandas_structure
 
     def get_models(self, model_indices: List[int]) -> PandasPdb:
         """Returns a new PandasPDB object with the dataframes subset to the given model index.
@@ -861,22 +861,22 @@ class PandasPdb(object):
           containing the structure subsetted to the given model.
         """
 
-        df = deepcopy(self)
-        df.label_models()
+        biopandas_structure = deepcopy(self)
+        biopandas_structure.label_models()
 
-        if "ATOM" in df.df.keys():
-            df.df["ATOM"] = df.df["ATOM"].loc[
-                [x in model_indices for x in df.df["ATOM"]["model_id"].tolist()]
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[
+                [x in model_indices for x in biopandas_structure.df["ATOM"]["model_id"].tolist()]
             ]
-        if "HETATM" in df.df.keys():
-            df.df["HETATM"] = df.df["HETATM"].loc[
-                [x in model_indices for x in df.df["HETATM"]["model_id"].tolist()]
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
+                [x in model_indices for x in biopandas_structure.df["HETATM"]["model_id"].tolist()]
             ]
-        if "ANISOU" in df.df.keys():
-            df.df["ANISOU"] = df.df["ANISOU"].loc[
-                [x in model_indices for x in df.df["ANISOU"]["model_id"].tolist()]
+        if "ANISOU" in biopandas_structure.df.keys():
+            biopandas_structure.df["ANISOU"] = biopandas_structure.df["ANISOU"].loc[
+                [x in model_indices for x in biopandas_structure.df["ANISOU"]["model_id"].tolist()]
             ]
-        return df
+        return biopandas_structure
 
     def to_pdb_stream(self, records: tuple[str] = ("ATOM", "HETATM")) -> StringIO:
         """Writes a PDB dataframe to a stream.

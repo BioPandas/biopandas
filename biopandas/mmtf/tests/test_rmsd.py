@@ -6,8 +6,8 @@
 
 import os
 
+import pytest
 from biopandas.mmtf import PandasMmtf
-from nose.tools import raises
 
 TESTDATA_1t48 = os.path.join(os.path.dirname(__file__), "data", "1t48.mmtf")
 TESTDATA_1t49 = os.path.join(os.path.dirname(__file__), "data", "1t49.mmtf")
@@ -35,23 +35,25 @@ def test_equal():
     assert r == 0.000, r
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_wrong_arg():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_incompatible():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s=None)
 
 
-@raises(AttributeError)
+@pytest.mark.xfail(raises=AttributeError)
 def test_invalid_query():
     PandasMmtf.rmsd(p1t48.df["ATOM"].loc[1:, :], p1t48.df["ATOM"], s="bla")
 
 
 def test_protein():
-    r = PandasMmtf.rmsd(p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False)
+    r = PandasMmtf.rmsd(
+        p1t48.df["ATOM"], p1t49.df["ATOM"], s="c-alpha", invert=False
+    )
     assert r == 0.4785, r
 
 

@@ -9,7 +9,9 @@ import os
 from biopandas.mmtf import PandasMmtf
 from biopandas.testutils import assert_raises
 
-TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), "data", "3eiy.mmtf")
+TESTDATA_FILENAME = os.path.join(
+    os.path.dirname(__file__), "data", "3eiy.mmtf"
+)
 
 
 def test_overwrite_df():
