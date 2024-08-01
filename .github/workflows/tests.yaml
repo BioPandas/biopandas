@@ -14,7 +14,7 @@ on:
       - "CHANGELOG.md"
 
 jobs:
-  build_cpu:
+  build_biopandas:
     runs-on: ubuntu-latest
     # https://github.com/marketplace/actions/setup-miniconda#use-a-default-shell
     defaults:
