@@ -11,6 +11,7 @@ if sys.version_info >= (3, 9):
     import importlib.resources as pkg_resources
 else:
     import importlib_resources as pkg_resources
+
 from pathlib import Path
 from urllib.error import HTTPError
 
@@ -97,7 +98,6 @@ def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasMmcif()
     _, txt = ppdb._read_mmcif(TESTDATA_FILENAME)
-    print(txt)
     assert txt == three_eiy
 
 
@@ -336,9 +336,7 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"]
-        .drop(columns=["line_idx"])
-        .reset_index(drop=True),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
     )
 
     # single chain test
@@ -352,7 +350,5 @@ def test_mmcif_pdb_conversion():
     )
     assert_frame_equal(
         pdb.df["HETATM"].drop(columns=["line_idx"]),
-        mmcif_pdb.df["HETATM"]
-        .drop(columns=["line_idx"])
-        .reset_index(drop=True),
+        mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
     )

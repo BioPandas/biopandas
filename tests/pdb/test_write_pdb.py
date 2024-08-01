@@ -10,6 +10,7 @@ if sys.version_info >= (3, 9):
     import importlib.resources as pkg_resources
 else:
     import importlib_resources as pkg_resources
+
 import os
 import warnings
 
@@ -51,9 +52,7 @@ def test_defaults():
 def test_nonexpected_column():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-    ppdb.df["HETATM"]["test"] = pd.Series(
-        "test", index=ppdb.df["HETATM"].index
-    )
+    ppdb.df["HETATM"]["test"] = pd.Series("test", index=ppdb.df["HETATM"].index)
     with warnings.catch_warnings(record=True) as w:
         ppdb.to_pdb(path=OUTFILE, records=["HETATM"])
     with open(OUTFILE, "r") as f:
@@ -159,6 +158,20 @@ def test_b_factor_shift():
     assert tmp_df[
         tmp_df["element_symbol"].isnull() | (tmp_df["element_symbol"] == "")
     ].empty
-    assert not tmp_df[
-        tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")
-    ].empty
+    assert not tmp_df[tmp_df["blank_4"].isnull() | (tmp_df["blank_4"] == "")].empty
+
+
+def test_to_pdb_stream():
+    """Test public write_pdb_stream"""
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    stream = ppdb.to_pdb_stream()
+
+    lines_to_check = open(TESTDATA_FILENAME).read().split("\n")
+    lines_to_check = [
+        line for line in lines_to_check if line.startswith(("ATOM", "HETATM"))
+    ]
+    lines_to_check.append("")
+
+    source_pdb = "\n".join(lines_to_check)
+    assert stream.read() == source_pdb
