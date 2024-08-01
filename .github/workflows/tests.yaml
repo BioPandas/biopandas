@@ -41,4 +41,4 @@ jobs:
       - name: Install Dev Dependencies
         run: pip install mmtf-python numpy scipy pandas pytest looseversion importlib_resources
       - name: Run unit tests and generate coverage report
-        run: pytest -s -
+        run: pytest -s -v
