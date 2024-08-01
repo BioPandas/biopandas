@@ -20,7 +20,6 @@ def test_write_mmtf_bp():
         "1rcf",
     ]
     for pdb in PDB_CODES:
-        print(pdb)
         pm1 = PandasMmtf().fetch_mmtf(pdb)
         pm1.to_mmtf("test.mmtf")
         assert os.path.exists("test.mmtf")
@@ -51,7 +50,6 @@ def test_write_mmtf():
         "1rcf",
     ]
     for pdb in PDB_CODES:
-        print(pdb)
         pm1 = PandasMmtf().fetch_mmtf(pdb)
         write_mmtf(pd.concat([pm1.df["ATOM"], pm1.df["HETATM"]]), "test.mmtf")
         assert os.path.exists("test.mmtf")

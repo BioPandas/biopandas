@@ -159,7 +159,6 @@ def test_sameindex():
     TESTDATA_1t48 = str(TEST_DATA.joinpath("1t48_995.pdb"))
     p1t48 = PandasPdb()
     p1t48.read_pdb(TESTDATA_1t48)
-    print(p1t48)
     p1t48.df["ATOM"].index = np.zeros(p1t48.df["ATOM"].shape[0], dtype=int)
 
     expect_res = [
@@ -490,12 +489,8 @@ def test_multichain():
     expect_chain = ["A" for _ in range(88)] + ["B" for _ in range(94)]
     got_chain = list(transl["chain_id"].values)
 
-    got_res_a = list(
-        transl.loc[transl["chain_id"] == "A", "residue_name"].values
-    )
-    got_res_b = list(
-        transl.loc[transl["chain_id"] == "B", "residue_name"].values
-    )
+    got_res_a = list(transl.loc[transl["chain_id"] == "A", "residue_name"].values)
+    got_res_b = list(transl.loc[transl["chain_id"] == "B", "residue_name"].values)
 
     assert expect_chain == got_chain
     assert expect_res_a == got_res_a

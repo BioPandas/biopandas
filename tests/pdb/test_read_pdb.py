@@ -11,6 +11,7 @@ if sys.version_info >= (3, 9):
     import importlib.resources as pkg_resources
 else:
     import importlib_resources as pkg_resources
+
 from urllib.error import HTTPError
 
 import numpy as np
@@ -94,8 +95,7 @@ with open(TESTDATA_FILENAME_AF2_V3, "r") as f:
 def test__read_pdb():
     """Test private _read_pdb"""
     ppdb = PandasPdb()
-    path, txt = ppdb._read_pdb(TESTDATA_FILENAME)
-    print(txt)
+    _, txt = ppdb._read_pdb(TESTDATA_FILENAME)
     assert txt == three_eiy
 
 
@@ -104,8 +104,7 @@ def test__read_pdb_raises():
     Test if ValueError is raised for wrong file formats."""
 
     expect = (
-        "Wrong file format; allowed file formats are "
-        ".pdb, .pdb.gz, .ent, .ent.gz"
+        "Wrong file format; allowed file formats are " ".pdb, .pdb.gz, .ent, .ent.gz"
     )
 
     def run_code_1():
