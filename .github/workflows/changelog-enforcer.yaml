@@ -14,3 +14,4 @@ jobs:
       - uses: dangoslen/changelog-enforcer@v3
         with:
           skipLabels: 'skip-changelog'
+          changeLogPath: 'docs/CHANGELOG.md'

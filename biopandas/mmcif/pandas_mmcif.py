@@ -6,9 +6,10 @@
 # License: BSD 3 clause
 # Project Website: http://rasbt.github.io/biopandas/
 # Code Repository: https://github.com/rasbt/biopandas
-
+from __future__ import annotations
 import gzip
 import sys
+import copy
 import warnings
 from typing import Dict, List, Optional
 from urllib.error import HTTPError, URLError
@@ -69,6 +70,66 @@ class PandasMmcif:
         # self.header, self.code = self._parse_header_code() #TODO: implement
         self.code = self.data["entry"]["id"][0].lower()
         return self
+    
+    def label_models(self):
+        """Adds a column ("model_id") to the underlying
+        DataFrames containing the model number."""
+        if "ATOM" in self.df.keys():
+            self.df["ATOM"]["model_id"] = self.df["ATOM"]["pdbx_PDB_model_num"]
+        if "HETATM" in self.df.keys():
+            self.df["HETATM"]["model_id"] = self.df["HETATM"]["pdbx_PDB_model_num"]
+        return self
+    
+    def get_model(self, model_index: int) -> PandasMmcif:
+        """Returns a new PandasMmcif object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_index : int
+            An integer representing the model index to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasPdb : A new PandasMMcif object containing the
+            structure subsetted to the given model.
+        """
+
+        biopandas_structure = copy.deepcopy(self)
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"] == model_index]
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
+                biopandas_structure.df["HETATM"]["pdbx_PDB_model_num"] == model_index
+            ]
+        return biopandas_structure
+
+    def get_models(self, model_indices: List[int]) -> PandasMmcif:
+        """Returns a new PandasMmcif object with the dataframes subset to the
+        given model index.
+
+        Parameters
+        ----------
+        model_indices : List[int]
+            A list representing the model indexes to subset to.
+
+        Returns
+        ---------
+        pandas_pdb.PandasMmtf : A new PandasMmcif object
+            containing the structure subsetted to the given model.
+        """
+
+        biopandas_structure = copy.deepcopy(self)
+
+        if "ATOM" in biopandas_structure.df.keys():
+            biopandas_structure.df["ATOM"] = biopandas_structure.df["ATOM"].loc[
+                [x in model_indices for x in biopandas_structure.df["ATOM"]["pdbx_PDB_model_num"].tolist()]
+            ]
+        if "HETATM" in biopandas_structure.df.keys():
+            biopandas_structure.df["HETATM"] = biopandas_structure.df["HETATM"].loc[
+                [x in model_indices for x in biopandas_structure.df["HETATM"]["pdbx_PDB_model_num"].tolist()]
+            ]
+        return biopandas_structure
 
     def fetch_mmcif(
         self,

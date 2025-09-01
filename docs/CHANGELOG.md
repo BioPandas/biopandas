@@ -1,9 +1,9 @@
 # Release Notes ![](img/logos/3eiy_120.png)
--   Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
+
+- Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
 
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
-
 
 ### 0.5.1dev1 (UNRELEASED)
 - Adds support for constructing a collection of PDB files and perform actions on them (Via [Julia K. Varga](https://github.com/gezmi)
@@ -11,8 +11,16 @@ The CHANGELOG for the current development version is available at
 - TMAlign is installed alongside the package to perform the alignments (Via [Julia K. Varga](https://github.com/gezmi)
 - Dev: switched testing framework entirely to pytest. Drops nose dependency due to version conflicts with Python 3.12 (`nose`) and 3.8 (`nose`)
 
+### 0.5.1 (01/08/2024)
+
+- Fix: improves support for writing PDBs with `OTHERS` records to stream. PR [#149](https://github.com/BioPandas/biopandas/pull/149). Addresses issue [#141](https://github.com/BioPandas/biopandas/issues/141).
+- Feature: added method to `PandasMmcif` that allow to select by model ids. PR #[145](https://github.com/BioPandas/biopandas/pull/145)
+- Dev: switched testing framework entirely to pytest. Drops nose dependency due to version conflicts with Python 3.12 (`nose`) and 3.8 (`nose`) PR #[146](https://github.com/BioPandas/biopandas/pull/146)
+- Dev: adds GitHub actions-based CI. PR [#149](https://github.com/BioPandas/biopandas/pull/149).
+- Avoid inclusion of test scripts and test data in the PyPI release of the Biopandas library. PR #[148](https://github.com/BioPandas/biopandas/pull/148). Addresses issue [#147](https://github.com/BioPandas/biopandas/issues/147)
 
 ### 0.5.0dev1 (31/7/2023)
+
 - Implement add_remark for PandasPdb, (Via [Anton Bushuiev](https://github.com/anton-bushuiev) PR #[129](https://github.com/BioPandas/biopandas/pull/129))
 - B_factor shifting one white space issue fix. (Via [Zehra Sarica](https://github.com/zehraacarsarica), PR #[134](https://github.com/BioPandas/biopandas/pull/134))
 - Adds support for pathlib. (Via [Anton Bushuiev](https://github.com/anton-bushuiev), PR #[128](https://github.com/BioPandas/biopandas/pull/128))
@@ -20,7 +28,6 @@ The CHANGELOG for the current development version is available at
 - Improves reliability of parsing polymer/non-polymer entities in MMTF parsing. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Improves reliability of parsing multicharacter chain IDs from MMTF files. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
 - Replaces null terminator chars in parsed MMTF dataframe with the empty string. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[123](https://github.com/rasbt/biopandas/pull/123/files))
-
 
 ### 0.5.0dev0 (3/4/2023)
 
@@ -38,13 +45,13 @@ The CHANGELOG for the current development version is available at
 - Adds support for parsing [MMTF](https://mmtf.rcsb.org/) files. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
 - Adds primitive functions for parsing PDB, mmCIF, and MMTF into dataframes. (via [Arian Jamasb](https://github.com/a-r-j), PR #[111](https://github.com/rasbt/biopandas/pull/111/files))
 - Added support for [AlphaFolds 200M+ structures](https://www.deepmind.com/blog/alphafold-reveals-the-structure-of-the-protein-universe) via `PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v3')` and `PandasPdb().fetch_pdb(uniprot_id='Q5VSL9', source='alphafold2-v3')`. (Via [Arian Jamasb](https://github.com/a-r-j), PR #[102](https://github.com/rasbt/biopandas/pull/102/files))
+
 ##### Bug Fixes
 
 - Fix the `return` statement in `PandasPdb.to_pdb_stream()` to return `output` instead of `output.seek(0)`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
 - Change the `records` default argument in `PandasPdb.to_pdb_stream()` to be immutable. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
 - Fix some typos and general style issues. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
 - Fix link for "How to contribute" in `README.md`. (via [goniochromatic](https://github.com/github.com/goniochromatic/), PR #[116](https://github.com/rasbt/biopandas/pull/116/files))
-
 
 ### 0.4.1 (05-13-2022)
 
@@ -56,7 +63,6 @@ The CHANGELOG for the current development version is available at
 ##### Changes
 
 - Remove walrus operator for Python 3.7 compatibility.
-
 
 ### 0.4.0 (05-11-2022)
 
@@ -109,7 +115,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -118,7 +124,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.2.8 (03-30-2021)
 
@@ -137,7 +143,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.2.7 (08-04-2020)
 
@@ -148,11 +154,11 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
-  - -
+- -
 
 ##### Bug Fixes
 
@@ -167,7 +173,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -176,7 +182,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.2.5 (07-09-2019)
 
@@ -187,11 +193,11 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
-  - -
+- -
 
 ##### Bug Fixes
 
@@ -206,7 +212,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -214,7 +220,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.2.3 (03-29-2018)
 
@@ -225,7 +231,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -248,7 +254,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -268,7 +274,7 @@ The CHANGELOG for the current development version is available at
 
 ##### New Features
 
-  - -
+- -
 
 ##### Changes
 
@@ -300,7 +306,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.1.5 (2016-11-19)
 
@@ -322,7 +328,7 @@ The CHANGELOG for the current development version is available at
 
 ##### Bug Fixes
 
-  - -
+- -
 
 ### 0.1.4 (2015-11-24)
 
