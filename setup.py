@@ -60,7 +60,9 @@ class TmAlignInstall(install):
         
         try:
             print(f'DEBUG: Starting download...')
-            urllib.request.urlretrieve(url, selected_file)
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
+            with urllib.request.urlopen(req) as response, open(selected_file, 'wb') as out_file:
+                out_file.write(response.read())
             print(f'DEBUG: Download completed successfully')
             print(f'DEBUG: File size: {os.path.getsize(selected_file)} bytes')
         except Exception as e:
