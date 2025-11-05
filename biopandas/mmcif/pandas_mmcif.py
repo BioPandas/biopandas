@@ -213,7 +213,7 @@ class PandasMmcif:
         full_df = pd.DataFrame.from_dict(
             data["atom_site"], orient="index"
         ).transpose()
-        full_df = full_df.astype(mmcif_col_types, errors="ignore")
+        full_df = full_df.astype({col: dtype for col, dtype in mmcif_col_types.items() if col in full_df.columns}, errors="ignore")
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])
         try:
@@ -645,3 +645,146 @@ class PandasMmcif:
             )
 
         return pandaspdb
+
+
+    def to_mmcif(self, path, records=None, gz=False):
+        """Write record DataFrames to an mmCIF file or gzipped mmCIF file.
+
+        Parameters
+        ----------
+        path : str
+            A valid output path for the mmcif file
+        records : iterable, default: None
+            A list of record sections in {'ATOM', 'HETATM', 'ANISOU'}
+            that are to be written. Writes all sections if `records=None`.
+        gz : bool, default: False
+            Writes a gzipped mmCIF file if True.
+        """
+        if gz:
+            openf = gzip.open
+            w_mode = "wt"
+        else:
+            openf = open
+            w_mode = "w"
+
+        if not records:
+            records = ['ATOM', 'HETATM', 'ANISOU']
+
+        # Get non-empty dataframes
+        dfs = {r: self.df[r].copy() for r in records
+               if r in self.df and not self.df[r].empty}
+
+        # Combine ATOM and HETATM for atom_site table
+        atom_dfs = []
+        if 'ATOM' in dfs:
+            atom_dfs.append(dfs['ATOM'])
+        if 'HETATM' in dfs:
+            atom_dfs.append(dfs['HETATM'])
+
+        if not atom_dfs:
+            raise ValueError("No ATOM or HETATM records to write")
+
+        combined_atoms = pd.concat(atom_dfs, ignore_index=True)
+
+        # Sort by model number and atom id
+        if 'pdbx_PDB_model_num' in combined_atoms.columns:
+            combined_atoms = combined_atoms.sort_values(
+                ['pdbx_PDB_model_num', 'id']
+            ).reset_index(drop=True)
+        else:
+            combined_atoms = combined_atoms.sort_values('id').reset_index(drop=True)
+
+        with openf(path, w_mode) as f:
+            # Write header
+            data_block = self.code if self.code else "unknown"
+            f.write(f"data_{data_block}\n#\n")
+
+            # Write entry information
+            f.write("_entry.id   {}\n#\n".format(data_block.upper()))
+
+            # Write atom_site loop
+            f.write("loop_\n")
+
+            # Define columns to write (in order)
+            columns_to_write = [
+                'group_PDB',
+                'id',
+                'type_symbol',
+                'label_atom_id',
+                'label_alt_id',
+                'label_comp_id',
+                'label_asym_id',
+                'label_entity_id',
+                'label_seq_id',
+                'pdbx_PDB_ins_code',
+                'Cartn_x',
+                'Cartn_y',
+                'Cartn_z',
+                'occupancy',
+                'B_iso_or_equiv',
+                'pdbx_formal_charge',
+                'auth_seq_id',
+                'auth_comp_id',
+                'auth_asym_id',
+                'auth_atom_id',
+                'pdbx_PDB_model_num',
+            ]
+
+            # Add region column if it exists
+            if 'region' in combined_atoms.columns:
+                columns_to_write.append('region')
+
+            # Filter to only existing columns
+            columns_to_write = [col for col in columns_to_write
+                                if col in combined_atoms.columns]
+
+            # Write column headers
+            for col in columns_to_write:
+                f.write(f"_atom_site.{col}\n")
+
+            # Prepare data for writing
+            output_df = combined_atoms[columns_to_write].copy()
+
+            # Handle missing values - replace NaN with '?' for mmCIF
+            output_df = output_df.fillna('?')
+
+            # Format specific columns
+            for col in columns_to_write:
+                if col in ['Cartn_x', 'Cartn_y', 'Cartn_z']:
+                    # Format coordinates with 3 decimal places
+                    output_df[col] = output_df[col].apply(
+                        lambda x: f"{float(x):.3f}" if x != '?' else '?'
+                    )
+                elif col in ['occupancy', 'B_iso_or_equiv']:
+                    # Format with 2 decimal places
+                    output_df[col] = output_df[col].apply(
+                        lambda x: f"{float(x):.2f}" if x != '?' else '?'
+                    )
+                elif col in ['id', 'label_seq_id', 'auth_seq_id',
+                             'pdbx_PDB_model_num', 'label_entity_id']:
+                    # Ensure integers
+                    output_df[col] = output_df[col].apply(
+                        lambda x: str(int(float(x))) if x != '?' else '?'
+                    )
+                else:
+                    # Convert everything else to string
+                    output_df[col] = output_df[col].astype(str)
+
+            # Calculate maximum width for each column based on data only
+            col_widths = {}
+            for col in columns_to_write:
+                col_widths[col] = output_df[col].astype(str).str.len().max()
+
+            # Write data rows - padded with single space separation
+            for idx, row in output_df.iterrows():
+                values = []
+                for col in columns_to_write:
+                    value = str(row[col])
+                    # Add quotes if value contains spaces
+                    if ' ' in value and value != '?':
+                        value = f"'{value}'"
+                    # Left-justify and pad to column width
+                    values.append(value.ljust(col_widths[col]))
+                f.write(' '.join(values) + '\n')
+
+            f.write("#\n")

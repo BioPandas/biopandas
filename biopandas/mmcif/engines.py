@@ -83,6 +83,7 @@ MMCIF_PDB_COLUMN_MAP: Dict[str, str] = {
     "occupancy": "occupancy",
     "B_iso_or_equiv": "b_factor",
     "type_symbol": "element_symbol",
+    "label_asym_id": "chain_id"
 }
 
 MMCIF_PDB_NONEFIELDS: List[str] = [

@@ -25,6 +25,7 @@ class TMAlign(Align):
         super().__init__()
 
         path_script = os.path.dirname(os.path.abspath(__file__))
+
         if tmalign_path is not None:
             if os.path.exists(tmalign_path):
                 self.tmalign_path = tmalign_path
@@ -69,9 +70,18 @@ class TMAlign(Align):
         :return: transformed_pdb
         """
         transformed_pdb = deepcopy(pdb)
-        coords = pdb.df[type][['x_coord', 'y_coord', 'z_coord']].values
+
+        # check if you have x_coord or Cartn_x
+        if 'x_coord' in pdb.df[type].columns:
+            coord_cols = ['x_coord', 'y_coord', 'z_coord']
+        elif 'Cartn_x' in pdb.df[type].columns:
+            coord_cols = ['Cartn_x', 'Cartn_y', 'Cartn_z']
+        else:
+            raise ValueError(f"No recognized coordinate columns found in the {type} dataframe.")
+
+        coords = pdb.df[type][coord_cols].values
         transformed_coords = self.transform(coords, matrix, translation)
-        transformed_pdb.df[type][['x_coord', 'y_coord', 'z_coord']] = transformed_coords
+        transformed_pdb.df[type][coord_cols] = transformed_coords
         return transformed_pdb
 
 
@@ -94,8 +104,9 @@ class TMAlign(Align):
             transformed_mobile = self.transform_coords(transformed_mobile, type='ATOM', matrix=matrix, translation=translation)
             transformed_mobile = self.transform_coords(transformed_mobile, type='HETATM', matrix=matrix,
                                                        translation=translation)
+
         # clean up
-        os.remove(matrix_file_path.name) if os.path.exists(matrix_file_path.name) else None
+        os.remove(matrix_file_path) if os.path.exists(matrix_file_path) else None
         os.remove(mobile_file.name) if os.path.exists(mobile_file.name) else None
 
         return transformed_mobile, tm_score
@@ -173,30 +184,30 @@ class TMAlign(Align):
 
 
     def tmalign_in_stack(self, stack: PandasPdbStack, mobile_chains: dict, target: str=None) -> (PandasPdbStack, dict):
-      """For doing TMalign inside a stack, with one of its entries
-      :param stack: PandasPdbStack with the structures to align. All of them must have only one chain!
-      :param target: the target structure to align to. If not provided, the first structure in the stack will be used.
+        """For doing TMalign inside a stack, with one of its entries
+        :param stack: PandasPdbStack with the structures to align. All of them must have only one chain!
+        :param target: the target structure to align to. If not provided, the first structure in the stack will be used.
 
-      :return: matrix_file_path, tm_score
-      """
+        :return: matrix_file_path, tm_score
+        """
 
-      # if target is provided, check if it is in the stack and use it as the target
-      if target:
-          if target not in stack.pdbs:
-              raise ValueError("Target not found in the stack!")
-          else:
-              target_pdb_id = target
-      else:
-          # get one structure from the stack - this will be the target. sort by alphabet
-          target_pdb_id = sorted(stack.pdbs.keys())[0]
+        # if target is provided, check if it is in the stack and use it as the target
+        if target:
+            if target not in stack.pdbs:
+                raise ValueError("Target not found in the stack!")
+            else:
+                target_pdb_id = target
+        else:
+            # get one structure from the stack - this will be the target. sort by alphabet
+            target_pdb_id = sorted(stack.pdbs.keys())[0]
 
-      target_pdb = stack.pdbs[target_pdb_id]
-      target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
+        target_pdb = stack.pdbs[target_pdb_id]
+        target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
 
-      mobile_pdbs = PandasPdbStack()
-      mobile_pdbs.pdbs = {pdb_id: pdb for pdb_id, pdb in stack.pdbs.items() if pdb_id != target_pdb_id}
+        mobile_pdbs = PandasPdbStack()
+        mobile_pdbs.pdbs = {pdb_id: pdb for pdb_id, pdb in stack.pdbs.items() if pdb_id != target_pdb_id}
 
-      # align the structures
-      transformed_structures, tm_scores = self.tmalign_to(target_pdb, mobile_pdbs, target_chain_id, mobile_chains)
+        # align the structures
+        transformed_structures, tm_scores = self.tmalign_to(target_pdb, mobile_pdbs, target_chain_id, mobile_chains)
 
-      return target_pdb_id, transformed_structures, tm_scores
+        return target_pdb_id, transformed_structures, tm_scores
