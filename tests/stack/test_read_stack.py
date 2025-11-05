@@ -13,13 +13,10 @@ TESTDATA_FILENAME2 = os.path.join(
     os.path.dirname(__file__), "data", "4eiy_anisouchunk.pdb"
 )
 TESTDATA_FILENAME_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.pdb.gz")
-TESTDATA_FILENAME_AF2_V4 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v4.pdb"
+TESTDATA_FILENAME_AF2_V6 = os.path.join(
+    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v6.pdb"
 )
 
-TESTDATA_FILENAME_AF2_V3 = os.path.join(
-    os.path.dirname(__file__), "data", "AF-Q5VSL9-F1-model_v3.pdb"
-)
 
 TESTDATA_FILENAME_MMCIF = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif")
 TESTDATA_FILENAME_MMCIF_GZ = os.path.join(os.path.dirname(__file__), "data", "3eiy.cif.gz")
@@ -44,11 +41,10 @@ def test_add_pdb_gz():
 
 def test_add_multiple_pdbs():
     stack = PandasPdbStack()
-    stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME_AF2_V4, TESTDATA_FILENAME_AF2_V3])
-    assert len(stack.pdbs.keys()) == 3
+    stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME_AF2_V6])
+    assert len(stack.pdbs.keys()) == 2
     assert '3eiy' in stack.pdbs
-    assert 'AF-Q5VSL9-F1-model_v4' in stack.pdbs
-    assert 'AF-Q5VSL9-F1-model_v3' in stack.pdbs
+    assert 'AF-Q5VSL9-F1-model_v6' in stack.pdbs
 
 def test_add_mmcif():
     stack = PandasPdbStack()
@@ -86,13 +82,13 @@ def test_fetch_multiple_pdbs_mixed():
 def test_add_multiple_structures_mixed():
     stack = PandasPdbStack()
     stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME_GZ,
-                    TESTDATA_FILENAME_AF2_V4,
+                    TESTDATA_FILENAME_AF2_V6,
                     TESTDATA_FILENAME_MMCIF, TESTDATA_FILENAME_MMCIF_GZ,
                     'Q5VSL9', 'P99999', '1YCR', '6V4E'])
     # There are multiple 3eiy, they overwrite each other, hence the length of dict is not 9
     assert len(stack.pdbs.keys()) == 6
     assert '3eiy' in stack.pdbs
-    assert 'AF-Q5VSL9-F1-model_v4' in stack.pdbs
+    assert 'AF-Q5VSL9-F1-model_v6' in stack.pdbs
     assert 'Q5VSL9' in stack.pdbs
     assert 'P99999' in stack.pdbs
 

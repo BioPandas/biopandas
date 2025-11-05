@@ -5,6 +5,7 @@
 # Code Repository: https://github.com/rasbt/biopandas
 
 from biopandas.stack.stack import PandasPdbStack
+from biopandas.align import TMAlign
 import os
 from nose.tools import assert_raises
 
@@ -89,12 +90,6 @@ def test_update_entry_nonexistent():
     assert '1YCR' in stack.pdbs
     assert '1A2B' in stack.pdbs
 
-def test_tmalign_inside_multiple_chains():
-    ppdb_stack = PandasPdbStack()
-    ppdb_stack.add_pdbs([TESTDATA_FILENAME, TESTDATA_FILENAME3, TESTDATA_FILENAME4])
-
-    assert_raises(ValueError, ppdb_stack.tmalign_inside)
-
 
 def filter_by_chains(key, pdb, chains):
     # Example function for applying filtering
@@ -111,10 +106,12 @@ def test_tmalign_inside_multiple_chains():
     filtered_stack = stack.apply_filter(filter_by_chains, keep_null=False, **args)
     chains_lens_filtered = filtered_stack.apply_calculation(calculate_chain_lengths)
     assert len(filtered_stack.pdbs) == 4
-    transformed_structures, tm_scores = filtered_stack.tmalign_inside()
 
-    assert tm_scores['3eiy'] == 0.37341
-    assert tm_scores['2d7t'] == 0.33733
+    tmalign = TMAlign()
+    _, transformed_structures, tm_scores = tmalign.tmalign_in_stack(filtered_stack, mobile_chains=args['chains'])
+
+    assert tm_scores['3eiy'] == 0.23483
+    assert tm_scores['2d7t'] == 0.27812
     assert tm_scores['1ycr_copy'] == 1
 
 def test_tmalign_inside_multiple_chains_specific_target():
@@ -126,8 +123,10 @@ def test_tmalign_inside_multiple_chains_specific_target():
     filtered_stack = stack.apply_filter(filter_by_chains, keep_null=False, **args)
     chains_lens_filtered = filtered_stack.apply_calculation(calculate_chain_lengths)
     assert len(filtered_stack.pdbs) == 4
-    transformed_structures, tm_scores = filtered_stack.tmalign_inside('3eiy')
 
-    assert tm_scores['1ycr'] == 0.23483
-    assert tm_scores['2d7t'] == 0.24401
+    tmalign = TMAlign()
+    _, transformed_structures, tm_scores = tmalign.tmalign_in_stack(filtered_stack, target='3eiy', mobile_chains=args['chains'])
+
+    assert tm_scores['1ycr'] == 0.37341
+    assert tm_scores['2d7t'] == 0.32871
     assert tm_scores['3eiy_copy'] == 1

@@ -49,6 +49,8 @@ class Align():
                 chain_col = 'label_asym_id'
             else:
                 raise ValueError("No recognized chain identifier column found in the ATOM dataframe.")
+        else:
+            chain_col = 'chain_id'
 
         filtered_pdb = deepcopy(pdb)
         filtered_atoms = pdb.df['ATOM'][pdb.df['ATOM'][chain_col].isin([chain_id])]

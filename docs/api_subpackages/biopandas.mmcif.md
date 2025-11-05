@@ -1,7 +1,9 @@
 biopandas version: 0.6.0dev
 ## PandasMmcif
 
-*PandasMmcif(use_auth: bool = True)*
+### PandasMmcif
+
+*PandasMmcif(use_auth: 'bool' = True)*
 
 None
 
@@ -9,7 +11,9 @@ None
 
 <hr>
 
-*amino3to1(record: str = 'ATOM', residue_col: str = 'auth_comp_id', residue_number_col: str = 'auth_seq_id', chain_col: str = 'auth_asym_id', fillna: str = '?')*
+### amino3to1
+
+*amino3to1(record: 'str' = 'ATOM', residue_col: 'str' = 'auth_comp_id', residue_number_col: 'str' = 'auth_seq_id', chain_col: 'str' = 'auth_asym_id', fillna: 'str' = '?')*
 
 Creates 1-letter amino acid codes from DataFrame
 
@@ -46,7 +50,9 @@ Creates 1-letter amino acid codes from DataFrame
 
 <hr>
 
-*convert_to_pandas_pdb(offset_chains: bool = True, records: List[str] = ['ATOM', 'HETATM']) -> biopandas.pdb.pandas_pdb.PandasPdb*
+### convert_to_pandas_pdb
+
+*convert_to_pandas_pdb(offset_chains: 'bool' = True, records: 'List[str]' = ['ATOM', 'HETATM']) -> 'PandasPdb'*
 
 Returns a PandasPdb object with the same data as the PandasMmcif
     object.
@@ -62,6 +68,8 @@ offset_chains: bool
     Defaults to ["ATOM", "HETATM"].
 
 <hr>
+
+### distance
 
 *distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))*
 
@@ -90,6 +98,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### distance_df
+
 *distance_df(df, xyz=(0.0, 0.0, 0.0))*
 
 Computes Euclidean distance between atoms and a 3D point.
@@ -115,7 +125,9 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
-*fetch_mmcif(pdb_code: Optional[str] = None, uniprot_id: Optional[str] = None, source: str = 'pdb')*
+### fetch_mmcif
+
+*fetch_mmcif(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')*
 
 Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold database at https://alphafold.ebi.ac.uk/.
     .
@@ -141,9 +153,9 @@ Fetches mmCIF file contents from the Protein Databank at rcsb.org or AlphaFold d
 
 self
 
-
-
 <hr>
+
+### get
 
 *get(s, df=None, invert=False, records=('ATOM', 'HETATM'))*
 
@@ -184,6 +196,59 @@ Filter PDB DataFrames by properties
 
 <hr>
 
+### get_model
+
+*get_model(model_index: 'int') -> 'PandasMmcif'*
+
+Returns a new PandasMmcif object with the dataframes subset to the
+    given model index.
+
+**Parameters**
+
+- `model_index` : int
+
+    An integer representing the model index to subset to.
+
+**Returns**
+
+- `pandas_pdb.PandasPdb` : A new PandasMMcif object containing the
+
+    structure subsetted to the given model.
+
+<hr>
+
+### get_models
+
+*get_models(model_indices: 'List[int]') -> 'PandasMmcif'*
+
+Returns a new PandasMmcif object with the dataframes subset to the
+    given model index.
+
+**Parameters**
+
+- `model_indices` : List[int]
+
+    A list representing the model indexes to subset to.
+
+**Returns**
+
+- `pandas_pdb.PandasMmtf` : A new PandasMmcif object
+
+    containing the structure subsetted to the given model.
+
+<hr>
+
+### label_models
+
+*label_models()*
+
+Adds a column ("model_id") to the underlying
+    DataFrames containing the model number.
+
+<hr>
+
+### read_mmcif
+
 *read_mmcif(path)*
 
 Read MMCIF files (unzipped or gzipped) from local drive
@@ -200,6 +265,8 @@ self
 
 <hr>
 
+### read_mmcif_from_list
+
 *read_mmcif_from_list(mmcif_lines)*
 
 Reads mmCIF file from a list into DataFrames
@@ -215,6 +282,8 @@ Reads mmCIF file from a list into DataFrames
 self
 
 <hr>
+
+### rmsd
 
 *rmsd(df1, df2, s=None, invert=False)*
 
@@ -252,11 +321,34 @@ Compute the Root Mean Square Deviation between molecules.
 
     Root Mean Square Deviation between df1 and df2
 
+<hr>
+
+### to_mmcif
+
+*to_mmcif(path, records=None, gz=False)*
+
+Write record DataFrames to an mmCIF file or gzipped mmCIF file.
+
+**Parameters**
+
+- `path` : str
+
+    A valid output path for the mmcif file
+
+- `records` : iterable, default: None
+
+    A list of record sections in {'ATOM', 'HETATM', 'ANISOU'}
+    that are to be written. Writes all sections if `records=None`.
+
+- `gz` : bool, default: False
+
+    Writes a gzipped mmCIF file if True.
+
 ### Properties
 
 <hr>
 
-*df*
+### df
 
 Acccess dictionary of pandas DataFrames for PDB record sections.
 

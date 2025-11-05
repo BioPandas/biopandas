@@ -94,7 +94,8 @@ def object_to_markdownpage(obj_name, obj, s=''):
 
     # function/class/method signature
     sig = str(inspect.signature(obj)).replace('(self, ', '(')
-    s += '\n*%s%s*\n\n' % (obj_name, sig)
+    s += '\n### %s\n\n' % (obj_name)  # Header with just function name for clean anchor
+    s += '*%s%s*\n\n' % (obj_name, sig)  # Full signature in italic below
 
     # docstring body
     doc = str(inspect.getdoc(obj))
@@ -108,14 +109,14 @@ def object_to_markdownpage(obj_name, obj, s=''):
         for m in members:
             if not m[0].startswith('_') and len(m) >= 2:
                 if isinstance(m[1], property):
-                    properties += '\n\n<hr>\n\n*%s*\n\n' % m[0]
+                    properties += '\n\n<hr>\n\n### %s\n\n' % m[0]  # Just property name
                     m_doc = docstring_to_markdown(str(inspect.getdoc(m[1])))
                     properties += '\n'.join(m_doc)
                 else:
                     sig = str(inspect.signature(m[1]))
                     sig = sig.replace('(self, ', '(').replace('(self)', '()')
-                    sig = sig.replace('(self)', '()')
-                    methods += '\n\n<hr>\n\n*%s%s*\n\n' % (m[0], sig)
+                    methods += '\n\n<hr>\n\n### %s\n\n' % (m[0])  # Just method name for anchor
+                    methods += '*%s%s*\n\n' % (m[0], sig)  # Full signature in italic below
                     m_doc = docstring_to_markdown(str(inspect.getdoc(m[1])))
                     methods += '\n'.join(m_doc)
         s += methods

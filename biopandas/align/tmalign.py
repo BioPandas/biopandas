@@ -35,6 +35,11 @@ class TMAlign(Align):
             self.tmalign_path = os.path.join(path_script, './USalign')
         elif os.path.exists(os.path.join(path_script, './USalign.exe')):
             self.tmalign_path = os.path.join(path_script, './USalign.exe')
+        # if our script has 'tests' in it, the path changes to "../../biopandas/align/"
+        elif os.path.exists(os.path.join(path_script, '../../biopandas/align/USalign')):
+            self.tmalign_path = os.path.join(path_script, '../../biopandas/align/USalign')
+        elif os.path.exists(os.path.join(path_script, '../../biopandas/align/USalign.exe')):
+            self.tmalign_path = os.path.join(path_script, '../../biopandas/align/USalign.exe')
         else:
             raise ValueError("Please provide the path to the TMalign executable.")
 

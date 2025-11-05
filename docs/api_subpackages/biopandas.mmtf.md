@@ -1,6 +1,8 @@
 biopandas version: 0.6.0dev
 ## fetch_mmtf
 
+### fetch_mmtf
+
 *fetch_mmtf(pdb_code: 'str') -> 'pd.DataFrame'*
 
 Returns a dataframe from a PDB code.
@@ -12,6 +14,8 @@ Returns a dataframe from a PDB code.
 
 ## PandasMmtf
 
+### PandasMmtf
+
 *PandasMmtf()*
 
 None
@@ -19,6 +23,8 @@ None
 ### Methods
 
 <hr>
+
+### amino3to1
 
 *amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
 
@@ -57,6 +63,8 @@ Creates 1-letter amino acid codes from DataFrame
 
 <hr>
 
+### distance
+
 *distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))*
 
 Computes Euclidean distance between atoms and a 3D point.
@@ -84,6 +92,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### distance_df
+
 *distance_df(df, xyz=(0.0, 0.0, 0.0))*
 
 Computes Euclidean distance between atoms and a 3D point.
@@ -109,11 +119,15 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### fetch_mmtf
+
 *fetch_mmtf(pdb_code: 'str')*
 
 None
 
 <hr>
+
+### get_model
 
 *get_model(model_index: 'int') -> 'PandasMmtf'*
 
@@ -134,6 +148,8 @@ Returns a new PandasPDB object with the dataframes subset to the
 
 <hr>
 
+### get_models
+
 *get_models(model_indices: 'List[int]') -> 'PandasMmtf'*
 
 Returns a new PandasMmtf object with the dataframes subset to the
@@ -152,6 +168,8 @@ Returns a new PandasMmtf object with the dataframes subset to the
     containing the structure subsetted to the given model.
 
 <hr>
+
+### impute_element
 
 *impute_element(records=('ATOM', 'HETATM'), inplace=False)*
 
@@ -176,17 +194,23 @@ DataFrame
 
 <hr>
 
+### parse_sse
+
 *parse_sse()*
 
 Parse secondary structure elements
 
 <hr>
 
+### read_mmtf
+
 *read_mmtf(filename: 'Union[str, os.PathLike]')*
 
 None
 
 <hr>
+
+### rmsd
 
 *rmsd(df1, df2, s=None, invert=False)*
 
@@ -226,6 +250,8 @@ Compute the Root Mean Square Deviation between molecules.
 
 <hr>
 
+### to_mmtf
+
 *to_mmtf(path, records=('ATOM', 'HETATM'))*
 
 Write record DataFrames to an MMTF file.
@@ -240,6 +266,8 @@ Write record DataFrames to an MMTF file.
     A tuple of records to write. Defaults to ("ATOM". "HETATM")
 
 <hr>
+
+### to_pdb
 
 *to_pdb(path, records=None, gz=False, append_newline=True)*
 
@@ -272,11 +300,13 @@ Write record DataFrames to a PDB file or gzipped PDB file.
 
 <hr>
 
-*df*
+### df
 
 Access dictionary of pandas DataFrames for MMTF record sections.
 
 ## parse_mmtf
+
+### parse_mmtf
 
 *parse_mmtf(file_path: 'str') -> 'pd.DataFrame'*
 

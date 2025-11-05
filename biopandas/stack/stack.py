@@ -118,7 +118,7 @@ class PandasPdbStack:
             if key is None:
                 key = pdb_id
         elif uniprot_id:
-            pdb.fetch_pdb(uniprot_id=uniprot_id, source="alphafold2-v4")
+            pdb.fetch_pdb(uniprot_id=uniprot_id, source="alphafold2-v6")
             if key is None:
                 key = uniprot_id
         else:

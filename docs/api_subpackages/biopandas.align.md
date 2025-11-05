@@ -1,6 +1,8 @@
 biopandas version: 0.6.0dev
 ## Align
 
+### Align
+
 *Align()*
 
 None
@@ -8,6 +10,8 @@ None
 ### Methods
 
 <hr>
+
+### filter_and_validate_chain
 
 *filter_and_validate_chain(pdb, chain_id)*
 
@@ -18,6 +22,8 @@ Filter the PandasPdb by chain_id and validate the presence of the chain.
     :return: filtered_pdb
 
 <hr>
+
+### transform
 
 *transform(coords, matrix, translation)*
 
@@ -30,16 +36,20 @@ Apply the rotation matrix and translation vector to the structure.
 
 <hr>
 
+### write_pdb_to_temp_file
+
 *write_pdb_to_temp_file(pdb)*
 
-Write a PandasPdb object's data to a temporary PDB file and return the file handle.
-    :param pdb: the PandasPdb object to write to the file.
+Write a PandasPdb/PandasMmcif object's data to a temporary structure file and return the file handle.
+    :param pdb: the Pandas object to write to the file.
 
     :return: file handle
 
 ### Properties
 
 ## TMAlign
+
+### TMAlign
 
 *TMAlign(tmalign_path: str = None)*
 
@@ -49,6 +59,8 @@ Class to align structures using TMalign and transform the mobile structure(s) wh
 ### Methods
 
 <hr>
+
+### filter_and_validate_chain
 
 *filter_and_validate_chain(pdb, chain_id)*
 
@@ -60,6 +72,8 @@ Filter the PandasPdb by chain_id and validate the presence of the chain.
 
 <hr>
 
+### parse_tmalign_rotation_matrix
+
 *parse_tmalign_rotation_matrix(file_path: str) -> (<built-in function array>, <built-in function array>)*
 
 Parse the rotation matrix of TMalign and translation vector from the TMalign output file.
@@ -68,6 +82,8 @@ Parse the rotation matrix of TMalign and translation vector from the TMalign out
     :return: matrix, translation
 
 <hr>
+
+### process_structure_for_tmalign
 
 *process_structure_for_tmalign(target_file, mobile_pdb: biopandas.pdb.pandas_pdb.PandasPdb, mobile_chain: str) -> (<class 'biopandas.pdb.pandas_pdb.PandasPdb'>, <class 'float'>)*
 
@@ -79,6 +95,8 @@ Handle the TMalign execution and transformation for a given mobile structure and
 
 <hr>
 
+### run_tmalign
+
 *run_tmalign(target: str, mobile: str, matrix_file_path: str = None) -> (<class 'str'>, <class 'float'>)*
 
 Function to execute TMalign with a rotation matrix output for one target-mobile pair.
@@ -89,6 +107,8 @@ Function to execute TMalign with a rotation matrix output for one target-mobile 
 
 <hr>
 
+### tmalign_in_stack
+
 *tmalign_in_stack(stack: biopandas.stack.stack.PandasPdbStack, mobile_chains: dict, target: str = None) -> (<class 'biopandas.stack.stack.PandasPdbStack'>, <class 'dict'>)*
 
 For doing TMalign inside a stack, with one of its entries
@@ -98,6 +118,8 @@ For doing TMalign inside a stack, with one of its entries
     :return: matrix_file_path, tm_score
 
 <hr>
+
+### tmalign_to
 
 *tmalign_to(target: biopandas.pdb.pandas_pdb.PandasPdb, mobiles: [<class 'biopandas.pdb.pandas_pdb.PandasPdb'>, <class 'biopandas.stack.stack.PandasPdbStack'>], target_chain: str, mobile_chains: [<class 'str'>, <class 'dict'>]) -> ([<class 'biopandas.pdb.pandas_pdb.PandasPdb'>, <class 'biopandas.stack.stack.PandasPdbStack'>], [<class 'float'>, <class 'dict'>])*
 
@@ -111,6 +133,8 @@ Run TMalign and transform the mobile structure(s) while extracting TM-scores, sp
 
 <hr>
 
+### transform
+
 *transform(coords, matrix, translation)*
 
 Apply the rotation matrix and translation vector to the structure.
@@ -121,6 +145,8 @@ Apply the rotation matrix and translation vector to the structure.
     :return: transformed coordinates as a numpy array.
 
 <hr>
+
+### transform_coords
 
 *transform_coords(pdb, matrix, translation, type='ATOM')*
 
@@ -134,10 +160,12 @@ Apply the rotation matrix and translation vector to the structure.
 
 <hr>
 
+### write_pdb_to_temp_file
+
 *write_pdb_to_temp_file(pdb)*
 
-Write a PandasPdb object's data to a temporary PDB file and return the file handle.
-    :param pdb: the PandasPdb object to write to the file.
+Write a PandasPdb/PandasMmcif object's data to a temporary structure file and return the file handle.
+    :param pdb: the Pandas object to write to the file.
 
     :return: file handle
 

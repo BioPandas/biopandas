@@ -38,9 +38,9 @@ def test_init():
 
 def test_init_with_path_ok():
     if sys.platform == 'win32':
-        tmalign = TMAlign(os.path.join(os.path.dirname(__file__), "../USalign.exe"))
+        tmalign = TMAlign(os.path.join(os.path.dirname(__file__), "../../biopandas/align/USalign.exe"))
     else:
-        tmalign = TMAlign(os.path.join(os.path.dirname(__file__), "../USalign"))
+        tmalign = TMAlign(os.path.join(os.path.dirname(__file__), "../../biopandas/align/USalign"))
 
     assert 'USalign' in tmalign.tmalign_path
 
@@ -48,12 +48,10 @@ def test_init_with_path_not_ok():
     assert_raises(FileNotFoundError, TMAlign, 'fake_Usalign')
 
 def test_init_with_path_none():
-    os.chdir('..')
-
-    if os.path.exists(os.path.join(os.path.dirname(__file__), "../USalign.exe")):
+    if os.path.exists(os.path.join(os.path.dirname(__file__), "../../biopandas/align/USalign.exe")):
         tmalign = TMAlign()
         assert 'USalign' in tmalign.tmalign_path
-    elif os.path.exists(os.path.join(os.path.dirname(__file__), "../USalign")):
+    elif os.path.exists(os.path.join(os.path.dirname(__file__), "../../biopandas/align/USalign")):
         tmalign = TMAlign()
         assert 'USalign' in tmalign.tmalign_path
     else:

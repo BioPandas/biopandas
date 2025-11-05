@@ -166,8 +166,9 @@ class PandasMmcif:
             uniprot_id is not None and source == "pdb"
         )
         invalid_input_combination_2 = pdb_code is not None and source in {
-            "alphafold2-v3",
-            "alphafold2-v4",
+            "alphafold2-v6",
+            # "alphafold2-v3", # deprecated
+            # "alphafold2-v4", # deprecated
         }
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
@@ -193,6 +194,11 @@ class PandasMmcif:
             )
         elif source == "alphafold2-v4":
             af2_version = 4
+            self.mmcif_path, self.mmcif_text = self._fetch_af2(
+                uniprot_id, af2_version
+            )
+        elif source == "alphafold2-v6":
+            af2_version = 6
             self.mmcif_path, self.mmcif_text = self._fetch_af2(
                 uniprot_id, af2_version
             )

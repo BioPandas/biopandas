@@ -1,5 +1,7 @@
 ## PandasPdb
 
+### PandasPdb
+
 *PandasPdb()*
 
 Object for working with Protein Databank structure files.
@@ -39,6 +41,8 @@ Object for working with Protein Databank structure files.
 
 <hr>
 
+### add_remark
+
 *add_remark(code, text='', indent=0)*
 
 Add custom REMARK entry.
@@ -71,6 +75,8 @@ Add custom REMARK entry.
 Nothing
 
 <hr>
+
+### amino3to1
 
 *amino3to1(record='ATOM', residue_col='residue_name', fillna='?')*
 
@@ -109,6 +115,8 @@ Creates 1-letter amino acid codes from DataFrame
 
 <hr>
 
+### distance
+
 *distance(xyz=(0.0, 0.0, 0.0), records=('ATOM', 'HETATM'))*
 
 Computes Euclidean distance between atoms and a 3D point.
@@ -136,6 +144,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### distance_df
+
 *distance_df(df, xyz=(0.0, 0.0, 0.0))*
 
 Computes Euclidean distance between atoms and a 3D point.
@@ -161,6 +171,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### fetch_pdb
+
 *fetch_pdb(pdb_code: 'Optional[str]' = None, uniprot_id: 'Optional[str]' = None, source: 'str' = 'pdb')*
 
 Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold database
@@ -184,16 +196,17 @@ Fetches PDB file contents from the Protein Databank at rcsb.org or AlphaFold dat
 - `source` : str
 
     The source to retrieve the structure from
-    (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)).
+    # (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)). #deprecated
+    (`"pdb"`, `"alphafold2-v6"`(latest)).
     Defaults to `"pdb"`.
 
 **Returns**
 
 self
 
-
-
 <hr>
+
+### get
 
 *get(s, df=None, invert=False, records=('ATOM', 'HETATM'))*
 
@@ -234,6 +247,8 @@ Filter PDB DataFrames by properties
 
 <hr>
 
+### get_model
+
 *get_model(model_index: 'int') -> 'PandasPdb'*
 
 Returns a new PandasPDB object with the dataframes subset to the given model index.
@@ -252,6 +267,8 @@ Returns a new PandasPDB object with the dataframes subset to the given model ind
 
 <hr>
 
+### get_model_start_end
+
 *get_model_start_end() -> 'pd.DataFrame'*
 
 Get the start and end of the models contained in the PDB file.
@@ -266,6 +283,8 @@ Get the start and end of the models contained in the PDB file.
     the start and end line indexes of the models.
 
 <hr>
+
+### get_models
 
 *get_models(model_indices: 'List[int]') -> 'PandasPdb'*
 
@@ -284,6 +303,8 @@ Returns a new PandasPDB object with the dataframes subset to the given model ind
     containing the structure subsetted to the given model.
 
 <hr>
+
+### gyradius
 
 *gyradius(records: 'tuple[str]' = ('ATOM',), decimals: 'int' = 4) -> 'float'*
 
@@ -307,9 +328,9 @@ Compute the Radius of Gyration of a molecule
 
     Radius of Gyration of df in Angstrom
 
-
-
 <hr>
+
+### impute_element
 
 *impute_element(records=('ATOM', 'HETATM'), inplace=False)*
 
@@ -334,6 +355,8 @@ DataFrame
 
 <hr>
 
+### label_models
+
 *label_models()*
 
 Adds a column (`"model_id"`) to the underlying
@@ -341,11 +364,15 @@ Adds a column (`"model_id"`) to the underlying
 
 <hr>
 
+### parse_sse
+
 *parse_sse()*
 
 Parse secondary structure elements
 
 <hr>
+
+### read_pdb
 
 *read_pdb(path)*
 
@@ -363,6 +390,8 @@ self
 
 <hr>
 
+### read_pdb_from_list
+
 *read_pdb_from_list(pdb_lines)*
 
 Reads PDB file from a list into DataFrames
@@ -378,6 +407,8 @@ Reads PDB file from a list into DataFrames
 self
 
 <hr>
+
+### rmsd
 
 *rmsd(df1, df2, s=None, invert=False, decimals=4)*
 
@@ -422,6 +453,8 @@ Compute the Root Mean Square Deviation between molecules.
 
 <hr>
 
+### to_pdb
+
 *to_pdb(path, records=None, gz=False, append_newline=True)*
 
 Write record DataFrames to a PDB file or gzipped PDB file.
@@ -451,6 +484,8 @@ Write record DataFrames to a PDB file or gzipped PDB file.
 
 <hr>
 
+### to_pdb_stream
+
 *to_pdb_stream(records: 'tuple[str]' = ('ATOM', 'HETATM')) -> 'StringIO'*
 
 Writes a PDB dataframe to a stream.
@@ -470,7 +505,7 @@ Writes a PDB dataframe to a stream.
 
 <hr>
 
-*df*
+### df
 
 Access dictionary of pandas DataFrames for PDB record sections.
 

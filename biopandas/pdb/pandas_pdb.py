@@ -138,7 +138,8 @@ class PandasPdb(object):
 
                 source : str
                     The source to retrieve the structure from
-                    (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)).
+                    # (`"pdb"`, `"alphafold2-v3"`, `"alphafold2-v4"`(latest)). #deprecated
+                     (`"pdb"`, `"alphafold2-v6"`(latest)).
                     Defaults to `"pdb"`.
 
                 Returns
@@ -151,8 +152,9 @@ class PandasPdb(object):
         invalid_input_identifier_2 = pdb_code is not None and uniprot_id is not None
         invalid_input_combination_1 = uniprot_id is not None and source == "pdb"
         invalid_input_combination_2 = pdb_code is not None and source in {
-            "alphafold2-v3",
-            "alphafold2-v4",
+            "alphafold2-v6",
+            # "alphafold2-v3",
+            # "alphafold2-v4",
         }
 
         if invalid_input_identifier_1 or invalid_input_identifier_2:
@@ -172,6 +174,9 @@ class PandasPdb(object):
             self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id, af2_version)
         elif source == "alphafold2-v4":
             af2_version = 4
+            self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id, af2_version)
+        elif source == "alphafold2-v6":
+            af2_version = 6
             self.pdb_path, self.pdb_text = self._fetch_af2(uniprot_id, af2_version)
         elif source == "pdb":
             self.pdb_path, self.pdb_text = self._fetch_pdb(pdb_code)
@@ -454,6 +459,7 @@ class PandasPdb(object):
         """Load PDB file from https://alphafold.ebi.ac.uk/."""
         txt = None
         url = f"https://alphafold.ebi.ac.uk/files/AF-{uniprot_id.upper()}-F1-model_v{af2_version}.pdb"
+        print(url)
         try:
             response = urlopen(url)
             txt = response.read()

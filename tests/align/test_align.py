@@ -44,7 +44,7 @@ def test_transform():
 def test_filter_and_validate_chain():
     ppdb = PandasPdb()
     ppdb.read_pdb(TESTDATA_FILENAME)
-
+    print(TESTDATA_FILENAME)
     align = Align()
 
     filtered_pdb = align.filter_and_validate_chain(ppdb, 'A')

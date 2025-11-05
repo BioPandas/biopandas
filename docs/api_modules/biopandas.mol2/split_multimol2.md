@@ -1,5 +1,7 @@
 ## split_multimol2
 
+### split_multimol2
+
 *split_multimol2(mol2_path)*
 
 Generator function that
