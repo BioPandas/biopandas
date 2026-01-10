@@ -207,7 +207,12 @@ class TMAlign(Align):
             target_pdb_id = sorted(stack.pdbs.keys())[0]
 
         target_pdb = stack.pdbs[target_pdb_id]
-        target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
+        
+        # if chain_id column does not exist, use label_asym_id
+        if 'chain_id' not in target_pdb.df['ATOM'].columns:
+            target_chain_id = target_pdb.df['ATOM']['label_asym_id']
+        else:
+            target_chain_id = target_pdb.df['ATOM']['chain_id'].unique()[0]
 
         mobile_pdbs = PandasPdbStack()
         mobile_pdbs.pdbs = {pdb_id: pdb for pdb_id, pdb in stack.pdbs.items() if pdb_id != target_pdb_id}
