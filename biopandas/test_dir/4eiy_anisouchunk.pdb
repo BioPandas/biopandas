@@ -1,0 +1,10 @@
+HEADER    MEMBRANE PROTEIN                        06-APR-12   4EIY              
+ATOM    101  CG1 VAL A  12      -5.222   2.059   3.696  1.00 17.98           C  
+ANISOU  101  CG1 VAL A  12     2231   2335   2262    -42    326    285       C  
+ATOM    102  CG2 VAL A  12      -5.748   3.603   1.839  1.00 16.30           C  
+ANISOU  102  CG2 VAL A  12     2409   2061   1722     37    584    238       C  
+ATOM    103  N   GLU A  13      -8.338   2.518   5.470  1.00 16.24           N  
+ANISOU  103  N   GLU A  13     2362   2337   1469    -17      0      0       N  
+ATOM    104  CA  GLU A  13      -8.773   1.934   6.759  1.00 15.34           C  
+ANISOU  104  CA  GLU A  13     2354   2186   1285    -33    -18    -33       C  
+ATOM    105  C   GLU A  13      -9.966   1.026   6.560  1.00 16.90           C  

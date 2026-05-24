@@ -1,3 +1,31 @@
+BioPandas
+
+Author: Sebastian Raschka <mail@sebastianraschka.com>  
+License: BSD 3 clause  
+Project Website: http://rasbt.github.io/biopandas/  
+Code Repository: https://github.com/rasbt/biopandas  
+
+
+```python
+%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+```
+
+    Last updated: 2021-03-02
+    
+    pandas   : 1.2.2
+    biopandas: 0.2.8
+    
+    
+
+
+```python
+from biopandas.mol2 import PandasMol2
+import pandas as pd
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+```
+
 # Working with MOL2 Structures in DataFrames
 
 The Tripos MOL2 format is a common format for working with small molecules. In this tutorial, we will go over some examples that illustrate how we can use Biopandas' MOL2 DataFrames to analyze molecules conveniently.
@@ -50,9 +78,9 @@ print('\nRaw MOL2 file contents:\n\n%s\n...' % pmol.mol2_text[:500])
           5 O1         -1.1758   -1.3445   -3.0212 O.2       1 <0>        -0.4896
           6 O2       
     ...
+    
 
-
-The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api/biopandas.mol2#pandasmol2df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
+The most interesting and useful attribute, however, is the [`PandasMol2.df`](../api_modules/biopandas.mol2/PandasMol2.md#df) DataFrame, which contains the ATOM section of the MOL2 structure. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
 
 ```python
@@ -540,7 +568,7 @@ keto
 ```
 
     number of keto groups: 2
-
+    
 
 
 
@@ -757,7 +785,7 @@ print('All-atom RMSD: %.4f Angstrom' % r_all)
 
     Heavy-atom RMSD: 1.1609 Angstrom
     All-atom RMSD: 1.5523 Angstrom
-
+    
 
 [File links: [1b5e_1.mol2](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_1.mol2), [1b5e_2.mol2](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/1b5e_2.mol2)]
 
@@ -833,7 +861,7 @@ distances = pmol.distance(keto_coord.values[0])
 ```
 
     x, y, z coords: [15.0888  6.5824 25.0727]
-
+    
 
 For our convenience, we can add these `distances` to our MOL2 DataFrame:
 
@@ -1148,7 +1176,7 @@ print('First 10 lines:\n', mol2_cont[:10])
      ZINC38611810
     First 10 lines:
      ['@<TRIPOS>MOLECULE\n', 'ZINC38611810\n', '   65    68     0     0     0\n', 'SMALL\n', 'NO_CHARGES\n', '\n', '@<TRIPOS>ATOM\n', '      1 C1         -1.1786    2.7011   -4.0323 C.3       1 <0>        -0.1537\n', '      2 C2         -1.2950    1.2442   -3.5798 C.3       1 <0>        -0.1156\n', '      3 C3         -0.1742    0.4209   -4.2178 C.3       1 <0>        -0.1141\n']
-
+    
 
 [File link: [40_mol2_files.mol2](https://raw.githubusercontent.com/rasbt/biopandas/master/docs/sources/tutorials/data/40_mol2_files.mol2)]
 

@@ -1,12 +1,45 @@
+BioPandas
+
+Authors: 
+- Sebastian Raschka <mail@sebastianraschka.com> 
+- Arian Jamasb <arian@jamasb.io>  
+
+License: BSD 3 clause  
+Project Website: http://rasbt.github.io/biopandas/  
+Code Repository: https://github.com/rasbt/biopandas  
+
+
+```python
+%load_ext watermark
+%watermark -d -u -p pandas,biopandas
+```
+
+    Last updated: 2025-11-05
+    
+    pandas   : 2.3.3
+    biopandas: 0.6.0.dev0
+    
+    
+
+
+```python
+import pandas as pd
+
+
+pd.set_option('display.width', 600)
+pd.set_option('display.max_columns', 8)
+```
+
 # Working with mmCIF Structures in DataFrames
 
 ## Loading mmCIF Files
 
-There are 3 ways to load a mmCIF structure into a `PandasMmcif` object.
+There are several ways to load a mmCIF structure into a `PandasMmcif` object.
 
 
-#### 1
-MmCIF files can be directly fetched from The Protein Data Bank at [http://www.rcsb.org](http://www.rcsb.org) via its unique 4-letter after initializing a new [`PandasMmcif`](../api_subpackages/biopandas.mmcif) object and calling the `fetch_mmcif` method:
+### 1 -- Loading an mmCIF file from the Protein Data Bank
+
+MmCIF files can be directly fetched from The Protein Data Bank at [http://www.rcsb.org](http://www.rcsb.org) via its unique 4-letter after initializing a new [`PandasMmcif`](../api_modules/biopandas.mmcif/PandasMMCIF.md#pandasmmcif) object and calling the `fetch_mmcif` method:
 
 
 ```python
@@ -17,7 +50,23 @@ from biopandas.mmcif import PandasMmcif
 pmmcif = PandasMmcif().fetch_mmcif('3eiy')
 ```
 
-#### 2 a)
+### 2 -- Loading an mmCIF file from the AlphaFold Structure Database
+
+
+(*New in version 0.4.0*)
+
+PDB files can be directly fetched from The AlphaFold Structure Database at [https://alphafold.ebi.ac.uk/](https://alphafold.ebi.ac.uk/) via its unique [UniProt](https://www.uniprot.org/) Identifier after initializing a new [`PandasPdb`](../api_modules/biopandas.pdb/PandasPdb.md#pandaspdb) object and calling the [`fetch_af2`](../api_modules/biopandas.pdb/PandasPdb.md#fetch_pdb) method:
+
+
+```python
+from biopandas.mmcif import PandasMmcif
+
+# Initialize a new PandasPdb object
+# and fetch the PDB file from alphafold.ebi.ac.uk
+ppdb = PandasMmcif().fetch_mmcif(uniprot_id='Q5VSL9', source='alphafold2-v6')
+```
+
+### 3 a) -- Loading a mmCIF structure from a local file
 
 Alternatively, we can load mmCIF files from local directories as regular mmCIF files using `read_mmcif`:
 
@@ -29,13 +78,13 @@ pmmcif.read_mmcif('./data/3eiy.cif')
 
 
 
-    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640>
+    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x1f0b07dee10>
 
 
 
 [File link: [3eiy.cif](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif)]
 
-#### 2 b)
+### 3 b) -- Loading a mmCIF structure from a local gzipped mmCIF file
 
 Or, we can load them from gzip archives like so (note that the file must end with a '.gz' suffix in order to be recognized as a gzip file):
 
@@ -47,7 +96,7 @@ pmmcif.read_mmcif('./data/3eiy.cif.gz')
 
 
 
-    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x11d387640>
+    <biopandas.mmcif.pandas_mmcif.PandasMmcif at 0x1f0b07dee10>
 
 
 
@@ -96,7 +145,7 @@ print('\nRaw mmCIF file contents:\n\n%s\n...' % pmmcif.pdb_text[:1000])
     PDB      3EJ0          .                                                                        unspecified 
     PDB      3EJ2          .                                                                       
     ...
-
+    
 
 The most interesting / useful attribute is the `PandasMmcif.df` DataFrame dictionary though, which gives us access to the mmCIF files as pandas DataFrames. Let's print the first 3 lines from the `ATOM` coordinate section to see how it looks like:
 
@@ -183,9 +232,7 @@ pmmcif.df['ATOM'].head(3)
 
 But more on that in the next section.
 
-#### 3
-
-**Loading mmCif files from a Python List**
+### 4 -- Loading a mmCIF file from a Python List
 
 Mmcif files can also be loaded into a `PandasMmcif` object from a Python list:
 
@@ -306,7 +353,7 @@ mmCIF files are parsed according to the [mmCIF file format description](https://
 
 For more information, we recommend the helpful [Beginner’s Guide to PDB Structures and the PDBx/mmCIF Format](https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/beginner’s-guide-to-pdb-structures-and-the-pdbx-mmcif-format) guide.
 
-After loading a PDB file from rcsb.org or our local drive, the [`PandasPdb.df`](../api/biopandas.pdb/#pandaspdbdf) attribute should contain the following 3 DataFrame objects:
+After loading a PDB file from rcsb.org or our local drive, the [`PandasPdb.df`](../api_modules/biopandas.pdb/PandasPdb.md#df) attribute should contain the following 3 DataFrame objects:
 
 
 ```python
@@ -1002,7 +1049,7 @@ print('Average B-Factor [Main Chain]: %.2f' % bfact_mc_avg)
 ```
 
     Average B-Factor [Main Chain]: 1.00
-
+    
 
 ## Plotting
 
@@ -1037,7 +1084,7 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_61_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png)
     
 
 
@@ -1052,7 +1099,7 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_62_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png)
     
 
 
@@ -1067,7 +1114,7 @@ plt.show()
 
 
     
-![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_63_0.png)
+![png](Working_with_mmCIF_Structures_in_DataFrames_files/Working_with_mmCIF_Structures_in_DataFrames_64_0.png)
     
 
 
@@ -1100,9 +1147,9 @@ print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 2.6444 Angstrom
+    
 
-
-[File links: [lig_conf_1.pdb](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_1.cif), [lig_conf_2.cif](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_2.cif)]
+[File links: [lig_conf_1.cif](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_1.cif), [lig_conf_2.cif](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/lig_conf_2.cif)]
 
 
 ```python
@@ -1112,7 +1159,7 @@ print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 1.7249 Angstrom
-
+    
 
 
 ```python
@@ -1122,7 +1169,7 @@ print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 1.9959 Angstrom
-
+    
 
 Similarly, we can compute the RMSD between 2 related protein structures:
 
@@ -1139,7 +1186,7 @@ print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 0.7377 Angstrom
-
+    
 
 Or the RMSD between the main chains only:
 
@@ -1152,7 +1199,7 @@ print('RMSD: %.4f Angstrom' % r)
 ```
 
     RMSD: 0.4781 Angstrom
-
+    
 
 <br>
 
@@ -1168,7 +1215,7 @@ reference_point = (9.362, 41.410, 10.542)
 distances = p_1.distance(xyz=reference_point, records=('ATOM',))
 ```
 
-[File link: [3eiy.pdb](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif)]
+[File link: [3eiy.cif](https://raw.githubusercontent.com/rasbt/biopandas/main/docs/tutorials/data/3eiy.cif)]
 
 The distance method returns a Pandas Series object:
 
@@ -1309,7 +1356,6 @@ Residues in the `residue_name` field can be converted into 1-letter amino acid c
 ```python
 from biopandas.mmcif import PandasMmcif
 
-
 pmmcif = PandasMmcif().fetch_mmcif('5mtn')
 sequence = pmmcif.amino3to1()
 sequence.tail()
@@ -1416,4 +1462,30 @@ for chain_id in sequence['auth_asym_id'].unique():
     
     Chain ID: B
     SVSSVPTKLEVVAATPTSLLISWDAPAVTVVYYLITYGETGSPWPGGQAFEVPGSKSTATISGLKPGVDYTITVYAHRSSYGYSENPISINYRT
+    
 
+Finally, saving a file that was stripped of hydrogen atoms
+
+
+```python
+from biopandas.mmcif import PandasMmcif
+
+pmmcif = PandasMmcif().fetch_mmcif('9H75')
+pmmcif.df['ATOM'] = pmmcif.df['ATOM'][pmmcif.df['ATOM']['type_symbol'] != 'H']
+```
+
+We can save the file using the [`PandasMmcif.to_mmcif`](../api_modules/biopandas.mmcif/PandasMMCIF.md#to_mmcif) method:
+
+
+```python
+pmmcif.to_mmcif(path='./data/9H75_stripped.cif',
+            records=None,
+            gz=False)
+```
+
+
+```python
+pmmcif.to_mmcif(path='./data/9H75_stripped.cif.gz',
+            records=['ATOM', 'HETATM', 'OTHERS'],
+            gz=True)
+```

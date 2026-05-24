@@ -1,5 +1,7 @@
-biopandas version: 0.3.0
+biopandas version: 0.6.0dev
 ## PandasMol2
+
+### PandasMol2
 
 *PandasMol2()*
 
@@ -30,6 +32,8 @@ Object for working with Tripos Mol2 structure files.
 
 <hr>
 
+### distance
+
 *distance(xyz=(0.0, 0.0, 0.0))*
 
 Computes Euclidean distance between atoms in
@@ -49,6 +53,8 @@ Computes Euclidean distance between atoms in
     distance between the atoms in the atom section and `xyz`.
 
 <hr>
+
+### distance_df
 
 *distance_df(df, xyz=(0.0, 0.0, 0.0))*
 
@@ -75,6 +81,8 @@ Computes Euclidean distance between atoms and a 3D point.
 
 <hr>
 
+### read_mol2
+
 *read_mol2(path, columns=None)*
 
 Reads Mol2 files (unzipped or gzipped) from local drive
@@ -84,7 +92,7 @@ Reads Mol2 files (unzipped or gzipped) from local drive
 
 **Attributes**
 
-- `path` : str
+- `path` : Union[str, os.PathLike]
 
     Path to the Mol2 file in .mol2 format or gzipped format (.mol2.gz)
 
@@ -109,6 +117,8 @@ Reads Mol2 files (unzipped or gzipped) from local drive
 self
 
 <hr>
+
+### read_mol2_from_list
 
 *read_mol2_from_list(mol2_lines, mol2_code, columns=None)*
 
@@ -155,6 +165,8 @@ self
 
 <hr>
 
+### rmsd
+
 *rmsd(df1, df2, heavy_only=True)*
 
 Compute the Root Mean Square Deviation between molecules
@@ -185,11 +197,13 @@ Compute the Root Mean Square Deviation between molecules
 
 <hr>
 
-*df*
+### df
 
 Acccesses the pandas DataFrame
 
 ## split_multimol2
+
+### split_multimol2
 
 *split_multimol2(mol2_path)*
 

@@ -16,8 +16,8 @@ theme: yeti
 markdown_extensions:
   - tables
   - fenced_code
-  - mdx_math:
-      enable_dollar_delimiter: True #for use of inline $..$
+  - pymdownx.arithmatex:
+      generic: true
 extra_javascript:
   - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
   - mathjaxhelper.js

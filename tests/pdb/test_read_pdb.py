@@ -27,8 +27,8 @@ TEST_DATA = pkg_resources.files(tests.pdb.data)
 TESTDATA_FILENAME = str(TEST_DATA.joinpath("3eiy.pdb"))
 TESTDATA_FILENAME2 = str(TEST_DATA.joinpath("4eiy_anisouchunk.pdb"))
 TESTDATA_FILENAME_GZ = str(TEST_DATA.joinpath("3eiy.pdb.gz"))
+TESTDATA_FILENAME_AF2_V6 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v6.pdb"))
 TESTDATA_FILENAME_AF2_V4 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v4.pdb"))
-
 TESTDATA_FILENAME_AF2_V3 = str(TEST_DATA.joinpath("AF-Q5VSL9-F1-model_v3.pdb"))
 
 ATOM_DF_COLUMNS = [
