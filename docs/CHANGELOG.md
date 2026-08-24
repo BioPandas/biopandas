@@ -1,10 +1,12 @@
 # Release Notes ![](img/logos/3eiy_120.png)
 
-- Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions.
-- Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
-
 The CHANGELOG for the current development version is available at
 [https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md](https://github.com/rasbt/biopandas/blob/main/docs/sources/CHANGELOG.md).
+
+### 0.5.2 (24/08/2026)
+
+- Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)
+- Supports `mol` files that have empty lines between blocks, (Via [Ruibin Liu](https://github.com/Ruibin-Liu) PR #[140](https://github.com/BioPandas/biopandas/pull/140#))
 
 ### 0.5.1 (01/08/2024)
 
