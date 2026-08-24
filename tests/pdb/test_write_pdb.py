@@ -15,6 +15,7 @@ import os
 import warnings
 
 import pandas as pd
+import pytest
 
 import tests.pdb.data
 from biopandas.pdb import PandasPdb
@@ -148,6 +149,10 @@ def test_introduce_remark():
     assert len(ppdb.df["ATOM"]) == n_atoms
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_b_factor_shift():
     """Test b_factor shifting one white space when saving the fetched pdb."""
     ppdb = PandasPdb()

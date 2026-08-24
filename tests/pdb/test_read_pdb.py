@@ -118,6 +118,10 @@ def test__read_pdb_raises():
     assert_raises(ValueError, expect, run_code_2)
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_fetch_pdb():
     """Test fetch_pdb"""
 
@@ -136,6 +140,10 @@ def test_fetch_pdb():
         assert ppdb.pdb_path == "https://files.rcsb.org/download/3eiy.pdb"
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_fetch_af2():
     """Test fetch_pdb"""
     # Check latest release

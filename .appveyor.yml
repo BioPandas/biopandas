@@ -1,30 +1,27 @@
 build: false
 
+image: Visual Studio 2019
+
 environment:
+  MAMBA_ROOT_PREFIX: C:\micromamba
   matrix:
     - PYTHON_VERSION: 3.7
-      MINICONDA: C:\Miniconda3
     - PYTHON_VERSION: 3.8
-      MINICONDA: C:\Miniconda3
     - PYTHON_VERSION: 3.9
-      MINICONDA: C:\Miniconda3
     - PYTHON_VERSION: "3.10"
-      MINICONDA: C:\Miniconda3
     - PYTHON_VERSION: 3.11
-      MINICONDA: C:\Miniconda3
-
 
 init:
-  - ECHO %PYTHON_VERSION% %MINICONDA%
-  - ECHO conda --version
+  - ECHO %PYTHON_VERSION%
 
 install:
-  - set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  - conda info -a
-  - conda create -q -n test-environment --channel=conda-forge mmtf-python numpy scipy pandas pytest looseversion importlib_resources python=%PYTHON_VERSION%
-  - activate test-environment
+  - ps: |
+      $ProgressPreference = 'SilentlyContinue'
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      Invoke-WebRequest -Uri "https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-win-64.exe" -OutFile "$env:USERPROFILE\micromamba.exe" -UseBasicParsing
+  - set PATH=%USERPROFILE%;%PATH%
+  - micromamba --version
+  - micromamba create -q -y -n test-environment --channel=conda-forge mmtf-python numpy scipy pandas pytest looseversion importlib_resources python=%PYTHON_VERSION%
 
 test_script:
-  - pytest -s -v
+  - micromamba run -n test-environment pytest -s -v

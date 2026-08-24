@@ -121,6 +121,10 @@ def test__read_pdb_raises():
     assert_raises(ValueError, expect, run_code_2)
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_fetch_pdb():
     """Test fetch_pdb"""
 
@@ -136,6 +140,10 @@ def test_fetch_pdb():
         assert ppdb.mmcif_path == "https://files.rcsb.org/download/3eiy.cif"
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_fetch_af2():
     """Test fetch_af2"""
     # Test latest release
@@ -198,16 +206,16 @@ def test__construct_df():
             2,
             "ATOM",
             1,
-            None,
+            float("nan"),
             "A",
             "N",
             "SER",
             1,
             "23",
             1.0,
-            "None",
+            float("nan"),
             1,
-            None,
+            float("nan"),
             "N",
         ],
         index=[
@@ -239,7 +247,11 @@ def test__construct_df():
     # However, if I compare these values directly, they are equal.
     # assert exp.equals(dfs["ATOM"].loc[0, :])
     for k, v in exp.items():
-        assert dfs["ATOM"].loc[0, :][k] == v, k
+        actual = dfs["ATOM"].loc[0, :][k]
+        if pd.isna(v):
+            assert pd.isna(actual), k
+        else:
+            assert actual == v, k
 
 
 def test_read_pdb():
@@ -323,6 +335,10 @@ def test_get_df():
     assert shape == (857, 21), shape
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Windows CI cert store triggers ssl.SSLError: [ASN1: NOT_ENOUGH_DATA]",
+)
 def test_mmcif_pdb_conversion():
     """Tests conversion from mmCIF df to PDB df"""
     # Multichain test

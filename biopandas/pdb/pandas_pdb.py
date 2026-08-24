@@ -258,7 +258,7 @@ class PandasPdb(object):
 
         for sec in records:
             t[sec]["element_symbol"] = t[sec][["atom_name", "element_symbol"]].apply(
-                lambda x: x[0][1] if len(x[1]) == 3 else x[0][0], axis=1
+                lambda x: x.iloc[0][1] if len(x.iloc[1]) == 3 else x.iloc[0][0], axis=1
             )
         return t
 
@@ -606,7 +606,13 @@ class PandasPdb(object):
         cmp = "placeholder"
         indices = []
 
-        residue_number_insertion = tmp["residue_number"].astype(str) + tmp["insertion"]
+        residue_number_insertion = (
+            tmp["chain_id"].astype(str)
+            + "_"
+            + tmp["residue_number"].astype(str)
+            + "_"
+            + tmp["insertion"].fillna("")
+        )
 
         for num, ind in zip(residue_number_insertion, np.arange(tmp.shape[0])):
             if num != cmp:
