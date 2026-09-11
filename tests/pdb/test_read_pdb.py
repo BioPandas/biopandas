@@ -318,3 +318,34 @@ def test_get_df():
 
     shape = ppdb.get("carbon", records=("ATOM",)).shape
     assert shape == (857, 21), shape
+
+
+def test_charge_parsing():
+    """Test reading PDB v3.3 charge notation."""
+    from biopandas.pdb import PandasPdb
+    import sys
+    if sys.version_info >= (3, 9):
+        import importlib.resources as pkg_resources
+    else:
+        import importlib_resources as pkg_resources
+    import tests.pdb.data
+    
+    TEST_DATA = pkg_resources.files(tests.pdb.data)
+    charged_file = str(TEST_DATA.joinpath("charged_atoms.pdb"))
+    
+    ppdb = PandasPdb()
+    ppdb.read_pdb(charged_file)
+    
+    atom_df = ppdb.df["ATOM"]
+    anisou_df = ppdb.df["ANISOU"]
+    
+    # ATOM charges
+    assert atom_df.loc[2, "charge"] == -1.0
+    assert atom_df.loc[3, "charge"] == 1.0
+    assert atom_df.loc[4, "charge"] == 2.0
+    assert pd.isna(atom_df.loc[0, "charge"])
+    assert pd.isna(atom_df.loc[1, "charge"])
+    
+    # ANISOU charges
+    assert anisou_df.loc[0, "charge"] == -1.0
+    assert anisou_df.loc[1, "charge"] == 1.0

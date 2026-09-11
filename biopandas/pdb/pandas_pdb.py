@@ -557,7 +557,10 @@ class PandasPdb(object):
             )
             for c in pdb_records[r[0]]:
                 try:
-                    df[c["id"]] = df[c["id"]].astype(c["type"])
+                    if callable(c["type"]):
+                        df[c["id"]] = df[c["id"]].apply(c["type"])
+                    else:
+                        df[c["id"]] = df[c["id"]].astype(c["type"])
                 except ValueError:
                     # expect ValueError if float/int columns are empty strings
                     df[c["id"]] = pd.Series(np.nan, index=df.index)

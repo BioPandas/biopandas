@@ -180,3 +180,47 @@ def test_to_pdb_stream():
 
     source_pdb = "\n".join(lines_to_check)
     assert stream.read() == source_pdb
+
+
+def test_charge_roundtrip():
+    """Test writing and reading back charge notation."""
+    import sys
+    if sys.version_info >= (3, 9):
+        import importlib.resources as pkg_resources
+    else:
+        import importlib_resources as pkg_resources
+    import tests.pdb.data
+    from biopandas.pdb import PandasPdb
+    import os
+    
+    TEST_DATA = pkg_resources.files(tests.pdb.data)
+    charged_file = str(TEST_DATA.joinpath("charged_atoms.pdb"))
+    outfile = str(TEST_DATA.joinpath("tmp_charged.pdb"))
+    
+    ppdb = PandasPdb()
+    ppdb.read_pdb(charged_file)
+    ppdb.to_pdb(outfile)
+    
+    # Verify written notation
+    with open(outfile, "r") as f:
+        lines = [l for l in f if l.startswith(("ATOM", "ANISOU"))]
+    
+    # ATOM line 3 (index 2): OE2 GLU should have '1-'
+    assert lines[2][78:80] == "1-", f"Expected '1-', got '{lines[2][78:80]}'"
+    # ATOM line 4 (index 3): NZ LYS should have '1+'
+    assert lines[3][78:80] == "1+", f"Expected '1+', got '{lines[3][78:80]}'"
+    # ATOM line 5 (index 4): FE HEM should have '2+'
+    assert lines[4][78:80] == "2+", f"Expected '2+', got '{lines[4][78:80]}'"
+    # ANISOU line 1: should have '1-'
+    assert lines[5][78:80] == "1-"
+    # ANISOU line 2: should have '1+'
+    assert lines[6][78:80] == "1+"
+    
+    # Round-trip: read back
+    ppdb2 = PandasPdb()
+    ppdb2.read_pdb(outfile)
+    assert ppdb2.df["ATOM"].loc[2, "charge"] == -1.0
+    assert ppdb2.df["ATOM"].loc[3, "charge"] == 1.0
+    assert ppdb2.df["ATOM"].loc[4, "charge"] == 2.0
+    
+    os.remove(outfile)
