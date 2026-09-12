@@ -30,6 +30,7 @@ def _format_charge(val):
     sign = '+' if val > 0 else '-'
     return f'{abs(val)}{sign}'
 
+
 amino3to1dict = {
     "ASH": "A",
     "ALA": "A",
