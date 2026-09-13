@@ -6,6 +6,31 @@
 
 import pandas as pd
 
+
+def _parse_charge(s):
+    """Parse PDB v3.3 charge notation '2+', '1-' into integer charge."""
+    s = s.strip()
+    if not s:
+        return float('nan')
+    if s[-1] == '+':
+        return int(s[:-1])
+    elif s[-1] == '-':
+        return -int(s[:-1])
+    else:
+        return float('nan')
+
+
+def _format_charge(val):
+    """Format integer charge into PDB v3.3 notation '2+', '1-'."""
+    if pd.isna(val):
+        return '  '
+    val = int(val)
+    if val == 0:
+        return '  '
+    sign = '+' if val > 0 else '-'
+    return f'{abs(val)}{sign}'
+
+
 amino3to1dict = {
     "ASH": "A",
     "ALA": "A",
@@ -183,10 +208,8 @@ pdb_atomdict = [
     {
         "id": "charge",
         "line": [78, 80],
-        "type": float,
-        "strf": lambda x: (
-            ("%+2.1f" % x).replace("+", " ") if pd.notnull(x) else ""
-        ),
+        "type": _parse_charge,
+        "strf": _format_charge,
     },
 ]
 
@@ -309,10 +332,8 @@ pdb_anisoudict = [
     {
         "id": "charge",
         "line": [78, 80],
-        "type": float,
-        "strf": lambda x: (
-            ("%+2.1f" % x).replace("+", " ") if pd.notnull(x) else ""
-        ),
+        "type": _parse_charge,
+        "strf": _format_charge,
     },
 ]
 
