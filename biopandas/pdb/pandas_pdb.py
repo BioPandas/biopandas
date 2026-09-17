@@ -626,6 +626,94 @@ class PandasPdb(object):
 
         return pd.concat((tmp.iloc[indices]["chain_id"], transl), axis=1)
 
+    def to_fasta(self, path=None, *, model_index, line_width=80, fillna="X"):
+        """Export observed protein sequences from one model as FASTA.
+
+        Parameters
+        ----------
+        path : str or os.PathLike, optional
+            Output path. If supplied, overwrite it with the returned text.
+        model_index : int
+            Model identifier to export. Use 1 for files without MODEL records.
+        line_width : int, default: 80
+            Maximum number of residues per sequence line.
+        fillna : str, default: 'X'
+            One uppercase ASCII letter for unknown residues.
+
+        Returns
+        -------
+        str
+            FASTA text, with one record per chain in encounter order and a
+            final newline. Returns an empty string for an empty ATOM selection.
+
+        Raises
+        ------
+        TypeError
+            If model_index or line_width is not an integer.
+        ValueError
+            If no structure is loaded, the model is absent, line_width is not
+            positive, fillna is invalid, or a chain identifier is invalid.
+
+        Notes
+        -----
+        Uses ATOM residues and the existing amino3to1 translation. Missing
+        residues are not reconstructed from SEQRES and numbering gaps are not
+        padded. Nucleotide translation is not supported. Headers have the form
+        ``model_1_chain_A``; blank chain identifiers are written as ``blank``.
+        The source DataFrames are not modified.
+
+        Examples
+        --------
+        >>> ppdb = PandasPdb().read_pdb('protein.pdb')
+        >>> fasta = ppdb.to_fasta(model_index=1)
+        >>> fasta = ppdb.to_fasta('chains.fasta', model_index=1, line_width=60)
+        """
+        for name, value in (
+            ("model_index", model_index), ("line_width", line_width)
+        ):
+            if isinstance(value, bool) or not isinstance(value, int):
+                raise TypeError(f"{name} must be an integer")
+        if line_width <= 0:
+            raise ValueError("line_width must be positive")
+        if (
+            not isinstance(fillna, str)
+            or len(fillna) != 1
+            or not "A" <= fillna <= "Z"
+        ):
+            raise ValueError("fillna must be one uppercase ASCII letter")
+        if not self.df or not self.pdb_text:
+            raise ValueError("No PDB structure is loaded")
+        models = self.get_model_start_end()["model_idx"].astype(int)
+        if model_index not in models.values:
+            raise ValueError(f"Model {model_index} is absent")
+
+        sequence = self.get_model(model_index).amino3to1(
+            record="ATOM", fillna=fillna
+        )
+        lines = []
+        for chain in sequence["chain_id"].unique():
+            if not isinstance(chain, str) or (
+                chain not in ("", " ")
+                and any(c.isspace() or not c.isprintable() for c in chain)
+            ):
+                raise ValueError(
+                    "Chain identifiers must not contain whitespace or controls"
+                )
+            label = chain if chain.strip() else "blank"
+            residues = "".join(
+                sequence.loc[sequence["chain_id"] == chain, "residue_name"]
+            )
+            lines.append(f">model_{model_index}_chain_{label}")
+            lines.extend(
+                residues[i:i + line_width]
+                for i in range(0, len(residues), line_width)
+            )
+        fasta = "\n".join(lines) + "\n" if lines else ""
+        if path is not None:
+            with open(path, "w", encoding="utf-8", newline="\n") as output:
+                output.write(fasta)
+        return fasta
+
     def distance(self, xyz=(0.00, 0.00, 0.00), records=("ATOM", "HETATM")):
         """Computes Euclidean distance between atoms and a 3D point.
 
