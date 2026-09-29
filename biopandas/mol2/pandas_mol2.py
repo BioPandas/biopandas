@@ -242,7 +242,7 @@ class PandasMol2(object):
             + (d1["y"].values - d2["y"].values) ** 2
             + (d1["z"].values - d2["z"].values) ** 2
         )
-        rmsd = round((total.sum() / df1.shape[0]) ** 0.5, 4)
+        rmsd = round((total.sum() / d1.shape[0]) ** 0.5, 4)
         return rmsd
 
     def distance(self, xyz=(0.00, 0.00, 0.00)):
