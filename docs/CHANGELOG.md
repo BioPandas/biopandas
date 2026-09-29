@@ -9,6 +9,8 @@ The CHANGELOG for the current development version is available at
 
 - Fix: parse the PDB v3.3 atomic charge notation (columns 79-80, e.g. `2+`, `1-`) as integer charges instead of floats, and write it back in spec-compliant notation. Also restores consistent integer dtypes between the PDB and MMTF readers on Windows. Addresses issue [#151](https://github.com/BioPandas/biopandas/issues/151). PR [#160](https://github.com/BioPandas/biopandas/pull/160)
 
+- Fix: `PandasMol2.rmsd()` now normalizes by the number of atoms it actually compared. With the default `heavy_only=True`, the sum of squared deviations over the hydrogen-filtered atoms was divided by the total atom count including the discarded hydrogens, silently understating the result by a factor of `sqrt(n_total / n_heavy)`. Addresses issue [#163](https://github.com/BioPandas/biopandas/issues/163).
+
 ### 0.5.2 (24/08/2026)
 
 - Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)

@@ -69,7 +69,43 @@ def test_rmsd():
     pdmol_2 = PandasMol2().read_mol2(data_path_2)
 
     assert pdmol_1.rmsd(pdmol_1.df, pdmol_2.df, heavy_only=False) == 1.5523
-    assert pdmol_1.rmsd(pdmol_1.df, pdmol_2.df) == 1.1609
+    # Divides by the number of heavy atoms (20), not by the total atom
+    # count (32) that includes the hydrogens filtered out above.
+    assert pdmol_1.rmsd(pdmol_1.df, pdmol_2.df) == 1.4684
+
+
+def test_rmsd_heavy_only_normalizes_by_compared_atoms():
+    """`heavy_only=True` must normalize by the atoms it actually compared.
+
+    The sum of squared deviations is accumulated over the hydrogen-filtered
+    frames, so dividing it by the unfiltered atom count understates the
+    result by a factor of sqrt(n_total / n_heavy).
+    """
+    data_path_1 = str(TEST_DATA.joinpath("1b5e_1.mol2"))
+    data_path_2 = str(TEST_DATA.joinpath("1b5e_2.mol2"))
+
+    df1 = PandasMol2().read_mol2(data_path_1).df
+    df2 = PandasMol2().read_mol2(data_path_2).df
+
+    # The fixtures must contain hydrogens, otherwise this test cannot detect
+    # the mis-normalization.
+    n_total = df1.shape[0]
+    heavy1 = df1[df1["atom_type"] != "H"]
+    heavy2 = df2[df2["atom_type"] != "H"]
+    n_heavy = heavy1.shape[0]
+    assert n_heavy < n_total
+
+    sq = (
+        (heavy1["x"].values - heavy2["x"].values) ** 2
+        + (heavy1["y"].values - heavy2["y"].values) ** 2
+        + (heavy1["z"].values - heavy2["z"].values) ** 2
+    )
+    expected = round((sq.sum() / n_heavy) ** 0.5, 4)
+
+    actual = PandasMol2.rmsd(df1, df2)
+    assert actual == expected
+    # Guard against the value that the unfiltered divisor would produce.
+    assert actual != round((sq.sum() / n_total) ** 0.5, 4)
 
 
 def test_distance():
