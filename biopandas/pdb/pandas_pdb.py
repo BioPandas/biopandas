@@ -111,8 +111,13 @@ class PandasPdb(object):
         self
 
         """
-        self.pdb_text = "".join(pdb_lines)
-        self._df = self._construct_df(pdb_lines)
+        # Lines may come with or without trailing newlines (e.g. from
+        # `readlines()` or from `str.split("\n")`), so add the missing ones.
+        pdb_lines = list(pdb_lines)
+        self.pdb_text = "".join(
+            line if line.endswith("\n") else line + "\n" for line in pdb_lines[:-1]
+        ) + "".join(pdb_lines[-1:])
+        self._df = self._construct_df(pdb_lines=self.pdb_text.splitlines(True))
         self.header, self.code = self._parse_header_code()
         return self
 
@@ -547,7 +552,7 @@ class PandasPdb(object):
                     line_lists[record].append(line_ele)
                 else:
                     line_lists["OTHERS"].append(
-                        [line[:6].rstrip(), line[6:-1].rstrip(), line_num]
+                        [line[:6].rstrip(), line[6:].rstrip(), line_num]
                     )
 
         dfs = {}

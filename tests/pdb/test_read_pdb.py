@@ -17,6 +17,7 @@ from urllib.error import HTTPError
 import numpy as np
 import pandas as pd
 import pytest
+from pandas.testing import assert_frame_equal
 
 import tests.pdb.data
 from biopandas.pdb import PandasPdb
@@ -269,6 +270,22 @@ def test_read_pdb_from_list():
         assert ppdb.pdb_text == pdb_text
         assert ppdb.code == code
         assert ppdb.pdb_path == ""
+
+
+def test_read_pdb_from_list_without_newlines():
+    """Test read_pdb_from_list with lines that have no trailing newline"""
+    expected = PandasPdb().read_pdb_from_list(three_eiy.splitlines(True))
+
+    ppdb = PandasPdb().read_pdb_from_list(three_eiy.split("\n"))
+    assert ppdb.pdb_text == three_eiy
+    assert ppdb.code == "3eiy"
+    for record in ["ATOM", "HETATM", "ANISOU", "OTHERS"]:
+        assert_frame_equal(ppdb.df[record], expected.df[record])
+
+    # Lines without the padding to 80 columns
+    ppdb = PandasPdb().read_pdb_from_list([s.rstrip() for s in three_eiy.split("\n")])
+    assert ppdb.code == "3eiy"
+    assert_frame_equal(ppdb.df["OTHERS"], expected.df["OTHERS"])
 
 
 def test_anisou_input_handling():
