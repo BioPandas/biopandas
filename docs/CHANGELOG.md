@@ -11,6 +11,8 @@ The CHANGELOG for the current development version is available at
 
 - Fix: `PandasMol2.rmsd()` now normalizes by the number of atoms it actually compared. With the default `heavy_only=True`, the sum of squared deviations over the hydrogen-filtered atoms was divided by the total atom count including the discarded hydrogens, silently understating the result by a factor of `sqrt(n_total / n_heavy)`. Addresses issue [#163](https://github.com/BioPandas/biopandas/issues/163).
 
+- Fix: `PandasPdb.read_pdb_from_list()` now accepts lines without trailing newlines (e.g. from `str.split("\n")`). Before, `pdb_text` was joined into a single line and the last character of every `OTHERS` entry was dropped, which also cut the last character off the PDB code. Addresses issue [#130](https://github.com/BioPandas/biopandas/issues/130).
+
 ### 0.5.2 (24/08/2026)
 
 - Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)
