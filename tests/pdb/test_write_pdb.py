@@ -84,6 +84,35 @@ def test_anisou():
     assert f1 == four_eiy
 
 
+def test_anisou_with_model_id():
+    """Test writing ANISOU entries after labelling models."""
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME2)
+    ppdb.label_models()
+    assert "model_id" in ppdb.df["ANISOU"].columns
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        ppdb.to_pdb(path=OUTFILE, records=None)
+    assert not any("model_id" in str(x.message) for x in w)
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    assert f1 == four_eiy
+
+
+def test_anisou_nonexpected_column():
+    """Test that unexpected ANISOU columns are skipped with a warning."""
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME2)
+    ppdb.df["ANISOU"]["test"] = 1
+    with pytest.warns(UserWarning, match="Column test is not an expected"):
+        ppdb.to_pdb(path=OUTFILE, records=None)
+    with open(OUTFILE, "r") as f:
+        f1 = f.read()
+    os.remove(OUTFILE)
+    assert f1 == four_eiy
+
+
 def test_add_remark():
     """Test adding a REMARK entry."""
     # Add remark
