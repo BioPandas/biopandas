@@ -24,7 +24,7 @@ from looseversion import LooseVersion
 
 from biopandas.constants import ATOMIC_MASSES
 
-from .engines import amino3to1dict, pdb_df_columns, pdb_records
+from .engines import amino3to1dict, pdb_records
 
 pd_version = LooseVersion(pd.__version__)
 
@@ -823,9 +823,11 @@ class PandasPdb(object):
                     for idx in range(dfs[r][c].values.shape[0]):
                         if len(dfs[r][c].values[idx]) > 8:
                             dfs[r][c].values[idx] = str(dfs[r][c].values[idx]).strip()
-                if c in {"line_idx", "OUT"}:
+                if c in {"line_idx", "OUT", "model_id"}:
                     pass
-                elif r in {"ATOM", "HETATM"} and c not in pdb_df_columns:
+                elif r in {"ATOM", "HETATM", "ANISOU"} and c not in {
+                    col["id"] for col in pdb_records[r]
+                }:
                     warn(
                         "Column %s is not an expected column and"
                         " will be skipped." % c
