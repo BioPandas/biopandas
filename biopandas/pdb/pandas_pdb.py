@@ -812,9 +812,10 @@ class PandasPdb(object):
         dfs = {r: self.df[r].copy() for r in records if not self.df[r].empty}
 
         for r in dfs:
-            for col in pdb_records[r]:
-                dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
+            if pdb_records[r]:
                 dfs[r]["OUT"] = pd.Series("", index=dfs[r].index)
+                for col in pdb_records[r]:
+                    dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
 
             for c in dfs[r].columns:
                 # fix issue where coordinates with four or more digits would
@@ -1045,9 +1046,10 @@ class PandasPdb(object):
         dfs = {r: df.loc[df.record_name == r] for r in records}
 
         for r in dfs:
-            for col in pdb_records[r]:
-                dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
+            if pdb_records[r]:
                 dfs[r]["OUT"] = pd.Series("", index=dfs[r].index)
+                for col in pdb_records[r]:
+                    dfs[r][col["id"]] = dfs[r][col["id"]].apply(col["strf"])
 
             for c in dfs[r].columns:
                 # fix issue where coordinates with four or more digits would
