@@ -13,6 +13,8 @@ The CHANGELOG for the current development version is available at
 
 - Fix: `PandasPdb.to_pdb()` no longer fails with a `TypeError` on structures with `ANISOU` records after `label_models()`. The `model_id` column is now skipped silently, like in `to_pdb_stream()`, and other unexpected `ANISOU` columns are skipped with a warning, as for `ATOM` and `HETATM`. Addresses issue [#124](https://github.com/BioPandas/biopandas/issues/124).
 
+- Fix: `line_idx` is now `int64` in empty record DataFrames (e.g. `ANISOU` for a file without anisotropic records) instead of `object`, matching non-empty frames. Addresses issue [#64](https://github.com/BioPandas/biopandas/issues/64).
+
 ### 0.5.2 (24/08/2026)
 
 - Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)

@@ -564,6 +564,7 @@ class PandasPdb(object):
                 except ValueError:
                     # expect ValueError if float/int columns are empty strings
                     df[c["id"]] = pd.Series(np.nan, index=df.index)
+            df["line_idx"] = df["line_idx"].astype(np.int64)
 
             dfs[r[0]] = df
 
