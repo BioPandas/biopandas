@@ -271,6 +271,14 @@ def test_read_pdb_from_list():
         assert ppdb.pdb_path == ""
 
 
+def test_line_idx_dtype_for_empty_records():
+    ppdb = PandasPdb()
+    ppdb.read_pdb(TESTDATA_FILENAME)
+    assert ppdb.df["ANISOU"].empty
+    for record in ("ATOM", "HETATM", "ANISOU", "OTHERS"):
+        assert ppdb.df[record]["line_idx"].dtype == np.int64
+
+
 def test_anisou_input_handling():
     """Test public read_pdb"""
     ppdb = PandasPdb()
