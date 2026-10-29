@@ -214,7 +214,14 @@ class PandasMmcif:
             data["atom_site"], orient="index"
         ).transpose()
         mask = full_df.isna()
-        full_df = full_df.astype(mmcif_col_types, errors="ignore")
+        # astype() raises a KeyError for columns that are not in the file,
+        # even with errors="ignore", so only cast the columns that exist.
+        col_types = {
+            col: dtype
+            for col, dtype in mmcif_col_types.items()
+            if col in full_df.columns
+        }
+        full_df = full_df.astype(col_types, errors="ignore")
         full_df = full_df.where(~mask, other=np.nan)
         df["ATOM"] = pd.DataFrame(full_df[full_df.group_PDB == "ATOM"])
         df["HETATM"] = pd.DataFrame(full_df[full_df.group_PDB == "HETATM"])

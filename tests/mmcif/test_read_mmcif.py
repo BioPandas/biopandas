@@ -263,6 +263,33 @@ def test_read_pdb():
     assert ppdb.mmcif_path == TESTDATA_FILENAME
 
 
+def test_read_mmcif_without_auth_atom_id():
+    """Test reading an atom_site loop that has no auth_atom_id column"""
+    mmcif_text = """data_TEST
+_entry.id TEST
+loop_
+_atom_site.group_PDB
+_atom_site.id
+_atom_site.type_symbol
+_atom_site.label_atom_id
+_atom_site.label_comp_id
+_atom_site.label_asym_id
+_atom_site.label_seq_id
+_atom_site.Cartn_x
+_atom_site.Cartn_y
+_atom_site.Cartn_z
+_atom_site.pdbx_PDB_model_num
+ATOM 1 N N SER A 2 2.527 54.656 -1.667 1
+ATOM 2 C CA SER A 2 3.259 54.783 -0.368 1
+"""
+    pmmcif = PandasMmcif()
+    pmmcif.read_mmcif_from_list(mmcif_text)
+    atoms = pmmcif.df["ATOM"]
+    assert "auth_atom_id" not in atoms.columns
+    assert len(atoms) == 2
+    assert atoms["Cartn_x"].tolist() == [2.527, 3.259]
+
+
 def test_read_pdb_from_list():
     """Test public read_pdb_from_list"""
 

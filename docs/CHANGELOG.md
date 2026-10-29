@@ -15,6 +15,8 @@ The CHANGELOG for the current development version is available at
 
 - Fix: `line_idx` is now `int64` in empty record DataFrames (e.g. `ANISOU` for a file without anisotropic records) instead of `object`, matching non-empty frames. Addresses issue [#64](https://github.com/BioPandas/biopandas/issues/64).
 
+- Fix: `PandasMmcif` no longer raises a `KeyError` for mmCIF files whose `_atom_site` loop lacks one of the columns in `mmcif_col_types` (e.g. `auth_atom_id`). Only the columns present in the file are cast. Addresses issue [#168](https://github.com/BioPandas/biopandas/issues/168).
+
 ### 0.5.2 (24/08/2026)
 
 - Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)
