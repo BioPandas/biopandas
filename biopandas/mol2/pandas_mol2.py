@@ -91,6 +91,15 @@ class PandasMol2(object):
         """
         return self._df_bonds
 
+    @df_bonds.setter
+    def df_bonds(self, value):
+        """Assign a new value to the BOND section DataFrame"""
+        raise AttributeError(
+            "Please use `PandasMol2._df_bonds = ... ` instead\n"
+            "of `PandasMol2.df_bonds = ... ` if you are sure that\n"
+            "you want to overwrite the `df_bonds` attribute."
+        )
+
     def _load_mol2(self, mol2_lines, mol2_code, columns):
         """Load mol2 contents into assert_raise_message instance"""
         if columns is None:
@@ -285,13 +294,17 @@ class PandasMol2(object):
         rows = []
         for line in mol2_bond_lst:
             fields = line.split()
-            if len(fields) < 4:
+            try:
+                if len(fields) < 4:
+                    raise ValueError
+                ids = [int(f) for f in fields[:3]]
+            except ValueError:
                 raise ValueError(
-                    "Could not parse BOND record %r. Expected at least 4 "
-                    "fields: bond_id origin_atom_id target_atom_id "
-                    "bond_type [status_bits]" % line
-                )
-            rows.append(fields[:4] + [" ".join(fields[4:])])
+                    "Could not parse BOND record %r. Expected: bond_id "
+                    "origin_atom_id target_atom_id (integers), bond_type "
+                    "and optional status_bits" % line
+                ) from None
+            rows.append(ids + [fields[3], " ".join(fields[4:])])
 
         df = pd.DataFrame(rows, columns=list(BOND_COLUMN_NAMES))
         for name, dtype in zip(BOND_COLUMN_NAMES, BOND_COLUMN_TYPES):

@@ -264,19 +264,37 @@ def test_parse_bonds_raises():
     )
     assert_raises(AttributeError, expect, PandasMol2().parse_bonds)
 
-    mol2_lines = [
-        "@<TRIPOS>MOLECULE\n",
-        "broken\n",
-        "@<TRIPOS>ATOM\n",
-        "1 C1 0.0000 0.0000 0.0000 C.3 1 UNK 0.0000\n",
-        "\n",
-        "@<TRIPOS>BOND\n",
-        "1 1 2\n",
-    ]
-    pdmol = PandasMol2().read_mol2_from_list(mol2_lines, "broken")
+    # Too few fields, and a non-integer atom id.
+    for record in ("1 1 2", "1 1 X 1"):
+        mol2_lines = [
+            "@<TRIPOS>MOLECULE\n",
+            "broken\n",
+            "@<TRIPOS>ATOM\n",
+            "1 C1 0.0000 0.0000 0.0000 C.3 1 UNK 0.0000\n",
+            "\n",
+            "@<TRIPOS>BOND\n",
+            record + "\n",
+        ]
+        pdmol = PandasMol2().read_mol2_from_list(mol2_lines, "broken")
+        expect = (
+            "Could not parse BOND record %r. Expected: bond_id "
+            "origin_atom_id target_atom_id (integers), bond_type "
+            "and optional status_bits" % record
+        )
+        assert_raises(ValueError, expect, pdmol.parse_bonds)
+
+
+def test_overwrite_df_bonds():
+    pdmol = PandasMol2().read_mol2(str(TEST_DATA.joinpath("1b5e_1.mol2")))
+    pdmol.parse_bonds()
+
+    def overwrite():
+        pdmol.df_bonds = pdmol.df_bonds[pdmol.df_bonds["bond_type"] == "1"]
+
     expect = (
-        "Could not parse BOND record '1 1 2'. Expected at least 4 "
-        "fields: bond_id origin_atom_id target_atom_id "
-        "bond_type [status_bits]"
+        "Please use `PandasMol2._df_bonds = ... `"
+        " instead\nof `PandasMol2.df_bonds = ... `"
+        " if you are sure that\nyou want"
+        " to overwrite the `df_bonds` attribute."
     )
-    assert_raises(ValueError, expect, pdmol.parse_bonds)
+    assert_raises(AttributeError, expect, overwrite)
