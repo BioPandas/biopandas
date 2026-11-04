@@ -25,6 +25,16 @@ COLUMN_NAMES = (
 
 COLUMN_TYPES = (int, str, float, float, float, str, int, str, float)
 
+BOND_COLUMN_NAMES = (
+    "bond_id",
+    "origin_atom_id",
+    "target_atom_id",
+    "bond_type",
+    "status_bits",
+)
+
+BOND_COLUMN_TYPES = ("int64", "int64", "int64", str, str)
+
 
 class PandasMol2(object):
     """
@@ -34,6 +44,10 @@ class PandasMol2(object):
     ----------
     df : pandas.DataFrame
         DataFrame of a Mol2's ATOM section
+
+    df_bonds : pandas.DataFrame or None
+        DataFrame of a Mol2's BOND section. `None` until
+        `parse_bonds()` has been called.
 
     mol2_text : str
         Mol2 file contents in string format
@@ -48,6 +62,7 @@ class PandasMol2(object):
 
     def __init__(self):
         self._df = None
+        self._df_bonds = None
         self.mol2_text = ""
         self.header = ""
         self.code = ""
@@ -67,6 +82,14 @@ class PandasMol2(object):
             "you want to overwrite the `df` attribute."
         )
         # self._df = value
+
+    @property
+    def df_bonds(self):
+        """Accesses the pandas DataFrame of the BOND section.
+
+        `None` until `parse_bonds()` has been called.
+        """
+        return self._df_bonds
 
     def _load_mol2(self, mol2_lines, mol2_code, columns):
         """Load mol2 contents into assert_raise_message instance"""
@@ -88,6 +111,38 @@ class PandasMol2(object):
             self.code = mol2_code.decode()
 
         self._df = self._construct_df(mol2_lines, col_names, col_types)
+        # Bonds from a previously loaded molecule no longer apply.
+        self._df_bonds = None
+
+    def parse_bonds(self):
+        """Parses the BOND section of the loaded Mol2 into a DataFrame
+
+        Bonds are not parsed by `read_mol2` or `read_mol2_from_list`,
+        since many analyses don't need them. Call this method after
+        reading a molecule to parse them. The result is also stored
+        in `PandasMol2.df_bonds`.
+
+        Returns
+        ---------
+        pandas.DataFrame
+            DataFrame with one row per bond and the columns
+            'bond_id', 'origin_atom_id', 'target_atom_id' (int64),
+            'bond_type' and 'status_bits' (str). 'bond_type' is kept as
+            a string since Tripos bond types include non-numeric codes
+            ('am', 'ar', 'du', 'un', 'nc'). 'status_bits' is the empty
+            string for bonds that don't specify it. A molecule without
+            a BOND section gives an empty DataFrame with these columns.
+
+        """
+        if self._df is None:
+            raise AttributeError(
+                "No Mol2 structure loaded. Please read a Mol2 file "
+                "via `read_mol2` or `read_mol2_from_list` first."
+            )
+        self._df_bonds = self._bondsection_to_pandas(
+            self._get_bondsection(self.mol2_text.splitlines())
+        )
+        return self._df_bonds
 
     def read_mol2(self, path, columns=None):
         """Reads Mol2 files (unzipped or gzipped) from local drive
@@ -204,6 +259,43 @@ class PandasMol2(object):
 
         for i in range(df.shape[1]):
             df[col_names[i]] = df[col_names[i]].astype(col_types[i])
+
+        return df
+
+    @staticmethod
+    def _get_bondsection(mol2_lst):
+        """Returns the lines of the BOND section from a mol2 provided as a
+        list of strings, without blank and comment lines. Returns an empty
+        list if there is no BOND section."""
+        bond_lines = []
+        started = False
+        for s in mol2_lst:
+            if s.startswith("@<TRIPOS>"):
+                if started:
+                    break
+                started = s.startswith("@<TRIPOS>BOND")
+            elif started:
+                s = s.strip()
+                if s and not s.startswith("#"):
+                    bond_lines.append(s)
+        return bond_lines
+
+    @staticmethod
+    def _bondsection_to_pandas(mol2_bond_lst):
+        rows = []
+        for line in mol2_bond_lst:
+            fields = line.split()
+            if len(fields) < 4:
+                raise ValueError(
+                    "Could not parse BOND record %r. Expected at least 4 "
+                    "fields: bond_id origin_atom_id target_atom_id "
+                    "bond_type [status_bits]" % line
+                )
+            rows.append(fields[:4] + [" ".join(fields[4:])])
+
+        df = pd.DataFrame(rows, columns=list(BOND_COLUMN_NAMES))
+        for name, dtype in zip(BOND_COLUMN_NAMES, BOND_COLUMN_TYPES):
+            df[name] = df[name].astype(dtype)
 
         return df
 

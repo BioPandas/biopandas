@@ -152,3 +152,131 @@ def test__get_atomsection_raises():
         PandasMol2()._get_atomsection(["", ""])
 
     assert_raises(ValueError, expect, run_code)
+
+
+def test_parse_bonds():
+    data_path = str(TEST_DATA.joinpath("1b5e_1.mol2"))
+    pdmol = PandasMol2().read_mol2(data_path)
+
+    # Bonds are only parsed on request.
+    assert pdmol.df_bonds is None
+
+    bonds = pdmol.parse_bonds()
+    assert bonds is pdmol.df_bonds
+    assert bonds.shape == (33, 5)
+    assert list(bonds.columns) == [
+        "bond_id",
+        "origin_atom_id",
+        "target_atom_id",
+        "bond_type",
+        "status_bits",
+    ]
+    for col in ("bond_id", "origin_atom_id", "target_atom_id"):
+        assert bonds[col].dtype == "int64"
+    assert bonds.iloc[0].tolist() == [1, 1, 2, "2", ""]
+    # Non-numeric Tripos bond types are kept as strings.
+    assert bonds["bond_type"].value_counts().to_dict() == {
+        "1": 28,
+        "2": 4,
+        "am": 1,
+    }
+    # Every bond connects atoms of the ATOM section.
+    assert set(bonds["origin_atom_id"]) <= set(pdmol.df["atom_id"])
+    assert set(bonds["target_atom_id"]) <= set(pdmol.df["atom_id"])
+
+
+def test_parse_bonds_matches_header_counts():
+    """Bond counts match the MOLECULE header for every test molecule,
+    including gzipped files and files with CRLF line endings."""
+    for fname in (
+        "40_mol2_files.mol2",
+        "40_mol2_files.mol2.gz",
+        "1b5e_2.mol2",
+        "empty_line.mol2",
+    ):
+        data_path = str(TEST_DATA.joinpath(fname))
+        for code, lines in split_multimol2(data_path):
+            pdmol = PandasMol2().read_mol2_from_list(lines, code)
+            header = [
+                s for s in pdmol.mol2_text.splitlines() if s.strip()
+            ]
+            start = header.index(
+                next(s for s in header if s.startswith("@<TRIPOS>MOLECULE"))
+            )
+            num_bonds = int(header[start + 2].split()[1])
+            assert len(pdmol.parse_bonds()) == num_bonds, (fname, code)
+
+
+def test_parse_bonds_status_bits_and_end_of_file():
+    """Status bits are parsed, blank and comment lines are skipped, and a
+    BOND section at the end of the file is read completely."""
+    mol2_lines = [
+        "@<TRIPOS>MOLECULE\n",
+        "ethene\n",
+        "2 1 0 0 0\n",
+        "SMALL\n",
+        "NO_CHARGES\n",
+        "\n",
+        "@<TRIPOS>ATOM\n",
+        "1 C1 0.0000 0.0000 0.0000 C.2 1 ETH 0.0000\n",
+        "2 C2 1.3300 0.0000 0.0000 C.2 1 ETH 0.0000\n",
+        "\n",
+        "@<TRIPOS>BOND\n",
+        "# a comment\n",
+        "\n",
+        "     1     1     2 2 BACKBONE|DICT",
+    ]
+    pdmol = PandasMol2().read_mol2_from_list(mol2_lines, "ethene")
+    bonds = pdmol.parse_bonds()
+    assert bonds.shape == (1, 5)
+    assert bonds.iloc[0].tolist() == [1, 1, 2, "2", "BACKBONE|DICT"]
+
+
+def test_parse_bonds_without_bond_section():
+    mol2_lines = [
+        "@<TRIPOS>MOLECULE\n",
+        "sodium\n",
+        "1 0 0 0 0\n",
+        "SMALL\n",
+        "USER_CHARGES\n",
+        "\n",
+        "@<TRIPOS>ATOM\n",
+        "1 Na 0.0000 0.0000 0.0000 Na 1 NA 1.0000\n",
+        "\n",
+    ]
+    pdmol = PandasMol2().read_mol2_from_list(mol2_lines, "sodium")
+    bonds = pdmol.parse_bonds()
+    assert bonds.shape == (0, 5)
+    assert bonds["bond_id"].dtype == "int64"
+
+
+def test_parse_bonds_resets_on_new_read():
+    pdmol = PandasMol2().read_mol2(str(TEST_DATA.joinpath("1b5e_1.mol2")))
+    pdmol.parse_bonds()
+    pdmol.read_mol2(str(TEST_DATA.joinpath("40_mol2_files.mol2")))
+    assert pdmol.df_bonds is None
+
+
+def test_parse_bonds_raises():
+    expect = (
+        "No Mol2 structure loaded. Please read a Mol2 file "
+        "via `read_mol2` or `read_mol2_from_list` first."
+    )
+    assert_raises(AttributeError, expect, PandasMol2().parse_bonds)
+
+    mol2_lines = [
+        "@<TRIPOS>MOLECULE\n",
+        "broken\n",
+        "@<TRIPOS>ATOM\n",
+        "1 C1 0.0000 0.0000 0.0000 C.3 1 UNK 0.0000\n",
+        "\n",
+        "@<TRIPOS>BOND\n",
+        "1 1 2\n",
+    ]
+    pdmol = PandasMol2().read_mol2_from_list(mol2_lines, "broken")
+    expect = (
+        "Could not parse BOND record '1 1 2'. Expected at least 4 "
+        "fields: bond_id origin_atom_id target_atom_id "
+        "bond_type [status_bits]"
+    )
+    assert_raises(ValueError, expect, pdmol.parse_bonds)

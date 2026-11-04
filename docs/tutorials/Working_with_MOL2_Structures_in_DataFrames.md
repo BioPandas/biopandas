@@ -657,6 +657,152 @@ A list of all the allowed atom types that can be found in Tripos MOL2 files is p
     Cu         copper
 
 
+## Parsing the BOND Section
+
+By default, `read_mol2` only parses the ATOM section, since many analyses don't need the bonds. To also get the bonds between the atoms, call `parse_bonds()` after reading a molecule. It returns a DataFrame of the BOND section, which is also stored in the `df_bonds` attribute:
+
+
+```python
+pmol = PandasMol2().read_mol2('./data/1b5e_1.mol2')
+pmol.parse_bonds()
+pmol.df_bonds.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bond_id</th>
+      <th>origin_atom_id</th>
+      <th>target_atom_id</th>
+      <th>bond_type</th>
+      <th>status_bits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2</td>
+      <td>11</td>
+      <td>1</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>3</td>
+      <td>10</td>
+      <td>2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>3</td>
+      <td>12</td>
+      <td>1</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+The `origin_atom_id` and `target_atom_id` columns refer to the `atom_id` column of `pmol.df`. The `bond_type` column holds the Tripos bond type as a string, since besides `'1'`, `'2'` and `'3'` (single, double and triple bonds) it can be `'am'` (amide), `'ar'` (aromatic), `'du'` (dummy), `'un'` (unknown) or `'nc'` (not connected). `status_bits` is the empty string for bonds that don't specify it.
+
+Since the bonds are a regular DataFrame, they can be combined with the atoms using pandas, for example to list the atom names of the amide bonds:
+
+
+```python
+atom_names = pmol.df.set_index('atom_id')['atom_name']
+amide_bonds = pmol.df_bonds[pmol.df_bonds['bond_type'] == 'am'].copy()
+amide_bonds['origin_atom_name'] = amide_bonds['origin_atom_id'].map(atom_names)
+amide_bonds['target_atom_name'] = amide_bonds['target_atom_id'].map(atom_names)
+amide_bonds
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bond_id</th>
+      <th>origin_atom_id</th>
+      <th>target_atom_id</th>
+      <th>bond_type</th>
+      <th>status_bits</th>
+      <th>origin_atom_name</th>
+      <th>target_atom_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>4</td>
+      <td>11</td>
+      <td>am</td>
+      <td></td>
+      <td>C4</td>
+      <td>N2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Plotting
 
 Since we are using pandas under the hood, which in turns uses matplotlib under the hood, we can produce quick summary plots of our MOL2 structures conveniently. Below are a few examples of how to visualize molecular properties.
