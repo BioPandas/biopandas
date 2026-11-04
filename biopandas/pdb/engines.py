@@ -20,6 +20,20 @@ def _parse_charge(s):
         return float('nan')
 
 
+def _format_b_factor(x):
+    """Format b_factor into the 6-char PDB field (columns 61-66).
+
+    Values that round up across an integer-digit boundary (e.g. 99.996 ->
+    100.00) are re-formatted without the sign placeholder so they still fit
+    the 6-char field. Values >= 1000.00 exceed the PDB v3 field width and
+    are kept as-is (unrepresentable in the fixed 6-char column).
+    """
+    s = ("%+6.2f" % x).replace("+", " ")
+    if len(s) > 6:
+        s = ("%+6.2f" % x).replace("+", "")
+    return s
+
+
 def _format_charge(val):
     """Format integer charge into PDB v3.3 notation '2+', '1-'."""
     if pd.isna(val):
@@ -181,11 +195,7 @@ pdb_atomdict = [
         "id": "b_factor",
         "line": [60, 66],
         "type": float,
-        "strf": lambda x: (
-            ("%+6.2f" % x).replace("+", " ")
-            if len(str(int(x))) < 3
-            else ("%+6.2f" % x).replace("+", "")
-        ),
+        "strf": _format_b_factor,
     },
     {
         "id": "blank_4",
