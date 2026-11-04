@@ -179,6 +179,9 @@ class PandasMol2(object):
         Raises ValueError if data is not provided in the mol2 format."""
         started = False
         first_idx = None
+        # The ATOM section runs to the end of the input unless a blank
+        # line or another @<TRIPOS> record ends it first.
+        last_idx_plus1 = len(mol2_lst)
         for idx, s in enumerate(mol2_lst):
             if s.startswith("@<TRIPOS>ATOM"):
                 first_idx = idx + 1

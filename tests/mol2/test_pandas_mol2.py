@@ -61,6 +61,46 @@ def test_read_mol2_from_list():
     assert pdmol.code == "ZINC38611810"
 
 
+def test_read_mol2_atom_section_at_end_of_input():
+    """The ATOM section can be the last section, with no blank line or
+    other @<TRIPOS> record after it."""
+    mol2_lines = [
+        "@<TRIPOS>MOLECULE\n",
+        "ethane_fragment\n",
+        "2 0 0 0 0\n",
+        "SMALL\n",
+        "NO_CHARGES\n",
+        "\n",
+        "@<TRIPOS>ATOM\n",
+        "1 C1 0.0000 0.0000 0.0000 C.3 1 ETH 0.0000\n",
+        "2 C2 1.5400 0.0000 0.0000 C.3 1 ETH 0.0000\n",
+    ]
+    # With and without a newline after the last atom.
+    for lines in (mol2_lines, mol2_lines[:-1] + [mol2_lines[-1].rstrip()]):
+        pdmol = PandasMol2().read_mol2_from_list(lines, "ethane_fragment")
+        assert pdmol.df.shape == (2, 9)
+        assert pdmol.df["atom_name"].tolist() == ["C1", "C2"]
+        assert pdmol.df["x"].tolist() == [0.0, 1.54]
+
+
+def test_read_mol2_file_atom_section_at_end_of_file(tmp_path):
+    path = tmp_path / "na.mol2"
+    path.write_text(
+        "@<TRIPOS>MOLECULE\n"
+        "sodium\n"
+        "1 0 0 0 0\n"
+        "SMALL\n"
+        "USER_CHARGES\n"
+        "\n"
+        "@<TRIPOS>ATOM\n"
+        "1 Na 0.0000 0.0000 0.0000 Na 1 NA 1.0000\n"
+    )
+    pdmol = PandasMol2().read_mol2(str(path))
+    assert pdmol.code == "sodium"
+    assert pdmol.df.shape == (1, 9)
+    assert pdmol.df["charge"].tolist() == [1.0]
+
+
 def test_rmsd():
     data_path_1 = str(TEST_DATA.joinpath("1b5e_1.mol2"))
     data_path_2 = str(TEST_DATA.joinpath("1b5e_2.mol2"))

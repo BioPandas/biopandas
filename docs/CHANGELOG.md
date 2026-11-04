@@ -15,6 +15,8 @@ The CHANGELOG for the current development version is available at
 
 - Fix: `line_idx` is now `int64` in empty record DataFrames (e.g. `ANISOU` for a file without anisotropic records) instead of `object`, matching non-empty frames. Addresses issue [#64](https://github.com/BioPandas/biopandas/issues/64).
 
+- Fix: `PandasMol2.read_mol2()` and `read_mol2_from_list()` no longer fail with an `UnboundLocalError` when the ATOM section is the last section of the input, with no blank line or other `@<TRIPOS>` record after it (e.g. a molecule without bonds). The ATOM section now runs to the end of the input in that case.
+
 ### 0.5.2 (24/08/2026)
 
 - Fix: improves robustness of `amino3to1` residue identification by handling `NaN` insertion codes (NumPy 2.4+ compatibility) and including chain IDs and separators to avoid collisions. PR [#157](https://github.com/BioPandas/biopandas/pull/157)
