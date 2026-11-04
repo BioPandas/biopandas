@@ -5,6 +5,8 @@ The CHANGELOG for the current development version is available at
 
 ### Unreleased
 
+- Add `PandasMol2.parse_bonds()` to parse the Mol2 BOND section into a DataFrame (`bond_id`, `origin_atom_id`, `target_atom_id`, `bond_type`, `status_bits`), also stored in the new `PandasMol2.df_bonds` attribute. Bonds are parsed on request only, so `read_mol2` is unchanged. Addresses issue [#54](https://github.com/BioPandas/biopandas/issues/54).
+
 - Add `PandasPdb.to_fasta()` to export observed ATOM protein sequences by chain from an explicitly selected model, with configurable wrapping and optional file output.
 
 - Fix: parse the PDB v3.3 atomic charge notation (columns 79-80, e.g. `2+`, `1-`) as integer charges instead of floats, and write it back in spec-compliant notation. Also restores consistent integer dtypes between the PDB and MMTF readers on Windows. Addresses issue [#151](https://github.com/BioPandas/biopandas/issues/151). PR [#160](https://github.com/BioPandas/biopandas/pull/160)
