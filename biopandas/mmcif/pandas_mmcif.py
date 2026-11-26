@@ -615,18 +615,46 @@ class PandasMmcif:
 
         """
         pandaspdb = PandasPdb()
+        optional_cols = {
+            "label_alt_id",
+            "pdbx_PDB_ins_code",
+            "pdbx_formal_charge",
+        }
+        required_cols = [
+            c for c in MMCIF_PDB_COLUMN_MAP if c not in optional_cols
+        ]
 
         for a in records:
             try:
                 dfa = self.df[a]
+                if any(c not in dfa.columns for c in required_cols):
+                    raise KeyError(
+                        "Missing required mmCIF columns for PDB conversion"
+                    )
+                present_cols = [
+                    c for c in MMCIF_PDB_COLUMN_MAP if c in dfa.columns
+                ]
                 # keep only those fields found in pdb
-                dfa = dfa[MMCIF_PDB_COLUMN_MAP.keys()]
+                dfa = dfa[present_cols].copy()
                 # rename fields
                 dfa = dfa.rename(columns=MMCIF_PDB_COLUMN_MAP)
                 # add empty fields
                 for i in MMCIF_PDB_NONEFIELDS:
                     dfa[i] = ""
-                dfa["charge"] = np.nan
+                if "alt_loc" in dfa.columns:
+                    dfa["alt_loc"] = dfa["alt_loc"].fillna("").astype(str)
+                else:
+                    dfa["alt_loc"] = ""
+                if "insertion" in dfa.columns:
+                    dfa["insertion"] = dfa["insertion"].fillna("").astype(str)
+                else:
+                    dfa["insertion"] = ""
+                if "charge" in dfa.columns:
+                    dfa["charge"] = pd.to_numeric(
+                        dfa["charge"], errors="coerce"
+                    ).astype(float)
+                else:
+                    dfa["charge"] = np.nan
                 # reorder columns to PandasPdb order
                 dfa = dfa[PDB_COLUMN_ORDER]
                 pandaspdb.df[a] = dfa
@@ -634,20 +662,34 @@ class PandasMmcif:
                 continue
 
         # update line_idx
-        pandaspdb.df["ATOM"]["line_idx"] = pandaspdb.df["ATOM"].index.values
-        pandaspdb.df["HETATM"]["line_idx"] = pandaspdb.df["HETATM"].index
+        for record_name in pandaspdb.df:
+            pandaspdb.df[record_name]["line_idx"] = (
+                pandaspdb.df[record_name].index.values
+            )
 
         # Update atom numbers
-        if offset_chains:
-            offsets = (
-                pandaspdb.df["ATOM"]["chain_id"].astype("category").cat.codes
-            )
+        if (
+            offset_chains
+            and "ATOM" in pandaspdb.df
+            and not pandaspdb.df["ATOM"].empty
+        ):
+            chains = pandaspdb.df["ATOM"]["chain_id"]
+            offsets = (chains != chains.shift()).cumsum() - 1
             pandaspdb.df["ATOM"]["atom_number"] = (
                 pandaspdb.df["ATOM"]["atom_number"] + offsets
             )
-            hetatom_offset = offsets.max() + 1
-            pandaspdb.df["HETATM"]["atom_number"] = (
-                pandaspdb.df["HETATM"]["atom_number"] + hetatom_offset
-            )
+            if "HETATM" in pandaspdb.df and not pandaspdb.df["HETATM"].empty:
+                seg_ends = chains != chains.shift(-1)
+                chain_end_idx = (
+                    pandaspdb.df["ATOM"].index[seg_ends].to_numpy()
+                )
+                het_offsets = np.searchsorted(
+                    chain_end_idx,
+                    pandaspdb.df["HETATM"].index.to_numpy(),
+                    side="left",
+                )
+                pandaspdb.df["HETATM"]["atom_number"] = (
+                    pandaspdb.df["HETATM"]["atom_number"] + het_offsets
+                )
 
         return pandaspdb
