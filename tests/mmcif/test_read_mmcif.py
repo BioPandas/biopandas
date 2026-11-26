@@ -368,3 +368,175 @@ def test_mmcif_pdb_conversion():
         pdb.df["HETATM"].drop(columns=["line_idx"]),
         mmcif_pdb.df["HETATM"].drop(columns=["line_idx"]).reset_index(drop=True),
     )
+
+
+def test_convert_to_pandas_pdb_preserves_alt_loc(tmp_path):
+    """Test convert_to_pandas_pdb preserves alternate locations."""
+    mmcif = PandasMmcif().read_mmcif(TESTDATA_FILENAME2)
+    expected_alt = mmcif.df["ATOM"]["label_alt_id"].fillna("").astype(str)
+    assert (expected_alt != "").sum() == 186
+
+    conv = mmcif.convert_to_pandas_pdb()
+    assert (conv.df["ATOM"]["alt_loc"] == expected_alt).all()
+    assert set(conv.df["ATOM"]["alt_loc"].unique()) == {"", "A", "B"}
+
+    out_pdb = tmp_path / "4eiy_converted.pdb"
+    conv.to_pdb(str(out_pdb))
+    rt = PandasPdb().read_pdb(str(out_pdb))
+    assert (rt.df["ATOM"]["alt_loc"].values == expected_alt.values).all()
+
+
+def test_convert_to_pandas_pdb_preserves_insertion_codes(tmp_path):
+    """Test convert_to_pandas_pdb preserves insertion codes and amino3to1."""
+    cif_text = (
+        "data_TEST\n"
+        "_entry.id TEST\n"
+        "loop_\n"
+        "_atom_site.group_PDB\n"
+        "_atom_site.id\n"
+        "_atom_site.type_symbol\n"
+        "_atom_site.label_atom_id\n"
+        "_atom_site.label_alt_id\n"
+        "_atom_site.label_comp_id\n"
+        "_atom_site.label_asym_id\n"
+        "_atom_site.label_entity_id\n"
+        "_atom_site.label_seq_id\n"
+        "_atom_site.pdbx_PDB_ins_code\n"
+        "_atom_site.Cartn_x\n"
+        "_atom_site.Cartn_y\n"
+        "_atom_site.Cartn_z\n"
+        "_atom_site.occupancy\n"
+        "_atom_site.B_iso_or_equiv\n"
+        "_atom_site.pdbx_formal_charge\n"
+        "_atom_site.auth_seq_id\n"
+        "_atom_site.auth_comp_id\n"
+        "_atom_site.auth_asym_id\n"
+        "_atom_site.auth_atom_id\n"
+        "_atom_site.pdbx_PDB_model_num\n"
+        "ATOM 1 C CA . ASN H 1 1 ? 1.0 2.0 3.0 1.0 10.0 ? 52 ASN H CA 1\n"
+        "ATOM 2 C CA . PRO H 1 2 A 4.0 5.0 6.0 1.0 11.0 ? 52 PRO H CA 1\n"
+        "ATOM 3 C CA . LYS H 1 3 B 7.0 8.0 9.0 1.0 12.0 ? 52 LYS H CA 1\n"
+        "ATOM 4 C CA . SER H 1 4 ? 10.0 11.0 12.0 1.0 13.0 ? 53 SER H CA 1\n"
+    )
+    mmcif = PandasMmcif().read_mmcif_from_list(cif_text)
+    conv = mmcif.convert_to_pandas_pdb()
+
+    assert list(conv.df["ATOM"]["insertion"]) == ["", "A", "B", ""]
+    assert "".join(conv.amino3to1()["residue_name"].values) == "NPKS"
+    assert "".join(conv.amino3to1()["residue_name"].values) == "".join(
+        mmcif.amino3to1()["auth_comp_id"].values
+    )
+
+    out_pdb = tmp_path / "ins_converted.pdb"
+    conv.to_pdb(str(out_pdb))
+    rt = PandasPdb().read_pdb(str(out_pdb))
+    assert list(rt.df["ATOM"]["insertion"]) == ["", "A", "B", ""]
+    assert "".join(rt.amino3to1()["residue_name"].values) == "NPKS"
+
+
+def test_convert_to_pandas_pdb_preserves_formal_charges(tmp_path):
+    """Test convert_to_pandas_pdb preserves signed formal charges."""
+    cif_text = (
+        "data_CHG\n"
+        "_entry.id CHG\n"
+        "loop_\n"
+        "_atom_site.group_PDB\n"
+        "_atom_site.id\n"
+        "_atom_site.type_symbol\n"
+        "_atom_site.label_atom_id\n"
+        "_atom_site.label_alt_id\n"
+        "_atom_site.label_comp_id\n"
+        "_atom_site.label_asym_id\n"
+        "_atom_site.label_entity_id\n"
+        "_atom_site.label_seq_id\n"
+        "_atom_site.pdbx_PDB_ins_code\n"
+        "_atom_site.Cartn_x\n"
+        "_atom_site.Cartn_y\n"
+        "_atom_site.Cartn_z\n"
+        "_atom_site.occupancy\n"
+        "_atom_site.B_iso_or_equiv\n"
+        "_atom_site.pdbx_formal_charge\n"
+        "_atom_site.auth_seq_id\n"
+        "_atom_site.auth_comp_id\n"
+        "_atom_site.auth_asym_id\n"
+        "_atom_site.auth_atom_id\n"
+        "_atom_site.pdbx_PDB_model_num\n"
+        "ATOM 1 N N 1 GLU A 1 1 ? 1.0 2.0 3.0 0.5 10.0 ? 1 GLU A N 1\n"
+        "ATOM 2 O OE2 . GLU A 1 1 ? 3.0 4.0 5.0 1.0 12.0 -1 1 GLU A OE2 1\n"
+        "ATOM 3 N NZ . LYS A 1 2 ? 4.0 5.0 6.0 1.0 13.0 +1 2 LYS A NZ 1\n"
+        "HETATM 4 FE FE . HEM A 2 . ? 5.0 6.0 7.0 1.0 14.0 2 3 HEM A FE 1\n"
+    )
+    mmcif = PandasMmcif().read_mmcif_from_list(cif_text)
+    conv = mmcif.convert_to_pandas_pdb()
+
+    # Numeric label_alt_id ('1') must remain a string
+    assert conv.df["ATOM"]["alt_loc"].tolist() == ["1", "", ""]
+    assert pd.isna(conv.df["ATOM"]["charge"].iloc[0])
+    assert conv.df["ATOM"]["charge"].iloc[1] == -1.0
+    assert conv.df["ATOM"]["charge"].iloc[2] == 1.0
+    assert conv.df["HETATM"]["charge"].iloc[0] == 2.0
+
+    out_pdb = tmp_path / "charged_converted.pdb"
+    conv.to_pdb(str(out_pdb))
+    rt = PandasPdb().read_pdb(str(out_pdb))
+    assert pd.isna(rt.df["ATOM"]["charge"].iloc[0])
+    assert rt.df["ATOM"]["charge"].iloc[1] == -1.0
+    assert rt.df["ATOM"]["charge"].iloc[2] == 1.0
+    assert rt.df["HETATM"]["charge"].iloc[0] == 2.0
+
+
+def test_convert_to_pandas_pdb_encounter_order_chain_offsets():
+    """Test encounter-order TER offsets for non-alphabetical chains and MSE."""
+    cif_text = (
+        "data_ORD\n"
+        "_entry.id ORD\n"
+        "loop_\n"
+        "_atom_site.group_PDB\n"
+        "_atom_site.id\n"
+        "_atom_site.type_symbol\n"
+        "_atom_site.label_atom_id\n"
+        "_atom_site.label_alt_id\n"
+        "_atom_site.label_comp_id\n"
+        "_atom_site.label_asym_id\n"
+        "_atom_site.label_entity_id\n"
+        "_atom_site.label_seq_id\n"
+        "_atom_site.pdbx_PDB_ins_code\n"
+        "_atom_site.Cartn_x\n"
+        "_atom_site.Cartn_y\n"
+        "_atom_site.Cartn_z\n"
+        "_atom_site.occupancy\n"
+        "_atom_site.B_iso_or_equiv\n"
+        "_atom_site.pdbx_formal_charge\n"
+        "_atom_site.auth_seq_id\n"
+        "_atom_site.auth_comp_id\n"
+        "_atom_site.auth_asym_id\n"
+        "_atom_site.auth_atom_id\n"
+        "_atom_site.pdbx_PDB_model_num\n"
+        "ATOM 1 N N . ALA L 1 1 ? 1.0 0.0 0.0 1.0 10.0 ? 1 ALA L N 1\n"
+        "HETATM 2 SE SE . MSE L 1 2 ? 2.0 0.0 0.0 1.0 10.0 ? 2 MSE L SE 1\n"
+        "ATOM 3 C OXT . CYS L 1 3 ? 3.0 0.0 0.0 1.0 10.0 ? 3 CYS L OXT 1\n"
+        "ATOM 4 N N . GLN H 2 1 ? 4.0 0.0 0.0 1.0 10.0 ? 1 GLN H N 1\n"
+        "ATOM 5 N N . ASP A 3 1 ? 5.0 0.0 0.0 1.0 10.0 ? 1 ASP A N 1\n"
+        "HETATM 6 O O . HOH W 4 . ? 6.0 0.0 0.0 1.0 10.0 ? 101 HOH W O 1\n"
+    )
+    mmcif = PandasMmcif().read_mmcif_from_list(cif_text)
+    conv = mmcif.convert_to_pandas_pdb(offset_chains=True)
+
+    # Chain L (0 TERs before): ATOM ids 1, 3 -> 1, 3; in-chain MSE id 2 -> 2
+    # Chain H (1 TER before): ATOM id 4 -> 5
+    # Chain A (2 TERs before): ATOM id 5 -> 7
+    # Trailing HOH (3 TERs before): HETATM id 6 -> 9
+    assert conv.df["ATOM"]["atom_number"].tolist() == [1, 3, 5, 7]
+    assert conv.df["HETATM"]["atom_number"].tolist() == [2, 9]
+
+    # Single-record selection and missing optional columns must not fail
+    mmcif_opt = PandasMmcif().read_mmcif_from_list(cif_text)
+    mmcif_opt.df["ATOM"] = mmcif_opt.df["ATOM"].drop(
+        columns=["label_alt_id", "pdbx_PDB_ins_code", "pdbx_formal_charge"]
+    )
+    conv_atom_only = mmcif_opt.convert_to_pandas_pdb(records=["ATOM"])
+    assert set(conv_atom_only.df.keys()) == {"ATOM"}
+    assert conv_atom_only.df["ATOM"]["atom_number"].tolist() == [1, 3, 5, 7]
+    assert (conv_atom_only.df["ATOM"]["alt_loc"] == "").all()
+    assert (conv_atom_only.df["ATOM"]["insertion"] == "").all()
+    assert conv_atom_only.df["ATOM"]["charge"].isna().all()
